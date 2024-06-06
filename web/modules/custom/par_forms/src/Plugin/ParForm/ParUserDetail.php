@@ -54,9 +54,6 @@ class ParUserDetail extends ParFormPluginBase {
         $this->setDefaultValuesByKey("user_roles", $index, implode(', ', $user_roles));
       }
 
-      // Disable blocking of last user in an authority/organisation.
-      $this->setDefaultValuesByKey('user_unblockable', $index, !$par_role_manager->blockable($user, TRUE));
-
       $this->getFlowDataHandler()->setFormPermValue("user_id", $user->id());
     }
     elseif ($par_data_person instanceof ParDataEntityInterface) {

@@ -20,6 +20,10 @@ public class PartnershipTypePage extends BasePageObject {
 		super();
 	}
 	
+	public void clickContinueButton() {
+		continueBtn.click();
+	}
+	
 	public PartnershipTermsPage selectPartnershipType(String type) {
 		driver.findElement(By.xpath(locator.replace("?", type))).click();
 		

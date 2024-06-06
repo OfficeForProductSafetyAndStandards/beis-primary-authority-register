@@ -20,6 +20,15 @@ public class AdviceArchivePage extends BasePageObject {
 		super();
 	}
 	
+	public void enterArchiveReason(String reason) {
+		archiveReasonBox.clear();
+		archiveReasonBox.sendKeys(reason);
+	}
+	
+	public void selectSaveButton() {
+		saveBtn.click();
+	}
+	
 	public AdviceNoticeSearchPage enterReasonForArchiving(String reason) {
 		archiveReasonBox.clear();
 		archiveReasonBox.sendKeys(reason);

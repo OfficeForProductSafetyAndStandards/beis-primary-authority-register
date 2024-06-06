@@ -6,9 +6,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-import uk.gov.beis.pageobjects.AddAddressPage;
 import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
+import uk.gov.beis.pageobjects.SharedPageObjects.AddAddressPage;
 
 public class AboutTheOrganisationPage extends BasePageObject {
 	
@@ -30,7 +30,11 @@ public class AboutTheOrganisationPage extends BasePageObject {
 		descriptionBox.sendKeys(description);
 	}
 	
-	public AddAddressPage clickContinueButton() {
+	public void clickContinueButton() {
+		continueBtn.click();
+	}
+	
+	public AddAddressPage goToAddressPage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, AddAddressPage.class);
 	}

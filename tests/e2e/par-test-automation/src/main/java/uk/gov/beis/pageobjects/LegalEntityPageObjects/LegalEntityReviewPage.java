@@ -8,6 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanCoveragePage;
+import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipInformationPage;
 
@@ -36,6 +37,11 @@ public class LegalEntityReviewPage extends BasePageObject {
 	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
+	}
+	
+	public MemberOrganisationSummaryPage goToMemberOrganisationSummaryPage() {
+		continueBtn.click();
+		return PageFactory.initElements(driver, MemberOrganisationSummaryPage.class);
 	}
 	
 	public InspectionPlanCoveragePage clickContinueForMember() {

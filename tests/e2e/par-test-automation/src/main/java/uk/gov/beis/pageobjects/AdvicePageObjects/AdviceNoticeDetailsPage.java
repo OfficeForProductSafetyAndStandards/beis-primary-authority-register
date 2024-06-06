@@ -53,6 +53,22 @@ public class AdviceNoticeDetailsPage extends BasePageObject {
 		descriptionBox.sendKeys(description);
 	}
 	
+	public void clearAllFields() {
+		title.clear();
+		
+		WebElement regulatoryFunctions = driver.findElement(By.xpath("//input[@type='checkbox']"));
+		
+		if(regulatoryFunctions.isSelected()) {
+			regulatoryFunctions.click();
+		}
+		
+		descriptionBox.clear();
+	}
+	
+	public void selectSaveButton() {
+		saveBtn.click();
+	}
+	
 	public AdviceNoticeSearchPage clickSave() {
 		saveBtn.click();
 		return PageFactory.initElements(driver, AdviceNoticeSearchPage.class);

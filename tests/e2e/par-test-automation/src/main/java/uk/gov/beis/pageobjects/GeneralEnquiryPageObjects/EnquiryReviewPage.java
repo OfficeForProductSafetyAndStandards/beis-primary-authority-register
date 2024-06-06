@@ -40,7 +40,7 @@ public class EnquiryReviewPage extends BasePageObject {
 	}
 
 	public boolean checkEnquiryResponse() {
-		WebElement reply = driver.findElement(By.xpath(responseLocator.replace("?", DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY))));
+		WebElement reply = driver.findElement(By.xpath(responseLocator.replace("?", DataStore.getSavedValue(UsableValues.MESSAGE_RESPONSE))));
 		WebElement file = driver.findElement(By.xpath(fileLocator.replace("?", "link")));
 		return reply.isDisplayed() && file.isDisplayed();
 	}

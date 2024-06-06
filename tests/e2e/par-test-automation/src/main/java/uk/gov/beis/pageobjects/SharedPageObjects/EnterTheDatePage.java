@@ -1,4 +1,4 @@
-package uk.gov.beis.pageobjects;
+package uk.gov.beis.pageobjects.SharedPageObjects;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -8,6 +8,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
+import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanSearchPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MembershipCeasedPage;
@@ -39,16 +40,19 @@ public class EnterTheDatePage extends BasePageObject {
 	
 	// date field can be used for Sad path tests or future date tests.
 	public void enterCurrentDate() {
+		clearDateFields();
 		dayField.sendKeys(String.valueOf(LocalDate.now().getDayOfMonth()));
 		monthField.sendKeys(String.valueOf(LocalDate.now().getMonthValue()));
 		yearField.sendKeys(String.valueOf(LocalDate.now().getYear()));
 		
 		String fullDate = String.valueOf(LocalDate.now().getDayOfMonth()) + " " + convertMonthDate(String.valueOf(LocalDate.now().getMonthValue())) + " " + String.valueOf(LocalDate.now().getYear());
 		
+		DataStore.saveValue(UsableValues.MEMBERSHIP_START_DATE, fullDate);
 		DataStore.saveValue(UsableValues.MEMBERSHIP_CEASE_DATE, fullDate);
 	}
 	
 	public void  enterDate(String value) {
+		clearDateFields();
 		String dateToInput = DateFormatter.getDynamicDate(value);
 		
 		LOG.info("Date is: " + dateToInput);
@@ -56,6 +60,20 @@ public class EnterTheDatePage extends BasePageObject {
 		dayField.sendKeys(dateToInput.substring(0, 2));
 		monthField.sendKeys(dateToInput.substring(2, 4));
 		yearField.sendKeys(dateToInput.substring(4, 8));
+	}
+	
+	public void clearDateFields() {
+		dayField.clear();
+		monthField.clear();
+		yearField.clear();
+	}
+	
+	public void clickContinueButton() {
+		continueBtn.click();
+	}
+	
+	public void selectSaveButton() {
+		saveBtn.click();
 	}
 
 	public InspectionPlanSearchPage goToInspectionPlanSearchPage() {

@@ -13,11 +13,11 @@ import org.openqa.selenium.support.PageFactory;
 import cucumber.api.DataTable;
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.AccountInvitePage;
-import uk.gov.beis.pageobjects.EnterTheDatePage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
 import uk.gov.beis.pageobjects.OrganisationPageObjects.SICCodePage;
+import uk.gov.beis.pageobjects.OtherPageObjects.AccountInvitePage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
+import uk.gov.beis.pageobjects.SharedPageObjects.EnterTheDatePage;
 import uk.gov.beis.utility.DataStore;
 
 public class ContactDetailsPage extends BasePageObject {
@@ -217,6 +217,14 @@ public class ContactDetailsPage extends BasePageObject {
 		contactNotesTextfield.sendKeys(note);
 	}
 	
+	public void clickContinueButton() {
+		continueBtn.click();
+	}
+	
+	public void clickSaveButton() {
+		saveBtn.click();
+	}
+	
 	public AccountInvitePage goToInviteUserAccountPage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, AccountInvitePage.class);
@@ -232,7 +240,7 @@ public class ContactDetailsPage extends BasePageObject {
 		return PageFactory.initElements(driver, EnterTheDatePage.class);
 	}
 	
-	public UserProfilePage clickContinueButton() {
+	public UserProfilePage goToUserProfilePage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, UserProfilePage.class);
 	}
@@ -257,7 +265,7 @@ public class ContactDetailsPage extends BasePageObject {
 		return PageFactory.initElements(driver, ContactCommunicationPreferencesPage.class);
 	}
 	
-	private void clearAllFields() {
+	public void clearAllFields() {
 		clearEditJourneyFields();
 		
 		emailAddressField.clear();

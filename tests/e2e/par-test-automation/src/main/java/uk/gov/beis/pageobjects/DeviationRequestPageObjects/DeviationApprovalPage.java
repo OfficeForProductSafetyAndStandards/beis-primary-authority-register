@@ -38,8 +38,16 @@ public class DeviationApprovalPage extends BasePageObject{
 		blockReasonTextArea.clear();
 		blockReasonTextArea.sendKeys(reason);
 	}
+	
+	public void clearAllFields() {
+		blockReasonTextArea.clear();
+	}
+	
+	public void clickContinueButton() {
+		continueBtn.click();
+	}
 
-	public DeviationReviewPage clickContinue() {
+	public DeviationReviewPage goToDeviationReviewPage() {
 		continueBtn.click();
 		return PageFactory.initElements(driver, DeviationReviewPage.class);
 	}

@@ -1,4 +1,4 @@
-package uk.gov.beis.pageobjects;
+package uk.gov.beis.pageobjects.SharedPageObjects;
 
 import java.io.IOException;
 
@@ -6,6 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanSearchPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipInformationPage;
 import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipRevokedPage;
@@ -28,6 +29,14 @@ public class RevokePage extends BasePageObject {
 	public void enterReasonForRevocation(String reason) {
 		reasonTextArea.clear();
 		reasonTextArea.sendKeys(reason);
+	}
+	
+	public void clickRevokeButton() {
+		revokeNextBtn.click();
+	}
+	
+	public void selectRevokeButton(){
+		revokeSaveBtn.click();
 	}
 	
 	public PartnershipRevokedPage goToPartnershipRevokedPage() {

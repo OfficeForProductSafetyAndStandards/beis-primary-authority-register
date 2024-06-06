@@ -24,7 +24,24 @@ public class AddOrganisationNamePage extends BasePageObject {
 		super();
 	}
 	
-	public AuthorityAddressDetailsPage enterMemberOrganisationName(String name) {
+	public void enterMemberName(String name) {
+		organisationName.clear();
+		organisationName.sendKeys(name);
+	}
+	
+	public void clickContinueButton() {
+		continueBtn.click();
+	}
+	
+	public void clickSaveButton() {
+		saveBtn.click();
+	}
+	
+	public void clearOrganisationNameField() {
+		organisationName.clear();
+	}
+	
+	public AuthorityAddressDetailsPage goToAuthorityAddressDetailsPage(String name) {
 		organisationName.clear();
 		organisationName.sendKeys(name);
 		

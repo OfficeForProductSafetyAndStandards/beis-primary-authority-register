@@ -1,11 +1,36 @@
 par_profile_view_flows.profile:
   path: '/person/{par_data_person}'
   defaults:
-    _controller: '\Drupal\par_profile_view_flows\Controller\ParProfileController::build'
+    _controller: '\Drupal\par_profile_view_flows\Controller\ParProfileController::buildUserPage'
     _title_callback: '\Drupal\par_profile_view_flows\Controller\ParProfileController::titleCallback'
   requirements:
     _permission: 'view own profile'
-    _custom_access: '\Drupal\par_profile_view_flows\Controller\ParProfileController::accessCallback'
+    par_data_person: \d+
+  options:
+    parameters:
+      par_data_person:
+        type: entity:par_data_person
+
+par_profile_view_flows.contacts:
+  path: '/person/{par_data_person}/contacts'
+  defaults:
+    _controller: '\Drupal\par_profile_view_flows\Controller\ParProfileController::buildContacts'
+    _title_callback: '\Drupal\par_profile_view_flows\Controller\ParProfileController::titleCallback'
+  requirements:
+    _permission: 'view own profile'
+    par_data_person: \d+
+  options:
+    parameters:
+      par_data_person:
+        type: entity:par_data_person
+
+par_profile_view_flows.organisations:
+  path: '/person/{par_data_person}/authorities-organisations'
+  defaults:
+    _controller: '\Drupal\par_profile_view_flows\Controller\ParProfileController::buildAuthoritiesOrganisations'
+    _title_callback: '\Drupal\par_profile_view_flows\Controller\ParProfileController::titleCallback'
+  requirements:
+    _permission: 'view own profile'
     par_data_person: \d+
   options:
     parameters:
