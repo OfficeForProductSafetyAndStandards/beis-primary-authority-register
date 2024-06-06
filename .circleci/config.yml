@@ -285,10 +285,6 @@ jobs:
           command: |
             echo "$(pwd)"
             composer install -v
-            rm -f web/themes/contrib/govuk_theme/css/styles.css
-            npm install
-            npm run install-govuk-theme
-            npm run install-par-theme-
       - *restore_scaffold
       - *configure_webroot
       # Save artifacts
