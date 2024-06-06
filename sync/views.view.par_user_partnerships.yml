@@ -620,7 +620,7 @@ display:
           admin_label: ''
           plugin_id: text_custom
           empty: true
-          content: '<p>Sorry, there are no results for your search.</p>'
+          content: "<div aria-live=\"polite\">\r\n<p>Sorry, there are no results for your search.</p>\r\n</div>"
           tokenize: false
       sorts:
         partnership_status:
@@ -1064,6 +1064,7 @@ display:
           plugin_id: standard
           required: false
       css_class: par-user-partnership-list
+      use_ajax: true
       header: {  }
       footer:
         par_flow_link:
