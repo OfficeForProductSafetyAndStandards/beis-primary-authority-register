@@ -64,7 +64,7 @@ class ParMemberCsvValidationForm extends ParBaseForm {
       '#type' => 'fieldset',
       '#title' => $this->t('There were some errors with the CSV file.'),
       '#title_tag' => 'h2',
-      '#description' => $this->t('You can read more about preparing a CSV file on the %guidance. If you need assistance please contact pa@beis.gov.uk', ['%guidance' => $guidance_link->toString()]),
+      '#description' => $this->t('You can read more about preparing a CSV file on the %guidance. If you need assistance please contact pa@businessandtrade.gov.uk', ['%guidance' => $guidance_link->toString()]),
       '#attributes' => [
         'class' => ['govuk-form-group'],
       ]

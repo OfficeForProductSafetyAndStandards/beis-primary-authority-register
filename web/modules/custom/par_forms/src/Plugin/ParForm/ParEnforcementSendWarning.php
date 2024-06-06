@@ -89,7 +89,7 @@ class ParEnforcementSendWarning extends ParFormPluginBase {
     if ($this->getFlowDataHandler()->getFormPermValue('enforcement_blocked')
       || $this->getFlowDataHandler()->getFormPermValue('enforcement_approved')) {
       $label = $this->getFlowDataHandler()->getFormPermValue('enforcement_label');
-      $email_link = Link::fromTextAndUrl("pa@beis.gov.uk", Url::fromUri("mailto:pa@beis.gov.uk?subject=Determination:%20$label"));
+      $email_link = Link::fromTextAndUrl("pa@businessandtrade.gov.uk", Url::fromUri("mailto:pa@businessandtrade.gov.uk?subject=Determination:%20$label"));
 
       $form['determination_message'] = [
         '#type' => 'container',

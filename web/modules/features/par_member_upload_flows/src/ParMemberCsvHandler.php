@@ -1130,7 +1130,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     }
     else {
       $element = [
-        '#markup' => '<p class="error">There has been an error generating the member list, please contact pa@beis.gov.uk for assistance</p>',
+        '#markup' => '<p class="error">There has been an error generating the member list, please contact pa@businessandtrade.gov.uk for assistance</p>',
       ];
       $renderer = Drupal::service('renderer');
       $id = $form_state->getTriggeringElement()['#attributes']['id'];

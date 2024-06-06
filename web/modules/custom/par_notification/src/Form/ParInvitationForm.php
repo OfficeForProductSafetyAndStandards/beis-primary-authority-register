@@ -62,7 +62,7 @@ class ParInvitationForm extends FormBase {
     // Invitations can only be issued if the message supports invitations.
     elseif (!$this->getInvitationType($message)) {
       $form['intro'] = [
-        '#markup' => $this->t('<p>This link does not support requesting an invitation, please contact OPSS at <a href="mailto:pa@beis.gov.uk">pa@beis.gov.uk</a> if you need assistance.</p>'),
+        '#markup' => $this->t('<p>This link does not support requesting an invitation, please contact OPSS at <a href="mailto:pa@businessandtrade.gov.uk">pa@businessandtrade.gov.uk</a> if you need assistance.</p>'),
       ];
       return $form;
     }
@@ -228,7 +228,7 @@ You requested an invitation to sign up for the Primary Authority Register, pleas
 
 [invite:invite-accept-link]
 
-If you did not request an invitation please ignore this email or contact OPSS at pa@beis.gov.uk to discuss this further.
+If you did not request an invitation please ignore this email or contact OPSS at pa@businessandtrade.gov.uk to discuss this further.
 
 Thanks for your help.
 Primary Authority Team
