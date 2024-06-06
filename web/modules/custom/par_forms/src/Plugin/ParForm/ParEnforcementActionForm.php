@@ -82,7 +82,7 @@ class ParEnforcementActionForm extends ParFormPluginBase {
     // Multiple file field.
     $form['files'] = [
       '#type' => 'managed_file',
-      '#title' => $this->t('Add an attachment'),
+      '#title' => $this->t('Add an attachment (optional)'),
       '#title_tag' => 'h2',
       '#upload_location' => 's3private://documents/enforcement_action/',
       '#multiple' => TRUE,
