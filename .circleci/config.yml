@@ -254,6 +254,13 @@ jobs:
       - *clean_working_directory
       - *restore_code
       - *restore_dependencies
+      - run:
+          name: "Installing app"
+          command: |
+            echo "$(pwd)"
+            composer install -v
+            rm -f web/themes/contrib/govuk_theme/css/styles.css
+            npm run frontend
       - *restore_scaffold
       - *configure_webroot
       - run:
