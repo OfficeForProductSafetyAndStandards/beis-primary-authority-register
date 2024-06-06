@@ -263,7 +263,6 @@ jobs:
             npm install
             npm run install-govuk-theme
             npm run install-par-theme
-            npm run gulp
       - *restore_scaffold
       - *configure_webroot
       - run:
