@@ -387,7 +387,7 @@ jobs:
           command: |
             echo "$(pwd)"
             composer install -v
-            npm run frontend-
+            npm run frontend
       - *restore_scaffold
       - *configure_webroot
       - *remove_assets
