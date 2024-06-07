@@ -291,10 +291,7 @@ jobs:
           command: |
             echo "$(pwd)"
             composer install -v
-            rm -f web/themes/contrib/govuk_theme/css/styles.css
-            npm install
-            npm run install-govuk-theme
-            npm run install-par-theme-
+            npm run frontend
       - *restore_scaffold
       - *configure_webroot
       - *build_assets
@@ -351,6 +348,12 @@ jobs:
       - *attach_workspace
       - *restore_code
       - *restore_dependencies
+      - run:
+          name: "Installing app"
+          command: |
+            echo "$(pwd)"
+            composer install -v
+            npm run frontend
       - *restore_scaffold
       - *configure_webroot
       - *build_assets
@@ -379,6 +382,12 @@ jobs:
       - *attach_workspace
       - *restore_code
       - *restore_dependencies
+      - run:
+          name: "Installing app"
+          command: |
+            echo "$(pwd)"
+            composer install -v
+            npm run frontend-
       - *restore_scaffold
       - *configure_webroot
       - *remove_assets
