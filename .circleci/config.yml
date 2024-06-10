@@ -68,7 +68,6 @@ references:
     run:
       name: "Install drupal scaffold files"
       command: |
-        composer install -v
         composer drupal:scaffold
 
   configure_webroot: &configure_webroot
@@ -197,7 +196,6 @@ jobs:
           command: |
             echo "$(pwd)"
             composer install -v
-            rm -f web/themes/contrib/govuk_theme/css/styles.css
             npm run frontend
       - run:
           name: "Installing tests"
@@ -255,6 +253,12 @@ jobs:
       - *clean_working_directory
       - *restore_code
       - *restore_dependencies
+      - run:
+          name: "Installing app"
+          command: |
+            echo "$(pwd)"
+            composer install -v
+            npm run frontend
       - *restore_scaffold
       - *configure_webroot
       - run:
@@ -272,6 +276,12 @@ jobs:
       - *clean_working_directory
       - *restore_code
       - *restore_dependencies
+      - run:
+          name: "Installing app"
+          command: |
+            echo "$(pwd)"
+            composer install -v
+            npm run frontend
       - *restore_scaffold
       - *configure_webroot
       # Save artifacts
@@ -415,6 +425,12 @@ jobs:
       - *attach_workspace
       - *restore_code
       - *restore_dependencies
+      - run:
+          name: "Installing app"
+          command: |
+            echo "$(pwd)"
+            composer install -v
+            npm run frontend
       - *restore_scaffold
       - *configure_webroot
       - *build_assets
