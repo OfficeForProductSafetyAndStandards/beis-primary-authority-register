@@ -69,7 +69,7 @@ CF_INSTANCES=${CF_INSTANCES:=1}
 BUILD_VER=${BUILD_VER:-}
 BUILD_DIR=${BUILD_DIR:=$PWD}
 REMOTE_BUILD_DIR=${REMOTE_BUILD_DIR:="/home/vcap/app"}
-DB_NAME="db-seed"
+DB_NAME="db-dump-production-sanitised-latest"
 DB_DIR="backups"
 DB_RESET=${DB_RESET:=n}
 DEPLOY_PRODUCTION=${DEPLOY_PRODUCTION:=n}
