@@ -396,7 +396,7 @@ function cf_poll_task {
     task_status=$(cf tasks $1 | awk '//{print $1, $2, $3}' | grep -m 1 "$2" | awk '//{print $3}')
     if [[ $task_status == "FAILED" ]]; then
       printf "Task $2 has failed...\n"
-      cf logs $1 --recent | tail -500
+      cf logs $1 --recent
       exit 99
     fi
     printf "Task $2 has completed ($task_status)...\n"
