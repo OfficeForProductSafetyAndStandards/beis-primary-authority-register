@@ -547,10 +547,9 @@ cf start $TARGET_ENV
 
 ## Import the seed database and then delete it.
 if [[ $ENV != "production" ]] && [[ $DB_RESET == 'y' ]]; then
-    if [[ ! -f "$REMOTE_DIR/$DB_DIR/$DB_NAME.tar.gz" ]]; then
-        printf "Sanitised database required, but could not find one at '$REMOTE_DIR/$DB_DIR/$DB_NAME.sql'.\n"
-        cp "$DB_IMPORT" "$REMOTE_DIR/$DB_DIR/$DB_NAME.sql"
-            tar -zcvf "$REMOTE_DIR/$DB_DIR/$DB_NAME.tar.gz" -C $REMOTE_DIR/$DB_DIR "$DB_NAME.sql"
+    if [[ ! -f "$REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz" ]]; then
+        printf "Sanitised database required, but could not find one at '$REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql'.\n"
+        cp "$DB_IMPORT" "$REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql"
         exit 6
     fi
 
@@ -567,7 +566,6 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET == 'y' ]]; then
         ls -la $REMOTE_BUILD_DIR/web && \
         ls -la $REMOTE_BUILD_DIR/$DB_DIR && \
         cd $REMOTE_BUILD_DIR/web && \
-        tar --no-same-owner -zxvf $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz -C $REMOTE_BUILD_DIR/$DB_DIR && \
         ../vendor/bin/drush @par.paas sql:cli < $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
         ../vendor/bin/drush user:unblock dadmin && \
         rm -f $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql"
