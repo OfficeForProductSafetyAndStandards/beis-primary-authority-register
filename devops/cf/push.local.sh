@@ -274,12 +274,12 @@ if [[ ! -f $MANIFEST ]]; then
 fi
 
 ## Copy the seed database to the build directory and archive it for import.
-printf "Archiving the sanitised database in $BUILD_DIR/$DB_DIR...\n"
+printf "Archiving the sanitised database in $REMOTE_BUILD_DIR/$DB_DIR...\n"
 mkdir -p "$BUILD_DIR/$DB_DIR"
 if [[ -f $DB_IMPORT ]]; then
     printf "Preparing DB Import: $BUILD_DIR/$DB_DIR/$DB_NAME.sql \n"
-    cp "$DB_IMPORT" "$BUILD_DIR/$DB_DIR/$DB_NAME.sql"
-    tar -zcvf "$BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz" -C $BUILD_DIR/$DB_DIR "$DB_NAME.sql"
+    cp "$DB_IMPORT" "$REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql"
+    tar -zcvf "$BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz" -C "$REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql"
 fi
 
 ####################################################################################
@@ -560,13 +560,15 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET == 'y' ]]; then
         printf "Database Dropped...\n"
 
     printf "Importing the database $DB_NAME.sql...\n"
-    cf run-task $TARGET_ENV -m 2G -k 2G --name DB_IMPORT -c "ls -la /home/vcap/app && ls -la /home/vcap/app/web && \
-        ls -la /home/vcap/app/backups && \
+    cf run-task $TARGET_ENV -m 2G -k 2G --name DB_IMPORT -c "
+        ls -la $REMOTE_BUILD_DIR && \
+        ls -la $REMOTE_BUILD_DIR/web && \
+        ls -la $REMOTE_BUILD_DIR/$DB_DIR && \
         cd $REMOTE_BUILD_DIR/web && \
-        ../vendor/bin/drush @par.paas sql:cli < $DB_IMPORT && \
+        tar --no-same-owner -zxvf $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz -C $REMOTE_BUILD_DIR/$DB_DIR && \
+        ../vendor/bin/drush @par.paas sql:cli < $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
         ../vendor/bin/drush user:unblock dadmin && \
-        rm -f $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
-        rm -f $DB_IMPORT"
+        rm -f $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql"
 
     # Wait for database to be imported.
     cf_poll_task $TARGET_ENV DB_IMPORT
