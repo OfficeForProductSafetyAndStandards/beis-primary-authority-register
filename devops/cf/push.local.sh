@@ -274,12 +274,12 @@ if [[ ! -f $MANIFEST ]]; then
 fi
 
 ## Copy the seed database to the build directory and archive it for import.
-printf "Archiving the sanitised database in $REMOTE_BUILD_DIR/$DB_DIR...\n"
+printf "Archiving the sanitised database in $BUILD_DIR/$DB_DIR...\n"
 mkdir -p "$BUILD_DIR/$DB_DIR"
 if [[ -f $DB_IMPORT ]]; then
     printf "Preparing DB Import: $BUILD_DIR/$DB_DIR/$DB_NAME.sql \n"
-    cp "$DB_IMPORT" "$REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql"
-    tar -zcvf "$BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz" -C "$REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql"
+    cp "$DB_IMPORT" "$BUILD_DIR/$DB_DIR/$DB_NAME.sql"
+    tar -zcvf "$BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz" -C $BUILD_DIR/$DB_DIR "$DB_NAME.sql"
 fi
 
 ####################################################################################
