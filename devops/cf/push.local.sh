@@ -547,8 +547,10 @@ cf start $TARGET_ENV
 
 ## Import the seed database and then delete it.
 if [[ $ENV != "production" ]] && [[ $DB_RESET == 'y' ]]; then
-    if [[ ! -f "$BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz" ]]; then
-        printf "Sanitised database required, but could not find one at '$BUILD_DIR/$DB_DIR/$DB_NAME.sql'.\n"
+    if [[ ! -f "$REMOTE_DIR/$DB_DIR/$DB_NAME.tar.gz" ]]; then
+        printf "Sanitised database required, but could not find one at '$REMOTE_DIR/$DB_DIR/$DB_NAME.sql'.\n"
+        cp "$DB_IMPORT" "$REMOTE_DIR/$DB_DIR/$DB_NAME.sql"
+            tar -zcvf "$REMOTE_DIR/$DB_DIR/$DB_NAME.tar.gz" -C $REMOTE_DIR/$DB_DIR "$DB_NAME.sql"
         exit 6
     fi
 
