@@ -69,7 +69,7 @@ CF_INSTANCES=${CF_INSTANCES:=1}
 BUILD_VER=${BUILD_VER:-}
 BUILD_DIR=${BUILD_DIR:=$PWD}
 REMOTE_BUILD_DIR=${REMOTE_BUILD_DIR:="/home/vcap/app"}
-DB_NAME="db-seed"
+DB_NAME="db-dump-production-sanitised-latest"
 DB_DIR="backups"
 DB_RESET=${DB_RESET:=n}
 DEPLOY_PRODUCTION=${DEPLOY_PRODUCTION:=n}
@@ -274,7 +274,7 @@ if [[ ! -f $MANIFEST ]]; then
 fi
 
 ## Copy the seed database to the build directory and archive it for import.
-printf "Archiving the seed database in $BUILD_DIR/$DB_DIR...\n"
+printf "Archiving the sanitised database in $BUILD_DIR/$DB_DIR...\n"
 mkdir -p "$BUILD_DIR/$DB_DIR"
 if [[ -f $DB_IMPORT ]]; then
     printf "Preparing DB Import: $BUILD_DIR/$DB_DIR/$DB_NAME.sql \n"
@@ -548,15 +548,20 @@ cf start $TARGET_ENV
 ## Import the seed database and then delete it.
 if [[ $ENV != "production" ]] && [[ $DB_RESET == 'y' ]]; then
     if [[ ! -f "$BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz" ]]; then
-        printf "Seed database required, but could not find one at '$BUILD_DIR/$DB_DIR/$DB_NAME.sql'.\n"
+        printf "Sanitised database required, but could not find one at '$BUILD_DIR/$DB_DIR/$DB_NAME.sql'.\n"
         exit 6
     fi
 
     # Running a python script instead of bash because python has immediate
     # access to all of the environment variables and configuration.
+
+    printf "Dropping the existing database ...\n"
+        cf run-task $TARGET_ENV -m 2G -k 2G --name DB_DROP -c "./scripts/drop.sh"
+        printf "Database Dropped...\n"
+
     printf "Importing the database $DB_NAME.sql...\n"
-    cf run-task $TARGET_ENV -m 2G -k 2G --name DB_IMPORT -c "./scripts/drop.sh && \
-        ls -la /home/vcap/app && ls -la /home/vcap/app/web&& ls -la /home/vcap/app/backups && \
+    cf run-task $TARGET_ENV -m 2G -k 2G --name DB_IMPORT -c "ls -la /home/vcap/app && ls -la /home/vcap/app/web && \
+        ls -la /home/vcap/app/backups && \
         cd $REMOTE_BUILD_DIR/web && \
         tar --no-same-owner -zxvf $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz -C $REMOTE_BUILD_DIR/$DB_DIR && \
         ../vendor/bin/drush @par.paas sql:cli < $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
