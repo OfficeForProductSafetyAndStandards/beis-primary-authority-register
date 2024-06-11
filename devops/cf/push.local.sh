@@ -565,7 +565,7 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET == 'y' ]]; then
         cd $REMOTE_BUILD_DIR/web && \
         ../vendor/bin/drush @par.paas sql:cli < $DB_IMPORT && \
         ../vendor/bin/drush user:unblock dadmin && \
-        rm -f $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \"
+        rm -f $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
         rm -f $DB_IMPORT"
 
     # Wait for database to be imported.
