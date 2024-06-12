@@ -555,7 +555,7 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET == 'y' ]]; then
     # Running a python script instead of bash because python has immediate
     # access to all of the environment variables and configuration.
     printf "Importing the database $DB_NAME.sql...\n"
-    cf run-task $TARGET_ENV -m 2G -k 2G --name DB_IMPORT -c "./scripts/drop.sh && \
+    cf run-task $TARGET_ENV -m 2G -k 2G --name DB_IMPORT -c "
         ls -la /home/vcap/app && ls -la /home/vcap/app/web&& ls -la /home/vcap/app/backups && \
         cd $REMOTE_BUILD_DIR/web && \
         tar --no-same-owner -zxvf $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz -C $REMOTE_BUILD_DIR/$DB_DIR && \
