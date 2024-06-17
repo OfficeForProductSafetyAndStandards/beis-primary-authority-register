@@ -18,7 +18,7 @@ public class LoginPage extends BasePageObject {
 	@FindBy(id = "edit-name")
 	private WebElement emailTextfield;
 	
-	@FindBy(id = "edit-pass")
+	@FindBy(id = "password-input")
 	private WebElement passwordTextfield;
 	
 	@FindBy(id = "edit-submit")

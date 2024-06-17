@@ -34,7 +34,8 @@ public class PartnershipInformationPage extends BasePageObject {
 	@FindBy(linkText = "change the list type")
 	private WebElement changeMembersListTypeLink;
 	
-	@FindBy(linkText = "Amend the legal entities")
+	//@FindBy(xpath = "//a[contains(normalize-space(), 'Amend the legal entities')]")
+	@FindBy(linkText = "Amend the legal entities") // Amend the legal entities
 	private WebElement amendLegalEntitiesLink;
 	
 	@FindBy(linkText = "Confirm the amendments")

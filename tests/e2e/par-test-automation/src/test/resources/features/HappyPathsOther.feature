@@ -1,14 +1,14 @@
 Feature: Other Happy Paths
   As a user of the PAR service, I  want to be able to view/manage partnerships, So I can comply with the BEIS standards for goods and services
 
-  @regression @publicRegistrySearch
+  @regression @happypath @publicRegistrySearch
   Scenario: Verify a Non-registered User can Search the Public Register (Happy Path - PAR-2079)
     Given the user is on the PAR home page
     When the user is on the search for a partnership page
     And the user can search for a PA Organisation Trading name Company number
     Then the user is shown the information for that partnership
 
-  @regression @publicRegistrySearch
+  @regression @happypath @publicRegistrySearch
   Scenario: Verify a Registered User can Search the Public Register (Happy Path - PAR-2079)
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
@@ -18,7 +18,7 @@ Feature: Other Happy Paths
     Then the user is shown the information for that partnership
     And the user signs out
 
-  @regression @authority @authorityManagement @usermanagement
+  @regression @happypath @authority @authorityManagement @usermanagement
   Scenario: Verify Addition/Update of Authority (Happy Path - PAR-1849, PAR-1850)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -32,7 +32,7 @@ Feature: Other Happy Paths
     Then the update for the authority is successful
     And the user signs out
 
-  @regression @authority @authorityManagement
+  @regression @happypath @authority @authorityManagement
   Scenario: Verify The Transfer of a Partnership from an Existing Authority to a New Authority (Happy Path - PAR-2287)
     Given the user is on the PAR login page
     And the user logs in with the "senior_administrator@example.com" user credentials
@@ -41,7 +41,7 @@ Feature: Other Happy Paths
     Then the partnership is transferred to the new authority successfully
     And the user signs out
 
-  @regression @organisation
+  @regression @happypath @organisation
   Scenario: Verify Update of Organisation (Happy Path - PAR-1851)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -50,7 +50,7 @@ Feature: Other Happy Paths
     Then all the fields are updated correctly
     And the user signs out
 
-  @regression @helpDesk @PARNewsSubscription
+  @regression @happypath @helpDesk @PARNewsSubscription
   Scenario: Verify an Authority contact is subscribed to PAR News (Happy Path - PAR-2076)
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
@@ -65,7 +65,7 @@ Feature: Other Happy Paths
     Then the user can verify the email is successfully in the Subscriptions List
     And the user signs out
 
-  @regression @helpDesk @PARNewsSubscription
+  @regression @happypath @helpDesk @PARNewsSubscription
   Scenario: Verify an Authority contact is unsubscribed from PAR News (Happy Path - PAR-2077)
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
@@ -80,7 +80,7 @@ Feature: Other Happy Paths
     Then the user can verify the email is successfully removed from the Subscriptions List
     And the user signs out
 
-  @regression @helpDesk @PARNewsSubscription
+  @regression @happypath @helpDesk @PARNewsSubscription
   Scenario: Verify a Helpdesk user can add a new Email to the PAR News Subscription List (Happy Path - PAR-2073)
     Given the user is on the PAR login page
     And the user logs in with the "senior_administrator@example.com" user credentials
@@ -89,7 +89,7 @@ Feature: Other Happy Paths
     Then the user can verify the new email was added successfully
     And the user signs out
 
-  @regression @helpDesk @PARNewsSubscription
+  @regression @happypath @helpDesk @PARNewsSubscription
   Scenario: Verify a Helpdesk user can remove an eisting Email from the PAR News Subscription List (Happy Path - PAR-2074)
     Given the user is on the PAR login page
     And the user logs in with the "senior_administrator@example.com" user credentials
@@ -98,7 +98,7 @@ Feature: Other Happy Paths
     Then the user can verify the email was removed successfully
     And the user signs out
 
-  @regression @helpDesk @PARNewsSubscription
+  @regression @happypath @helpDesk @PARNewsSubscription
   Scenario: Verify a Helpdesk user can replace the PAR News Subscription List with a new List (Happy Path - PAR-2075)
     Given the user is on the PAR login page
     And the user logs in with the "senior_administrator@example.com" user credentials
@@ -107,7 +107,7 @@ Feature: Other Happy Paths
     Then the user can verify an email from the original list was removed successfully
     And the user signs out
 
-  @regression @usermanagement
+  @regression @happypath @usermanagement
   Scenario: Verify a Member User can be assigned the Manager Role and assign another Member the Manager Role Successfully (Happy Path - PAR-2378)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -130,7 +130,7 @@ Feature: Other Happy Paths
     Then the user role was changed successfully
     And the user signs out
 
-  @regression @usermanagement
+  @regression @happypath @usermanagement
   Scenario: Verify a User can add and remove an Authority membership for another user Successfully (Happy Path - PAR-2379)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -146,7 +146,7 @@ Feature: Other Happy Paths
     Then the Authority membership was removed successfully
     And the user signs out
 
-  @regression @usermanagement
+  @regression @happypath @usermanagement
   Scenario: Verify a Senior Administrator can Block and Reinstate a User Account Successfully (Happy Path - PAR-2382)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -179,7 +179,7 @@ Feature: Other Happy Paths
     Then the user is on the dashboard page
     And the user signs out
 
-  @regression @helpDesk @usermanagement
+  @regression @happypath @helpDesk @usermanagement
   Scenario: Verify the Addition and Update of a New Persons Contact Record as a Help Desk User (Happy Path - PAR-2097)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -195,7 +195,7 @@ Feature: Other Happy Paths
     Then the user can verify the person was updated successfully and can send an account invitation
     And the user signs out
 
-  @regression @helpDesk @usermanagement
+  @regression @happypath @helpDesk @usermanagement
   Scenario: Verify a New User can be invited to create a User Account (Happy Path - PAR-2457)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -207,7 +207,7 @@ Feature: Other Happy Paths
     Then the user verifies the user account invitation was sent successfully
     And the user signs out
 
-  @regression @usermanagement
+  @regression @happypath @usermanagement
   Scenario: Verify Completion of User Creation journey (Happy Path - PAR-1904)
     Given the user is on the PAR login page
     And the user logs in with the "par_admin@example.com" user credentials
@@ -218,7 +218,7 @@ Feature: Other Happy Paths
     Then the user journey creation is successful
     And the user signs out
 
-  @regression @usermanagement @userAccount
+  @regression @happypath @usermanagement @userAccount
   Scenario: Verify a User can Change their User Account Email Address (Happy Path - PAR-2323)
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
@@ -236,7 +236,7 @@ Feature: Other Happy Paths
     Then the user can verify the new email address is displayed on the header
     And the user signs out
 
-  @regression @helpDesk @statistics
+  @regression @happypath @helpDesk @statistics
   Scenario: Verify the Help Desk User can see the Statistics Page (Happy Path - PAR-2315)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -244,49 +244,49 @@ Feature: Other Happy Paths
     Then the statistics page is dispalyed successfully
     And the user signs out
 
-  @regression @homePageLinks
+  @regression @happypath @homePageLinks
   Scenario: Verify a User can view Guidance for Local Regulation Primary Authority Successfully (Happy Path - PAR-2289)
     Given the user is on the PAR home page
     When the user selects the Read more about Primary Authority link
     Then the user is taken to the GOV.UK Guidance page for Local regulation Primary Authority Successfully
 
-  @regression @homePageLinks
+  @regression @happypath @homePageLinks
   Scenario: Verify a User can view the Collection of Primary Authority Documents Successfully (Happy Path - PAR-2290)
     Given the user is on the PAR home page
     When the user selects the Access tools and templates for local authorities link
     Then the user is taken to the GOV.UK Collection page for Primary Authority Documents Successfully
 
-  @regression @homePageLinks
+  @regression @happypath @homePageLinks
   Scenario: Verify a User can view the Terms and Conditions Successfully (Happy Path - PAR-2291)
     Given the user is on the PAR home page
     When the user selects the Terms and Conditions link
     Then the user is taken to the GOV.UK Guidance page for Primary Authority terms and conditions Successfully
 
-  @regression @homePageLinks
+  @regression @happypath @homePageLinks
   Scenario: Verify a User can view and Accept Analytics Cookies Successfully (Happy Path - PAR-2292)
     Given the user is on the PAR home page
     When the user selects the Cookies link
     Then the user is taken to the Cookies page and can accept the Analytics Cookies Successfully
 
-  @regression @homePageLinks
+  @regression @happypath @homePageLinks
   Scenario: Verify a User can view the OPSS Privacy Notice Successfully (Happy Path - PAR-2293)
     Given the user is on the PAR home page
     When the user selects the Privacy link
     Then the user is taken to the GOV.UK Corporate report OPSS Privacy notice page Successfully
 
-  @regression @homePageLinks
+  @regression @happypath @homePageLinks
   Scenario: Verify a User can view the Primary Authority Register Accessibility Statement Successfully (Happy Path - PAR-2294)
     Given the user is on the PAR home page
     When the user selects the Accessibility link
     Then the user is taken to the GOV.UK Guidance page for the Primary Authority Register accessibility statement Successfully
 
-  @regression @homePageLinks
+  @regression @happypath @homePageLinks
   Scenario: Verify a User can view the Open Government Licence Successfully (Happy Path - PAR-2295)
     Given the user is on the PAR home page
     When the user selects the Open Government Licence link
     Then the user is taken to the Open Government Licence for public sector information page Successfully
 
-  @regression @homePageLinks
+  @regression @happypath @homePageLinks
   Scenario: Verify a User can view the Crown Copyright Successfully (Happy Path - PAR-2296)
     Given the user is on the PAR home page
     When the user selects the Crown copyright link

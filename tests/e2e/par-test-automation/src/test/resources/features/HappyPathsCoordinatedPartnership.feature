@@ -1,7 +1,7 @@
 Feature: Coordinated Partnership Happy Paths
   As a user of the PAR service, I  want to be able to view/manage partnerships, So I can comply with the BEIS standards for goods and services
 
-  @regression @partnershipapplication @coordinated @authorityManagement
+  @regression @happypath @partnershipapplication @coordinated @authorityManagement
   Scenario: Verify Coordinated Partnership application by authority and completion by new business (Happy Path - PAR-1838, PAR-1839, PAR-1840, PAR-1841)
     Given the user is on the PAR home page
     And the user visits the login page
@@ -25,7 +25,7 @@ Feature: Coordinated Partnership Happy Paths
     Then the partnership application is completed successfully
     And the user signs out
 
-  @regression @coordinated @organisationMember @authorityManagement
+  @regression @happypath @coordinated @organisationMember @authorityManagement
   Scenario: Successfully Nominate a Coordinated Partnership (Happy Path - PAR-2261)
     Given the user is on the PAR login page
     And the user logs in with the "secretary_state@example.com" user credentials
@@ -35,7 +35,7 @@ Feature: Coordinated Partnership Happy Paths
     Then the partnership is displayed with Status "Active" and Actions "Revoke partnership"
     And the user signs out
 
-  @regression @coordinated @organisationMember
+  @regression @happypath @coordinated @organisationMember
   Scenario: Verify Addition of a Single Member Organisation to a Coordinated partnership (Happy Path - PAR-1868)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -46,7 +46,7 @@ Feature: Coordinated Partnership Happy Paths
     Then the user member organistion has been added to the partnership successfully
     And the user signs out
 
-  @regression @coordinated @organisationMember
+  @regression @happypath @coordinated @organisationMember
   Scenario: Verify the Update of a Single Member Organisation for a Coordinated partnership (Happy Path - PAR-1969)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -57,7 +57,7 @@ Feature: Coordinated Partnership Happy Paths
     Then the member organistion has been updated successfully
     And the user signs out
 
-  @regression @coordinated @organisationMember
+  @regression @happypath @coordinated @organisationMember
   Scenario: Verify the Cessation of a Single Member Organisation for a Coordinated partnership (Happy Path - PAR-1869)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -66,7 +66,7 @@ Feature: Coordinated Partnership Happy Paths
     Then the member organistion has been Ceased successfully
     And the user signs out
 	
-  @regression @coordinated @organisationMember
+  @regression @happypath @coordinated @organisationMember
   Scenario: Verify the Upload of a Members List to a Coordinated partnership (Happy Path - PAR-1872)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -75,7 +75,7 @@ Feature: Coordinated Partnership Happy Paths
     Then the members list is uploaded successfully
     And the user signs out
   
-  @regression @coordinated @organisationMember
+  @regression @happypath @coordinated @organisationMember
   Scenario: Verify a Coordinated Partnerships Members List Type can be Changed Successfully (Happy Path - PAR-2325)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials

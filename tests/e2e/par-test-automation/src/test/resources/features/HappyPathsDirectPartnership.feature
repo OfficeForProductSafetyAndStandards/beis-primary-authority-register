@@ -1,7 +1,7 @@
 Feature: Direct Partnership Happy Paths
   As a user of the PAR service, I  want to be able to view/manage partnerships, So I can comply with the BEIS standards for goods and services
 
-  @regression @dashboard @cookies
+  @regression @happypath @dashboard @cookies
   Scenario: Verify a User can Log in and Accept Analytical Cookies Successfully (Happy Path - PAR-2331)
     Given the user is on the PAR home page
     And the user visits the login page
@@ -12,7 +12,7 @@ Feature: Direct Partnership Happy Paths
     Then analytical cookies have been accepted successfully
     And the user signs out
 
-  @regression @direct @deletePartnership
+  @regression @happypath @direct @deletePartnership
   Scenario: Verify Partnership Information can be changed During Application Process, Nominated and then Deleted Successfully (Happy Path - PAR-2277)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -41,7 +41,7 @@ Feature: Direct Partnership Happy Paths
     Then the Partnership was Deleted Successfully
     And the user signs out
 
-  @regression @partnershipapplication @direct @update @organisation @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @legalEntities @testUpdates
+  @regression @happypath @partnershipapplication @direct @update @organisation @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @legalEntities @testUpdates
   Scenario: Verify Direct Partnership application by authority and completion by new business (Happy Path - PAR-1826, PAR-1835, PAR-1836, PAR-1837, PAR-1845)
     Given the user is on the PAR home page
     And the user visits the login page
@@ -66,7 +66,7 @@ Feature: Direct Partnership Happy Paths
     Then the partnership application is completed successfully
     And the user signs out
 
-  @regression @login @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @direct @update @legalEntities
+  @regression @happypath @login @enforcement @inspectionplan @inspectionfeedback @deviationrequest @enquiry @advicenotice @direct @update @legalEntities
   Scenario: Verify Approval, Revokation and Restoration of Partnership journey (Happy Path - PAR-1846, PAR-1847, PAR-1848)
     Given the user is on the PAR login page
     And the user logs in with the "secretary_state@example.com" user credentials
@@ -82,7 +82,7 @@ Feature: Direct Partnership Happy Paths
     Then the partnership is displayed with Status "Active" and Actions "Revoke partnership"
     And the user signs out
 
-  @regression @direct @update
+  @regression @happypath @direct @update
   Scenario: Update all Partnership details successfully (Happy Path - PAR-2214)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -99,7 +99,7 @@ Feature: Direct Partnership Happy Paths
     Then all of the Partnership details have been updated successfully
     And the user signs out
 
-  @regression @direct @update @legalEntities
+  @regression @happypath @direct @update @legalEntities
   Scenario: Verify the Nomination of Legal Entity Amendments for an Active Partnership (Happy Path - PAR-2311)
     Given the user is on the PAR login page
     And the user logs in with the "par_authority_manager@example.com" user credentials
@@ -124,7 +124,7 @@ Feature: Direct Partnership Happy Paths
     Then the user verifies the amendments are nominated successfully with status "Active"
     And the user signs out
 
-  @regression @direct @update @legalEntities
+  @regression @happypath @direct @update @legalEntities
   Scenario: Verify the Revocation and reinstatement of a Legal Entity for an Active Partnership (Happy Path - PAR-2312, PAR-2313)
     Given the user is on the PAR login page
     And the user logs in with the "senior_administrator@example.com" user credentials
@@ -136,7 +136,7 @@ Feature: Direct Partnership Happy Paths
     Then the user verifies the legal entity was reinstated successfully with status "Active"
     And the user signs out
 
-  @regression @direct @update @legalEntities
+  @regression @happypath @direct @update @legalEntities
   Scenario: Verify the Removal of a Legal Entity from an Active Partnership (Happy Path - PAR-2314)
     Given the user is on the PAR login page
     And the user logs in with the "senior_administrator@example.com" user credentials
@@ -145,7 +145,7 @@ Feature: Direct Partnership Happy Paths
     Then the user verifies the legal entity was removed successfully
     And the user signs out
 
-  @regression @direct @update
+  @regression @happypath @direct @update
   Scenario: Add and Remove a New Primary Authority Contact for a Partnership Successfully (Happy Path - PAR-2242)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -159,7 +159,7 @@ Feature: Direct Partnership Happy Paths
     Then the new Primary Authority contact is removed Successfully
     And the user signs out
 
-  @regression @direct @update
+  @regression @happypath @direct @update
   Scenario: Add and Remove an Organisation Contact for a Partnership Successfully (Happy Path - PAR-2244)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -173,7 +173,7 @@ Feature: Direct Partnership Happy Paths
     Then the new Organisation contact is removed Successfully
     And the user signs out
 
-  @regression @inspectionplan @enforcement @deviationrequest @inspectionfeedback
+  @regression @happypath @inspectionplan @enforcement @deviationrequest @inspectionfeedback
   Scenario: Verify Upload of Inspection Plan (Happy Path - PAR-1856)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -184,7 +184,7 @@ Feature: Direct Partnership Happy Paths
     Then the inspection plan is uploaded successfully
     And the user signs out
 
-  @regression @inspectionplan
+  @regression @happypath @inspectionplan
   Scenario: Verify Update of Inspection Plan (Happy Path - PAR-1865)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -195,7 +195,7 @@ Feature: Direct Partnership Happy Paths
     Then the inspection plan is updated correctly
     And the user signs out
 
-  @regression @advicenotice
+  @regression @happypath @advicenotice
   Scenario: Verify Upload, Update and Archive of an Advice Notice (Happy Path - PAR-1874, PAR-1875)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -215,7 +215,7 @@ Feature: Direct Partnership Happy Paths
     Then the advice notice is archived successfully
     And the user signs out
 
-  @regression @advicenotice
+  @regression @happypath @advicenotice
   Scenario: Verify Upload and Removal of an Advice Notice (Happy Path - PAR-1876)
     Given the user is on the PAR login page
     And the user logs in with the "senior_administrator@example.com" user credentials
@@ -229,7 +229,7 @@ Feature: Direct Partnership Happy Paths
     Then the advice notice is removed successfully
     And the user signs out
 
-  @regression @advicenotice
+  @regression @happypath @advicenotice
   Scenario: Verify Upload of Advice Notice (Happy Path - PAR-1873)
     Given the user is on the PAR login page
     And the user logs in with the "secretary_state@example.com" user credentials
@@ -240,7 +240,7 @@ Feature: Direct Partnership Happy Paths
     Then the advice notice it uploaded successfully and set to active
     And the user signs out
 
-  @regression @enforcement
+  @regression @happypath @enforcement
   Scenario: Verify the Sending and Approval of a Notification of Proposed Enforcement (Happy Path - PAR-1852, PAR-1853, PAR-1854)
     Given the user is on the PAR login page
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
@@ -258,7 +258,7 @@ Feature: Direct Partnership Happy Paths
     Then the enforcement notice is set to approved status
     And the user signs out
 
-  @regression @enforcement
+  @regression @happypath @enforcement
   Scenario: Verify a Help Desk user can remove an Enforcement Notice Successfully (Happy Path - PAR-1855)
     Given the user is on the PAR login page
     And the user logs in with the "secretary_state@example.com" user credentials
@@ -267,7 +267,7 @@ Feature: Direct Partnership Happy Paths
     Then the enforcement notice is removed successfully
     And the user signs out
 
-  @regression @enforcement
+  @regression @happypath @enforcement
   Scenario: Verify an Enforcement Notice can be Blocked (Happy Path - PAR-1970)
     Given the user is on the PAR login page
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
@@ -285,7 +285,7 @@ Feature: Direct Partnership Happy Paths
     Then the enforcement notice is set to blocked status
     And the user signs out
 
-  @regression @enforcement @enquiry
+  @regression @happypath @enforcement @enquiry
   Scenario: Verify the Discussion of an Enforcement Notice (Happy Path - PAR-2272)
     Given the user is on the PAR login page
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
@@ -302,7 +302,7 @@ Feature: Direct Partnership Happy Paths
     Then the general enquiry is recieved successfully
     And the user signs out
 
-  @regression @deviationrequest
+  @regression @happypath @deviationrequest
   Scenario: Verify a Deviation Request can be Blocked (Happy Path - PAR-2275)
     Given the user is on the PAR login page
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
@@ -320,7 +320,7 @@ Feature: Direct Partnership Happy Paths
     Then the deviation request is set to blocked status
     And the user signs out
 
-  @regression @deviationrequest
+  @regression @happypath @deviationrequest
   Scenario: Verify Submission of Deviation request following an Inspection plan (Happy Path - PAR-1857, PAR-1859)
     Given the user is on the PAR login page
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
@@ -366,7 +366,7 @@ Feature: Direct Partnership Happy Paths
     Then the deviation reply received successfully
     And the user signs out
 
-  @regression @inspectionfeedback
+  @regression @happypath @inspectionfeedback
   Scenario: Verify User can Submit feedback following an Inspection plan (Happy Path - PAR-1858, PAR-1860)
     Given the user is on the PAR login page
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
@@ -412,7 +412,7 @@ Feature: Direct Partnership Happy Paths
     Then the inspection feedback response is displayed successfully
     And the user signs out
 
-  @regression @enquiry
+  @regression @happypath @enquiry
   Scenario: Verify User can Submit a general enquiry (Happy Path - PAR-1861)
     Given the user is on the PAR login page
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
@@ -456,7 +456,7 @@ Feature: Direct Partnership Happy Paths
     Then the general enquiry response is displayed successfully
     And the user signs out
 
-  @regression @inspectionplan
+  @regression @happypath @inspectionplan
   Scenario: Verify Revocation and then Removal of an Inspection Plan (Happy Path - PAR-1866, PAR-1867)
     Given the user is on the PAR login page
     And the user logs in with the "secretary_state@example.com" user credentials
