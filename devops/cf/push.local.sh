@@ -69,7 +69,7 @@ CF_INSTANCES=${CF_INSTANCES:=1}
 BUILD_VER=${BUILD_VER:-}
 BUILD_DIR=${BUILD_DIR:=$PWD}
 REMOTE_BUILD_DIR=${REMOTE_BUILD_DIR:="/home/vcap/app"}
-DB_NAME="db-dump-production-sanitised-latest"
+DB_NAME="db-seed"
 DB_DIR="backups"
 DB_RESET=${DB_RESET:=n}
 DEPLOY_PRODUCTION=${DEPLOY_PRODUCTION:=n}
@@ -396,7 +396,7 @@ function cf_poll_task {
     task_status=$(cf tasks $1 | awk '//{print $1, $2, $3}' | grep -m 1 "$2" | awk '//{print $3}')
     if [[ $task_status == "FAILED" ]]; then
       printf "Task $2 has failed...\n"
-      cf logs $1 --recent
+      cf logs $1 --recent | tail -500
       exit 99
     fi
     printf "Task $2 has completed ($task_status)...\n"
@@ -559,7 +559,6 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET == 'y' ]]; then
         ls -la /home/vcap/app && ls -la /home/vcap/app/web&& ls -la /home/vcap/app/backups && \
         cd $REMOTE_BUILD_DIR/web && \
         tar --no-same-owner -zxvf $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz -C $REMOTE_BUILD_DIR/$DB_DIR && \
-        ../vendor/bin/drush @par.paas sql:drop -y && \
         ../vendor/bin/drush @par.paas sql:cli < $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
         ../vendor/bin/drush user:unblock dadmin && \
         rm -f $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql"

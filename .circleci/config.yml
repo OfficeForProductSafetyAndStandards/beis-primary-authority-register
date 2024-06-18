@@ -112,7 +112,6 @@ references:
         cd web
         ../vendor/bin/drush --yes --quiet config-split:export dev_config
         ../vendor/bin/drush --yes --quiet config-split:export test_config
-        ../vendor/bin/drush --no --diff config:import
         ../vendor/bin/drush core-requirements --severity=2
         curl -sD - -o /dev/null http://par.localhost
 
@@ -170,7 +169,7 @@ jobs:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SEED_DATABASE}-latest.tar.gz"
           to: backups/${SEED_DATABASE}-latest.tar.gz
       - run:
-          name: "Unpacking seed database"
+          name: "Unpack seed database"
           command: cd backups && tar --no-same-owner -zxvf ${SEED_DATABASE}-latest.tar.gz
       - aws-s3/copy:
           arguments: |
@@ -349,30 +348,33 @@ jobs:
           name: "Examine asset bundle."
           command: |
             ls -lah /tmp/workspace
-      - run:
-          name: "Database preparation"
-          command: |
-            mkdir -p backups
       - *aws_setup
-      - aws-s3/copy:
-          arguments: |
-            --cache-control "max-age=0"
-          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SEED_DATABASE}-latest.tar.gz"
-          to: backups/${SEED_DATABASE}-latest.tar.gz
-      - run:
-          name: "Unpacking seed database"
-          command: cd backups && tar --no-same-owner -zxvf ${SEED_DATABASE}-latest.tar.gz
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
           to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
           arguments: |
             --cache-control "max-age=0"
+      - aws-s3/copy:
+          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}-latest.tar.gz"
+          to: "backups/${SANITISED_DATABASE}-latest.tar.gz"
+          arguments: |
+            --cache-control "max-age=0"
+      - run:
+          name: "Unpack database"
+          command: cd backups && tar --no-same-owner -zxvf ${SANITISED_DATABASE}-latest.tar.gz
+      - run:
+          name: "Check db archive date"
+          command: cd backups && ls -lah ${SEED_DATABASE}.sql
+      - run:
+          name: "Import database"
+          command: |
+            cd web && ../vendor/bin/drush @par.paas sql:cli < ../backups/${SANITISED_DATABASE}.sql && ../drupal-update.sh
       - run:
           name: "Deploy to staging environment"
           command: |
             DEPLOY_ENV="staging"
             printf "$DEPLOY_ENV\n"
-            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /tmp/workspace/backups/${SEED_DATABASE}-latest.sql -d /tmp/workspace $DEPLOY_ENV
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /tmp/workspace/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
 
   deploy_prod:
     <<: *defaults
