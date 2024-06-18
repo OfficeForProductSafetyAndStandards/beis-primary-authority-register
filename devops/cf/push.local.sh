@@ -554,11 +554,25 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET == 'y' ]]; then
 
     # Running a python script instead of bash because python has immediate
     # access to all of the environment variables and configuration.
-    printf "Importing the database $DB_NAME.sql...\n"
-    cf run-task $TARGET_ENV -m 2G -k 2G --name DB_IMPORT -c "./scripts/drop.sh && \
-        ls -la /home/vcap/app && ls -la /home/vcap/app/web&& ls -la /home/vcap/app/backups && \
+
+    printf "Dropping the database ...\n"
+    cf run-task $TARGET_ENV -m 2G -k 2G --name DB_DROP -c "./scripts/drop.sh"
+    cf_poll_task $TARGET_ENV DB_DROP
+    # Wait for database to be empty.
+    printf "Database emptied...\n"
+
+    printf "List the directory content and unpack db ...\n"
+    cf run-task $TARGET_ENV -m 2G -k 2G --name DB_UNPACK -c "
+        ls -la /home/vcap/app && ls -la /home/vcap/app/web && ls -la /home/vcap/app/backups && \
         cd $REMOTE_BUILD_DIR/web && \
         tar --no-same-owner -zxvf $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz -C $REMOTE_BUILD_DIR/$DB_DIR && \
+        ls -la /home/vcap/app/backups"
+    cf_poll_task $TARGET_ENV DB_UNPACK
+    # Wait for database to be extracted
+    printf "Database primed for import...\n"
+
+    printf "Importing the database $DB_NAME.sql...\n"
+    cf run-task $TARGET_ENV -m 2G -k 2G --name DB_IMPORT -c "
         ../vendor/bin/drush @par.paas sql:cli < $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
         ../vendor/bin/drush user:unblock dadmin && \
         rm -f $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql"
