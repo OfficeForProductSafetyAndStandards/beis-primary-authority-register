@@ -18,7 +18,6 @@ references:
           POSTGRES_USER: par
           POSTGRES_PASSWORD: 123456
           POSTGRES_DB: par
-          PGOPTIONS: "-c statement_timeout=7200000"
 
       - image: opensearchproject/opensearch:1.2.4
         environment:
@@ -113,6 +112,7 @@ references:
         cd web
         ../vendor/bin/drush --yes --quiet config-split:export dev_config
         ../vendor/bin/drush --yes --quiet config-split:export test_config
+        ../vendor/bin/drush --no --diff config:import
         ../vendor/bin/drush core-requirements --severity=2
         curl -sD - -o /dev/null http://par.localhost
 
@@ -170,7 +170,7 @@ jobs:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SEED_DATABASE}-latest.tar.gz"
           to: backups/${SEED_DATABASE}-latest.tar.gz
       - run:
-          name: "Unpack seed database"
+          name: "Unpacking seed database"
           command: cd backups && tar --no-same-owner -zxvf ${SEED_DATABASE}-latest.tar.gz
       - aws-s3/copy:
           arguments: |
@@ -254,12 +254,6 @@ jobs:
       - *clean_working_directory
       - *restore_code
       - *restore_dependencies
-      - run:
-          name: "Installing app"
-          command: |
-            echo "$(pwd)"
-            composer install -v
-            npm run frontend
       - *restore_scaffold
       - *configure_webroot
       - run:
@@ -277,12 +271,6 @@ jobs:
       - *clean_working_directory
       - *restore_code
       - *restore_dependencies
-      - run:
-          name: "Installing app"
-          command: |
-            echo "$(pwd)"
-            composer install -v
-            npm run frontend
       - *restore_scaffold
       - *configure_webroot
       # Save artifacts
@@ -297,12 +285,6 @@ jobs:
       - *attach_workspace
       - *restore_code
       - *restore_dependencies
-      - run:
-          name: "Installing app"
-          command: |
-            echo "$(pwd)"
-            composer install -v
-            npm run frontend
       - *restore_scaffold
       - *configure_webroot
       - *build_assets
@@ -359,12 +341,6 @@ jobs:
       - *attach_workspace
       - *restore_code
       - *restore_dependencies
-      - run:
-          name: "Installing app"
-          command: |
-            echo "$(pwd)"
-            composer install -v
-            npm run frontend
       - *restore_scaffold
       - *configure_webroot
       - *build_assets
@@ -379,21 +355,6 @@ jobs:
           to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
           arguments: |
             --cache-control "max-age=0"
-      - aws-s3/copy:
-          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}-latest.tar.gz"
-          to: "backups/${SANITISED_DATABASE}-latest.tar.gz"
-          arguments: |
-            --cache-control "max-age=0"
-      - run:
-          name: "Unpack database"
-          command: cd backups && tar --no-same-owner -zxvf ${SANITISED_DATABASE}-latest.tar.gz
-      - run:
-          name: "Check db archive date"
-          command: cd backups && ls -lah ${SEED_DATABASE}.sql
-      - run:
-          name: "Import database"
-          command: |
-            cd web && ../vendor/bin/drush @par.paas sql:cli < ../backups/${SANITISED_DATABASE}.sql && ../drupal-update.sh
       - run:
           name: "Deploy to staging environment"
           command: |
@@ -408,12 +369,6 @@ jobs:
       - *attach_workspace
       - *restore_code
       - *restore_dependencies
-      - run:
-          name: "Installing app"
-          command: |
-            echo "$(pwd)"
-            composer install -v
-            npm run frontend
       - *restore_scaffold
       - *configure_webroot
       - *remove_assets
@@ -441,12 +396,6 @@ jobs:
       - *attach_workspace
       - *restore_code
       - *restore_dependencies
-      - run:
-          name: "Installing app"
-          command: |
-            echo "$(pwd)"
-            composer install -v
-            npm run frontend
       - *restore_scaffold
       - *configure_webroot
       - *build_assets
