@@ -552,6 +552,9 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET == 'y' ]]; then
         exit 6
     fi
 
+    printf "Check composer version...\n"
+    cf run-task composer -version
+
     # Running a python script instead of bash because python has immediate
     # access to all of the environment variables and configuration.
     printf "Importing the database $DB_NAME.sql...\n"
