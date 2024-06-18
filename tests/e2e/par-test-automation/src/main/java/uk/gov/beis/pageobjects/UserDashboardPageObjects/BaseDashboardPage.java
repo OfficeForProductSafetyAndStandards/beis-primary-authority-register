@@ -5,11 +5,9 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.UserManagement.ContactRecordsPage;
 import uk.gov.beis.utility.DataStore;
 
 public class BaseDashboardPage extends BasePageObject{
@@ -58,8 +56,7 @@ public class BaseDashboardPage extends BasePageObject{
 		return driver.findElement(By.xpath(userAccountLocator.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL)))).isDisplayed();
 	}
 	
-	public ContactRecordsPage selectManageProfileDetails() {
+	public void selectManageProfileDetails() {
 		manageYourProfileDetailsBtn.click();
-		return PageFactory.initElements(driver, ContactRecordsPage.class);
 	}
 }

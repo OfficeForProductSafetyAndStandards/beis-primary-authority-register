@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
@@ -52,28 +51,23 @@ public class AuthorityConfirmationPage extends BasePageObject {
 		return address.isDisplayed() && postcode.isDisplayed() && authName.isDisplayed() && authType.isDisplayed() && onscode.isDisplayed() && regFunc.isDisplayed();
 	}
 	
-	public AuthorityNamePage editAuthorityName() {
+	public void editAuthorityName() {
 		authorityNameLink.click();
-		return PageFactory.initElements(driver, AuthorityNamePage.class);
 	}
 	
-	public AuthoritiesSearchPage editAuthorityType() {
+	public void editAuthorityType() {
 		authorityTypeLink.click();
-		return PageFactory.initElements(driver, AuthoritiesSearchPage.class);
 	}
 	
-	public AuthoritiesSearchPage editONSCode() {
+	public void editONSCode() {
 		ONSCode.click();
-		return PageFactory.initElements(driver, AuthoritiesSearchPage.class);
 	}
 	
-	public AuthoritiesSearchPage editRegFunction() {
+	public void editRegFunction() {
 		regFunctions.click();
-		return PageFactory.initElements(driver, AuthoritiesSearchPage.class);
 	}
 	
-	public AuthoritiesSearchPage saveChanges() {
+	public void saveChanges() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, AuthoritiesSearchPage.class);
 	}
 }

@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 
@@ -67,10 +66,5 @@ public class AdviceNoticeDetailsPage extends BasePageObject {
 	
 	public void selectSaveButton() {
 		saveBtn.click();
-	}
-	
-	public AdviceNoticeSearchPage clickSave() {
-		saveBtn.click();
-		return PageFactory.initElements(driver, AdviceNoticeSearchPage.class);
 	}
 }

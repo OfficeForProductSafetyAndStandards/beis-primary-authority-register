@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
@@ -37,10 +36,5 @@ public class UploadListOfMembersPage extends BasePageObject {
 	
 	public void clickUploadButton() {
 		uploadBtn.click();
-	}
-	
-	public ConfirmMemberUploadPage selectUpload() {
-		uploadBtn.click();
-		return PageFactory.initElements(driver, ConfirmMemberUploadPage.class);
 	}
 }

@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
@@ -30,8 +29,7 @@ public class OrganisationsSearchPage extends BasePageObject {
 		searchBtn.click();
 	}
 	
-	public BusinessDetailsPage selectOrganisation() {
+	public void selectOrganisation() {
 		organisationLink.click();
-		return PageFactory.initElements(driver, BusinessDetailsPage.class);
 	}
 }

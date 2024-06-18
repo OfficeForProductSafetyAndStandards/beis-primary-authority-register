@@ -4,13 +4,10 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.helper.PropertiesUtil;
 import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.HomePageLinkPageObjects.*;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipSearchPage;
 
 public class HomePage extends BasePageObject {
 
@@ -48,58 +45,47 @@ public class HomePage extends BasePageObject {
 		super();
 	}
 	
-	public HomePage navigateToUrl() {
+	public void navigateToUrl() {
 		ScenarioContext.lastDriver.get(PropertiesUtil.getConfigPropertyValue("par_url"));
-		return PageFactory.initElements(driver, HomePage.class);
 	}
 	
-	public LoginPage selectLogin() {
+	public void selectLogin() {
 		signinButton.click();
-		return PageFactory.initElements(driver, LoginPage.class);
 	}
 	
-	public LocalRegulationPrimaryAuthorityPage selectReadMoreAboutPrimaryAuthorityLink() {
+	public void selectReadMoreAboutPrimaryAuthorityLink() {
 		readMorePrimaryAuthorityLink.click();
-		return PageFactory.initElements(driver, LocalRegulationPrimaryAuthorityPage.class);
 	}
 	
-	public PrimaryAuthorityDocumentsPage selectAccessToolsAndTemplatesLink() {
+	public void selectAccessToolsAndTemplatesLink() {
 		toolsAndTemplatesResourcesLink.click();
-		return PageFactory.initElements(driver, PrimaryAuthorityDocumentsPage.class);
 	}
 	
-	public PartnershipSearchPage selectPartnershipSearchLink() {
+	public void selectPartnershipSearchLink() {
 		searchPartnershipsResourcesLink.click();
-		return PageFactory.initElements(driver, PartnershipSearchPage.class);
 	}
 	
-	public TermsAndConditionsPage selectTermsAndConditionsLink() {
+	public void selectTermsAndConditionsLink() {
 		termsAndConditionsLink.click();
-		return PageFactory.initElements(driver, TermsAndConditionsPage.class);
 	}
 	
-	public CookiesPage selectCookiesFooterLink() {
+	public void selectCookiesFooterLink() {
 		cookiesFooterLink.click();
-		return PageFactory.initElements(driver, CookiesPage.class);
 	}
 	
-	public OPSSPrivacyNoticePage selectPrivacyLink() {
+	public void selectPrivacyLink() {
 		privacyLink.click();
-		return PageFactory.initElements(driver, OPSSPrivacyNoticePage.class);
 	}
 	
-	public AccessibilityStatementPage selectAccessibilityLink() {
+	public void selectAccessibilityLink() {
 		accessibilityLink.click();
-		return PageFactory.initElements(driver, AccessibilityStatementPage.class);
 	}
 	
-	public OpenGovernmentLicencePage selectOpenGovernmentLicenceLink() {
+	public void selectOpenGovernmentLicenceLink() {
 		openGovernmentLicenceLink.click();
-		return PageFactory.initElements(driver, OpenGovernmentLicencePage.class);
 	}
 	
-	public CrownCopyrightPage selectCrownCopyrightLink() {
+	public void selectCrownCopyrightLink() {
 		crownCopyrightLink.click();
-		return PageFactory.initElements(driver, CrownCopyrightPage.class);
 	}
 }

@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 
@@ -39,10 +38,5 @@ public class ReplyDeviationRequestPage extends BasePageObject {
 
 	public void clickSaveButton() {
 		saveBtn.click();
-	}
-
-	public DeviationReviewPage goToDeviationReviewPage() {
-		saveBtn.click();
-		return PageFactory.initElements(driver, DeviationReviewPage.class);
 	}
 }

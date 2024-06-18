@@ -100,7 +100,7 @@ public class BasePageObject {
 	public void executeJavaScript(String script, WebElement element) {
 		javascriptExecutor.executeScript(script, element);
 	}
-
+	
 	public void refresh() {
 		driver.navigate().refresh();
 	}

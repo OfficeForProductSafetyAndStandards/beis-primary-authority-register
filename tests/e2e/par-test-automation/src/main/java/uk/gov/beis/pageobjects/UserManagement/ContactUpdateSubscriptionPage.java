@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 
@@ -30,8 +29,7 @@ public class ContactUpdateSubscriptionPage extends BasePageObject {
 			parNewsCheckbox.click();
 	}
 
-	public ProfileReviewPage selectContinueButton() {
+	public void selectContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, ProfileReviewPage.class);
 	}
 }

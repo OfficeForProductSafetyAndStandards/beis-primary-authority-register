@@ -4,15 +4,6 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-
-import uk.gov.beis.pageobjects.DeviationRequestPageObjects.DeviationSearchPage;
-import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementSearchPage;
-import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.EnquiriesSearchPage;
-import uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects.InspectionFeedbackSearchPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.AuthorityPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipSearchPage;
-import uk.gov.beis.pageobjects.UserManagement.ManagePeoplePage;
 
 public class DashboardPage extends BaseDashboardPage {
 	
@@ -44,43 +35,35 @@ public class DashboardPage extends BaseDashboardPage {
 		super();
 	}
 	
-	public PartnershipSearchPage selectSeePartnerships() {
+	public void selectSeePartnerships() {
 		viewPartnershipBtn.click();
-		return PageFactory.initElements(driver, PartnershipSearchPage.class);
 	}
 	
-	public PartnershipSearchPage selectSearchforPartnership() {
+	public void selectSearchforPartnership() {
 		searchPartnershipBtn.click();
-		return PageFactory.initElements(driver, PartnershipSearchPage.class);
 	}
 	
-	public AuthorityPage selectApplyForNewPartnership() {
+	public void selectApplyForNewPartnership() {
 		applyPartnershipBtn.click();
-		return PageFactory.initElements(driver, AuthorityPage.class);
 	}
 	
-	public EnforcementSearchPage selectSeeEnforcementNotices() {
+	public void selectSeeEnforcementNotices() {
 		seeEnforcementNoticesBtn.click();
-		return PageFactory.initElements(driver, EnforcementSearchPage.class);
 	}
 	
-	public DeviationSearchPage selectSeeDeviationRequests() {
+	public void selectSeeDeviationRequests() {
 		deviationReqBtn.click();
-		return PageFactory.initElements(driver, DeviationSearchPage.class);
 	}
 	
-	public InspectionFeedbackSearchPage selectSeeInspectionFeedbackNotices() {
+	public void selectSeeInspectionFeedbackNotices() {
 		inspectionFeedbackNoticeBtn.click();
-		return PageFactory.initElements(driver, InspectionFeedbackSearchPage.class);
 	}
 	
-	public EnquiriesSearchPage selectGeneralEnquiries() {
+	public void selectGeneralEnquiries() {
 		generalEnquiriesBtn.click();
-		return PageFactory.initElements(driver, EnquiriesSearchPage.class);
 	}
 	
-	public ManagePeoplePage selectManageColleagues() {
+	public void selectManageColleagues() {
 		manageYourColleaguesBtn.click();
-		return PageFactory.initElements(driver, ManagePeoplePage.class);
 	}
 }

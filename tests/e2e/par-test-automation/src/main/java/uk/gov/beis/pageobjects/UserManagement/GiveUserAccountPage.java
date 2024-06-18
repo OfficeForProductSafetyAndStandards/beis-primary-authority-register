@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 
@@ -31,8 +30,7 @@ public class GiveUserAccountPage extends BasePageObject {
 		existingAccountRadial.click();
 	}
 	
-	public UserMembershipPage clickContinueButton() {
+	public void clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, UserMembershipPage.class);
 	}
 }

@@ -5,10 +5,8 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.SharedPageObjects.EnterTheDatePage;
 
 public class PartnershipMigrationSelectionPage extends BasePageObject {
 	
@@ -24,16 +22,16 @@ public class PartnershipMigrationSelectionPage extends BasePageObject {
 		super();
 	}
 	
-	public EnterTheDatePage selectPartnership(String businessName) {
+	public void selectPartnership(String businessName) {
 
 		WebElement checkbox = driver.findElement(By.xpath(partnershipLocator.replace("?", businessName)));
 		
 		if(!checkbox.isSelected()) {
 			checkbox.click();
 		}
-		
+	}
+	
+	public void clickContinueButton() {
 		continueBtn.click();
-		
-		return PageFactory.initElements(driver, EnterTheDatePage.class);
 	}
 }

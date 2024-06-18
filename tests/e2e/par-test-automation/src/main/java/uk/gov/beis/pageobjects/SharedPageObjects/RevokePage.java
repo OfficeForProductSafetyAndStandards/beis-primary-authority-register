@@ -4,12 +4,8 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanSearchPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipInformationPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipRevokedPage;
 
 public class RevokePage extends BasePageObject {
 	
@@ -17,10 +13,10 @@ public class RevokePage extends BasePageObject {
 	private WebElement reasonTextArea;
 	
 	@FindBy(id = "edit-next")
-	private WebElement revokeNextBtn;
+	private WebElement nextBtn;
 	
 	@FindBy(id = "edit-save")
-	private WebElement revokeSaveBtn;
+	private WebElement saveBtn;
 	
 	public RevokePage() throws ClassNotFoundException, IOException {
 		super();
@@ -32,25 +28,10 @@ public class RevokePage extends BasePageObject {
 	}
 	
 	public void clickRevokeButton() {
-		revokeNextBtn.click();
+		nextBtn.click();
 	}
 	
 	public void selectRevokeButton(){
-		revokeSaveBtn.click();
-	}
-	
-	public PartnershipRevokedPage goToPartnershipRevokedPage() {
-		revokeNextBtn.click();
-		return PageFactory.initElements(driver, PartnershipRevokedPage.class);
-	}
-	
-	public PartnershipInformationPage goToPartnershipDetailsPage() {
-		revokeSaveBtn.click();
-		return PageFactory.initElements(driver, PartnershipInformationPage.class);
-	}
-	
-	public InspectionPlanSearchPage goToInspectionPlanSearchPage() throws Throwable {
-		revokeSaveBtn.click();
-		return PageFactory.initElements(driver, InspectionPlanSearchPage.class);
+		saveBtn.click();
 	}
 }

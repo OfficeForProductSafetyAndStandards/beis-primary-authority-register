@@ -10,14 +10,19 @@ import java.util.Properties;
  * variable
  */
 public class PropertiesUtil {
-
-	private static Properties configProperties = new Properties(), sharedProperties = new Properties(), buildProperties = new Properties();
-	private final static String sharedConfigFile = "shared-driver.properties", buildPropertyFile = "filtered/maven-build.properties";
+	
+	private final static String DEFAULT_ENVIRONMENT = "par";
+	
+	private static Properties configProperties = new Properties();
+	private static Properties sharedProperties = new Properties();
+	private static Properties buildProperties = new Properties();
+	
+	private final static String sharedConfigFile = "shared-driver.properties";
+	private final static String buildPropertyFile = "filtered/maven-build.properties";
+	
 	private static String configFile;
 	public static String environment = "";
-
-
-	private final static String DEFAULT_ENVIRONMENT = "par";
+	
 	static {
 		environment = (System.getProperty("env") != null ? System.getProperty("env") : DEFAULT_ENVIRONMENT);
 		configFile = environment + "-config.properties";

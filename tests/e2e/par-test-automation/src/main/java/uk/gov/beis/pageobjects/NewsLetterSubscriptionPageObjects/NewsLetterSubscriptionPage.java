@@ -6,11 +6,9 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.UserDashboardPageObjects.DashboardPage;
 import uk.gov.beis.utility.DataStore;
 
 public class NewsLetterSubscriptionPage extends BasePageObject {
@@ -39,17 +37,13 @@ public class NewsLetterSubscriptionPage extends BasePageObject {
 	@FindBy(xpath = "//td[@class='priority-medium views-field views-field-verified']")
 	private WebElement subscriptionListVerifyElement;
 	
-	@FindBy(linkText = "back to dashboard")
-	private WebElement dashboardBtn;
-	
 	public NewsLetterSubscriptionPage() throws ClassNotFoundException, IOException {
 		super();
 	}
 	
-	public NewsLetterManageSubscriptionListPage selectManageSubsciptions() {
+	public void selectManageSubsciptions() {
 		getLastEmailFromList();
 		manageSubscriptionsBtn.click();
-		return PageFactory.initElements(driver, NewsLetterManageSubscriptionListPage.class);
 	}
 	
 	public void EnterEmail(String email) {
@@ -116,10 +110,5 @@ public class NewsLetterSubscriptionPage extends BasePageObject {
 		}
 		
 		DataStore.saveValue(UsableValues.LAST_PAR_NEWS_EMAIL, emailAddress);
-	}
-	
-	public DashboardPage selectBackToDashboard() {
-		dashboardBtn.click();
-		return PageFactory.initElements(driver, DashboardPage.class);
 	}
 }
