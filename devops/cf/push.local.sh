@@ -69,7 +69,7 @@ CF_INSTANCES=${CF_INSTANCES:=1}
 BUILD_VER=${BUILD_VER:-}
 BUILD_DIR=${BUILD_DIR:=$PWD}
 REMOTE_BUILD_DIR=${REMOTE_BUILD_DIR:="/home/vcap/app"}
-DB_NAME="db-dump-production-sanitised-latest"
+DB_NAME="db-seed"
 DB_DIR="backups"
 DB_RESET=${DB_RESET:=n}
 DEPLOY_PRODUCTION=${DEPLOY_PRODUCTION:=n}
@@ -547,32 +547,21 @@ cf start $TARGET_ENV
 
 ## Import the seed database and then delete it.
 if [[ $ENV != "production" ]] && [[ $DB_RESET == 'y' ]]; then
-    if [[ ! -f "/tmp/workspace/backups/db-dump-production-sanitised.sql" ]]; then
-        printf "Seed database required, but could not find one at '/tmp/workspace/backups/db-dump-production-sanitised.sql'.\n"
+    if [[ ! -f "$BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz" ]]; then
+        printf "Seed database required, but could not find one at '$BUILD_DIR/$DB_DIR/DB_NAME.sql'.\n"
         exit 6
     fi
 
     # Running a python script instead of bash because python has immediate
     # access to all of the environment variables and configuration.
-
-    printf "Dropping the database ...\n"
-    cf run-task $TARGET_ENV -m 2G -k 2G --name DB_DROP -c "./scripts/drop.sh"
-    cf_poll_task $TARGET_ENV DB_DROP
-    # Wait for database to be empty.
-    printf "Database emptied...\n"
-
-    printf "List the directory content and unpack db ...\n"
-    cf run-task $TARGET_ENV -m 2G -k 2G --name DB_UNPACK -c "
-        ls -la /home/vcap/app && ls -la /home/vcap/app/web && ls -la /home/vcap/app/backups && ls -la /tmp/workspace/backups/db-dump-production-sanitised.sql"
-    cf_poll_task $TARGET_ENV DB_UNPACK
-    # Wait for database to be extracted
-    printf "Database primed for import...\n"
-
     printf "Importing the database $DB_NAME.sql...\n"
-    cf run-task $TARGET_ENV -m 2G -k 2G --name DB_IMPORT -c "
-        ../vendor/bin/drush @par.paas sql:cli < /tmp/workspace/backups/db-dump-production-sanitised.sql && \
+    cf run-task $TARGET_ENV -m 2G -k 2G --name DB_IMPORT -c "./scripts/drop.sh && \
+        ls -la /home/vcap/app && ls -la /home/vcap/app/web&& ls -la /home/vcap/app/backups && \
+        cd $REMOTE_BUILD_DIR/web && \
+        tar --no-same-owner -zxvf $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz -C $REMOTE_BUILD_DIR/$DB_DIR && \
+        ../vendor/bin/drush @par.paas sql:cli < $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
         ../vendor/bin/drush user:unblock dadmin && \
-        rm -f /tmp/workspace/backups/db-dump-production-sanitised.sql"
+        rm -f $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql"
 
     # Wait for database to be imported.
     cf_poll_task $TARGET_ENV DB_IMPORT

@@ -11,3 +11,4 @@ echo "Current working directory is ${PWD}"
 # Set default drush alias.
 echo "Dropping the database..."
 ../vendor/drush/drush/drush sql:drop -y;
+
