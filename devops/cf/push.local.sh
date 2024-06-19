@@ -564,8 +564,7 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET == 'y' ]]; then
     printf "List the directory content and unpack db ...\n"
     cf run-task $TARGET_ENV -m 2G -k 2G --name DB_UNPACK -c "
         ls -la /home/vcap/app && ls -la /home/vcap/app/web && ls -la /home/vcap/app/backups && \
-        cd /home/vcap/app/web && \
-        tar --no-same-owner -zxvf $BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz -C $BUILD_DIR/$DB_DIR && \
+        tar --no-same-owner -zxvf $DB_DIR/$DB_NAME.tar.gz -C $DB_DIR && \
         ls -la /home/vcap/app/backups"
     cf_poll_task $TARGET_ENV DB_UNPACK
     # Wait for database to be extracted
@@ -573,9 +572,9 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET == 'y' ]]; then
 
     printf "Importing the database $DB_NAME.sql...\n"
     cf run-task $TARGET_ENV -m 2G -k 2G --name DB_IMPORT -c "
-        ../vendor/bin/drush @par.paas sql:cli < $BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
+        ../vendor/bin/drush @par.paas sql:cli < $DB_DIR/$DB_NAME.sql && \
         ../vendor/bin/drush user:unblock dadmin && \
-        rm -rf $BUILD_DIR/$DB_DIR/$DB_NAME.sql"
+        rm -rf $DB_DIR/$DB_NAME.sql"
 
     # Wait for database to be imported.
     cf_poll_task $TARGET_ENV DB_IMPORT
