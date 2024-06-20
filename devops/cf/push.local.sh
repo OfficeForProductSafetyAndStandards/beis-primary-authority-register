@@ -547,8 +547,8 @@ cf start $TARGET_ENV
 
 ## Import the seed database and then delete it.
 if [[ $ENV != "production" ]] && [[ $DB_RESET == 'y' ]]; then
-    if [[ ! -f "$BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz" ]]; then
-        printf "Seed database required, but could not find one at '$BUILD_DIR/$DB_DIR/$DB_NAME.sql'.\n"
+    if [[ ! -f "$BUILD_DIR/$DB_DIR/$DB_NAME-latest.tar.gz" ]]; then
+        printf "Seed database required, but could not find one at '$BUILD_DIR/$DB_DIR/$DB_NAME-latest.sql'.\n"
         exit 6
     fi
 
