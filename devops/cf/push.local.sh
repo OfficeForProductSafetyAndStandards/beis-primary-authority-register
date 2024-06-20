@@ -69,7 +69,7 @@ CF_INSTANCES=${CF_INSTANCES:=1}
 BUILD_VER=${BUILD_VER:-}
 BUILD_DIR=${BUILD_DIR:=$PWD}
 REMOTE_BUILD_DIR=${REMOTE_BUILD_DIR:="/home/vcap/app"}
-DB_NAME="db-seed"
+DB_NAME="db-dump-production-latest"
 DB_DIR="backups"
 DB_RESET=${DB_RESET:=n}
 DEPLOY_PRODUCTION=${DEPLOY_PRODUCTION:=n}
@@ -273,7 +273,7 @@ if [[ ! -f $MANIFEST ]]; then
     MANIFEST="${BASH_SOURCE%/*}/manifests/manifest.non-production.yml"
 fi
 
-## Copy the seed database to the build directory and archive it for import.
+## Copy the sanitised database to the build directory and archive it for import.
 printf "Archiving the seed database in $BUILD_DIR/$DB_DIR...\n"
 mkdir -p "$BUILD_DIR/$DB_DIR"
 if [[ -f $DB_IMPORT ]]; then
@@ -548,7 +548,7 @@ cf start $TARGET_ENV
 ## Import the seed database and then delete it.
 if [[ $ENV != "production" ]] && [[ $DB_RESET == 'y' ]]; then
     if [[ ! -f "$BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz" ]]; then
-        printf "Seed database required, but could not find one at '$BUILD_DIR/$DB_DIR/DB_NAME.sql'.\n"
+        printf "Seed database required, but could not find one at '$BUILD_DIR/$DB_DIR/$DB_NAME.sql'.\n"
         exit 6
     fi
 

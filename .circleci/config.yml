@@ -34,7 +34,7 @@ references:
       TEST_REPORTS: ~/par/tests/reports
       S3_ARTIFACTS_BUCKET: beis-par-artifacts
       SEED_DATABASE: db-dump-production-seed
-      SANITISED_DATABASE: db-dump-production-sanitised
+      SANITISED_DATABASE: db-dump-production-sanitised-latest
       UNSANITISED_DATABASE: db-dump-production-unsanitised
       SIMPLETEST_DB: pgsql://par:123456@localhost:5432/par
 
@@ -86,7 +86,7 @@ references:
       name: "Import & set up the database"
       command: |
         cd web
-        ../vendor/bin/drush @par.dev sql:cli < ../backups/${SEED_DATABASE}.sql
+        ../vendor/bin/drush @par.dev sql:cli < ../backups/${SANITISED_DATABASE}.sql
         pg_restore --username= USERNAME --host=HOST --port= --clean --if-exists --no-owner --no-privileges --no-password
         ../drupal-update.sh
 
@@ -355,16 +355,16 @@ jobs:
           arguments: |
             --cache-control "max-age=0"
       - aws-s3/copy:
-          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}-latest.tar.gz"
-          to: "backups/${SANITISED_DATABASE}-latest.tar.gz"
+          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}.tar.gz"
+          to: "backups/${SANITISED_DATABASE}.tar.gz"
           arguments: |
             --cache-control "max-age=0"
       - run:
           name: "Unpack database"
-          command: cd backups && tar --no-same-owner -zxvf ${SANITISED_DATABASE}-latest.tar.gz
+          command: cd backups && tar --no-same-owner -zxvf ${SANITISED_DATABASE}.tar.gz
       - run:
           name: "Check db archive date"
-          command: cd backups && ls -lah ${SEED_DATABASE}.sql
+          command: cd backups && ls -lah ${SANITISED_DATABASE}.sql
       - run:
           name: "Import database"
           command: |
