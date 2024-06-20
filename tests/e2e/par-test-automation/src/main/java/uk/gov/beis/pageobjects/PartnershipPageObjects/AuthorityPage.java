@@ -12,9 +12,6 @@ import uk.gov.beis.utility.DataStore;
 
 public class AuthorityPage extends BasePageObject {
 
-	@FindBy(xpath = "//span[@class='govuk-header__logotype-text']")
-	private WebElement pageHeader;
-	
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
 
@@ -34,9 +31,5 @@ public class AuthorityPage extends BasePageObject {
 	
 	public void selectContinueButton() {
 		continueBtn.click();
-	}
-	
-	public void selectPageHeader() {
-		pageHeader.click();
 	}
 }

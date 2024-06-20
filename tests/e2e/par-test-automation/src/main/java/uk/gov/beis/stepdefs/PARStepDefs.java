@@ -1574,7 +1574,7 @@ public class PARStepDefs {
 	@Given("^the user clicks the PAR Home page link$")
 	public void the_user_clicks_the_PAR_Home_page_link() throws Throwable {
 		LOG.info("Click PAR header to navigate to the PAR Home Page");
-		websiteManager.parAuthorityPage.selectPageHeader();
+		websiteManager.dashboardPage.clickHeaderLink();
 	}
 
 	@When("^the user is on the search for a partnership page$")
