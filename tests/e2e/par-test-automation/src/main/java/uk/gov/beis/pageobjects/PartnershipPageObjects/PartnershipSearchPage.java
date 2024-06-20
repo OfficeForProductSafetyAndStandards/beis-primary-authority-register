@@ -18,7 +18,7 @@ public class PartnershipSearchPage extends BasePageObject {
 	@FindBy(xpath = "//input[@value='Search']")
 	private WebElement searchPartnershipsBtn;
 	
-	private String authority = "//td/a[contains(text(),'?')]";
+	private String authorityLocator = "//td[contains(normalize-space(), '£')]/preceding-sibling::td/a[contains(normalize-space(), '?')]";
 	
 	public PartnershipSearchPage() throws ClassNotFoundException, IOException {
 		super();
@@ -38,7 +38,7 @@ public class PartnershipSearchPage extends BasePageObject {
 	}
 	
 	public void selectAuthority(String auth) {
-		WebElement link = driver.findElement(By.xpath(authority.replace("?", auth)));
+		WebElement link = driver.findElement(By.xpath(authorityLocator.replace("?", auth).replace("£", DataStore.getSavedValue(UsableValues.BUSINESS_NAME))));
 		link.click();
 	}
 	
