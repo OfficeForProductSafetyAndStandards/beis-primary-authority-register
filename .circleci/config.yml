@@ -112,6 +112,7 @@ references:
         cd web
         ../vendor/bin/drush --yes --quiet config-split:export dev_config
         ../vendor/bin/drush --yes --quiet config-split:export test_config
+        ../vendor/bin/drush --no --diff config:import
         ../vendor/bin/drush core-requirements --severity=2
         curl -sD - -o /dev/null http://par.localhost
 
@@ -354,21 +355,6 @@ jobs:
           to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
           arguments: |
             --cache-control "max-age=0"
-      - aws-s3/copy:
-          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}-latest.tar.gz"
-          to: "backups/${SANITISED_DATABASE}.tar.gz"
-          arguments: |
-            --cache-control "max-age=0"
-      - run:
-          name: "Unpack database"
-          command: cd backups && tar --no-same-owner -zxvf ${SANITISED_DATABASE}-latest.tar.gz
-      - run:
-          name: "Check db archive date"
-          command: cd backups && ls -lah ${SANITISED_DATABASE}.sql
-      - run:
-          name: "Import database"
-          command: |
-            cd web && ../vendor/bin/drush @par.paas sql:cli < ../backups/${SANITISED_DATABASE}.sql && ../drupal-update.sh
       - run:
           name: "Deploy to staging environment"
           command: |
