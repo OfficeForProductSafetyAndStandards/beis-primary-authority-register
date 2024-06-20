@@ -34,7 +34,7 @@ references:
       TEST_REPORTS: ~/par/tests/reports
       S3_ARTIFACTS_BUCKET: beis-par-artifacts
       SEED_DATABASE: db-dump-production-seed
-      SANITISED_DATABASE: db-dump-production-sanitised-latest
+      SANITISED_DATABASE: db-dump-production-sanitised
       UNSANITISED_DATABASE: db-dump-production-unsanitised
       SIMPLETEST_DB: pgsql://par:123456@localhost:5432/par
 
@@ -355,26 +355,26 @@ jobs:
           arguments: |
             --cache-control "max-age=0"
       - aws-s3/copy:
-          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}.tar.gz"
+          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}-latest.tar.gz"
           to: "backups/${SANITISED_DATABASE}.tar.gz"
           arguments: |
             --cache-control "max-age=0"
       - run:
           name: "Unpack database"
-          command: cd backups && tar --no-same-owner -zxvf ${SANITISED_DATABASE}.tar.gz
+          command: cd backups && tar --no-same-owner -zxvf ${SANITISED_DATABASE}-latest.tar.gz
       - run:
           name: "Check db archive date"
-          command: cd backups && ls -lah ${SANITISED_DATABASE}.sql
+          command: cd backups && ls -lah ${SANITISED_DATABASE}-latest.sql
       - run:
           name: "Import database"
           command: |
-            cd web && ../vendor/bin/drush @par.paas sql:cli < ../backups/${SANITISED_DATABASE}.sql && ../drupal-update.sh
+            cd web && ../vendor/bin/drush @par.paas sql:cli < ../backups/${SANITISED_DATABASE}-latest.sql && ../drupal-update.sh
       - run:
           name: "Deploy to staging environment"
           command: |
             DEPLOY_ENV="staging"
             printf "$DEPLOY_ENV\n"
-            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /tmp/workspace/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /tmp/workspace/backups/${SANITISED_DATABASE}-latest.sql -d /tmp/workspace $DEPLOY_ENV
 
   deploy_prod:
     <<: *defaults
@@ -427,7 +427,7 @@ jobs:
           command: |
             DEPLOY_ENV=($(echo $CIRCLE_TAG | awk -F '-' '{print $1}'))
             printf "Deploying to test environment: https://beis-par-$DEPLOY_ENV.cloudapps.digital\n"
-            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SEED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}-latest.sql -d /tmp/workspace $DEPLOY_ENV
 
   archive_database:
     <<: *defaults
