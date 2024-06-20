@@ -278,7 +278,6 @@ printf "Archiving the seed database in $BUILD_DIR/$DB_DIR...\n"
 mkdir -p "$BUILD_DIR/$DB_DIR"
 if [[ -f $DB_IMPORT ]]; then
     printf "Preparing DB Import: $BUILD_DIR/$DB_DIR/$DB_NAME.sql \n"
-    cp "$DB_IMPORT" "$BUILD_DIR/$DB_DIR/$DB_NAME.sql"
     tar -zcvf "$BUILD_DIR/$DB_DIR/$DB_NAME-latest.tar.gz" -C $BUILD_DIR/$DB_DIR "$DB_NAME.sql"
 fi
 
