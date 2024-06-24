@@ -245,3 +245,10 @@ function par_theme_page_attachments_alter(array &$attachments) {
 function par_theme_theme_suggestions_views_view_alter(array &$suggestions, array $variables) {
   $suggestions[] = 'views_view__' . $variables['view']->id();
 }
+
+/**
+ * Implements hook_form_alter().
+ */
+function par_theme_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['#attributes']['novalidate'] = 'novalidate';
+}

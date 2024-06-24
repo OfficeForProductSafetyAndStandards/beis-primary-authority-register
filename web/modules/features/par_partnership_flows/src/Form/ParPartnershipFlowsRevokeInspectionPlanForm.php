@@ -94,6 +94,7 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
       '#type' => 'textarea',
       '#rows' => 5,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues(ParDataEntity::REVOKE_REASON_FIELD, FALSE),
+      '#required' => TRUE,
     ];
 
     return parent::buildForm($form, $form_state);
