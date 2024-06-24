@@ -23,11 +23,11 @@ class ParTradingNameForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-//  protected array $entityMapping = [
-//    ['trading_name', 'par_data_organisation', 'trading_name', NULL, NULL, 0, [
-//      'You must fill in the missing information.' => 'You must enter the trading name for this organisation.'
-//    ]],
-//  ];
+  protected array $entityMapping = [
+    ['trading_name', 'par_data_organisation', 'trading_name', NULL, NULL, 0, [
+      'You must fill in the missing information.' => 'You must enter the trading name for this organisation.'
+    ]],
+  ];
 
   /**
    * {@inheritdoc}
