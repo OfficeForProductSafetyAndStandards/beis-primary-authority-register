@@ -1306,7 +1306,10 @@ public class PARStepDefs {
 	@When("^the user completes the user creation journey$")
 	public void the_user_completes_the_user_creation_journey() throws Throwable {
 		LOG.info("Completing the User Creation Journey.");
-		websiteManager.passwordPage.clickDrupalHideButton();
+		//websiteManager.passwordPage.clickDrupalHideButton();
+		websiteManager.dashboardPage.acceptCookies();
+		websiteManager.dashboardPage.hideCookieBanner();
+		
 		websiteManager.passwordPage.enterPassword("TestPassword", "TestPassword");
 		websiteManager.passwordPage.clickRegisterButton();
 		
@@ -1574,7 +1577,7 @@ public class PARStepDefs {
 	@Given("^the user clicks the PAR Home page link$")
 	public void the_user_clicks_the_PAR_Home_page_link() throws Throwable {
 		LOG.info("Click PAR header to navigate to the PAR Home Page");
-		websiteManager.parAuthorityPage.selectPageHeader();
+		websiteManager.dashboardPage.clickHeaderLink();
 	}
 
 	@When("^the user is on the search for a partnership page$")
@@ -1933,15 +1936,13 @@ public class PARStepDefs {
 		
 		websiteManager.managePeoplePage.enterNameOrEmail(userEmail);
 		websiteManager.managePeoplePage.clickSubmit();
-		
-		
 	}
 
 	@When("^the user clicks the manage contact link$")
 	public void the_user_clicks_the_manage_contact_link() throws Throwable {
 		LOG.info("Clicking the Manage Contact link.");
 		DataStore.saveValue(UsableValues.PERSON_FULLNAME_TITLE, websiteManager.managePeoplePage.GetPersonName());
-		websiteManager.managePeoplePage.clickManageContact();
+		websiteManager.managePeoplePage.findManageContactByEmail(DataStore.getSavedValue(UsableValues.PERSON_EMAIL_ADDRESS));
 	}
 
 	@Then("^the user can view the user account successfully$")
@@ -2094,13 +2095,14 @@ public class PARStepDefs {
 
 	@When("^the user searches for an existing person successfully$")
 	public void the_user_searches_for_an_existing_person_successfully() throws Throwable {
-
+		
 		String personsName = DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.PERSON_LASTNAME);
 
 		websiteManager.managePeoplePage.enterNameOrEmail(personsName);
 		websiteManager.managePeoplePage.clickSubmit();
-
-		websiteManager.managePeoplePage.clickManageContact();
+		
+		websiteManager.managePeoplePage.findManageContactByName(personsName);
+		//websiteManager.managePeoplePage.clickManageContact();
 
 		LOG.info("Found an existing user with the name: " + personsName);
 	}

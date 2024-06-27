@@ -9,10 +9,12 @@ import uk.gov.beis.pageobjects.BasePageObject;
 
 public class PasswordPage extends BasePageObject {
 	
-	@FindBy(id = "edit-pass-pass1")
+	//@FindBy(id = "edit-pass-pass1")
+	@FindBy(xpath = "//input[@name='pass[pass1]']")
 	private WebElement passwordField;
 
-	@FindBy(id = "edit-pass-pass2")
+	//@FindBy(id = "edit-pass-pass2")
+	@FindBy(xpath = "//input[@name='pass[pass2]']")
 	private WebElement confirmPasswordField;
 	
 	@FindBy(id = "edit-next")
