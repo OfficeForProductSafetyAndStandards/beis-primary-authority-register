@@ -25,7 +25,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: 'Primary Authority Register | Search for a partnership'
+      title: 'Search for a partnership'
       fields:
         id:
           id: id
@@ -1204,6 +1204,7 @@ display:
           preserve_facet_query_args: false
           contextual_filters_or: false
       relationships: {  }
+      use_ajax: true
       header: {  }
       footer:
         par_flow_link:

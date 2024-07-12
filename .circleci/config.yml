@@ -86,7 +86,7 @@ references:
       name: "Import & set up the database"
       command: |
         cd web
-        ../vendor/bin/drush @par.dev sql:cli < ../backups/${SEED_DATABASE}.sql
+        ../vendor/bin/drush @par.dev sql:cli < ../backups/${SANITISED_DATABASE}.sql
         pg_restore --username= USERNAME --host=HOST --port= --clean --if-exists --no-owner --no-privileges --no-password
         ../drupal-update.sh
 
@@ -170,7 +170,7 @@ jobs:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SEED_DATABASE}-latest.tar.gz"
           to: backups/${SEED_DATABASE}-latest.tar.gz
       - run:
-          name: "Unpacking seed database"
+          name: "Unpack seed database"
           command: cd backups && tar --no-same-owner -zxvf ${SEED_DATABASE}-latest.tar.gz
       - aws-s3/copy:
           arguments: |
@@ -360,7 +360,7 @@ jobs:
           command: |
             DEPLOY_ENV="staging"
             printf "$DEPLOY_ENV\n"
-            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SEED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
 
   deploy_prod:
     <<: *defaults
@@ -413,7 +413,7 @@ jobs:
           command: |
             DEPLOY_ENV=($(echo $CIRCLE_TAG | awk -F '-' '{print $1}'))
             printf "Deploying to test environment: https://beis-par-$DEPLOY_ENV.cloudapps.digital\n"
-            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SEED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}-latest.sql -d /tmp/workspace $DEPLOY_ENV
 
   archive_database:
     <<: *defaults
@@ -454,6 +454,7 @@ jobs:
           command: cd web && sed -e '/-- do not execute if not member of manager role/,+4d' < ../backups/${UNSANITISED_DATABASE}.sql | ../vendor/bin/drush @par.paas sql:cli
           environment:
             APP_ENV: ci-sanitise
+      - *check_application
       - run:
           name: "Sanitise database"
           command: |

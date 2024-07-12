@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 
@@ -25,8 +24,7 @@ public class MemberListCountPage extends BasePageObject {
 		memberNumberTextfield.sendKeys(count);
 	}
 	
-	public MembersListUpToDatePage clickContinue() {
+	public void clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, MembersListUpToDatePage.class);
 	}
 }

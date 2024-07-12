@@ -2,9 +2,9 @@ package uk.gov.beis.pageobjects.UserManagement;
 
 import java.io.IOException;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 
@@ -28,13 +28,15 @@ public class ManagePeoplePage extends BasePageObject {
 	@FindBy(linkText = "Manage contact")
 	private WebElement manageContactBtn;
 	
+	private String manageContactByEmailLocator = "//td[contains(normalize-space(), '?')]/following-sibling::td[2]/a[contains(normalize-space(), 'Manage contact')]";
+	private String manageContactByNameLocator = "//td[contains(normalize-space(), '?')]/following-sibling::td[3]/a[contains(normalize-space(), 'Manage contact')]";
+	
 	public ManagePeoplePage() throws ClassNotFoundException, IOException {
 		super();
 	}
 	
-	public ContactDetailsPage selectAddPerson() {
+	public void selectAddPerson() {
 		addPersonBtn.click();
-		return PageFactory.initElements(driver, ContactDetailsPage.class);
 	}
 	
 	public void enterNameOrEmail(String searchText) {
@@ -53,8 +55,17 @@ public class ManagePeoplePage extends BasePageObject {
 		return personNameTableElement.getText().trim();
 	}
 	
-	public UserProfilePage clickManageContact() {
+	public void findManageContactByEmail(String personEmail) {
+		WebElement link = driver.findElement(By.xpath(manageContactByEmailLocator.replace("?", personEmail)));
+		link.click();
+	}
+	
+	public void findManageContactByName(String personName) {
+		WebElement link = driver.findElement(By.xpath(manageContactByNameLocator.replace("?", personName)));
+		link.click();
+	}
+	
+	public void clickManageContact() {
 		manageContactBtn.click();
-		return PageFactory.initElements(driver, UserProfilePage.class);
 	}
 }

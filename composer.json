@@ -206,6 +206,9 @@
             },
             "drupal/views_data_export": {
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2021-03-01/allow-configurable-filesystems_3200974-6.patch"
+            },
+            "twistor/flysystem-stream-wrapper": {
+                "Fix PHP error on flystem (see https://github.com/twistor/flysystem-stream-wrapper/issues/27 & https://www.drupal.org/project/flysystem/issues/3387094": "patches/flysystem-deprecated-dynamic-prop.patch"
             }
         }
     },

@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 
@@ -27,8 +26,7 @@ public class ContactRecordsPage extends BasePageObject {
 		}
 	}
 	
-	public ContactDetailsPage selectContinueButton() {
+	public void selectContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, ContactDetailsPage.class);
 	}
 }

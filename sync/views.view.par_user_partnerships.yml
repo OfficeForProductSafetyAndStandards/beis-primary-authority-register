@@ -24,7 +24,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: 'Primary Authority Register | Your partnerships'
+      title: 'Your partnerships'
       fields:
         id:
           id: id
@@ -620,7 +620,7 @@ display:
           admin_label: ''
           plugin_id: text_custom
           empty: true
-          content: '<p>Sorry, there are no results for your search.</p>'
+          content: "<div aria-live=\"polite\">\r\n<p>Sorry, there are no results for your search.</p>\r\n</div>"
           tokenize: false
       sorts:
         partnership_status:
@@ -1064,6 +1064,7 @@ display:
           plugin_id: standard
           required: false
       css_class: par-user-partnership-list
+      use_ajax: true
       header: {  }
       footer:
         par_flow_link:
@@ -1096,7 +1097,7 @@ display:
     display_plugin: page
     position: 1
     display_options:
-      title: 'Primary Authority Register | Pending applications'
+      title: 'Pending applications'
       sorts:
         partnership_status:
           id: partnership_status

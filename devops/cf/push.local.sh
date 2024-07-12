@@ -277,7 +277,6 @@ fi
 printf "Archiving the seed database in $BUILD_DIR/$DB_DIR...\n"
 mkdir -p "$BUILD_DIR/$DB_DIR"
 if [[ -f $DB_IMPORT ]]; then
-    printf "Preparing DB Import: $BUILD_DIR/$DB_DIR/$DB_NAME.sql \n"
     cp "$DB_IMPORT" "$BUILD_DIR/$DB_DIR/$DB_NAME.sql"
     tar -zcvf "$BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz" -C $BUILD_DIR/$DB_DIR "$DB_NAME.sql"
 fi
@@ -546,23 +545,21 @@ printf "Starting the application...\n"
 cf start $TARGET_ENV
 
 ## Import the seed database and then delete it.
-if [[ $ENV != "production" ]] && [[ $DB_RESET == 'y' ]]; then
+if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
     if [[ ! -f "$BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz" ]]; then
-        printf "Seed database required, but could not find one at '$BUILD_DIR/$DB_DIR/DB_NAME.sql'.\n"
+        printf "Seed database required, but could not find one at '$BUILD_DIR/$DB_DIR/sanitised-db.sql'.\n"
         exit 6
     fi
 
     # Running a python script instead of bash because python has immediate
     # access to all of the environment variables and configuration.
-    printf "Importing the database $DB_NAME.sql...\n"
+    printf "Importing the database...\n"
     cf run-task $TARGET_ENV -m 2G -k 2G --name DB_IMPORT -c "./scripts/drop.sh && \
-        ls -la /home/vcap/app && ls -la /home/vcap/app/web&& ls -la /home/vcap/app/backups && \
         cd $REMOTE_BUILD_DIR/web && \
         tar --no-same-owner -zxvf $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz -C $REMOTE_BUILD_DIR/$DB_DIR && \
         ../vendor/bin/drush @par.paas sql:cli < $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
-        ../vendor/bin/drush user:unblock dadmin && \
         rm -f $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql"
-
+    
     # Wait for database to be imported.
     cf_poll_task $TARGET_ENV DB_IMPORT
 

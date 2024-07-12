@@ -20,6 +20,9 @@ import uk.gov.beis.supportfactory.BrowserFactory;
 
 public class BasePageObject {
 	
+	@FindBy(linkText = "Primary Authority Register")
+	private WebElement headerTextLink;
+	
 	@FindBy(linkText = "Sign out")
 	private WebElement signOutLink;
 	
@@ -37,6 +40,10 @@ public class BasePageObject {
 	public BasePageObject() {
 		driver = ScenarioContext.lastDriver;
 		javascriptExecutor = (JavascriptExecutor) driver;
+	}
+	
+	public void clickHeaderLink() {
+		headerTextLink.click();
 	}
 	
 	public void clickSignOut() {
@@ -100,7 +107,7 @@ public class BasePageObject {
 	public void executeJavaScript(String script, WebElement element) {
 		javascriptExecutor.executeScript(script, element);
 	}
-
+	
 	public void refresh() {
 		driver.navigate().refresh();
 	}

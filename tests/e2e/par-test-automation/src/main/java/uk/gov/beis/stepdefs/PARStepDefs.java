@@ -55,7 +55,7 @@ public class PARStepDefs {
 		
 		LOG.info("Logging in user with credentials; username: " + user + " and password " + pass);
 		websiteManager.loginPage.enterLoginDetails(user, pass);
-		websiteManager.loginPage.clickSignIn();
+		websiteManager.loginPage.selectSignIn();
 	}
 
 	@Then("^the user is on the dashboard page$")
@@ -114,33 +114,36 @@ public class PARStepDefs {
 		
 		LOG.info("Choose authority");
 		websiteManager.parAuthorityPage.selectAuthority(authority);
+		websiteManager.parAuthorityPage.selectContinueButton();
 		
 		LOG.info("Select partnership type");
 		websiteManager.parPartnershipTypePage.selectPartnershipType(type);
+		websiteManager.parPartnershipTypePage.clickContinueButton();
 		
 		LOG.info("Accepting terms");
 		websiteManager.parPartnershipTermsPage.acceptTerms();
+		websiteManager.parPartnershipTermsPage.clickContinueButton();
 		
 		LOG.info("Entering partnership description");
 		websiteManager.parPartnershipDescriptionPage.enterDescription(DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO));
-		websiteManager.parPartnershipDescriptionPage.gotToBusinessNamePage();
+		websiteManager.parPartnershipDescriptionPage.clickContinueButton();
 		
 		LOG.info("Entering business/organisation name");
 		websiteManager.businessNamePage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
-		websiteManager.businessNamePage.goToAddressPage();
+		websiteManager.businessNamePage.clickContinueButton();
 		
 		LOG.info("Enter address details");
 		websiteManager.addAddressPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
 				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTRY),
 				DataStore.getSavedValue(UsableValues.BUSINESS_NATION), DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
-		websiteManager.addAddressPage.goToAddContactDetailsPage();
+		websiteManager.addAddressPage.clickContinueButton();
 		
 		LOG.info("Enter contact details");
 		websiteManager.contactDetailsPage.addContactDetails(details);
-		websiteManager.contactDetailsPage.goToInviteUserAccountPage();
+		websiteManager.contactDetailsPage.clickContinueButton();
 		
 		LOG.info("Send invitation to user");
-		websiteManager.accountInvitePage.sendInvite();
+		websiteManager.accountInvitePage.clickContinueButton();
 	}
 
 	@Then("^the first part of the partnership application is successfully completed$")
@@ -155,6 +158,7 @@ public class PARStepDefs {
 		
 		LOG.info("Complete Partnership Application.");
 		websiteManager.checkPartnershipInformationPage.completeApplication();
+		websiteManager.checkPartnershipInformationPage.clickSaveButton();
 		websiteManager.parPartnershipCompletionPage.clickDoneButton();
 	}
 	
@@ -223,30 +227,32 @@ public class PARStepDefs {
 		
 		LOG.info("Accepting terms");
 		websiteManager.declarationPage.selectConfirmCheckbox();
-		websiteManager.declarationPage.goToBusinessDetailsPage();
+		websiteManager.declarationPage.clickContinueButton();
 		
 		LOG.info("Add business description");
 		websiteManager.aboutTheOrganisationPage.enterDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
-		websiteManager.aboutTheOrganisationPage.goToAddressPage();
+		websiteManager.aboutTheOrganisationPage.clickContinueButton();
 		
 		LOG.info("Confirming address details");
-		websiteManager.addAddressPage.goToAddContactDetailsPage();
+		websiteManager.addAddressPage.clickContinueButton();
 		
 		LOG.info("Confirming contact details");
 		websiteManager.contactDetailsPage.selectPreferredEmail();
 		websiteManager.contactDetailsPage.selectPreferredWorkphone();
 		websiteManager.contactDetailsPage.selectPreferredMobilephone();
 		websiteManager.contactDetailsPage.enterContactNote(DataStore.getSavedValue(UsableValues.CONTACT_NOTES));
-		websiteManager.contactDetailsPage.goToSICCodePage();
+		websiteManager.contactDetailsPage.clickContinueButton();
 		
 		LOG.info("Selecting SIC Code");
 		websiteManager.sicCodePage.selectSICCode(DataStore.getSavedValue(UsableValues.SIC_CODE));
+		websiteManager.sicCodePage.clickContinueButton();
 		
 		switch (DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).toLowerCase()) {
 
 		case ("direct"):
 			LOG.info("Selecting No of Employees.");
-			websiteManager.employeesPage.selectNoEmployees(DataStore.getSavedValue(UsableValues.NO_EMPLOYEES));
+			websiteManager.employeesPage.selectNumberOfEmployees(DataStore.getSavedValue(UsableValues.NO_EMPLOYEES));
+			websiteManager.employeesPage.clickContinueButton();
 			break;
 
 		case ("co-ordinated"):
@@ -257,13 +263,13 @@ public class PARStepDefs {
 
 		LOG.info("Entering business trading name.");
 		websiteManager.tradingPage.enterTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
-		websiteManager.tradingPage.goToLegalEntityTypePage();
+		websiteManager.tradingPage.clickContinueButton();
 		
 		LOG.info("Entering a Legal Entity.");
 		websiteManager.legalEntityTypePage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
-		websiteManager.legalEntityTypePage.goToLegalEntityReviewPage();
+		websiteManager.legalEntityTypePage.clickContinueButton();
 		
-		websiteManager.legalEntityReviewPage.goToCheckPartnershipInformationPage();
+		websiteManager.legalEntityReviewPage.clickContinueButton();
 		
 		LOG.info("Set second part of journey part to true");
 		ScenarioContext.secondJourneyPart = true;
@@ -296,6 +302,7 @@ public class PARStepDefs {
 		
 		LOG.info("Complete Partnership Application.");
 		websiteManager.checkPartnershipInformationPage.confirmApplication();
+		websiteManager.checkPartnershipInformationPage.clickSaveButton();
 		websiteManager.parPartnershipCompletionPage.clickDoneButton();
 	}
 	
@@ -321,12 +328,12 @@ public class PARStepDefs {
 		websiteManager.partnershipAdvancedSearchPage.selectApproveBusinessNameLink();
 		
 		websiteManager.declarationPage.selectAuthorisedCheckbox();
-		websiteManager.declarationPage.goToRegulatoryFunctionsPage();
+		websiteManager.declarationPage.clickContinueButton();
 		
 		websiteManager.regulatoryFunctionPage.selectNormalOrSequencedFunctions();
-		websiteManager.regulatoryFunctionPage.goToPartnershipApprovedPage();
+		websiteManager.regulatoryFunctionPage.selectContinueButton();
 		
-		websiteManager.partnershipApprovalPage.completeApplication();
+		websiteManager.partnershipApprovalPage.clickDoneButton();
 	}
 
 	@When("^the user searches again for the last created partnership$")
@@ -341,9 +348,9 @@ public class PARStepDefs {
 		websiteManager.partnershipAdvancedSearchPage.selectRevokeBusinessNameLink();
 		
 		websiteManager.revokePage.enterReasonForRevocation("Test Revoke.");
-		websiteManager.revokePage.goToPartnershipRevokedPage();
+		websiteManager.revokePage.clickRevokeButton();
 		
-		websiteManager.partnershipRevokedPage.goToAdvancedPartnershipSearchPage();
+		websiteManager.partnershipRevokedPage.clickDoneButton();
 	}
 
 	@When("^the user restores the partnership$")
@@ -351,8 +358,8 @@ public class PARStepDefs {
 		LOG.info("Restoring last revoked partnership");
 		websiteManager.partnershipAdvancedSearchPage.selectRestoreBusinessNameLink();
 		
-		websiteManager.reinstatePage.goToPartnershipRestoredPage();
-		websiteManager.partnershipRestoredPage.goToAdvancedPartnershipSearchPage();
+		websiteManager.reinstatePage.clickContinueButton();
+		websiteManager.partnershipRestoredPage.clickDoneButton();
 	}
 
 	@Then("^the partnership is displayed with Status \"([^\"]*)\" and Actions \"([^\"]*)\"$")
@@ -381,10 +388,11 @@ public class PARStepDefs {
 		
 		websiteManager.partnershipInformationPage.editAboutPartnership();
 		websiteManager.parPartnershipDescriptionPage.enterDescription(DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO));
-		websiteManager.parPartnershipDescriptionPage.goToPartnershipInformationPage();
+		websiteManager.parPartnershipDescriptionPage.clickSaveButton();
 		
 		websiteManager.partnershipInformationPage.editRegulatoryFunctions();
 		websiteManager.regulatoryFunctionPage.updateRegFunction();
+		websiteManager.regulatoryFunctionPage.selectSaveButton();
 	}
 
 	@Then("^the About the Partnership and Regulatory Functions are updated Successfully$")
@@ -394,7 +402,7 @@ public class PARStepDefs {
 		assertTrue(websiteManager.partnershipInformationPage.verifyAboutThePartnership());
 		assertTrue(websiteManager.partnershipInformationPage.checkRegulatoryFunctions());
 		
-		websiteManager.partnershipInformationPage.clickSave();
+		websiteManager.partnershipInformationPage.clickSaveButton();
 	}
 	
 	@When("^the user searches for the last created partnership Organisation$")
@@ -426,20 +434,22 @@ public class PARStepDefs {
 		websiteManager.addAddressPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
 				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTRY), 
 				DataStore.getSavedValue(UsableValues.BUSINESS_NATION), DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
-		websiteManager.addAddressPage.saveGoToPartnershipInformationPage();
+		websiteManager.addAddressPage.clickSaveButton();
 		
 		LOG.info("Selected Country: " + DataStore.getSavedValue(UsableValues.BUSINESS_COUNTRY));
 		LOG.info("Selected Nation: " + DataStore.getSavedValue(UsableValues.BUSINESS_NATION));
 		
 		websiteManager.partnershipInformationPage.editAboutTheOrganisation();
 		websiteManager.parPartnershipDescriptionPage.updateBusinessDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
-		websiteManager.parPartnershipDescriptionPage.goToPartnershipInformationPage();
+		websiteManager.parPartnershipDescriptionPage.clickSaveButton();
 		
 		websiteManager.partnershipInformationPage.editSICCode();
-		websiteManager.sicCodePage.editSICCode(DataStore.getSavedValue(UsableValues.SIC_CODE));
+		websiteManager.sicCodePage.selectSICCode(DataStore.getSavedValue(UsableValues.SIC_CODE));
+		websiteManager.sicCodePage.clickSaveButton();
 		
 		websiteManager.partnershipInformationPage.editTradingName();
-		websiteManager.tradingPage.goToPartnershipInformationPage(DataStore.getSavedValue(UsableValues.TRADING_NAME));
+		websiteManager.tradingPage.enterTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
+		websiteManager.tradingPage.clickSaveButton();
 	}
 
 	@Then("^all of the Partnership details have been updated successfully$")
@@ -451,7 +461,7 @@ public class PARStepDefs {
 		assertTrue(websiteManager.partnershipInformationPage.checkSICCode());
 		assertTrue(websiteManager.partnershipInformationPage.verifyTradingName());
 		
-		websiteManager.partnershipInformationPage.clickSave();
+		websiteManager.partnershipInformationPage.clickSaveButton();
 	}
 	
 	@When("^the user Amends the legal entities with the following details:$")
@@ -466,13 +476,13 @@ public class PARStepDefs {
 		websiteManager.partnershipInformationPage.selectAmendLegalEntitiesLink();
 		
 		websiteManager.legalEntityTypePage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
-		websiteManager.legalEntityTypePage.goToLegalEntityReviewPage();
-		websiteManager.legalEntityReviewPage.goToConfirmThisAmendmentPage();
+		websiteManager.legalEntityTypePage.clickContinueButton();
+		websiteManager.legalEntityReviewPage.clickContinueButton();
 		
 		websiteManager.confirmThisAmendmentPage.selectConfirmationCheckbox();
-		websiteManager.confirmThisAmendmentPage.submitAmendmentButton();
+		websiteManager.confirmThisAmendmentPage.selectSubmitAmendmentButton();
 		
-		websiteManager.amendmentCompletedPage.goToPartnershipDetailsPage();
+		websiteManager.amendmentCompletedPage.clickDoneButton();
 	}
 	
 	@Then("^the user verifies the amendments are created successfully with status \"([^\"]*)\"$")
@@ -488,7 +498,7 @@ public class PARStepDefs {
 		websiteManager.partnershipInformationPage.selectConfirmLegalEntitiesLink();
 		websiteManager.confirmThisAmendmentPage.selectConfirmationCheckbox();
 		websiteManager.confirmThisAmendmentPage.goToAmendmentCompletedPage();
-		websiteManager.amendmentCompletedPage.goToDashBoardPage();
+		websiteManager.amendmentCompletedPage.clickDoneButton();
 	}
 	
 	@Then("^the user verifies the amendments are confirmed successfully with status \"([^\"]*)\"$")
@@ -510,7 +520,7 @@ public class PARStepDefs {
 		
 		websiteManager.confirmThisAmendmentPage.selectConfirmationCheckbox();
 		websiteManager.confirmThisAmendmentPage.goToAmendmentCompletedPage();
-		websiteManager.amendmentCompletedPage.goToPartnershipDetailsPage();
+		websiteManager.amendmentCompletedPage.clickDoneButton();
 	}
 	
 	@Then("^the user verifies the amendments are nominated successfully with status \"([^\"]*)\"$")
@@ -526,7 +536,7 @@ public class PARStepDefs {
 		websiteManager.partnershipInformationPage.selectRevokeLegalEntitiesLink();
 		
 		websiteManager.revokePage.enterReasonForRevocation(reason);
-		websiteManager.revokePage.goToPartnershipDetailsPage();
+		websiteManager.revokePage.selectRevokeButton();
 	}
 
 	@Then("^the user verifies the legal entity was revoked successfully with status \"([^\"]*)\"$")
@@ -540,7 +550,7 @@ public class PARStepDefs {
 		LOG.info("Reinstate the Legal Entity as the Help Desk User.");
 		
 		websiteManager.partnershipInformationPage.selectReinstateLegalEntitiesLink();
-		websiteManager.reinstatePage.goToPartnershipDetailsPage();
+		websiteManager.reinstatePage.clickReinstateButton();
 	}
 
 	@Then("^the user verifies the legal entity was reinstated successfully with status \"([^\"]*)\"$")
@@ -554,7 +564,7 @@ public class PARStepDefs {
 		LOG.info("Remove the Legal Entity as the Help Desk User.");
 		
 		websiteManager.partnershipInformationPage.selectRemoveLegalEntitiesLink();
-		websiteManager.removePage.goToPartnershipDetailsPage();
+		websiteManager.removePage.clickRemoveButton();
 	}
 
 	@Then("^the user verifies the legal entity was removed successfully$")
@@ -581,7 +591,7 @@ public class PARStepDefs {
 		websiteManager.contactDetailsPage.selectRandomPreferredCommunication();
 		websiteManager.contactDetailsPage.enterContactNote(DataStore.getSavedValue(UsableValues.CONTACT_NOTES));
 		
-		websiteManager.contactDetailsPage.selectContinueButton();
+		websiteManager.contactDetailsPage.clickContinueButton();
 		
 		LOG.info("Reviewing the Contact Details..");
 		websiteManager.profileReviewPage.clickSaveButton();
@@ -598,7 +608,7 @@ public class PARStepDefs {
 		websiteManager.partnershipInformationPage.removeContactsDetailsButton();
 		
 		LOG.info("Removing the contact.");
-		websiteManager.removePage.goToPartnershipDetailsPage();
+		websiteManager.removePage.clickRemoveButton();
 	}
 
 	@Then("^the new Primary Authority contact is removed Successfully$")
@@ -624,7 +634,7 @@ public class PARStepDefs {
 		websiteManager.contactDetailsPage.selectRandomPreferredCommunication();
 		websiteManager.contactDetailsPage.enterContactNote(DataStore.getSavedValue(UsableValues.CONTACT_NOTES));
 		
-		websiteManager.contactDetailsPage.selectContinueButton();
+		websiteManager.contactDetailsPage.clickContinueButton();
 		
 		LOG.info("Reviewing the Contact Details.");
 		websiteManager.profileReviewPage.clickSaveButton();
@@ -641,7 +651,7 @@ public class PARStepDefs {
 		websiteManager.partnershipInformationPage.removeContactsDetailsButton();
 		
 		LOG.info("Removing the contact.");
-		websiteManager.removePage.goToPartnershipDetailsPage();
+		websiteManager.removePage.clickRemoveButton();
 	}
 
 	@Then("^the new Organisation contact is removed Successfully$")
@@ -666,14 +676,14 @@ public class PARStepDefs {
 		websiteManager.inspectionPlanSearchPage.selectUploadLink();
 		
 		websiteManager.uploadInspectionPlanPage.chooseFile("link.txt");
-		websiteManager.uploadInspectionPlanPage.uploadFile();
+		websiteManager.uploadInspectionPlanPage.selectUploadButton();
 		
 		websiteManager.inspectionPlanDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE));
 		websiteManager.inspectionPlanDetailsPage.enterInspectionDescription(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_DESCRIPTION));
-		websiteManager.inspectionPlanDetailsPage.goToInspectionPlanExpirePage();
+		websiteManager.inspectionPlanDetailsPage.selectSaveButton();
 		
 		websiteManager.enterTheDatePage.enterDate("ddMMYYYY");
-		websiteManager.enterTheDatePage.goToInspectionPlanSearchPage();
+		websiteManager.enterTheDatePage.selectSaveButton();
 	}
 	
 	@Then("^the inspection plan is uploaded successfully$")
@@ -698,9 +708,9 @@ public class PARStepDefs {
 		
 		websiteManager.inspectionPlanDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE));
 		websiteManager.inspectionPlanDetailsPage.enterInspectionDescription(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_DESCRIPTION));
-		websiteManager.inspectionPlanDetailsPage.goToInspectionPlanExpirePage();
+		websiteManager.inspectionPlanDetailsPage.selectSaveButton();
 		
-		websiteManager.enterTheDatePage.goToInspectionPlanSearchPage();
+		websiteManager.enterTheDatePage.selectSaveButton();
 		websiteManager.inspectionPlanSearchPage.selectInspectionPlan();
 	}
 
@@ -728,13 +738,13 @@ public class PARStepDefs {
 		websiteManager.adviceNoticeSearchPage.selectUploadLink();
 		
 		websiteManager.uploadAdviceNoticePage.chooseFile("link.txt");
-		websiteManager.uploadAdviceNoticePage.uploadFile();
+		websiteManager.uploadAdviceNoticePage.selectUploadButton();
 		
 		websiteManager.adviceNoticeDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
 		websiteManager.adviceNoticeDetailsPage.selectAdviceType(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TYPE));
 		websiteManager.adviceNoticeDetailsPage.selectRegulatoryFunction(DataStore.getSavedValue(UsableValues.ADVICENOTICE_REGFUNCTION));
 		websiteManager.adviceNoticeDetailsPage.enterDescription(DataStore.getSavedValue(UsableValues.ADVICENOTICE_DESCRIPTION));
-		websiteManager.adviceNoticeDetailsPage.clickSave();
+		websiteManager.adviceNoticeDetailsPage.selectSaveButton();
 	}
 	
 	@Then("^the advice notice it uploaded successfully and set to active$")
@@ -765,7 +775,7 @@ public class PARStepDefs {
 		websiteManager.adviceNoticeDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
 		websiteManager.adviceNoticeDetailsPage.selectAdviceType(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TYPE));
 		websiteManager.adviceNoticeDetailsPage.enterDescription(DataStore.getSavedValue(UsableValues.ADVICENOTICE_DESCRIPTION));
-		websiteManager.adviceNoticeDetailsPage.clickSave();
+		websiteManager.adviceNoticeDetailsPage.selectSaveButton();
 	}
 
 	@Then("^the advice notice it updated successfully$")
@@ -781,7 +791,8 @@ public class PARStepDefs {
 		websiteManager.adviceNoticeSearchPage.searchForAdvice(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
 		websiteManager.adviceNoticeSearchPage.selectArchiveAdviceButton();
 		
-		websiteManager.adviceArchivePage.enterReasonForArchiving(reason);
+		websiteManager.adviceArchivePage.enterArchiveReason(reason);
+		websiteManager.adviceArchivePage.selectSaveButton();
 	}
 
 	@Then("^the advice notice is archived successfully$")
@@ -798,7 +809,7 @@ public class PARStepDefs {
 		websiteManager.adviceNoticeSearchPage.selectRemoveAdviceButton();
 		
 		websiteManager.removePage.enterRemoveReason(reason);
-		websiteManager.removePage.goToAdviceNoticeSearchPage();
+		websiteManager.removePage.selectRemoveButton();
 	}
 
 	@Then("^the advice notice is removed successfully$")
@@ -824,22 +835,22 @@ public class PARStepDefs {
 		
 		LOG.info("Create enformcement notification against partnership");
 		websiteManager.partnershipInformationPage.createEnforcement();
-		websiteManager.enforcementNotificationPage.clickContinue();
+		websiteManager.enforcementNotificationPage.clickContinueButton();
 		
-		websiteManager.enforcementOfficerContactDetailsPage.goToEnforceLegalEntityPage();
+		websiteManager.enforcementOfficerContactDetailsPage.clickContinueButton();
 		
 		websiteManager.enforceLegalEntityPage.enterLegalEntityName(DataStore.getSavedValue(UsableValues.ENTITY_NAME));
-		websiteManager.enforceLegalEntityPage.goToEnforcementDetailsPage();
+		websiteManager.enforceLegalEntityPage.clickContinueButton();
 		
 		websiteManager.enforcementDetailsPage.selectEnforcementType(DataStore.getSavedValue(UsableValues.ENFORCEMENT_TYPE));
 		websiteManager.enforcementDetailsPage.enterEnforcementDescription(DataStore.getSavedValue(UsableValues.ENFORCEMENT_DESCRIPTION));
-		websiteManager.enforcementDetailsPage.goToEnforcementActionPage();
+		websiteManager.enforcementDetailsPage.clickContinueButton();
 		
 		websiteManager.enforcementActionPage.selectRegulatoryFunctions(DataStore.getSavedValue(UsableValues.ENFORCEMENT_REGFUNC));
 		websiteManager.enforcementActionPage.chooseFile(DataStore.getSavedValue(UsableValues.ENFORCEMENT_FILENAME));
 		websiteManager.enforcementActionPage.enterEnforcementDescription(DataStore.getSavedValue(UsableValues.ENFORCEMENT_DESCRIPTION).toLowerCase());
 		websiteManager.enforcementActionPage.enterTitle(DataStore.getSavedValue(UsableValues.ENFORCEMENT_TITLE));
-		websiteManager.enforcementActionPage.goToEnforcementReviewPage();
+		websiteManager.enforcementActionPage.clickContinueButton();
 	}
 
 	@Then("^all the fields for the enforcement notice are updated correctly$")
@@ -847,8 +858,8 @@ public class PARStepDefs {
 		LOG.info("Verify Enforcement Details are Correct.");
 		Assert.assertTrue("Failed: Enforcement Details are not Correct.", websiteManager.enforcementReviewPage.checkEnforcementCreation());
 		
-		websiteManager.enforcementReviewPage.saveChanges();
-		websiteManager.enforcementCompletionPage.goToPartnershipConfirmationPage();
+		websiteManager.enforcementReviewPage.clickSaveButton();
+		websiteManager.enforcementCompletionPage.clickDoneButton();
 	}
 
 	@When("^the user selects the last created enforcement notice$")
@@ -885,10 +896,10 @@ public class PARStepDefs {
 	public void the_user_approves_the_enforcement_notice() throws Throwable {
 		LOG.info("Approve the EnforcementNotice.");
 		websiteManager.proposedEnforcementPage.selectAllow();
-		websiteManager.proposedEnforcementPage.goToEnforcementReviewPage();
+		websiteManager.proposedEnforcementPage.clickContinueButton();
 		
-		websiteManager.enforcementReviewPage.saveChanges();
-		websiteManager.enforcementCompletionPage.clickDone();
+		websiteManager.enforcementReviewPage.clickSaveButton();
+		websiteManager.enforcementCompletionPage.clickDoneButton();
 	}
 
 	@Then("^the enforcement notice is set to approved status$")
@@ -913,7 +924,7 @@ public class PARStepDefs {
 		
 		websiteManager.removeEnforcementPage.selectRemovalReason("This is a duplicate enforcement");
 		websiteManager.removeEnforcementPage.enterRemovalDescription("Test Remove.");
-		websiteManager.removeEnforcementPage.goToDeclarationPage();
+		websiteManager.removeEnforcementPage.clickContinueButton();
 		
 		websiteManager.declarationPage.selectConfirmCheckbox();
 		websiteManager.declarationPage.goToEnforcementSearchPage();
@@ -932,10 +943,10 @@ public class PARStepDefs {
 		LOG.info("Block the Enforcement Notice.");
 		websiteManager.proposedEnforcementPage.selectBlock();
 		websiteManager.proposedEnforcementPage.enterReasonForBlockingEnforcement(reason);
-		websiteManager.proposedEnforcementPage.goToEnforcementReviewPage();
+		websiteManager.proposedEnforcementPage.clickContinueButton();
 		
-		websiteManager.enforcementReviewPage.saveChanges();
-		websiteManager.enforcementCompletionPage.clickDone();
+		websiteManager.enforcementReviewPage.clickSaveButton();
+		websiteManager.enforcementCompletionPage.clickDoneButton();
 	}
 	
 	@Then("^the enforcement notice is set to blocked status$")
@@ -956,11 +967,11 @@ public class PARStepDefs {
 		
 		websiteManager.partnershipSearchPage.selectBusinessNameLinkFromPartnership();
 		websiteManager.partnershipInformationPage.selectDeviateInspectionPlan();
-		websiteManager.enforcementOfficerContactDetailsPage.goToDeviationRequestPage();
+		websiteManager.enforcementOfficerContactDetailsPage.clickContinueButton();
 		
 		websiteManager.requestDeviationPage.enterDescription(DataStore.getSavedValue(UsableValues.DEVIATION_DESCRIPTION));
 		websiteManager.requestDeviationPage.chooseFile("link.txt");
-		websiteManager.requestDeviationPage.goToDeviationReviewPage();
+		websiteManager.requestDeviationPage.clickContinueButton();
 	}
 
 	@Then("^the Deviation Request is created Successfully$")
@@ -968,8 +979,8 @@ public class PARStepDefs {
 		LOG.info("Verify the Deviation Request is created Successfully.");
 		
 		Assert.assertTrue("Failed: Deviation Request details are not displayed.", websiteManager.deviationReviewPage.checkDeviationCreation());
-		websiteManager.deviationReviewPage.saveChanges();
-		websiteManager.deviationCompletionPage.complete();
+		websiteManager.deviationReviewPage.clickSaveChanges();
+		websiteManager.deviationCompletionPage.clickDoneButton();
 	}
 	
 	@When("^the user searches for the last created deviation request$")
@@ -993,7 +1004,7 @@ public class PARStepDefs {
 		
 		websiteManager.deviationApprovalPage.selectBlock();
 		websiteManager.deviationApprovalPage.enterReasonForBlocking(reason);
-		websiteManager.deviationApprovalPage.goToDeviationReviewPage();
+		websiteManager.deviationApprovalPage.clickContinueButton();
 	}
 
 	@Then("^the deviation request is set to blocked status$")
@@ -1001,19 +1012,19 @@ public class PARStepDefs {
 		LOG.info("Check the Deviation Request is Blocked on the Review Page.");
 		
 		Assert.assertTrue("Failed: Deviation request status is not Set to Blocked.", websiteManager.deviationReviewPage.checkDeviationStatusBlocked());
-		websiteManager.deviationReviewPage.saveChanges();
-		websiteManager.deviationCompletionPage.complete();
+		websiteManager.deviationReviewPage.clickSaveChanges();
+		websiteManager.deviationCompletionPage.clickDoneButton();
 	}
 
 	@Then("^the user successfully approves the deviation request$")
 	public void the_user_successfully_approves_the_deviation_request() throws Throwable {
 		LOG.info("Approve the deviation request");
 		websiteManager.deviationApprovalPage.selectAllow();
-		websiteManager.deviationApprovalPage.goToDeviationReviewPage();
+		websiteManager.deviationApprovalPage.clickContinueButton();
 		
 		Assert.assertTrue("Failed: Deviation request status not correct", websiteManager.deviationReviewPage.checkDeviationStatusApproved());
-		websiteManager.deviationReviewPage.saveChanges();
-		websiteManager.deviationCompletionPage.complete();
+		websiteManager.deviationReviewPage.clickSaveChanges();
+		websiteManager.deviationCompletionPage.clickDoneButton();
 	}
 
 	@When("^the user submits a response to the deviation request with the following details:$")
@@ -1026,11 +1037,11 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.MESSAGE_RESPONSE, data.get("Description"));
 		}
 		
-		websiteManager.deviationReviewPage.submitResponse();
+		websiteManager.deviationReviewPage.clickSubmitResponse();
 		
 		websiteManager.replyDeviationRequestPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.MESSAGE_RESPONSE));
 		websiteManager.replyDeviationRequestPage.chooseFile("link.txt");
-		websiteManager.replyDeviationRequestPage.goToDeviationReviewPage();
+		websiteManager.replyDeviationRequestPage.clickSaveButton();
 	}
 	
 	@Then("^the response is displayed successfully$")
@@ -1047,11 +1058,11 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.MESSAGE_RESPONSE, data.get("Description"));
 		}
 		
-		websiteManager.deviationReviewPage.submitResponse();
+		websiteManager.deviationReviewPage.clickSubmitResponse();
 		
 		websiteManager.replyDeviationRequestPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.MESSAGE_RESPONSE));
 		websiteManager.replyDeviationRequestPage.chooseFile("link.txt");
-		websiteManager.replyDeviationRequestPage.goToDeviationReviewPage();
+		websiteManager.replyDeviationRequestPage.clickSaveButton();
 	}
 
 	@Then("^the deviation reply received successfully$")
@@ -1071,11 +1082,11 @@ public class PARStepDefs {
 		websiteManager.partnershipSearchPage.selectBusinessNameLinkFromPartnership();
 		websiteManager.partnershipInformationPage.selectSendInspectionFeedbk();
 		
-		websiteManager.enforcementOfficerContactDetailsPage.goToInspectionFeedbackDetailsPage();
+		websiteManager.enforcementOfficerContactDetailsPage.clickContinueButton();
 		
 		websiteManager.inspectionFeedbackDetailsPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_DESCRIPTION));
 		websiteManager.inspectionFeedbackDetailsPage.chooseFile("link.txt");
-		websiteManager.inspectionFeedbackDetailsPage.goToFeedbackConfirmationPage();
+		websiteManager.inspectionFeedbackDetailsPage.clickContinueButton();
 	}
 	
 	@Then("^the inspection feedback is created successfully$")
@@ -1083,8 +1094,8 @@ public class PARStepDefs {
 		LOG.info("Verifying the Inspection Feedback Details.");
 		Assert.assertTrue("Failed: Inspection Feedback Details are Incorrect.", websiteManager.inspectionFeedbackConfirmationPage.checkInspectionFeedback());
 		
-		websiteManager.inspectionFeedbackConfirmationPage.goToInspectionFeedbackCompletionPage();
-		websiteManager.inspectionFeedbackCompletionPage.complete();
+		websiteManager.inspectionFeedbackConfirmationPage.clickSaveButton();
+		websiteManager.inspectionFeedbackCompletionPage.clickDoneButton();
 	}
 
 	@When("^the user searches for the last created inspection feedback$")
@@ -1116,11 +1127,11 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.MESSAGE_RESPONSE, data.get("Description"));
 		}
 
-		websiteManager.inspectionFeedbackConfirmationPage.submitResponse();
+		websiteManager.inspectionFeedbackConfirmationPage.clickSubmitResponse();
 		
 		websiteManager.replyInspectionFeedbackPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.MESSAGE_RESPONSE));
 		websiteManager.replyInspectionFeedbackPage.chooseFile("link.txt");
-		websiteManager.replyInspectionFeedbackPage.clickSave();
+		websiteManager.replyInspectionFeedbackPage.clickSaveButton();
 	}
 	
 	@When("^the user sends a reply to the inspection feedback message with the following details:$")
@@ -1131,11 +1142,11 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.MESSAGE_RESPONSE, data.get("Description"));
 		}
 		
-		websiteManager.inspectionFeedbackConfirmationPage.submitResponse();
+		websiteManager.inspectionFeedbackConfirmationPage.clickSubmitResponse();
 		
 		websiteManager.replyInspectionFeedbackPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.MESSAGE_RESPONSE));
 		websiteManager.replyInspectionFeedbackPage.chooseFile("link.txt");
-		websiteManager.replyInspectionFeedbackPage.clickSave();
+		websiteManager.replyInspectionFeedbackPage.clickSaveButton();
 	}
 	
 	@Then("^the inspection feedback response is displayed successfully$")
@@ -1155,11 +1166,11 @@ public class PARStepDefs {
 		websiteManager.partnershipSearchPage.selectBusinessNameLinkFromPartnership();
 		websiteManager.partnershipInformationPage.sendGeneralEnquiry();
 		
-		websiteManager.enforcementOfficerContactDetailsPage.goToRequestEnquiryPage();
+		websiteManager.enforcementOfficerContactDetailsPage.clickContinueButton();
 		
 		websiteManager.requestEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_DESCRIPTION));
 		websiteManager.requestEnquiryPage.chooseFile("link.txt");
-		websiteManager.requestEnquiryPage.goToEnquiryReviewPage();
+		websiteManager.requestEnquiryPage.clickContinueButton();
 	}
 	
 	@When("^the user sends a general enquiry for an enforcement notice with the following details:$")
@@ -1175,11 +1186,11 @@ public class PARStepDefs {
 		
 		websiteManager.enforcementNotificationPage.selectDiscussEnforcement();
 		
-		websiteManager.enforcementOfficerContactDetailsPage.goToRequestEnquiryPage();
+		websiteManager.enforcementOfficerContactDetailsPage.clickContinueButton();
 		
 		websiteManager.requestEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_DESCRIPTION));
 		websiteManager.requestEnquiryPage.chooseFile("link.txt");
-		websiteManager.requestEnquiryPage.goToEnquiryReviewPage();
+		websiteManager.requestEnquiryPage.clickContinueButton();
 	}
 
 	@Then("^the Enquiry is created Successfully$")
@@ -1187,8 +1198,8 @@ public class PARStepDefs {
 		LOG.info("Verify the enquiry is created.");
 		Assert.assertTrue("Failed: Enquiry details are not correct.", websiteManager.enquiryReviewPage.checkEnquiryDescription());
 		
-		websiteManager.enquiryReviewPage.saveChanges();
-		websiteManager.enquiryCompletionPage.complete();
+		websiteManager.enquiryReviewPage.clickSaveChanges();
+		websiteManager.enquiryCompletionPage.clickDoneButton();
 	}
 
 	@When("^the user searches for the last created general enquiry$")
@@ -1220,11 +1231,11 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.MESSAGE_RESPONSE, data.get("Description"));
 		}
 		
-		websiteManager.enquiryReviewPage.submitResponse();
+		websiteManager.enquiryReviewPage.clickSubmitResponse();
 		
 		websiteManager.replyEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.MESSAGE_RESPONSE));
 		websiteManager.replyEnquiryPage.chooseFile("link.txt");
-		websiteManager.replyEnquiryPage.clickSave();
+		websiteManager.replyEnquiryPage.clickSaveButton();
 	}
 
 	@When("^the user sends a reply to the general enquiry with the following details:$")
@@ -1233,11 +1244,11 @@ public class PARStepDefs {
 			DataStore.saveValue(UsableValues.MESSAGE_RESPONSE, data.get("Description"));
 		}
 		
-		websiteManager.enquiryReviewPage.submitResponse();
+		websiteManager.enquiryReviewPage.clickSubmitResponse();
 		
 		websiteManager.replyEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.MESSAGE_RESPONSE));
 		websiteManager.replyEnquiryPage.chooseFile("link.txt");
-		websiteManager.replyEnquiryPage.clickSave();
+		websiteManager.replyEnquiryPage.clickSaveButton();
 	}
 	
 	@Then("^the general enquiry response is displayed successfully$")
@@ -1256,7 +1267,7 @@ public class PARStepDefs {
 		websiteManager.inspectionPlanSearchPage.selectRevokeLink();
 		
 		websiteManager.revokePage.enterReasonForRevocation("Test Revoke.");
-		websiteManager.revokePage.goToInspectionPlanSearchPage();
+		websiteManager.revokePage.selectRevokeButton();
 	}
 
 	@Then("^the inspection plan is revoked successfully$")
@@ -1271,7 +1282,7 @@ public class PARStepDefs {
 		websiteManager.inspectionPlanSearchPage.selectRemoveLink();
 		
 		websiteManager.removePage.enterRemoveReason("Test Remove.");
-		websiteManager.removePage.goToInspectionPlanSearchPage();
+		websiteManager.removePage.selectRemoveButton();
 	}
 
 	@Then("^the inspection plan is successfully removed$")
@@ -1295,14 +1306,17 @@ public class PARStepDefs {
 	@When("^the user completes the user creation journey$")
 	public void the_user_completes_the_user_creation_journey() throws Throwable {
 		LOG.info("Completing the User Creation Journey.");
+		//websiteManager.passwordPage.clickDrupalHideButton();
+		websiteManager.dashboardPage.acceptCookies();
+		websiteManager.dashboardPage.hideCookieBanner();
 		
 		websiteManager.passwordPage.enterPassword("TestPassword", "TestPassword");
-		websiteManager.passwordPage.selectRegister();
+		websiteManager.passwordPage.clickRegisterButton();
 		
 		websiteManager.declarationPage.selectDataPolicyCheckbox();
-		websiteManager.declarationPage.goToContactDetailsPage();
+		websiteManager.declarationPage.clickContinueButton();
 		
-		websiteManager.contactDetailsPage.goToContactCommunicationPreferencesPage();
+		websiteManager.contactDetailsPage.clickContinueButton();
 		
 		DataStore.saveValue(UsableValues.CONTACT_NOTES, "Test User Creation Note.");
 		
@@ -1319,8 +1333,8 @@ public class PARStepDefs {
 		
 		assertTrue("Failed: Contact Details are not Displayed Correctly.", websiteManager.profileReviewPage.checkContactDetails());
 		
-		websiteManager.profileReviewPage.goToProfileCompletionPage();
-		websiteManager.profileCompletionPage.goToDashboardPage();
+		websiteManager.profileReviewPage.clickSaveButton();
+		websiteManager.profileCompletionPage.clickDoneButton();
 	}
 	
 	@When("^the user Deletes the Partnership with the following reason: \"([^\"]*)\"$")
@@ -1329,7 +1343,7 @@ public class PARStepDefs {
 		websiteManager.partnershipAdvancedSearchPage.selectDeletePartnershipLink();
 		
 		websiteManager.deletePage.enterReasonForDeletion(reason);
-		websiteManager.deletePage.clickDeleteForPartnership();
+		websiteManager.deletePage.clickDoneButton();
 		
 		websiteManager.completionPage.clickDoneForPartnership();
 	}
@@ -1364,34 +1378,37 @@ public class PARStepDefs {
 		websiteManager.memberListPage.selectAddAMemberLink();
 		
 		LOG.info("Entering the Member Organisation's Name.");
-		websiteManager.addOrganisationNamePage.goToAuthorityAddressDetailsPage(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		websiteManager.addOrganisationNamePage.enterMemberName(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		websiteManager.addOrganisationNamePage.clickContinueButton();
 		
 		LOG.info("Entering the Member Organisation's Address.");
 		websiteManager.authorityAddressDetailsPage.enterMemberOrganisationAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
 				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY), DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
+		websiteManager.authorityAddressDetailsPage.clickContinueButton();
 		
 		LOG.info("Entering the Member Organisation's Contact Details.");
 		websiteManager.contactDetailsPage.enterContactWithRandomName(details);
-		websiteManager.contactDetailsPage.clickContinueButtonForMemberContact();
+		websiteManager.contactDetailsPage.clickContinueButton();
 		
 		LOG.info("Entering the Member Organisation's Membership Start Date.");
-		websiteManager.enterTheDatePage.clickContinueButtonForMembershipBegan();
+		websiteManager.enterTheDatePage.clickContinueButton();
 		
 		LOG.info("Entering the Member Organisation's Trading Name.");
-		websiteManager.tradingPage.addTradingNameForMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		websiteManager.tradingPage.enterTradingNameForMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		websiteManager.tradingPage.clickContinueButton();
 		
 		LOG.info("Entering the Member Organisation's Legal Entity.");
 		websiteManager.legalEntityTypePage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
-		websiteManager.legalEntityTypePage.goToLegalEntityReviewPage();
-		websiteManager.legalEntityReviewPage.clickContinueForMember();
+		websiteManager.legalEntityTypePage.clickContinueButton();
+		websiteManager.legalEntityReviewPage.clickContinueButton();
 		
 		LOG.info("Confirming the Member Organisation is covered by the Inspection Plan.");
 		websiteManager.inspectionPlanCoveragePage.selectYesRadial();
-		websiteManager.inspectionPlanCoveragePage.selectContinueForMember();
+		websiteManager.inspectionPlanCoveragePage.selectContinueButton();
 		
 		LOG.info("Saving the Member Organisation's Details.");
-		websiteManager.memberOrganisationSummaryPage.selectSave();
-		websiteManager.memberOrganisationAddedConfirmationPage.selectDone();
+		websiteManager.memberOrganisationSummaryPage.clickSaveButton();
+		websiteManager.memberOrganisationAddedConfirmationPage.clickDoneButton();
 	}
 
 	@Then("^the user member organistion has been added to the partnership successfully$")
@@ -1428,7 +1445,8 @@ public class PARStepDefs {
 		
 		LOG.info("Updating the Member Organisation's Name.");
 		websiteManager.memberOrganisationSummaryPage.selectEditOrganisationName();
-		websiteManager.addOrganisationNamePage.editMemberOrganisationName(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		websiteManager.addOrganisationNamePage.enterMemberName(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+		websiteManager.addOrganisationNamePage.clickSaveButton();
 		
 		LOG.info("Updating the Member Organisation's Address.");
 		websiteManager.memberOrganisationSummaryPage.selectEditAddress();
@@ -1436,38 +1454,39 @@ public class PARStepDefs {
 		websiteManager.addAddressPage.editAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
 				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY), DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
 		
-		websiteManager.addAddressPage.goToMemberOrganisationSummaryPage();
+		websiteManager.addAddressPage.clickSaveButton();
 		
 		LOG.info("Updating the Member Organisation's Membership Start Date.");
 		websiteManager.memberOrganisationSummaryPage.selectEditMembershipStartDate();
-		websiteManager.enterTheDatePage.goToMemberOrganisationSummaryPage();
+		websiteManager.enterTheDatePage.getMembershipDate();
+		websiteManager.enterTheDatePage.selectSaveButton();
 		
 		LOG.info("Updating the Member Organisation's Contact Details.");
 		websiteManager.memberOrganisationSummaryPage.selectEditPerson();
 		websiteManager.contactDetailsPage.enterContactWithRandomName(details);
-		websiteManager.contactDetailsPage.goToMemberOrganisationSummaryPage();
+		websiteManager.contactDetailsPage.clickSaveButton();
 		
 		LOG.info("Updating the Member Organisation's Legal Entity.");
 		websiteManager.memberOrganisationSummaryPage.selectAddAnotherLegalEntity();
 		websiteManager.updateLegalEntityPage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
-		websiteManager.updateLegalEntityPage.goToMemberOrganisationSummaryPage();
+		websiteManager.updateLegalEntityPage.clickSaveButton();
 		
 		LOG.info("Updating the Member Organisation's Trading Name.");
 		websiteManager.memberOrganisationSummaryPage.selectEditTradingName();
 		websiteManager.tradingPage.editMemberTradingName(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
-		websiteManager.tradingPage.goToMemberOrganisationSummaryPage();
+		websiteManager.tradingPage.clickSaveButton();
 		
 		LOG.info("Confirming the Member Organisation is not covered by the Inspection Plan.");
 		websiteManager.memberOrganisationSummaryPage.selectEditCoveredByInspectionPlan();
 		websiteManager.inspectionPlanCoveragePage.selectNoRadial();
-		websiteManager.inspectionPlanCoveragePage.selectSaveForMember();
+		websiteManager.inspectionPlanCoveragePage.selectSaveButon();
 	}
 
 	@Then("^the member organistion has been updated successfully$")
 	public void the_member_organistion_has_been_updated_successfully() throws Throwable {
 		LOG.info("Verifying All Member Details are Correct.");
 		Assert.assertTrue(websiteManager.memberOrganisationSummaryPage.checkMemberDetails());
-		websiteManager.memberOrganisationSummaryPage.selectDone();
+		websiteManager.memberOrganisationSummaryPage.clickDoneButton();
 		
 		LOG.info("Verify the Updated Member Organisation Name is Displayed on the Members List.");
 		websiteManager.memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
@@ -1486,9 +1505,9 @@ public class PARStepDefs {
 		
 		LOG.info("Entering the Current Date for the Cessation to Happen.");
 		websiteManager.enterTheDatePage.enterCurrentDate();
-		websiteManager.enterTheDatePage.goToMembershipCeasedPage();
+		websiteManager.enterTheDatePage.clickContinueButton();
 		
-		websiteManager.membershipCeasedPage.goToMembersListPage();
+		websiteManager.membershipCeasedPage.clickCeaseButton();
 	}
 
 	@Then("^the member organistion has been Ceased successfully$")
@@ -1512,11 +1531,11 @@ public class PARStepDefs {
 		
 		LOG.info("Uploading the Members List CSV File..");
 		websiteManager.uploadListOfMembersPage.chooseCSVFile();
-		websiteManager.uploadListOfMembersPage.selectUpload();
+		websiteManager.uploadListOfMembersPage.clickUploadButton();
 		
-		websiteManager.confirmMemberUploadPage.selectUpload();
+		websiteManager.confirmMemberUploadPage.selectUploadButton();
 		
-		websiteManager.memberListUploadedPage.selectDone();
+		websiteManager.memberListUploadedPage.clickDoneButton();
 	}
 
 	@Then("^the members list is uploaded successfully$")
@@ -1535,12 +1554,12 @@ public class PARStepDefs {
 		websiteManager.partnershipInformationPage.selectChangeMembersListTypeLink();
 		
 		websiteManager.membersListTypePage.selectMemberListType(listType);
-		websiteManager.membersListTypePage.clickContinue();
+		websiteManager.membersListTypePage.clickContinueButton();
 		
-		websiteManager.memberListCountPage.clickContinue();
+		websiteManager.memberListCountPage.clickContinueButton();
 		
 		websiteManager.membersListUpToDatePage.selectYesRadial();
-		websiteManager.membersListUpToDatePage.clicksave();
+		websiteManager.membersListUpToDatePage.clicksaveButton();
 	}
 
 	@Then("^the members list type is changed successfully$")
@@ -1558,7 +1577,7 @@ public class PARStepDefs {
 	@Given("^the user clicks the PAR Home page link$")
 	public void the_user_clicks_the_PAR_Home_page_link() throws Throwable {
 		LOG.info("Click PAR header to navigate to the PAR Home Page");
-		websiteManager.parAuthorityPage.selectPageHeader();
+		websiteManager.dashboardPage.clickHeaderLink();
 	}
 
 	@When("^the user is on the search for a partnership page$")
@@ -1607,25 +1626,26 @@ public class PARStepDefs {
 		
 		LOG.info("Provide authority name.");
 		websiteManager.authorityNamePage.enterAuthorityName(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
-		websiteManager.authorityNamePage.clickContinue();
+		websiteManager.authorityNamePage.clickContinueButton();
 		
 		LOG.info("Provide authority type.");
 		websiteManager.authorityTypePage.selectAuthorityType(DataStore.getSavedValue(UsableValues.AUTHORITY_TYPE));
-		websiteManager.authorityTypePage.clickContinue();
+		websiteManager.authorityTypePage.clickContinueButton();
 		
 		LOG.info("Enter authority contact details.");
 		
 		websiteManager.addAddressPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.AUTHORITY_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.AUTHORITY_ADDRESSLINE2),
 				DataStore.getSavedValue(UsableValues.AUTHORITY_TOWN), DataStore.getSavedValue(UsableValues.AUTHORITY_COUNTY), DataStore.getSavedValue(UsableValues.AUTHORITY_COUNTRY), 
 				DataStore.getSavedValue(UsableValues.AUTHORITY_NATION), DataStore.getSavedValue(UsableValues.AUTHORITY_POSTCODE));
-		websiteManager.addAddressPage.goToONSCodePage();
+		websiteManager.addAddressPage.clickContinueButton();
 		
 		LOG.info("Provide ONS code.");
 		websiteManager.onsCodePage.enterONSCode(DataStore.getSavedValue(UsableValues.ONS_CODE));
-		websiteManager.onsCodePage.clickContinue();
+		websiteManager.onsCodePage.clickContinueButton();
 		
 		LOG.info("Select regulatory function.");
 		websiteManager.regulatoryFunctionPage.selectRegFunction(DataStore.getSavedValue(UsableValues.AUTHORITY_REGFUNCTION));
+		websiteManager.regulatoryFunctionPage.selectContinueButton();
 	}
 
 	@Then("^the authority is created sucessfully$")
@@ -1653,21 +1673,22 @@ public class PARStepDefs {
 		websiteManager.authorityConfirmationPage.editAuthorityName();
 		
 		websiteManager.authorityNamePage.enterAuthorityName(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
-		websiteManager.authorityNamePage.clickSave();
+		websiteManager.authorityNamePage.clickSaveButton();
 		
 		websiteManager.authorityConfirmationPage.editAuthorityType();
 		
 		websiteManager.authorityTypePage.selectAuthorityType(DataStore.getSavedValue(UsableValues.AUTHORITY_TYPE));
-		websiteManager.authorityTypePage.clickSave();
+		websiteManager.authorityTypePage.clickSaveButton();
 		
 		websiteManager.authorityConfirmationPage.editONSCode();
 		
 		websiteManager.onsCodePage.enterONSCode(DataStore.getSavedValue(UsableValues.ONS_CODE));
-		websiteManager.onsCodePage.clickSave();
+		websiteManager.onsCodePage.clickSaveButton();
 		
 		websiteManager.authorityConfirmationPage.editRegFunction();
 		
-		websiteManager.regulatoryFunctionPage.editRegFunction(DataStore.getSavedValue(UsableValues.AUTHORITY_REGFUNCTION));
+		websiteManager.regulatoryFunctionPage.selectRegFunction(DataStore.getSavedValue(UsableValues.AUTHORITY_REGFUNCTION));
+		websiteManager.regulatoryFunctionPage.selectSaveButton();
 	}
 
 	@Then("^the update for the authority is successful$")
@@ -1693,11 +1714,14 @@ public class PARStepDefs {
 		LOG.info("Transferring a Partnership to the new Authority.");
 		
 		websiteManager.authorityTransferSelectionPage.searchAuthority(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
+		websiteManager.authorityTransferSelectionPage.clickContinueButton();
 		websiteManager.partnershipMigrationSelectionPage.selectPartnership(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
+		websiteManager.partnershipMigrationSelectionPage.clickContinueButton();
 		
 		LOG.info("Confirm the Partnership Transfer.");
-		websiteManager.enterTheDatePage.goToConfirmThisTranferPage();
+		websiteManager.enterTheDatePage.clickContinueButton();
 		websiteManager.confirmThisTranferPage.confirmPartnershipTransfer();
+		websiteManager.confirmThisTranferPage.clickTransferButton();
 		websiteManager.transferCompletedPage.selectDoneButton();
 	}
 
@@ -1734,19 +1758,19 @@ public class PARStepDefs {
 		
 		websiteManager.businessDetailsPage.editOrganisationName();
 		websiteManager.businessNamePage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
-		websiteManager.businessNamePage.goToBusinessConfirmationPage();
+		websiteManager.businessNamePage.clickSaveButton();
 		
 		websiteManager.businessDetailsPage.editOrganisationDesc();
 		websiteManager.aboutTheOrganisationPage.enterDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
-		websiteManager.aboutTheOrganisationPage.goToBusinessDetailsPage();
+		websiteManager.aboutTheOrganisationPage.clickSaveButton();
 		
 		websiteManager.businessDetailsPage.editTradingName();
 		websiteManager.tradingPage.editTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
-		websiteManager.tradingPage.goToBusinessDetailsPage();
+		websiteManager.tradingPage.clickSaveButton();
 		
 		websiteManager.businessDetailsPage.editSICCode();
-		websiteManager.sicCodePage.selectPrimarySICCode(DataStore.getSavedValue(UsableValues.SIC_CODE)); 
-		websiteManager.sicCodePage.goToBusinessDetailsPage();
+		websiteManager.sicCodePage.selectSICCode(DataStore.getSavedValue(UsableValues.SIC_CODE)); 
+		websiteManager.sicCodePage.clickSaveButton();
 	}
 	
 	@Then("^all the fields are updated correctly$")
@@ -1767,7 +1791,7 @@ public class PARStepDefs {
 		websiteManager.contactRecordsPage.selectContinueButton();
 		
 		LOG.info("Click Continue to Accept the Contact Details.");
-		websiteManager.contactDetailsPage.goToContactCommunicationPreferencesPage();
+		websiteManager.contactDetailsPage.clickContinueButton();
 		websiteManager.contactCommunicationPreferencesPage.selectContinueButton();
 	}
 
@@ -1778,8 +1802,8 @@ public class PARStepDefs {
 		websiteManager.contactUpdateSubscriptionPage.selectContinueButton();
 		
 		LOG.info("Successfully subscribed from PAR news letter.");
-		websiteManager.profileReviewPage.goToProfileCompletionPage();
-		websiteManager.profileCompletionPage.goToDashboardPage();
+		websiteManager.profileReviewPage.clickSaveButton();
+		websiteManager.profileCompletionPage.clickDoneButton();
 	}
 
 	@Then("^the user can successfully unsubscribe from PAR News$")
@@ -1789,8 +1813,8 @@ public class PARStepDefs {
 		websiteManager.contactUpdateSubscriptionPage.selectContinueButton();
 		
 		LOG.info("Successfully unsubscribed from PAR news letter.");
-		websiteManager.profileReviewPage.goToProfileCompletionPage();
-		websiteManager.profileCompletionPage.goToDashboardPage();
+		websiteManager.profileReviewPage.clickSaveButton();
+		websiteManager.profileCompletionPage.clickDoneButton();
 	}
 	
 	@When("^the user is on the Subscriptions page$")
@@ -1912,15 +1936,13 @@ public class PARStepDefs {
 		
 		websiteManager.managePeoplePage.enterNameOrEmail(userEmail);
 		websiteManager.managePeoplePage.clickSubmit();
-		
-		
 	}
 
 	@When("^the user clicks the manage contact link$")
 	public void the_user_clicks_the_manage_contact_link() throws Throwable {
 		LOG.info("Clicking the Manage Contact link.");
 		DataStore.saveValue(UsableValues.PERSON_FULLNAME_TITLE, websiteManager.managePeoplePage.GetPersonName());
-		websiteManager.managePeoplePage.clickManageContact();
+		websiteManager.managePeoplePage.findManageContactByEmail(DataStore.getSavedValue(UsableValues.PERSON_EMAIL_ADDRESS));
 	}
 
 	@Then("^the user can view the user account successfully$")
@@ -1940,7 +1962,7 @@ public class PARStepDefs {
 		LOG.info("Selecting the new role.");
 		DataStore.saveValue(UsableValues.ACCOUNT_TYPE, roleType);
 		websiteManager.userTypePage.chooseMembershipRole(roleType);
-		websiteManager.userTypePage.goToUserProfilePage();
+		websiteManager.userTypePage.clickContinueButton();
 	}
 
 	@Then("^the user role was changed successfully$")
@@ -1952,6 +1974,7 @@ public class PARStepDefs {
 	
 	@When("^the user adds a new Authority membership$")
 	public void the_user_adds_a_new_Authority_membership() throws Throwable {
+		websiteManager.userProfilePage.clickMembershipsTabButton();
 		websiteManager.userProfilePage.clickAddMembershipLink();
 		
 		LOG.info("Choosing the person to add the new membership to.");
@@ -1968,7 +1991,7 @@ public class PARStepDefs {
 	@Then("^the Authority membership was added successfully$")
 	public void the_Authority_membership_was_added_successfully() throws Throwable {
 		LOG.info("Verify the new Authority membership was added successfully.");
-		
+		websiteManager.userProfilePage.clickMembershipsTabButton();
 		assertTrue(websiteManager.userProfilePage.checkUserMembershipDisplayed());
 	}
 
@@ -1976,7 +1999,7 @@ public class PARStepDefs {
 	public void the_user_removes_the_last_added_Authority_membership() throws Throwable {
 		LOG.info("Remove the last added Authority Membership.");
 		websiteManager.userProfilePage.clickRemoveMembershipLink();
-		websiteManager.removePage.goToUserProfilePage();
+		websiteManager.removePage.selectRemoveButton();
 	}
 
 	@Then("^the Authority membership was removed successfully$")
@@ -1990,7 +2013,7 @@ public class PARStepDefs {
 	public void the_user_blocks_the_user_account() throws Throwable {
 		LOG.info("Block the User Account.");
 		websiteManager.userProfilePage.clickBlockUserAccountLink();
-		websiteManager.blockPage.goToUserProfilePage();
+		websiteManager.blockPage.clickBlockButton();
 	}
 
 	@Then("^the user verifies the account was blocked successfully$")
@@ -2013,7 +2036,7 @@ public class PARStepDefs {
 	public void the_user_reinstates_the_user_account() throws Throwable {
 		LOG.info("Re-activate the User Account.");
 		websiteManager.userProfilePage.clickReactivateUserAccountLink();
-		websiteManager.reinstatePage.goToUserProfilePage();
+		websiteManager.reinstatePage.clickContinueButton();
 	}
 
 	@Then("^the user verifies the account is reinstated successfully$")
@@ -2052,14 +2075,16 @@ public class PARStepDefs {
 		websiteManager.contactDetailsPage.enterMobileNumber(DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER));
 		websiteManager.contactDetailsPage.enterEmail(DataStore.getSavedValue(UsableValues.PERSON_EMAIL_ADDRESS));
 		
-		websiteManager.contactDetailsPage.goToUserProfilePage();
+		websiteManager.contactDetailsPage.clickContinueButton();
 	}
 
 	@Then("^the user can verify the person was created successfully and can send an account invitation$")
 	public void the_user_can_verify_the_person_was_created_successfully_and_can_send_an_account_invitation() throws Throwable {
-		
+		LOG.info("Verify the new person's details.");
 		assertTrue("Failed: Header does not contain the person's fullname and title.", websiteManager.userProfilePage.checkHeaderForName());
 		assertTrue("Failed: Cannot find the User account invitation link.", websiteManager.userProfilePage.checkForUserAccountInvitationLink());
+		
+		websiteManager.userProfilePage.clickContactsTabButton();
 		assertTrue("Failed: Contact name field does not contain the person's fullname and title.", websiteManager.userProfilePage.checkContactName());
 		assertTrue("Failed: Contact email field does not contain the correct email address.", websiteManager.userProfilePage.checkContactEmail());
 		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers", websiteManager.userProfilePage.checkContactPhoneNumbers());
@@ -2070,13 +2095,14 @@ public class PARStepDefs {
 
 	@When("^the user searches for an existing person successfully$")
 	public void the_user_searches_for_an_existing_person_successfully() throws Throwable {
-
+		
 		String personsName = DataStore.getSavedValue(UsableValues.PERSON_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.PERSON_LASTNAME);
 
 		websiteManager.managePeoplePage.enterNameOrEmail(personsName);
 		websiteManager.managePeoplePage.clickSubmit();
-
-		websiteManager.managePeoplePage.clickManageContact();
+		
+		websiteManager.managePeoplePage.findManageContactByName(personsName);
+		//websiteManager.managePeoplePage.clickManageContact();
 
 		LOG.info("Found an existing user with the name: " + personsName);
 	}
@@ -2084,6 +2110,7 @@ public class PARStepDefs {
 	@When("^the user updates an existing person:$")
 	public void the_user_updates_an_existing_person_with_the_following_details(DataTable details) throws Throwable {
 		LOG.info("Updating an existing person.");
+		websiteManager.userProfilePage.clickContactsTabButton();
 		websiteManager.userProfilePage.clickUpdateUserButton();
 		
 		String firstName = RandomStringUtils.randomAlphabetic(8);
@@ -2109,13 +2136,16 @@ public class PARStepDefs {
 		websiteManager.contactDetailsPage.enterMobileNumber(DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER));
 		websiteManager.contactDetailsPage.enterEmail(DataStore.getSavedValue(UsableValues.PERSON_EMAIL_ADDRESS));
 		
-		websiteManager.contactDetailsPage.goToUserProfilePage();
+		websiteManager.contactDetailsPage.clickContinueButton();
 	}
 
 	@Then("^the user can verify the person was updated successfully and can send an account invitation$")
 	public void the_user_can_verify_the_person_was_updated_successfully_and_can_send_an_account_invitation() throws Throwable {
+		LOG.info("Verify the contact details have been updated.");
 		assertTrue("Failed: Header does not contain the person's fullname and title.", websiteManager.userProfilePage.checkHeaderForName());
 		assertTrue("Failed: Cannot find the User account invitation link.", websiteManager.userProfilePage.checkForUserAccountInvitationLink());
+		
+		websiteManager.userProfilePage.clickContactsTabButton();
 		assertTrue("Failed: Contact name field does not contain the person's fullname and title.", websiteManager.userProfilePage.checkContactName());
 		assertTrue("Failed: Contact email field does not contain the correct email address.", websiteManager.userProfilePage.checkContactEmail());
 		assertTrue("Failed: Contact numbers field does not contain the work and/or mobile phone numbers", websiteManager.userProfilePage.checkContactPhoneNumbers());
@@ -2138,16 +2168,16 @@ public class PARStepDefs {
 	public void the_user_chooses_the_new_users_membership_and_role() throws Throwable {
 		LOG.info("Choosing the new users membership and role.");
 		websiteManager.userMembershipPage.chooseAuthorityMembership("Upper West Side Borough Council");
-		websiteManager.userMembershipPage.goToUserRoleTypePage();
+		websiteManager.userMembershipPage.clickContinueButton();
 		
 		websiteManager.userTypePage.chooseMembershipRole("Authority Member");
-		websiteManager.userTypePage.goToUserAccountInvitePage();
+		websiteManager.userTypePage.clickContinueButton();
 	}
 
 	@When("^the sends the user account invitation$")
 	public void the_sends_the_user_account_invitation() throws Throwable {
 		LOG.info("Sending the user account invitation.");
-		websiteManager.accountInvitePage.goToInvitationReviewPage();
+		websiteManager.accountInvitePage.clickInviteButton();
 		websiteManager.userAccountInvitationReviewPage.clickSendInviationButton();
 		websiteManager.completionPage.clickDoneForInvitation();
 	}
@@ -2167,15 +2197,15 @@ public class PARStepDefs {
 		websiteManager.contactRecordsPage.selectContinueButton();
 		
 		websiteManager.contactDetailsPage.enterEmailAddress(newEmail);
-		websiteManager.contactDetailsPage.goToContactCommunicationPreferencesPage();
+		websiteManager.contactDetailsPage.clickContinueButton();
 		
 		websiteManager.contactCommunicationPreferencesPage.selectContinueButton();
 		websiteManager.contactUpdateSubscriptionPage.selectContinueButton();
 		
 		websiteManager.profileReviewPage.confirmUserAccountEmail();
-		websiteManager.profileReviewPage.goToProfileCompletionPage();
+		websiteManager.profileReviewPage.clickSaveButton();
 		
-		websiteManager.profileCompletionPage.goToDashboardPage();
+		websiteManager.profileCompletionPage.clickDoneButton();
 	}
 
 	@Then("^the user can verify the new email address is displayed on the header$")

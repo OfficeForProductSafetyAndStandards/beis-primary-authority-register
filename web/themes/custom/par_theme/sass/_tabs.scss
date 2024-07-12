@@ -1,11 +1,9 @@
 //
-// SCSS for the tabs component
+// SCSS for the tabs component to allow links to go new page
 //
-// Drupal tabs do not use Javascript, to avoid the default javascript behavior
-// we have replaced one of the classes.
-//
-// @See https://design-system.service.gov.uk/components/tabs/
-// @See templates/navigation/menu-local-tasks.html.twig
-.drupal-tabs__list {
-  @extend .govuk-tabs__list;
+
+.govuk-tabs__list-item {
+  a {
+    @include govuk-link-style-text;
+  }
 }

@@ -5,12 +5,9 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.SharedPageObjects.RemovePage;
-import uk.gov.beis.pageobjects.SharedPageObjects.RevokePage;
 import uk.gov.beis.utility.DataStore;
 
 public class InspectionPlanSearchPage extends BasePageObject {
@@ -33,29 +30,24 @@ public class InspectionPlanSearchPage extends BasePageObject {
 		super();
 	}
 	
-	public UploadInspectionPlanPage selectUploadLink() {
+	public void selectUploadLink() {
 		uploadBtn.click();
-		return PageFactory.initElements(driver, UploadInspectionPlanPage.class);
 	}
 	
-	public InspectionPlanDetailsPage selectEditLink() {
-		editBtn.click();
-		return PageFactory.initElements(driver, InspectionPlanDetailsPage.class);
-	}
-	
-	public RevokePage selectRevokeLink() {
-		revokeBtn.click();
-		return PageFactory.initElements(driver, RevokePage.class);
-	}
-	
-	public RemovePage selectRemoveLink() {
-		removeBtn.click();
-		return PageFactory.initElements(driver, RemovePage.class);
-	}
-	
-	public InspectionPlanReviewPage selectInspectionPlan() {
+	public void selectInspectionPlan() {
 		driver.findElement(By.linkText(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE))).click();
-		return PageFactory.initElements(driver, InspectionPlanReviewPage.class);
+	}
+	
+	public void selectEditLink() {
+		editBtn.click();
+	}
+	
+	public void selectRevokeLink() {
+		revokeBtn.click();
+	}
+	
+	public void selectRemoveLink() {
+		removeBtn.click();
 	}
 	
 	public String getPlanStatus() {

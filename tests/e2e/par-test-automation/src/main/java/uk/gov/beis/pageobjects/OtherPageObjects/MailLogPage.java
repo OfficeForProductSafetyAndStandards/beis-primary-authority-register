@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.helper.PropertiesUtil;
@@ -30,9 +29,8 @@ public class MailLogPage extends BasePageObject {
 		super();
 	}
 	
-	public MailLogPage navigateToUrl() throws InterruptedException {
+	public void navigateToUrl() throws InterruptedException {
 		ScenarioContext.lastDriver.get(PropertiesUtil.getConfigPropertyValue("maillog_url"));
-		return PageFactory.initElements(driver, MailLogPage.class);
 	}
 	
 	public void searchForUserAccountInvite(String userEmail) {
@@ -40,7 +38,7 @@ public class MailLogPage extends BasePageObject {
 		applyBtn.click();
 	}
 
-	public MailLogPage selectEamilAndGetINviteLink(String emailid) {
+	public void selectEamilAndGetINviteLink(String emailid) {
 		driver.findElement(By.xpath(email.replace("?", emailid.toLowerCase()))).click();
 		String invite = driver.findElement(By.xpath("//div/label[contains(text(),'Body')]/following-sibling::pre")).getText();
 		String[] parts = invite.split("\\s+");
@@ -51,11 +49,9 @@ public class MailLogPage extends BasePageObject {
 				break;
 			}
 		}
-		return PageFactory.initElements(driver, MailLogPage.class);
 	}
 
-	public MailLogPage getInviteLink(String emailid) {
+	public void getInviteLink(String emailid) {
 		driver.findElement(By.xpath(email.replace("?", emailid))).click();
-		return PageFactory.initElements(driver, MailLogPage.class);
 	}
 }
