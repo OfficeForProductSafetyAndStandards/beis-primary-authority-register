@@ -345,6 +345,13 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       '#after_build' => [
         [get_class($this), 'optionsDescriptions'],
       ],
+      '#states' => [
+        'checked' => [
+          'input[name="' . $this->getTargetName($this->getElementKey('ch_as_different_type', $index)) . '"]' => [
+            ['value' => 'other'],
+          ],
+        ],
+      ],
       '#attributes' => [
         'class' => ['govuk-radios--small', 'govuk-form-group'],
       ],
@@ -450,7 +457,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       // Check that this legal entity isn't already used by another item.
       if (isset($existing_data)) {
         foreach ($existing_data as $item) {
-          $item_name = NestedArray::getValue($item, ['unregistered','legal_entity_name']);
+          $item_name = NestedArray::getValue($item, ['unregistered', 'legal_entity_name']);
           $item_name = trim((string) $item_name);
           if ($legal_entity_name === $item_name) {
             $message = 'This legal entity has already been added.';
@@ -462,8 +469,15 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       // Validate additional rules.
       parent::validate($form, $form_state, $index, $action);
     }
-
     elseif (in_array($register_id, ['companies_house', 'charity_commission', 'ch_as_different_type'])) {
+      // Get the legal entity name.
+      $name_element = $this->getElement($form, ['ch_as_different_type', 'legal_entity_name'], $index);
+      $legal_entity_name = $name_element ? trim((string) $form_state->getValue($name_element['#parents'])) : NULL;
+
+      // Get the legal entity number to look up.
+      $number_element = $this->getElement($form, ['registered', 'legal_entity_number'], $index);
+      $legal_entity_number = $number_element ? trim((string) $form_state->getValue($number_element['#parents'])) : NULL;
+
       if ($register_id == 'ch_as_different_type') {
         // Get the entity type definition.
         $definition_element = $this->getElement($form, [
@@ -471,14 +485,6 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
           'ch_different_type_definition',
         ], $index);
         $type_definition = $definition_element ? $form_state->getValue($definition_element['#parents']) : NULL;
-
-        // Get the legal entity name.
-        $name_element = $this->getElement($form, ['ch_as_different_type', 'legal_entity_name'], $index);
-        $legal_entity_name = $name_element ? trim((string) $form_state->getValue($name_element['#parents'])) : NULL;
-
-        // Get the legal entity number to look up.
-        $number_element = $this->getElement($form, ['registered', 'legal_entity_number'], $index);
-        $legal_entity_number = $number_element ? trim((string) $form_state->getValue($number_element['#parents'])) : NULL;
 
         // Validate the type definition.
         if (empty($type_definition)) {
