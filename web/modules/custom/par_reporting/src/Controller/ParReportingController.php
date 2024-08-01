@@ -106,26 +106,6 @@ class ParReportingController extends ControllerBase {
       '#lazy_builder' => ['par_reporting.manager:render', ['total_coordinated_members']],
       '#create_placeholder' => TRUE,
     ];
-
-    // // Statistics related to organisations and legal entities.
-    //    $build['businesses_in_partnership'] = [
-    //      '#type' => 'fieldset',
-    //      '#title' => 'Organisations in a partnership',
-    //      '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group']],
-    //    ];
-    //    $build['businesses_in_partnership']['total'] = [
-    //      '#lazy_builder' => ['par_reporting.manager:render', ['total_unique_businesses']],
-    //      '#create_placeholder' => TRUE,
-    //    ];
-    //    $build['businesses_in_partnership']['direct'] = [
-    //      '#lazy_builder' => ['par_reporting.manager:render', ['total_unique_direct_businesses']],
-    //      '#create_placeholder' => TRUE,
-    //    ];
-    //    $build['businesses_in_partnership']['coordinated'] = [
-    //      '#lazy_builder' => ['par_reporting.manager:render', ['total_unique_coordinated_members']],
-    //      '#create_placeholder' => TRUE,
-    //    ];
-    // Statistics related to partnership documents.
     $build['documents'] = [
       '#type' => 'container',
       'heading' => [

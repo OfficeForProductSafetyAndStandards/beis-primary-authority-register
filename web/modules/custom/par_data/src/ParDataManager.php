@@ -79,11 +79,15 @@ class ParDataManager implements ParDataManagerInterface {
 
   /**
    * Iteration limit for recursive membership lookups.
+   *
+   * @var membershipIterations
    */
   protected $membershipIterations = 5;
 
   /**
    * Debugging for the membership lookup.
+   *
+   * @var debug
    *
    * Change to TRUE to get an onscreen output.
    */
@@ -91,19 +95,6 @@ class ParDataManager implements ParDataManagerInterface {
 
   /**
    * Constructs a ParDataPermissions instance.
-   *
-   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
-   *   The entity type manager.
-   * @param \Drupal\Core\Entity\EntityFieldManagerInterface $entity_manager
-   *   The entity field manager.
-   * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entity_type_bundle_info
-   *   The entity bundle info service.
-   * @param \Drupal\Core\Messenger\MessengerInterface $messenger
-   *   The messenger service.
-   * @param \Drupal\Core\Render\RendererInterface $renderer
-   *   The renderer service.
-   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
-   *   The current user.
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, MessengerInterface $messenger, RendererInterface $renderer, $current_user) {
     $this->entityTypeManager = $entity_type_manager;
@@ -116,8 +107,6 @@ class ParDataManager implements ParDataManagerInterface {
 
   /**
    * Dynamic getter for the messenger service.
-   *
-   * @return \Drupal\Core\Messenger\MessengerInterface
    */
   public function getMessenger() {
     return $this->messenger;
@@ -125,8 +114,6 @@ class ParDataManager implements ParDataManagerInterface {
 
   /**
    * Get renderer service.
-   *
-   * @return \Drupal\Core\Render\RendererInterface
    */
   public function getRenderer() {
     return $this->renderer;
@@ -134,8 +121,6 @@ class ParDataManager implements ParDataManagerInterface {
 
   /**
    * Get current user.
-   *
-   * @return mixed
    */
   public function getCurrentUser() {
     return $this->currentUser;
@@ -143,8 +128,6 @@ class ParDataManager implements ParDataManagerInterface {
 
   /**
    * Get the entity field manager.
-   *
-   * @return \Drupal\Core\Entity\EntityFieldManagerInterface
    */
   public function getEntityFieldManager() {
     return $this->entityFieldManager;
@@ -160,7 +143,7 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
-   * {@inheritdoc}}
+   * Get PAR Entity types.
    */
   public function getParEntityTypes(): array {
     // We're obviously assuming that all par entities begin with this prefix.
@@ -213,7 +196,7 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
-   * {@inhertidoc}
+   * Get view builder.
    */
   public function getViewBuilder($entity_type) {
     return $this->entityTypeManager->getViewBuilder($entity_type);
@@ -260,7 +243,8 @@ class ParDataManager implements ParDataManagerInterface {
    *   The entity bundle to search for.
    *
    * @return \Drupal\Core\Field\FieldDefinitionInterface[]
-   *   An array of field definitions keyed by the entity type they are attached to.
+   *   An array of field definitions keyed by
+   *   the entity type they are attached to.
    */
   public function getReferences($type, $bundle) {
     $reference_fields = [];
@@ -305,17 +289,6 @@ class ParDataManager implements ParDataManagerInterface {
    * Get the entities related to each other.
    *
    * Follows some rules to make sure it doesn't go round in loops.
-   *
-   * @param $entity
-   *   The entity being looked up.
-   * @param array $entities
-   *   The entities relationship tree.
-   * @param array $processedEntities
-   *   The hash table of entities that have already been processed, includes those ignored in the entity relationship tree.
-   * @param int $iteration
-   *   The depth of relationships to go before stopping.
-   * @param bool $force_lookup
-   *   Force the lookup of relationships that would otherwise be ignored.
    *
    * @return \Drupal\Core\Entity\EntityInterface[][]
    *   An array of entities keyed by entity type.
@@ -415,7 +388,7 @@ class ParDataManager implements ParDataManagerInterface {
 
     // When we say direct we really mean by a maximum factor of two.
     // Because we must first jump through one of the core membership
-    //  entities, i.e. authorities or organisations.
+    // entities, i.e. authorities or organisations.
     $object = $direct ? $this->getReducedIterator(2) : $this;
 
     $memberships = [];
@@ -479,14 +452,12 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
-   * Determine whether there are any in memberships of a given type that have been commented on.
+   * Determine whether there are any in memberships of a given type.
    *
    * @param \Drupal\user\Entity\UserInterface $account
    *   A user account to check for.
    * @param string $type
    *   An entity type to filter on the return on.
-   * @param string $authority_role
-   *   A authority role to filter on the return on. Can be either 'pa' or 'eo'.
    * @param bool $direct
    *   Whether to check only direct relationships.
    *
@@ -580,17 +551,17 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * Check whether given roles exist in any of the member's authorities.
    *
-   * Allows determination of whether they are the last user with a given
-   * role in any of their authorities as this affects whether they can
-   * be assigned roles or even removed from the system.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The user account to check member authorities by.
+   * @param array $roles
+   *   An array of roles to lookup.
    *
    * @throws \Drupal\par_data\ParDataException
    *   If there are no authorities to lookup.
    *
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The user account to check member authorities by.
-   * @param $roles
-   *   An array of roles to lookup.
+   *   Allows determination of whether they are the last user with a given
+   *   role in any of their authorities as this affects whether they can
+   *   be assigned roles or even removed from the system.
    *
    * @return bool
    *   If the roles don't exist in ANY authorities return false, otherwise true.
@@ -617,20 +588,21 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * Check whether given roles exist in any of the member's organisations.
    *
-   * Allows determination of whether they are the last user with a given
-   * role in any of their organisations as this affects whether they can
-   * be assigned roles or even removed from the system.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The user account to check member organisations by.
+   * @param array $roles
+   *   An array of roles to lookup.
    *
    * @throws \Drupal\par_data\ParDataException
    *   If there are no organisations to lookup.
    *
-   * @param \Drupal\Core\Session\AccountInterface $account
-   *   The user account to check member organisations by.
-   * @param $roles
-   *   An array of roles to lookup.
-   *
    * @return bool
-   *   If the roles don't exist in ANY organisations return false, otherwise true.
+   *   If the roles don't exist in ANY organisations return false,
+   *   otherwise true.
+   *
+   *   Allows determination of whether they are the last user with a given
+   *   role in any of their organisations as this affects whether they can
+   *   be assigned roles or even removed from the system.
    */
   public function isRoleInAllMemberOrganisations(AccountInterface $account, $roles) {
     $organisations = $this->isMemberOfOrganisation($account);
@@ -668,6 +640,8 @@ class ParDataManager implements ParDataManagerInterface {
    *   The field name.
    * @param string $value
    *   The value to load based on.
+   * @param string $deleted
+   *   Whether an entity can be deleted.
    *
    * @return \Drupal\Core\Entity\EntityInterface[]
    *   An array of entities found with this value.
@@ -775,7 +749,8 @@ class ParDataManager implements ParDataManagerInterface {
     $results = $query->execute();
     $entities = $this->entityTypeManager->getStorage($type)->loadMultiple(array_unique($results));
 
-    // In some cases we need to return deleted entities mainly for updating legacy data across the system.
+    // In some cases we need to return deleted entities
+    // mainly for updating legacy data across the system.
     if ($remove_deleted_entities) {
       // Do not return any entities that are deleted.
       // @see PAR-1462 - Removing all deleted entities from loading.
@@ -797,7 +772,8 @@ class ParDataManager implements ParDataManagerInterface {
    * @param string $view_mode
    *   A view mode to render the entity as.
    * @param bool $access_check
-   *   Whether to check all entities for access, this is an expensive operation so not enabled by default.
+   *   Whether to check all entities for access,
+   *   this is an expensive operation so not enabled by default.
    *
    * @return array
    *   An array of options keyed by entity id.
@@ -832,7 +808,8 @@ class ParDataManager implements ParDataManagerInterface {
    * @param array $options
    *   An optional array of options to append to.
    * @param bool $access_check
-   *   Whether to check all entities for access, this is an expensive operation so not enabled by default.
+   *   Whether to check all entities for access,
+   *   this is an expensive operation so not enabled by default.
    *
    * @return array
    *   An array of options keyed by entity id.
@@ -854,14 +831,13 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
-   * Search for a given entity value within an entity reference field and return
-   * any deltas if the entity was found.
+   * Search for a given entity value.
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity to search for the given value.
-   * @param $field
+   * @param string $field
    *   The field name to search for the given value.
-   * @param $value
+   * @param string $value
    *   The entity id to search for.
    * @param string $property
    *   The field property to search under.
@@ -886,9 +862,12 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * Render an entity.
    *
-   * @param $entiy_type
-   * @param $entity_id
-   * @param $view_mode
+   * @param string $entiy_type
+   *   The entity type.
+   * @param string $entity_id
+   *   The entity ID.
+   * @param string $view_mode
+   *   The view mode.
    *
    * @return array
    *   A render array.
@@ -905,17 +884,18 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * Get the PAR People that share the same email with the user account.
    *
-   * A person can be matched to a user account if:
-   * a) the user id is set on the par_data_person in field_user_account
-   * b) the person has no user account set (as above) but the email matches the user account email.
-   *
-   * @see ParDataPerson::setUserAccount()
-   *
    * @param \Drupal\user\Entity\UserInterface $account
    *   A user account.
    *
    * @return \Drupal\par_data\Entity\ParDataPersonInterface[]
    *   PAR People related to the user account.
+   *
+   *   A person can be matched to a user account if:
+   *   a) the user id is set on the par_data_person in field_user_account
+   *   b) the person has no user account set (as above)
+   *   but the email matches the user account email.
+   *
+   * @see ParDataPerson::setUserAccount()
    */
   public function getUserPeople(UserInterface $account): array {
     return \Drupal::service('par_roles.role_manager')->getPeople($account);
@@ -930,6 +910,7 @@ class ParDataManager implements ParDataManagerInterface {
    *   The authority or organisation entity to get the user for.
    *
    * @return \Drupal\par_data\Entity\ParDataPerson|null
+   *   A string containing data for the person.
    */
   public function getUserPerson($account, $entity) {
     $entity_people = $entity->hasField('field_person') ? $entity->retrieveEntityIds('field_person') : [];
@@ -956,6 +937,7 @@ class ParDataManager implements ParDataManagerInterface {
    * Process a CSV file.
    *
    * @param \Drupal\file\FileInterface $file
+   *   File interface.
    * @param array $rows
    *   An array to add processed rows to.
    * @param bool $skip
@@ -1033,7 +1015,8 @@ REFERENCES {$base_table}(id);
 EOT;
 
       // For reference fields that are not mandatory they use a value for 0
-      // for the target_id which is not a valid foreign key. Insert an arbitary value.
+      // for the target_id which is not a valid foreign key.
+      // Insert an arbitary value.
       $qry = <<<EOT
       INSERT into {$base_table}
       VALUES (0, 9999999999, 'bogus', '4b7f74dc-ae10-unkn-own-29207b47797a', 'en');
@@ -1090,7 +1073,7 @@ EOT;
   }
 
   /**
-   * Debugging function for introspecting all reference fields on an entity type.
+   * Debug function for introspecting all reference fields on an entity type.
    */
   public function buildReferenceTree($entity_types = [], $references = []) {
     if (empty($entity_types)) {

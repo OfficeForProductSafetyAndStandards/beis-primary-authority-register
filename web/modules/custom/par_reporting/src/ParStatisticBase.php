@@ -53,6 +53,7 @@ abstract class ParStatisticBase extends PluginBase implements ParStatisticInterf
    * Simple getter to inject the PAR Reporting Manager service.
    *
    * @return \Drupal\par_data\ParDataManagerInterface
+   *   Injects the PAR Reporting Manager service.
    */
   public function getReportingManager() {
     return \Drupal::service('par_reporting.manager');
@@ -62,6 +63,7 @@ abstract class ParStatisticBase extends PluginBase implements ParStatisticInterf
    * Simple getter to inject the PAR Data Manager service.
    *
    * @return \Drupal\par_data\ParDataManagerInterface
+   *   Injects the PAR Data Manager service.
    */
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');
@@ -71,6 +73,7 @@ abstract class ParStatisticBase extends PluginBase implements ParStatisticInterf
    * Simple getter to inject the Entity Type Manager service.
    *
    * @return \Drupal\Core\Entity\EntityTypeManagerInterface
+   *   Injects the Entity Type Manager service.
    */
   public function getEntityTypeManager() {
     return \Drupal::service('entity_type.manager');
@@ -87,7 +90,8 @@ abstract class ParStatisticBase extends PluginBase implements ParStatisticInterf
    * {@inheritDoc}
    */
   public function renderStat(): ?array {
-    // Loading the statistic through the statistic manager adds the caching layer.
+    // Loading the statistic through the statistic manager
+    // adds the caching layer.
     $stat = $this->getReportingManager()->get($this->getPluginId());
 
     // Format a human-readable version of the statistic.

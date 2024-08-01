@@ -42,6 +42,7 @@ class ParDataEvent extends EntityEvent implements ParDataEventInterface {
    *   The status changed to.
    *
    * @return string
+   *   The string being returned.
    */
   public static function statusChange(string $entity_type_id, string $status): string {
     return implode('.', [self::STATUS_CHANGE, $entity_type_id, $status]);
@@ -56,6 +57,7 @@ class ParDataEvent extends EntityEvent implements ParDataEventInterface {
    *   The custom action being performed.
    *
    * @return string
+   *   The string being returned.
    */
   public static function customAction(string $entity_type, string $action): string {
     return implode('.', [self::ENTITY_CUSTOM_ACTION, $entity_type, $action]);

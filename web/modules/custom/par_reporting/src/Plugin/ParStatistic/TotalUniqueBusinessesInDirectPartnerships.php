@@ -17,7 +17,7 @@ use Drupal\par_reporting\ParStatisticBase;
 class TotalUniqueBusinessesInDirectPartnerships extends ParStatisticBase {
 
   /**
-   *
+   * Implements getStat function.
    */
   public function getStat(): int {
     $query = $this->getParDataManager()->getEntityQuery('par_data_partnership')
@@ -46,9 +46,11 @@ class TotalUniqueBusinessesInDirectPartnerships extends ParStatisticBase {
     foreach ($partnerships as $partnership) {
       $legal_entities = $partnership->getLegalEntity();
 
-      // Get a list of all legal entities covered by this partnership keyed by a unique key.
+      // Get a list of all legal entities covered
+      // by this partnership keyed by a unique key.
       foreach ($legal_entities as $legal_entity) {
-        // Most but not all legal entities have a registered number, those that don't can't be de-duped.
+        // Most but not all legal entities have a registered number,
+        // those that don't can't be de-duped.
         $key = !$legal_entity->get('registered_number')->isEmpty() ?
           $legal_entity->get('registered_number')->getString() :
           $legal_entity->id();

@@ -37,9 +37,6 @@ class ParDataDrushCommands extends DrushCommands {
 
   /**
    * ParDataCommands constructor.
-   *
-   * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
-   *   The par_data.manager service.
    */
   public function __construct(ParDataManagerInterface $par_data_manager, EntityTypeManagerInterface $entityTypeManager, OrganisationManagerInterface $organisationManager) {
     parent::__construct();
@@ -49,7 +46,7 @@ class ParDataDrushCommands extends DrushCommands {
   }
 
   /**
-   *
+   * Fetch the containers.
    */
   public static function create(ContainerInterface $container, DrushContainer $drush): self {
     return new static(
@@ -80,7 +77,8 @@ class ParDataDrushCommands extends DrushCommands {
       // Warming for selected caches only as it's currently memory intensive.
       foreach ($this->parDataManager->getEntitiesByType($type) as $entity) {
         $count++;
-        // By default it's the relationship cache's responsible for entity management we want to warm.
+        // By default it's the relationship cache's responsible
+        // for entity management we want to warm.
         $entity->getRelationships();
 
         $unique_function_id = "getRelationships:{$entity->uuid()}:null:null";
@@ -89,7 +87,8 @@ class ParDataDrushCommands extends DrushCommands {
         // Assess memory usage.
         if ($count % 100 == 0 && $count > 0) {
           $memory = round(memory_get_usage() / 1024 / 1024, 2);
-          $this->output->writeln(dt('@memory MB used in the generation of %count caches', ['@memory' => $memory, '%count' => $count]));
+          $this->output->writeln(dt('@memory MB used in the generation of %count caches',
+            ['@memory' => $memory, '%count' => $count]));
         }
       }
 
@@ -164,7 +163,8 @@ class ParDataDrushCommands extends DrushCommands {
    * Update registered entities.
    *
    * @param ?string $register
-   *   The register to update or NULL to update entities not assigned to a register.
+   *   The register to update or NULL to
+   *   update entities not assigned to a register.
    *
    * @validate-module-enabled par_data
    *

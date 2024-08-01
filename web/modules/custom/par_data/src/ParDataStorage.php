@@ -24,6 +24,12 @@ use Drupal\trance\TranceStorage;
  */
 class ParDataStorage extends TranceStorage {
 
+  /**
+   * PAR Data Manager.
+   *
+   * @var parDataManager
+   *   Implements PAR Data Manager.
+   */
   protected $parDataManager;
 
   public function __construct(EntityTypeInterface $entity_type, Connection $database, EntityFieldManagerInterface $entity_field_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, MemoryCacheInterface $memory_cache, EntityTypeBundleInfoInterface $entity_type_bundle_info, EntityTypeManagerInterface $entity_type_manager) {
@@ -77,9 +83,9 @@ class ParDataStorage extends TranceStorage {
 
   /**
    * Save entity.
-   * This function deletes relationship cache for the new/updated entity refs.
    *
    * {@inheritdoc}
+   *    This function deletes relationship cache for on new/updated entity refs.
    */
   public function save(EntityInterface $entity) {
     // Lowercase all email addresses, these are used in some aggregate functions
@@ -114,7 +120,8 @@ class ParDataStorage extends TranceStorage {
     // Get relationships for the entity being saved.
     $relationships = $entity->getRelationships();
 
-    // Loop through relationships and delete appropriate relationship cache records.
+    // Loop through relationships and delete appropriate relationship
+    // cache records.
     foreach ($relationships as $uuid => $relationship) {
       // Delete cache record for new/updated references.
       $hash_key = "relationships:{$relationship->getEntity()->uuid()}";

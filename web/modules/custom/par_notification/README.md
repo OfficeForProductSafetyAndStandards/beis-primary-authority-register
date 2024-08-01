@@ -83,4 +83,3 @@ This does mean that fallbacks are required for most messages so that redirection
 The ParTaskInterface can be added to any ParLinkAction plugin to indicate that this link is an action that must be completed by the user.
 
 Any notifications that have an action that implements this interface will be marked as 'Task Notifications'.
-

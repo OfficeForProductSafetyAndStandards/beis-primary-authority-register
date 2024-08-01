@@ -15,16 +15,22 @@ class ParDataRelationship {
 
   /**
    * The entity that the relationship is based on.
+   *
+   * @var base
    */
   protected $base;
 
   /**
    * The entity that the base has a relationship with.
+   *
+   * @var entity
    */
   protected $entity;
 
   /**
    * The field definition that creates the relationship.
+   *
+   * @var field
    */
   protected $field;
 
@@ -46,8 +52,6 @@ class ParDataRelationship {
 
   /**
    * Get the base entity.
-   *
-   * @return \Drupal\Core\Entity\EntityInterface
    */
   public function getBaseEntity() {
     return $this->base;
@@ -55,15 +59,13 @@ class ParDataRelationship {
 
   /**
    * Get the related entity.
-   *
-   * @return \Drupal\Core\Entity\EntityInterface
    */
   public function getEntity() {
     return $this->entity;
   }
 
   /**
-   *
+   * Get ID.
    */
   public function getId() {
     return $this->getEntity()->getEntityTypeId() . ':' . $this->getField()->getName();
@@ -71,22 +73,20 @@ class ParDataRelationship {
 
   /**
    * Get the field that defines the relationship.
-   *
-   * @return \Drupal\Core\Field\FieldDefinitionInterface
    */
   public function getField() {
     return $this->field;
   }
 
   /**
-   *
+   * Get Relationship Direction.
    */
   public function getRelationshipDirection() {
     return $this->getField()->getTargetEntityTypeId() === $this->getEntity()->getEntityTypeId() ? self::DIRECTION_REVERSE : self::DIRECTION_DEFAULT;
   }
 
   /**
-   *
+   * Sort by.
    */
   public function sortByType($a, $b) {
     return $a->getEntityTypeId();

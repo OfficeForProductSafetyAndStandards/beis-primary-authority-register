@@ -12,7 +12,7 @@ use Drupal\views\EntityViewsDataInterface;
 class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterface {
 
   /**
-   *
+   * Implements getParDataManager.
    */
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');

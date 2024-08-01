@@ -17,7 +17,7 @@ use Drupal\par_reporting\ParStatisticBase;
 class TotalAuthorities extends ParStatisticBase {
 
   /**
-   *
+   * Implements getStat function.
    */
   public function getStat(): int {
     $query = $this->getParDataManager()->getEntityQuery('par_data_authority');

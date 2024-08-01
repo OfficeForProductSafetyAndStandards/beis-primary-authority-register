@@ -52,7 +52,8 @@ final class ParDataCommands extends DrushCommands {
       // Warming for selected caches only as it's currently memory intensive.
       foreach ($this->parDataManager->getEntitiesByType($type) as $entity) {
         $count++;
-        // By default it's the relationship cache's responsible for entity management we want to warm.
+        // By default it's the relationship cache's
+        // responsible for entity management we want to warm.
         $entity->getRelationships();
 
         $unique_function_id = "getRelationships:{$entity->uuid()}:null:null";
@@ -61,7 +62,8 @@ final class ParDataCommands extends DrushCommands {
         // Assess memory usage.
         if ($count % 100 == 0 && $count > 0) {
           $memory = round(memory_get_usage() / 1024 / 1024, 2);
-          $this->output->writeln(dt('@memory MB used in the generation of %count caches', ['@memory' => $memory, '%count' => $count]));
+          $this->output->writeln(dt('@memory MB used in the generation of %count caches',
+            ['@memory' => $memory, '%count' => $count]));
         }
       }
 

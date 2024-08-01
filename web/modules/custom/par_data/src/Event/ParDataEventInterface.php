@@ -8,7 +8,10 @@ namespace Drupal\par_data\Event;
 interface ParDataEventInterface {
 
   /**
+   * PAR Data get entity.
+   *
    * @return \Drupal\par_data\Entity\ParDataEntityInterface
+   *   Performs getEntity function.
    */
   public function getEntity();
 

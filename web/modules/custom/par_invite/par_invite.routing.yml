@@ -25,4 +25,3 @@ par_invite.unsuccessful:
     parameters:
       invite:
         type: reg_code
-

@@ -8,7 +8,7 @@ use Drupal\par_data\ParDataManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- *
+ * PAR Data Permissions.
  */
 class ParDataPermissions implements ContainerInjectionInterface {
 

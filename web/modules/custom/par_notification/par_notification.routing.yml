@@ -39,4 +39,3 @@ par_notification.link_not_found:
     parameters:
       message:
         type: entity:message
-

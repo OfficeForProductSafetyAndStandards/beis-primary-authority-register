@@ -17,7 +17,7 @@ use Drupal\par_reporting\ParStatisticBase;
 class TotalBusinesses extends ParStatisticBase {
 
   /**
-   *
+   * Implements getStat function.
    */
   public function getStat(): int {
     // This is a combination of direct and coordinated statistics.

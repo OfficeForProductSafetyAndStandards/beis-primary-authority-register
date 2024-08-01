@@ -30,7 +30,10 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
   const CACHE_EXPIRY = "+1 day";
 
   /**
-   * Loaded plugin Cache.
+   * Get stats plugin.
+   *
+   * @var stats
+   *  Loaded plugin Cache.
    */
   protected $stats = [];
 
@@ -65,6 +68,7 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
    * Dynamic getter for the messenger service.
    *
    * @return \Drupal\Core\Messenger\MessengerInterface
+   *   The messenger service.
    */
   public function getMessenger(): MessengerInterface {
     return \Drupal::service('messenger');
@@ -120,6 +124,7 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
    * {@inheritdoc}
    *
    * @return \Drupal\par_reporting\ParStatisticInterface
+   *   An instance of stats.
    */
   public function createInstance($plugin_id, array $configuration = []) {
     if (!isset($this->stats[$plugin_id])) {
@@ -166,10 +171,7 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
   public function get(string $id): int {
     $cid = "par_reporting:stat:$id";
     $cache = $this->getCacheBin()->get($cid);
-    // Return cached statistics if found.
-    //    if ($cache) {
-    //      return $cache->data;
-    //    }.
+
     try {
       $definition = $this->getDefinition($id);
       $plugin = $definition ? $this->createInstance($definition['id'], $definition) : NULL;

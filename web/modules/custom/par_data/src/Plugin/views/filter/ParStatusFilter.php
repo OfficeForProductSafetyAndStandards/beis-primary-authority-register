@@ -8,30 +8,30 @@ use Drupal\views\Plugin\views\filter\FilterPluginBase;
 use Drupal\views\ViewExecutable;
 
 /**
- * @ingroup views_filter_handlers
+ * PAR Status Filter.
+ *
+ * @ingroup views_filter_handlers.
  *
  * @ViewsFilter("par_data_status_filter")
  */
 class ParStatusFilter extends FilterPluginBase {
 
   /**
-   * Getter for the PAR Data Manager serice.
+   * Getter for the PAR Data Manager service.
    */
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');
   }
 
   /**
-   * @param \Drupal\views\ViewExecutable $view
-   * @param \Drupal\views\Plugin\views\display\DisplayPluginBase $display
-   * @param array|null $options
+   * Init the request.
    */
   public function init(ViewExecutable $view, DisplayPluginBase $display, array &$options = NULL) {
     parent::init($view, $display, $options);
   }
 
   /**
-   *
+   * Define the options.
    */
   protected function defineOptions() {
     $options = parent::defineOptions();
@@ -64,7 +64,7 @@ class ParStatusFilter extends FilterPluginBase {
   }
 
   /**
-   * {@inheritdoc)
+   * The query being executed.
    */
   public function query() {
     // This filter does not apply if not on a PAR entity.
@@ -103,7 +103,8 @@ class ParStatusFilter extends FilterPluginBase {
       }
     }
     if ($non_default_statuses = array_diff((array) $this->value, ['deleted', 'revoked', 'archived'])) {
-      // Get field to query e.g. "par_partnerships_field_data.partnership_status".
+      // Get field to query
+      // e.g. "par_partnerships_field_data.partnership_status".
       $field = "{$this->tableAlias}.{$this->realField}";
       $this->query->addWhere($this->options['group'], $field, $this->value, 'in');
     }

@@ -6,7 +6,7 @@ use Drupal\par_data\Event\ParDataEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
- *
+ * Implements Enforcement Notice Status Change.
  */
 class EnforcementNoticeStatusChange implements EventSubscriberInterface {
 
@@ -14,6 +14,7 @@ class EnforcementNoticeStatusChange implements EventSubscriberInterface {
    * The events to react to.
    *
    * @return mixed
+   *   Returns subscribed events.
    */
   public static function getSubscribedEvents() {
     // React to Enforcement Actions being reviewed.
@@ -28,6 +29,7 @@ class EnforcementNoticeStatusChange implements EventSubscriberInterface {
    * Get the entity type manager.
    *
    * @return \Drupal\Core\Entity\EntityTypeManagerInterface
+   *   Get the entity type manager.
    */
   public function getEntityTypeManager() {
     return \Drupal::entityTypeManager();
@@ -37,29 +39,32 @@ class EnforcementNoticeStatusChange implements EventSubscriberInterface {
    * Get the current user sending the message.
    *
    * @return \Drupal\Core\Session\AccountProxyInterface
+   *   Gets the current user for sending the message.
    */
   public function getCurrentUser() {
     return \Drupal::currentUser();
   }
 
   /**
-   * Listens for status changes to Enforcement Actions
-   * and fires a status change for the notice when all
-   * actions are reviewed.
+   * Enforcement actions status changes.
    *
    * @param \Drupal\par_data\Event\ParDataEventInterface $event
+   *   Listens for status changes to Enforcement Actions
+   *   and fires a status change for the notice when all actions are reviewed.
    */
   public function onNoticeStatusChange(ParDataEvent $event) {
     /** @var \Drupal\par_data\Entity\ParDataEntityInterface $par_data_enforcement_action */
     $par_data_enforcement_action = $event->getEntity();
 
-    // Get all the sibling actions associated with the parent enforcement notice.
+    // Get all the sibling actions associated with
+    // the parent enforcement notice.
     $par_data_enforcement_notice = $par_data_enforcement_action->getEnforcementNotice(TRUE);
     $primary_action = $par_data_enforcement_notice ?
       $par_data_enforcement_notice->getEnforcementActions(TRUE) :
       $par_data_enforcement_action;
 
-    // Only trigger an enforcement notice status change on the first updated item.
+    // Only trigger an enforcement notice status change
+    // on the first updated item.
     if ($par_data_enforcement_action->id() !== $primary_action->id()) {
       return;
     }

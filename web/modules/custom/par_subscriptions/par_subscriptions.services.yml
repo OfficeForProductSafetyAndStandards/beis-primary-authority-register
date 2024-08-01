@@ -18,4 +18,3 @@ services:
 #    class: Drupal\par_subscriptions\EventSubscriber\VerifySubscriber
 #    tags:
 #      - { name: 'event_subscriber' }
-

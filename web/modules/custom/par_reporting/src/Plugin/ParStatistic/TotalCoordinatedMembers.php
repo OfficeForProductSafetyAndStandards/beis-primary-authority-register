@@ -18,7 +18,7 @@ use Drupal\par_reporting\ParStatisticBase;
 class TotalCoordinatedMembers extends ParStatisticBase {
 
   /**
-   *
+   * Implements getStat function.
    */
   public function getStat(): int {
     $query = $this->getParDataManager()->getEntityQuery('par_data_partnership')
@@ -48,7 +48,8 @@ class TotalCoordinatedMembers extends ParStatisticBase {
       $count = 0;
 
       switch ($partnership->getMemberDisplay()) {
-        // If counting an internal member list count all the legal entities for each members as unique.
+        // If counting an internal member list count all
+        // the legal entities for each members as unique.
         case ParDataPartnership::MEMBER_DISPLAY_INTERNAL:
           foreach ($partnership->getCoordinatedMember() as $member) {
             $count += $member->get('field_legal_entity')?->count() ?? 1;
@@ -63,7 +64,8 @@ class TotalCoordinatedMembers extends ParStatisticBase {
 
           break;
 
-        // If the member list hasn't been updated since release `v63.0` settle on a default value.
+        // If the member list hasn't been updated since
+        // release `v63.0` settle on a default value.
         default:
           $count = 1;
       }
