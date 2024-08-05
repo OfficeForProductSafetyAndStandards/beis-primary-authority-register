@@ -92,7 +92,7 @@ references:
 
   configure_secrets: &configure_secrets
     run:
-      name: "Configure secrets"
+      name: "Configure secrets from Vault"
       command: |
         curl icanhazip.com
         ./devops/vault/vault-export.sh ci
