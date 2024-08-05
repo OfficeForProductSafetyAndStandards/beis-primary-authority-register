@@ -94,7 +94,6 @@ references:
     run:
       name: "Configure secrets"
       command: |
-        curl icanhazip.com
         ./devops/vault/vault-export.sh ci
 
   prepare_application: &prepare_application
