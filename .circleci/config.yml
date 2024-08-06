@@ -187,6 +187,7 @@ jobs:
             - .
 
   compile_code:
+    circleci_ip_ranges: true
     <<: *defaults
     steps:
       - *clean_working_directory
