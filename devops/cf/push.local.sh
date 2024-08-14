@@ -140,7 +140,6 @@ done
 
 # Defaults that incorporate user defined values
 DB_IMPORT=${DB_IMPORT:="$BUILD_DIR/$DB_DIR/$DB_NAME.sql"}
-printf "DB Import path: $DB_IMPORT \n"
 
 ## Ensure an environment has been passed
 if [[ $# -ne 1 ]]; then
@@ -243,7 +242,7 @@ elif [[ $ENV == 'staging' ]] || [[ $ENV =~ ^staging-.* ]]; then
       -o "office-for-product-safety-and-standards" -s "primary-authority-register-staging"
 else
     cf login -a api.cloud.service.gov.uk -u $GOVUK_CF_USER -p $GOVUK_CF_PWD \
-      -o "office-for-product-safety-and-standards" -s "primary-authority-register-development"
+      -o office-for-product-safety-and-standards -s primary-authority-register-development
 fi
 
 
@@ -559,7 +558,7 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
         tar --no-same-owner -zxvf $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz -C $REMOTE_BUILD_DIR/$DB_DIR && \
         ../vendor/bin/drush @par.paas sql:cli < $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
         rm -f $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql"
-    
+
     # Wait for database to be imported.
     cf_poll_task $TARGET_ENV DB_IMPORT
 
