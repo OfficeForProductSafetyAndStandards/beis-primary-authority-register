@@ -7,23 +7,26 @@ use Drupal\views\Plugin\views\field\FieldPluginBase;
 use Drupal\views\ResultRow;
 
 /**
- * Field handler to get display the users who are considered members of an entity.
+ * Field handler.
  *
  * @ingroup views_field_handlers
  *
  * @ViewsField("par_data_member_number")
+ *
+ * Field handler to get display the users
+ * who are considered members of an entity.
  */
 class ParDataMemberNumber extends FieldPluginBase {
 
   /**
-   * @{inheritdoc}
+   * Run the query.
    */
   public function query() {
     // Leave empty to avoid a query on this field.
   }
 
   /**
-   * @{inheritdoc}
+   * Render the result.
    */
   public function render(ResultRow $values) {
     $entity = $this->getEntity($values);

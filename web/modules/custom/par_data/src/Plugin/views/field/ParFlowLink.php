@@ -19,7 +19,6 @@ use Drupal\views\ResultRow;
 class ParFlowLink extends FieldPluginBase {
 
   /**
-   *
    * @{inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition) {
