@@ -9,23 +9,21 @@ use Drupal\views\Plugin\views\filter\FilterPluginBase;
 use Drupal\views\ViewExecutable;
 
 /**
- * @ingroup views_filter_handlers
+ * PAR Data View filters.
  *
- * @ViewsFilter("par_member")
+ * @ingroup views_filter_handlers
  */
 class ParMember extends FilterPluginBase {
 
   /**
-   * Getter for the PAR Data Manager serice.
+   * Getter for the PAR Data Manager service.
    */
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');
   }
 
   /**
-   * @param \Drupal\views\ViewExecutable $view
-   * @param \Drupal\views\Plugin\views\display\DisplayPluginBase $display
-   * @param array|null $options
+   * Initiate the view.
    */
   public function init(ViewExecutable $view, DisplayPluginBase $display, array &$options = NULL) {
     parent::init($view, $display, $options);
@@ -45,7 +43,7 @@ class ParMember extends FilterPluginBase {
   }
 
   /**
-   * {@inheritdoc)
+   * Run the query.
    */
   public function query() {
     // This filter does not apply if not on a PAR entity.
