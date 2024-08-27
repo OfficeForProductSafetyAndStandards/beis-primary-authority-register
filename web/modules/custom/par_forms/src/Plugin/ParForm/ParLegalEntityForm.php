@@ -399,7 +399,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       ],
     ];
 
-    $form['ch_as_different_type']['legal_entity_name'] = [
+    $form['ch_as_different_type']['ch_legal_entity_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter name of the legal entity'),
       '#default_value' => $this->getDefaultValuesByKey(['ch_as_different_type', 'legal_entity_name'], $index),
@@ -408,10 +408,10 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       ],
     ];
 
-    $form['ch_as_different_type']['legal_entity_number'] = [
+    $form['ch_as_different_type']['ch_legal_entity_number'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Provide the registration number'),
-      '#default_value' => $this->getDefaultValuesByKey(['ch_as_different_type', 'legal_entity_number'], $index),
+      '#default_value' => $this->getDefaultValuesByKey(['ch_as_different_type', 'ch_legal_entity_number'], $index),
       '#attributes' => [
         'class' => ['govuk-form-group'],
       ],
@@ -469,108 +469,111 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       // Validate additional rules.
       parent::validate($form, $form_state, $index, $action);
     }
-    elseif (in_array($register_id, ['companies_house', 'charity_commission', 'ch_as_different_type'])) {
+    elseif (in_array($register_id, ['companies_house', 'charity_commission'])) {
       // Get the legal entity name.
-      $name_element = $this->getElement($form, ['ch_as_different_type', 'legal_entity_name'], $index);
+      $name_element = $this->getElement($form, [$register_id, 'legal_entity_name'], $index);
       $legal_entity_name = $name_element ? trim((string) $form_state->getValue($name_element['#parents'])) : NULL;
 
       // Get the legal entity number to look up.
       $number_element = $this->getElement($form, ['registered', 'legal_entity_number'], $index);
       $legal_entity_number = $number_element ? trim((string) $form_state->getValue($number_element['#parents'])) : NULL;
 
-      if ($register_id == 'ch_as_different_type') {
-        // Get the entity type definition.
-        $definition_element = $this->getElement($form, [
-          'ch_as_different_type',
-          'ch_different_type_definition',
-        ], $index);
-        $type_definition = $definition_element ? $form_state->getValue($definition_element['#parents']) : NULL;
-
-        // Validate the type definition.
-        if (empty($type_definition)) {
-          $message = 'Please enter the organisation or charity type definition.';
-          $this->setError($form, $form_state, $definition_element, $message);
-        }
-
-        // Validate the legal entity name.
-        if (empty($legal_entity_name)) {
-          // Invalidate the submission if no legal entity name is provided.
-          $message = 'Please enter the legal entity name.';
-          $this->setError($form, $form_state, $name_element, $message);
-        }
-
-        // Validate the legal entity number.
-        if (empty($legal_entity_number)) {
-          // Invalidate the submission if no legal entity number is provided.
-          $message = 'Please enter the legal entity number.';
-          $this->setError($form, $form_state, $number_element, $message);
-        }
-
-        else {
-          $registry_id = $type_definition == 'charity_now_companies_house' ? 'charity_commission' : 'companies_house';
-          $registry = $this->getOrganisationManager()->getRegistry($registry_id);
-
-          if (!$registry->isValidId($legal_entity_number)) {
+      if (empty($legal_entity_number)) {
+        // Invalidate the submission if no legal entity number is provided.
+        $message = 'Please enter the legal entity number.';
+        $this->setError($form, $form_state, $number_element, $message);
+      }
+      else {
+        // Attempt to validate the legal entity number with a registry lookup.
+        try {
+          $registry = $this->getOrganisationManager()->getRegistry($register_id);
+          if ($registry->isValidId($legal_entity_number)) {
+            // Only look up valid IDs to reduce the number of API requests.
+            $this->getOrganisationManager()->lookupOrganisation($register_id, $legal_entity_number);
+          }
+          else {
+            // The legal entity number is in an invalid format.
             $message = 'The legal entity number you entered is not valid.';
             $this->setError($form, $form_state, $number_element, $message);
           }
         }
-      }
-
-      else {
-        if (empty($legal_entity_number)) {
-          // Invalidate the submission if no legal entity number is provided.
-          $message = 'Please enter the legal entity number.';
+        catch (DataException $e) {
+          // If the legal entity number does not exist in the registry.
+          $message = 'The legal entity number you entered could not be found.';
           $this->setError($form, $form_state, $number_element, $message);
         }
-
-        else {
-          // Attempt to validate the legal entity number with a registry lookup.
-          try {
-            $registry = $this->getOrganisationManager()->getRegistry($register_id);
-            if ($registry->isValidId($legal_entity_number)) {
-              // Only look up valid IDs to reduce the number of API requests.
-              $this->getOrganisationManager()->lookupOrganisation($register_id, $legal_entity_number);
-            }
-            else {
-              // The legal entity number is in an invalid format.
-              $message = 'The legal entity number you entered is not valid.';
-              $this->setError($form, $form_state, $number_element, $message);
-            }
-          }
-          catch (DataException $e) {
-            // If the legal entity number does not exist in the registry.
-            $message = 'The legal entity number you entered could not be found.';
-            $this->setError($form, $form_state, $number_element, $message);
-          }
-          catch (TemporaryException $ignore) {
-            // Users are not responsible for temporary or rate limiting errors.
-          }
-          catch (PluginNotFoundException $ignore) {
-            // Ignore system errors.
-          }
+        catch (TemporaryException $ignore) {
+          // Users are not responsible for temporary or rate limiting errors.
         }
-
-        // Check that this legal entity isn't already used by another item.
-        if (isset($existing_data)) {
-          foreach ($existing_data as $item) {
-            $item_number = NestedArray::getValue($item, ['registered','legal_entity_number']);
-            $item_number = trim((string) $item_number);
-            if ($legal_entity_number === $item_number) {
-              $message = 'This legal entity has already been added.';
-              $this->setError($form, $form_state, $number_element, $message);
-            }
-          }
+        catch (PluginNotFoundException $ignore) {
+          // Ignore system errors.
         }
       }
 
-      // Validate additional rules if a profile was found.
-      parent::validate($form, $form_state, $index, $action);
+      // Check that this legal entity isn't already used by another item.
+      if (isset($existing_data)) {
+        foreach ($existing_data as $item) {
+          $item_number = NestedArray::getValue($item, ['registered','legal_entity_number']);
+          $item_number = trim((string) $item_number);
+          if ($legal_entity_number === $item_number) {
+            $message = 'This legal entity has already been added.';
+            $this->setError($form, $form_state, $number_element, $message);
+          }
+        }
+      }
     }
+    elseif ($register_id == 'ch_as_different_type') {
+      // Get the legal entity name.
+      $name_element = $this->getElement($form, ['ch_as_different_type', 'ch_legal_entity_name'], $index);
+      $legal_entity_name = $name_element ? trim((string) $form_state->getValue($name_element['#parents'])) : NULL;
 
+      // Get the legal entity number to look up.
+      $number_element = $this->getElement($form, ['ch_as_different_type', 'ch_legal_entity_number'], $index);
+      $legal_entity_number = $number_element ? trim((string) $form_state->getValue($number_element['#parents'])) : NULL;
+
+      // Get the entity type definition.
+      $definition_element = $this->getElement($form, [
+        'ch_as_different_type',
+        'ch_different_type_definition',
+      ], $index);
+      $type_definition = $definition_element ? $form_state->getValue($definition_element['#parents']) : NULL;
+
+      // Validate the type definition.
+      if (empty($type_definition)) {
+        $message = 'Please enter the organisation or charity type definition.';
+        $this->setError($form, $form_state, $definition_element, $message);
+      }
+
+      // Validate the legal entity name.
+      if (empty($legal_entity_name)) {
+        // Invalidate the submission if no legal entity name is provided.
+        $message = 'Please enter the legal entity name.';
+        $this->setError($form, $form_state, $name_element, $message);
+      }
+
+      // Validate the legal entity number.
+      if (empty($legal_entity_number)) {
+        // Invalidate the submission if no legal entity number is provided.
+        $message = 'Please enter the legal entity number.';
+        $this->setError($form, $form_state, $number_element, $message);
+      }
+      else {
+        $registry_id = $type_definition == 'charity_now_companies_house' ? 'charity_commission' : 'companies_house';
+        $registry = $this->getOrganisationManager()->getRegistry($registry_id);
+
+        if (!$registry->isValidId($legal_entity_number)) {
+          $message = 'The legal entity number you entered is not valid.';
+          $this->setError($form, $form_state, $number_element, $message);
+        }
+      }
+    }
     elseif ($registry_element) {
       $message = 'Please choose whether this is a registered or unregistered legal entity.';
       $this->setError($form, $form_state, $registry_element, $message);
     }
+
+    // Validate additional rules if a profile was found.
+    parent::validate($form, $form_state, $index, $action);
   }
+
 }
