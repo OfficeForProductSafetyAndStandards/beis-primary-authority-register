@@ -235,10 +235,10 @@ vault operator seal -tls-skip-verify
 printf "Authenticating with GovUK PaaS...\n"
 
 if [[ $ENV == 'production' ]] || [[ $ENV =~ ^production-.* ]]; then
-    cf login -a api.cloud.service.gov.uk -u $GOVUK_CF_USER -p $GOVUK_CF_PWD \
+    cf login -a api.cloud.service.gov.uk -u $DEV_GOVUK_CF_USER -p $DEV_GOVUK_CF_PWD \
       -o "office-for-product-safety-and-standards" -s "primary-authority-register-production"
 elif [[ $ENV == 'staging' ]] || [[ $ENV =~ ^staging-.* ]]; then
-    cf login -a api.cloud.service.gov.uk -u $GOVUK_CF_USER -p $GOVUK_CF_PWD \
+    cf login -a api.cloud.service.gov.uk -u $DEV_GOVUK_CF_USER -p $DEV_GOVUK_CF_PWD \
       -o "office-for-product-safety-and-standards" -s "primary-authority-register-staging"
 else
     cf login -a api.cloud.service.gov.uk -u $DEV_GOVUK_CF_USER -p $DEV_GOVUK_CF_PWD \
