@@ -49,9 +49,8 @@ command -v cf >/dev/null 2>&1 || {
 #    VERSION (required) - the semver tag to be deployed
 #    ENV (required) - the environment to push to
 #    AWS_KEY (required) - the user deploying the script
-#    GOVUK_CF_USER (required) - the user deploying the script
-#    GOVUK_CF_USER (required) - the user deploying the script
-#    GOVUK_CF_PWD (required) - the password for the user account
+#    DEV_GOVUK_CF_USER (required) - the user deploying the script
+#    DEV_GOVUK_CF_PWD (required) - the password for the user account
 #    BUILD_DIR - the directory containing the build assets
 #    VAULT_ADDR - the vault service endpoint
 #    VAULT_UNSEAL_KEY (required) - the key used to unseal the vault
@@ -75,8 +74,8 @@ eval set -- "$PARSED"
 # Defaults
 VERSION=${VERSION:-}
 ENV_ONLY=${ENV_ONLY:=n}
-GOVUK_CF_USER=${GOVUK_CF_USER:-}
-GOVUK_CF_PWD=${GOVUK_CF_PWD:-}
+DEV_GOVUK_CF_USER=${DEV_GOVUK_CF_USER:-}
+DEV_GOVUK_CF_PWD=${DEV_GOVUK_CF_PWD:-}
 CF_INSTANCES=${CF_INSTANCES:=1}
 DB_IMPORT=${DB_IMPORT:="$PWD/backups/sanitised-db.sql"}
 DB_RESET=${DB_RESET:=n}
@@ -96,11 +95,11 @@ while true; do
             shift
             ;;
         -u|--user)
-            GOVUK_CF_USER="$2"
+            DEV_GOVUK_CF_USER="$2"
             shift 2
             ;;
         -p|--password)
-            GOVUK_CF_PWD="$2"
+            DEV_GOVUK_CF_PWD="$2"
             shift 2
             ;;
         -i|--instances)
@@ -166,23 +165,23 @@ fi
 ####################################################################################
 # Allow manual input of missing parameters
 #    ENV (required) - the password for the user account
-#    GOVUK_CF_USER (required) - the user deploying the script
-#    GOVUK_CF_PWD (required) - the password for the user account
+#    DEV_GOVUK_CF_USER (required) - the user deploying the script
+#    DEV_GOVUK_CF_PWD (required) - the password for the user account
 #    BUILD_DIR - the directory containing the build assets
 #    VAULT_ADDR - the vault service endpoint
 #    VAULT_UNSEAL_KEY (required) - the key used to unseal the vault
 ####################################################################################
 if [[ -z "${VERSION}" ]]; then
     echo -n "Enter the tag you wish to deploy: "
-    read GOVUK_CF_USER
+    read DEV_GOVUK_CF_USER
 fi
-if [[ -z "${GOVUK_CF_USER}" ]]; then
+if [[ -z "${DEV_GOVUK_CF_USER}" ]]; then
     echo -n "Enter your Cloud Foundry username: "
-    read GOVUK_CF_USER
+    read DEV_GOVUK_CF_USER
 fi
-if [[ -z "${GOVUK_CF_PWD}" ]]; then
+if [[ -z "${DEV_GOVUK_CF_PWD}" ]]; then
     echo -n "Enter your Cloud Foundry password (will be hidden): "
-    read -s GOVUK_CF_PWD
+    read -s DEV_GOVUK_CF_PWD
 fi
 if [[ -z "${VAULT_UNSEAL}" ]]; then
     echo -n "Enter your Vault unseal key (will be hidden): "
@@ -218,23 +217,23 @@ vault operator seal -tls-skip-verify
 # Pull the packaged version from S3
 ####################################################################################
 printf "Pulling version $VERSION...\n"
-    
+
 mkdir -p $BUILD_DIR
 rm -rf $BUILD_DIR/*
 
 printf "Downloading build package s3://beis-par-artifacts/builds/$VERSION.tar.gz...\n"
 aws s3 cp s3://beis-par-artifacts/builds/$VERSION.tar.gz /tmp/
-    
+
 ## Check that we got the package
 if [ ! -f /tmp/$VERSION.tar.gz ]; then
    exit
 fi
-    
+
 ## Unpack and remove package file
 printf "Extracting the tar ball to $BUILD_DIR...\n"
 tar -zxvf /tmp/$VERSION.tar.gz -C $BUILD_DIR > /dev/null 2>&1
 rm /tmp/$VERSION.tar.gz
-    
+
 ####################################################################################
 # Run the deployment script
 ####################################################################################
