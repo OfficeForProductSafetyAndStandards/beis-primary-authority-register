@@ -521,6 +521,9 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
           }
         }
       }
+
+      // Validate additional rules if a profile was found.
+      parent::validate($form, $form_state, $index, $action);
     }
     elseif ($register_id == 'ch_as_different_type') {
       // Get the legal entity name.
@@ -566,14 +569,14 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
           $this->setError($form, $form_state, $number_element, $message);
         }
       }
+
+      // Validate additional rules if a profile was found.
+      parent::validate($form, $form_state, $index, $action);
     }
     elseif ($registry_element) {
       $message = 'Please choose whether this is a registered or unregistered legal entity.';
       $this->setError($form, $form_state, $registry_element, $message);
     }
-
-    // Validate additional rules if a profile was found.
-    parent::validate($form, $form_state, $index, $action);
   }
 
 }
