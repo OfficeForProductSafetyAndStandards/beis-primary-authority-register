@@ -288,6 +288,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
     // Follow-up inputs for registered entities.
     $form['registered'] = [
       '#type' => 'container',
+      '#tree' => TRUE,
       '#states' => [
         'visible' => [
           'input[name="' . $this->getTargetName($this->getElementKey('registry', $index)) . '"]' => [
@@ -368,6 +369,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
 
     $form['ch_as_different_type'] = [
       '#type' => 'container',
+      '#tree' => TRUE,
       '#states' => [
         'visible' => [
           'input[name="' . $this->getTargetName($this->getElementKey('registry', $index)) . '"]' => [
@@ -380,7 +382,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       ],
     ];
 
-    $form['ch_as_different_type']['ch_legal_entity_name'] = [
+    $form['ch_as_different_type']['legal_entity_name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Enter name of the legal entity'),
       '#default_value' => $this->getDefaultValuesByKey(['ch_as_different_type', 'legal_entity_name'], $index),
@@ -389,10 +391,10 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       ],
     ];
 
-    $form['ch_as_different_type']['ch_legal_entity_number'] = [
+    $form['ch_as_different_type']['legal_entity_number'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Provide the registration number'),
-      '#default_value' => $this->getDefaultValuesByKey(['ch_as_different_type', 'ch_legal_entity_number'], $index),
+      '#default_value' => $this->getDefaultValuesByKey(['ch_as_different_type', 'legal_entity_number'], $index),
       '#attributes' => [
         'class' => ['govuk-form-group'],
       ],
@@ -451,10 +453,6 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       parent::validate($form, $form_state, $index, $action);
     }
     elseif (in_array($register_id, ['companies_house', 'charity_commission'])) {
-      // Get the legal entity name.
-      $name_element = $this->getElement($form, [$register_id, 'legal_entity_name'], $index);
-      $legal_entity_name = $name_element ? trim((string) $form_state->getValue($name_element['#parents'])) : NULL;
-
       // Get the legal entity number to look up.
       $number_element = $this->getElement($form, ['registered', 'legal_entity_number'], $index);
       $legal_entity_number = $number_element ? trim((string) $form_state->getValue($number_element['#parents'])) : NULL;
@@ -494,7 +492,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       // Check that this legal entity isn't already used by another item.
       if (isset($existing_data)) {
         foreach ($existing_data as $item) {
-          $item_number = NestedArray::getValue($item, ['registered','legal_entity_number']);
+          $item_number = NestedArray::getValue($item, ['registered', 'legal_entity_number']);
           $item_number = trim((string) $item_number);
           if ($legal_entity_number === $item_number) {
             $message = 'This legal entity has already been added.';
@@ -508,7 +506,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
     }
     elseif ($register_id == 'ch_as_different_type') {
       // Get the legal entity name.
-      $name_element = $this->getElement($form, ['ch_as_different_type', 'ch_legal_entity_name'], $index);
+      $name_element = $this->getElement($form, ['ch_as_different_type', 'legal_entity_name'], $index);
       $legal_entity_name = $name_element ? trim((string) $form_state->getValue($name_element['#parents'])) : NULL;
 
       // Validate the legal entity name.
