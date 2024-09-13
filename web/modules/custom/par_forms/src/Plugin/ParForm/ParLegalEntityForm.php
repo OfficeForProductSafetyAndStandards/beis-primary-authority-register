@@ -288,7 +288,6 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
     // Follow-up inputs for registered entities.
     $form['registered'] = [
       '#type' => 'container',
-      '#tree' => TRUE,
       '#states' => [
         'visible' => [
           'input[name="' . $this->getTargetName($this->getElementKey('registry', $index)) . '"]' => [
