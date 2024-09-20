@@ -392,7 +392,7 @@ jobs:
           command: |
             DEPLOY_ENV="production"
             printf "$DEPLOY_ENV\n"
-            ./devops/cf/push.local.sh -T $CIRCLE_TAG -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD -x -d /tmp/workspace -i 4 $DEPLOY_ENV
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -u $DEV_GOVUK_CF_USER -p $DEV_GOVUK_CF_PWD -x -d /tmp/workspace -i 4 $DEPLOY_ENV
 
   deploy_test:
     <<: *defaults
@@ -428,7 +428,7 @@ jobs:
       - run:
           name: "Backup production database"
           command: |
-            ./scripts/db-remote-backup.sh production -d "/tmp/backups" -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD
+            ./scripts/db-remote-backup.sh production -d "/tmp/backups" -u $DEV_GOVUK_CF_USER -p $DEV_GOVUK_CF_PWD
       - *aws_setup
       - run: # https://discuss.circleci.com/t/aws-s3-cp-errors-on-exclude-argument/50086
           name: "Backup database to S3"
