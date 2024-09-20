@@ -281,6 +281,7 @@ jobs:
           destination: build
 
   test_load:
+    circleci_ip_ranges: true
     <<: *defaults
     steps:
       - *clean_working_directory
@@ -337,6 +338,7 @@ jobs:
           destination: build
 
   deploy_stage:
+    circleci_ip_ranges: true
     <<: *defaults
     steps:
       - *clean_working_directory
@@ -365,6 +367,7 @@ jobs:
             ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
 
   deploy_prod:
+    circleci_ip_ranges: true
     <<: *defaults
     steps:
       - *clean_working_directory
@@ -389,7 +392,7 @@ jobs:
           command: |
             DEPLOY_ENV="production"
             printf "$DEPLOY_ENV\n"
-            ./devops/cf/push.local.sh -T $CIRCLE_TAG -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD -x -d /tmp/workspace -i 4 $DEPLOY_ENV
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -u $DEV_GOVUK_CF_USER -p $DEV_GOVUK_CF_PWD -x -d /tmp/workspace -i 4 $DEPLOY_ENV
 
   deploy_test:
     <<: *defaults
@@ -425,7 +428,7 @@ jobs:
       - run:
           name: "Backup production database"
           command: |
-            ./scripts/db-remote-backup.sh production -d "/tmp/backups" -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD
+            ./scripts/db-remote-backup.sh production -d "/tmp/backups" -u $DEV_GOVUK_CF_USER -p $DEV_GOVUK_CF_PWD
       - *aws_setup
       - run: # https://discuss.circleci.com/t/aws-s3-cp-errors-on-exclude-argument/50086
           name: "Backup database to S3"
@@ -461,6 +464,13 @@ jobs:
           command: |
             cd web
             ../vendor/bin/drush @par.paas sql:sanitize -y
+          environment:
+            APP_ENV: ci-sanitise
+      - run:
+          name: "Sanitise PAR Data"
+          command: |
+            cd web
+            ../vendor/bin/drush spp
           environment:
             APP_ENV: ci-sanitise
       - run:
