@@ -281,6 +281,7 @@ jobs:
           destination: build
 
   test_load:
+    circleci_ip_ranges: true
     <<: *defaults
     steps:
       - *clean_working_directory
@@ -337,6 +338,7 @@ jobs:
           destination: build
 
   deploy_stage:
+    circleci_ip_ranges: true
     <<: *defaults
     steps:
       - *clean_working_directory
@@ -365,6 +367,7 @@ jobs:
             ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
 
   deploy_prod:
+    circleci_ip_ranges: true
     <<: *defaults
     steps:
       - *clean_working_directory
