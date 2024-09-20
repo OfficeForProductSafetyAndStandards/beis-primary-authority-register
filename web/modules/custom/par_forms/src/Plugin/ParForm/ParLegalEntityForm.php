@@ -174,12 +174,22 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       $index = $delta + 1;
 
       // Turn the data into a legal entity.
-      $values = [
-        'registry' => $this->getDefaultValuesByKey(['registry'], $index,  ParDataLegalEntity::DEFAULT_REGISTER),
-        'registered_name' => $this->getDefaultValuesByKey(['unregistered', 'legal_entity_name'], $index,  ''),
-        'registered_number' => trim($this->getDefaultValuesByKey(['registered', 'legal_entity_number'], $index,  '')),
-        'legal_entity_type' => $this->getDefaultValuesByKey(['unregistered', 'legal_entity_type'], $index,  ''),
-      ];
+      if ($row['registry'] == 'ch_as_different_type') {
+        $values = [
+          'registry' => $row['registry'],
+          'registered_name' => $row['ch_as_different_type']['legal_entity_name'],
+          'registered_number' => $row['ch_as_different_type']['legal_entity_number'],
+          'legal_entity_type' => 'special_org',
+        ];
+      }
+      else {
+        $values = [
+          'registry' => $this->getDefaultValuesByKey(['registry'], $index,  ParDataLegalEntity::DEFAULT_REGISTER),
+          'registered_name' => $this->getDefaultValuesByKey(['unregistered', 'legal_entity_name'], $index,  ''),
+          'registered_number' => trim($this->getDefaultValuesByKey(['registered', 'legal_entity_number'], $index,  '')),
+          'legal_entity_type' => $this->getDefaultValuesByKey(['unregistered', 'legal_entity_type'], $index,  ''),
+        ];
+      }
       $legal_entity = ParDataLegalEntity::create($values);
       // Lookup the correct values for registered entities.
       $legal_entity->lookup();
