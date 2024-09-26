@@ -467,13 +467,6 @@ jobs:
           environment:
             APP_ENV: ci-sanitise
       - run:
-          name: "Sanitise PAR Data"
-          command: |
-            cd web
-            ../vendor/bin/drush spp
-          environment:
-            APP_ENV: ci-sanitise
-      - run:
           name: "Backup sanitised database"
           command: ./scripts/db-backup.sh production -s -d "/tmp/backups" -a '@par.dev'
           environment:
