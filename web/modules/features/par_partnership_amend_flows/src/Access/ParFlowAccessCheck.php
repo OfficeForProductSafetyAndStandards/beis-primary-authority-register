@@ -87,6 +87,17 @@ class ParFlowAccessCheck implements AccessInterface {
       return AccessResult::forbidden('The user is not allowed to access this page.');
     }
 
+    $partnership_legal_entities = $par_data_partnership->getPartnershipLegalEntities();
+    // Get all the pending partnership legal entities.
+    $partnership_legal_entities = array_filter($partnership_legal_entities, function ($partnership_legal_entity) {
+      return $partnership_legal_entity->isPending();
+    });
+
+    // Partnership amendments cannot be made if one is already in progress.
+    if (!empty($partnership_legal_entities)) {
+      return AccessResult::forbidden('Only partnerships with pending legal entity amendments can be confirmed.');
+    }
+    
     return AccessResult::allowed();
   }
 
