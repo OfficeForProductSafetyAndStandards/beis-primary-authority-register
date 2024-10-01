@@ -167,7 +167,11 @@
             "file-mapping": {
                 "[web-root]/robots.txt": false,
                 "[web-root]/.ht.router.php": false,
-                "[web-root]/web.config": false
+                "[web-root]/web.config": false,
+                "[web-root]/.htaccess": {
+                    "mode": "append",
+                    "append": "patches/well-known-traffic.txt"
+                }
             }
         },
         "composer-exit-on-patch-failure": true,
