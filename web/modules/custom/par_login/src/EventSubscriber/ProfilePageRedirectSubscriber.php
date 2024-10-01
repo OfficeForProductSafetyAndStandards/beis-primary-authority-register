@@ -70,7 +70,7 @@ class ProfilePageRedirectSubscriber implements EventSubscriberInterface {
 
       // Log the denied request as well as the referer for information.
       $referer = $request->headers->get('referer');
-      $this->logger->warning(
+      $this->logger->info(
         'User @user is not allowed to access their profile page. Redirected from %redirected',
         ['%user' => $this->account->id(), '%redirected' => $referer]
       );
