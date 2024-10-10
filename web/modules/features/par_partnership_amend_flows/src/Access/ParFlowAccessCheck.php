@@ -15,8 +15,8 @@ use Drupal\user\Entity\User;
 use Symfony\Component\Routing\Route;
 
 /**
-* Checks access for displaying the amend partnership pages.
-*/
+ * Checks access for displaying the amend partnership pages.
+ */
 class ParFlowAccessCheck implements AccessInterface {
 
   /**
@@ -86,6 +86,23 @@ class ParFlowAccessCheck implements AccessInterface {
       (!$user || !$this->getParDataManager()->isMember($par_data_partnership, $user))) {
       return AccessResult::forbidden('The user is not allowed to access this page.');
     }
+
+    // Only active partnerships can be amended.
+    if (!$par_data_partnership->isActive()) {
+      return AccessResult::forbidden('Only active partnerships can be amended.');
+    }
+
+    $partnership_legal_entities = $par_data_partnership->getPartnershipLegalEntities();
+    // Get all the pending partnership legal entities.
+    $partnership_legal_entities = array_filter($partnership_legal_entities, function ($partnership_legal_entity) {
+      return $partnership_legal_entity->isPending();
+    });
+
+    // Partnership amendments cannot be made if one is already in progress.
+    if (!empty($partnership_legal_entities)) {
+      return AccessResult::forbidden('Only partnerships with pending legal entity amendments can be confirmed.');
+    }
+
 
     return AccessResult::allowed();
   }
