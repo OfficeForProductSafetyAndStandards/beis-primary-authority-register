@@ -367,6 +367,9 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
     $par_data_authorities = [];
     $unset_ids = [];
 
+    // Ensure $authorities is defined before using it
+    $authorities = $authorities ?? []; // Initialize to an empty array if not set
+
     $user = User::load(\Drupal::currentUser()->id());
     $relationships = $this->getRelationships('par_data_authority');
     if ($user->hasPermission('bypass par_data membership')) {

@@ -174,12 +174,22 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       $index = $delta + 1;
 
       // Turn the data into a legal entity.
-      $values = [
-        'registry' => $this->getDefaultValuesByKey(['registry'], $index,  ParDataLegalEntity::DEFAULT_REGISTER),
-        'registered_name' => $this->getDefaultValuesByKey(['unregistered', 'legal_entity_name'], $index,  ''),
-        'registered_number' => trim($this->getDefaultValuesByKey(['registered', 'legal_entity_number'], $index,  '')),
-        'legal_entity_type' => $this->getDefaultValuesByKey(['unregistered', 'legal_entity_type'], $index,  ''),
-      ];
+      if ($row['registry'] == 'ch_as_different_type') {
+        $values = [
+          'registry' => $row['registry'],
+          'registered_name' => $row['ch_as_different_type']['legal_entity_name'],
+          'registered_number' => $row['ch_as_different_type']['legal_entity_number'],
+          'legal_entity_type' => 'special_org',
+        ];
+      }
+      else {
+        $values = [
+          'registry' => $this->getDefaultValuesByKey(['registry'], $index,  ParDataLegalEntity::DEFAULT_REGISTER),
+          'registered_name' => $this->getDefaultValuesByKey(['unregistered', 'legal_entity_name'], $index,  ''),
+          'registered_number' => trim($this->getDefaultValuesByKey(['registered', 'legal_entity_number'], $index,  '')),
+          'legal_entity_type' => $this->getDefaultValuesByKey(['unregistered', 'legal_entity_type'], $index,  ''),
+        ];
+      }
       $legal_entity = ParDataLegalEntity::create($values);
       // Lookup the correct values for registered entities.
       $legal_entity->lookup();
@@ -229,11 +239,14 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       'companies_house' => 'A registered organisation',
       'charity_commission' => 'A charity',
       ParDataLegalEntity::DEFAULT_REGISTER => 'An unregistered entity',
+      'ch_as_different_type' => 'A registered organisation or charity originally registered as a different type',
     ];
+
     $registry_options_descriptions = [
       'companies_house' => 'Please choose this option if the organisation or partnership is registered with Companies House.',
       'charity_commission' => 'Please choose this option if the charity is registered with the Charity Commission but isn\'t a registered company.',
       ParDataLegalEntity::DEFAULT_REGISTER => 'Please choose this option for sole traders and all other legal entity types.',
+      'ch_as_different_type' => 'Please choose this option if the organisation or charity was registered as a different type.',
     ];
 
     // Ensure that the correct legal entities are entered for coordinated partnerships.
@@ -297,6 +310,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
         'class' => ['govuk-form-group', 'govuk-radios__conditional'],
       ],
     ];
+
     $form['registered']['legal_entity_number'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Provide the registration number'),
@@ -317,17 +331,20 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
         'class' => ['govuk-form-group', 'govuk-radios__conditional'],
       ],
     ];
+
     $unregistered_type_options = [
       'partnership' => 'Partnership',
       'sole_trader' => 'Sole trader',
       'unincorporated_association' => 'Unincorporated association',
       'other' => 'Other',
     ];
+
     $unregistered_type_options_descriptions = [
       'partnership' => 'A partnership is a contractual arrangement between two or more people that is set up with a view to profit and to share the profits amongst the partners',
       'sole_trader' => 'A sole trader is an individual who is registered with HMRC for tax purposes',
       'unincorporated_association' => 'A simple way for a group of volunteers to run an organisation for a common purpose',
     ];
+
     $form['unregistered']['legal_entity_type'] = [
       '#type' => 'radios',
       '#title' => $this->t('How is this entity structured?'),
@@ -338,6 +355,13 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       '#after_build' => [
         [get_class($this), 'optionsDescriptions'],
       ],
+      '#states' => [
+        'checked' => [
+          'input[name="' . $this->getTargetName($this->getElementKey('ch_as_different_type', $index)) . '"]' => [
+            ['value' => 'other'],
+          ],
+        ],
+      ],
       '#attributes' => [
         'class' => ['govuk-radios--small', 'govuk-form-group'],
       ],
@@ -347,6 +371,39 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       '#type' => 'textfield',
       '#title' => $this->t('Enter name of the legal entity'),
       '#default_value' => $this->getDefaultValuesByKey(['unregistered', 'legal_entity_name'], $index),
+      '#attributes' => [
+        'class' => ['govuk-form-group'],
+      ],
+    ];
+
+    $form['ch_as_different_type'] = [
+      '#type' => 'container',
+      '#tree' => TRUE,
+      '#states' => [
+        'visible' => [
+          'input[name="' . $this->getTargetName($this->getElementKey('registry', $index)) . '"]' => [
+            ['value' => 'ch_as_different_type'],
+          ],
+        ],
+      ],
+      '#attributes' => [
+        'class' => ['govuk-form-group', 'govuk-radios__conditional'],
+      ],
+    ];
+
+    $form['ch_as_different_type']['legal_entity_name'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Enter name of the legal entity'),
+      '#default_value' => $this->getDefaultValuesByKey(['ch_as_different_type', 'legal_entity_name'], $index),
+      '#attributes' => [
+        'class' => ['govuk-form-group'],
+      ],
+    ];
+
+    $form['ch_as_different_type']['legal_entity_number'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Provide the registration number'),
+      '#default_value' => $this->getDefaultValuesByKey(['ch_as_different_type', 'legal_entity_number'], $index),
       '#attributes' => [
         'class' => ['govuk-form-group'],
       ],
@@ -374,9 +431,9 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
     }
 
     if ($register_id === ParDataLegalEntity::DEFAULT_REGISTER) {
-      $type_element = $this->getElement($form, ['unregistered','legal_entity_type'], $index);
+      $type_element = $this->getElement($form, ['unregistered', 'legal_entity_type'], $index);
       $legal_entity_type = $type_element ? $form_state->getValue($type_element['#parents']) : NULL;
-      $name_element = $this->getElement($form, ['unregistered','legal_entity_name'], $index);
+      $name_element = $this->getElement($form, ['unregistered', 'legal_entity_name'], $index);
       $legal_entity_name = $name_element ? trim((string) $form_state->getValue($name_element['#parents'])) : NULL;
 
       if (empty($legal_entity_type)) {
@@ -392,7 +449,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       // Check that this legal entity isn't already used by another item.
       if (isset($existing_data)) {
         foreach ($existing_data as $item) {
-          $item_name = NestedArray::getValue($item, ['unregistered','legal_entity_name']);
+          $item_name = NestedArray::getValue($item, ['unregistered', 'legal_entity_name']);
           $item_name = trim((string) $item_name);
           if ($legal_entity_name === $item_name) {
             $message = 'This legal entity has already been added.';
@@ -404,9 +461,9 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       // Validate additional rules.
       parent::validate($form, $form_state, $index, $action);
     }
-    else if (in_array($register_id, ['companies_house', 'charity_commission'])) {
+    elseif (in_array($register_id, ['companies_house', 'charity_commission'])) {
       // Get the legal entity number to look up.
-      $number_element = $this->getElement($form, ['registered','legal_entity_number'], $index);
+      $number_element = $this->getElement($form, ['registered', 'legal_entity_number'], $index);
       $legal_entity_number = $number_element ? trim((string) $form_state->getValue($number_element['#parents'])) : NULL;
 
       if (empty($legal_entity_number)) {
@@ -444,7 +501,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       // Check that this legal entity isn't already used by another item.
       if (isset($existing_data)) {
         foreach ($existing_data as $item) {
-          $item_number = NestedArray::getValue($item, ['registered','legal_entity_number']);
+          $item_number = NestedArray::getValue($item, ['registered', 'legal_entity_number']);
           $item_number = trim((string) $item_number);
           if ($legal_entity_number === $item_number) {
             $message = 'This legal entity has already been added.';
@@ -456,7 +513,22 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       // Validate additional rules if a profile was found.
       parent::validate($form, $form_state, $index, $action);
     }
-    else if ($registry_element) {
+    elseif ($register_id == 'ch_as_different_type') {
+      // Get the legal entity name.
+      $name_element = $this->getElement($form, ['ch_as_different_type', 'legal_entity_name'], $index);
+      $legal_entity_name = $name_element ? trim((string) $form_state->getValue($name_element['#parents'])) : NULL;
+
+      // Validate the legal entity name.
+      if (empty($legal_entity_name)) {
+        // Invalidate the submission if no legal entity name is provided.
+        $message = 'Please enter the legal entity name.';
+        $this->setError($form, $form_state, $name_element, $message);
+      }
+
+      // Validate additional rules if a profile was found.
+      parent::validate($form, $form_state, $index, $action);
+    }
+    elseif ($registry_element) {
       $message = 'Please choose whether this is a registered or unregistered legal entity.';
       $this->setError($form, $form_state, $registry_element, $message);
     }

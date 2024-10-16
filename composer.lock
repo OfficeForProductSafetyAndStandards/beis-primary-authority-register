@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "582397fd970cfe061149574c02077632",
+    "content-hash": "f84acdf0a87d0d846e028589b461bed5",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -5730,20 +5730,20 @@
         },
         {
             "name": "drupal/search_api",
-            "version": "1.31.0",
+            "version": "1.35.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/search_api.git",
-                "reference": "8.x-1.31"
+                "reference": "8.x-1.35"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.31.zip",
-                "reference": "8.x-1.31",
-                "shasum": "ec8436744c34de2ede6370d4dd26875489e761bc"
+                "url": "https://ftp.drupal.org/files/projects/search_api-8.x-1.35.zip",
+                "reference": "8.x-1.35",
+                "shasum": "d119726e870f793c6470d2a4fa9286662c5eb45d"
             },
             "require": {
-                "drupal/core": "^10.0"
+                "drupal/core": "^10.1 || ^11"
             },
             "conflict": {
                 "drupal/search_api_solr": "2.* || 3.0 || 3.1"
@@ -5761,8 +5761,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.31",
-                    "datestamp": "1700926323",
+                    "version": "8.x-1.35",
+                    "datestamp": "1718551025",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -5802,21 +5802,21 @@
         },
         {
             "name": "drupal/search_api_opensearch",
-            "version": "2.0.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/search_api_opensearch.git",
-                "reference": "2.0.0"
+                "reference": "2.1.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/search_api_opensearch-2.0.0.zip",
-                "reference": "2.0.0",
-                "shasum": "ad19d03e60fc29607a14287b66f1d65e8dc6be74"
+                "url": "https://ftp.drupal.org/files/projects/search_api_opensearch-2.1.0.zip",
+                "reference": "2.1.0",
+                "shasum": "eba065d4b22a115e2a2ce847b5e19660a5810e1d"
             },
             "require": {
-                "drupal/core": "^9 || ^10",
-                "drupal/search_api": "^1.23",
+                "drupal/core": "^9 || ^10 || ^11",
+                "drupal/search_api": "^1.34",
                 "makinacorpus/php-lucene": "^1.1",
                 "opensearch-project/opensearch-php": "^2.0",
                 "php": "^8"
@@ -5832,8 +5832,8 @@
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "2.0.0",
-                    "datestamp": "1711512726",
+                    "version": "2.1.0",
+                    "datestamp": "1720409493",
                     "security-coverage": {
                         "status": "covered",
                         "message": "Covered by Drupal's security advisory policy"
@@ -6379,6 +6379,59 @@
             "homepage": "https://www.drupal.org/project/vbo_export",
             "support": {
                 "source": "https://git.drupalcode.org/project/vbo_export"
+            }
+        },
+        {
+            "name": "drupal/views_aggregator",
+            "version": "2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/views_aggregator.git",
+                "reference": "2.0.2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/views_aggregator-2.0.2.zip",
+                "reference": "2.0.2",
+                "shasum": "390b1f2c7924e3af36cf95a0c20bc13b9da5f30c"
+            },
+            "require": {
+                "drupal/core": "^9.2 || ^10"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.2",
+                    "datestamp": "1678561594",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "jordik",
+                    "homepage": "https://www.drupal.org/user/3472907"
+                },
+                {
+                    "name": "RdeBoer",
+                    "homepage": "https://www.drupal.org/user/404007"
+                },
+                {
+                    "name": "tr",
+                    "homepage": "https://www.drupal.org/user/202830"
+                }
+            ],
+            "description": "A Views plugin that operates on the results <em>after</em> the database query has run, thus offering aggregation functions not otherwise possible.",
+            "homepage": "https://www.drupal.org/project/views_aggregator",
+            "support": {
+                "source": "https://git.drupalcode.org/project/views_aggregator",
+                "issues": "https://www.drupal.org/project/issues/views_aggregator"
             }
         },
         {

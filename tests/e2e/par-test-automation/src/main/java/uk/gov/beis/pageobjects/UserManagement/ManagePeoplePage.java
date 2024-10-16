@@ -6,7 +6,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
+import uk.gov.beis.utility.DataStore;
 
 public class ManagePeoplePage extends BasePageObject {
 	
@@ -28,6 +30,7 @@ public class ManagePeoplePage extends BasePageObject {
 	@FindBy(linkText = "Manage contact")
 	private WebElement manageContactBtn;
 	
+	private String getNameColumnLocator = "//td[contains(normalize-space(), '?')]/preceding-sibling::td";
 	private String manageContactByEmailLocator = "//td[contains(normalize-space(), '?')]/following-sibling::td[2]/a[contains(normalize-space(), 'Manage contact')]";
 	private String manageContactByNameLocator = "//td[contains(normalize-space(), '?')]/following-sibling::td[3]/a[contains(normalize-space(), 'Manage contact')]";
 	
@@ -52,7 +55,10 @@ public class ManagePeoplePage extends BasePageObject {
 	}
 	
 	public String GetPersonName() {
-		return personNameTableElement.getText().trim();
+		WebElement nameColumn = driver.findElement(By.xpath(getNameColumnLocator.replace("?", DataStore.getSavedValue(UsableValues.PERSON_EMAIL_ADDRESS).toLowerCase())));
+		return nameColumn.getText().trim();
+		
+		//return personNameTableElement.getText().trim();
 	}
 	
 	public void findManageContactByEmail(String personEmail) {

@@ -31,8 +31,8 @@ command -v cf >/dev/null 2>&1 || {
 # Set required parameters
 #    ENV (required) - the environment to check for
 #    BUILD_VER (optional) - the build tag being pushed
-#    GOVUK_CF_USER (required) - the user deploying the script
-#    GOVUK_CF_PWD (required) - the password for the user account
+#    DEV_GOVUK_CF_USER (required) - the user deploying the script
+#    DEV_GOVUK_CF_PWD (required) - the password for the user account
 #    BUILD_DIR - the directory containing the build assets
 #    VAULT_ADDR - the vault service endpoint
 #    VAULT_UNSEAL_KEY (required) - the key used to unseal the vault
@@ -55,8 +55,8 @@ eval set -- "$PARSED"
 
 # Defaults
 ENV_ONLY=${ENV_ONLY:=n}
-GOVUK_CF_USER=${GOVUK_CF_USER:-}
-GOVUK_CF_PWD=${GOVUK_CF_PWD:-}
+DEV_GOVUK_CF_USER=${DEV_GOVUK_CF_USER:-}
+DEV_GOVUK_CF_PWD=${DEV_GOVUK_CF_PWD:-}
 INDEX=${INDEX:="partnership_index"}
 LOCAL_PORT=${LOCAL_PORT:="4430"}
 
@@ -71,11 +71,11 @@ while true; do
             shift 2
             ;;
         -u|--user)
-            GOVUK_CF_USER="$2"
+            DEV_GOVUK_CF_USER="$2"
             shift 2
             ;;
         -p|--password)
-            GOVUK_CF_PWD="$2"
+            DEV_GOVUK_CF_PWD="$2"
             shift 2
             ;;
         --)
@@ -100,17 +100,17 @@ ENV=$1
 ####################################################################################
 # Allow manual input of missing parameters
 #    ENV (required) - the password for the user account
-#    GOVUK_CF_USER (required) - the user deploying the script
-#    GOVUK_CF_PWD (required) - the password for the user account
+#    DEV_GOVUK_CF_USER (required) - the user deploying the script
+#    DEV_GOVUK_CF_PWD (required) - the password for the user account
 #    INDEX - the index to check the health for
 ####################################################################################
-if [[ -z "${GOVUK_CF_USER}" ]]; then
+if [[ -z "${DEV_GOVUK_CF_USER}" ]]; then
     echo -n "Enter your Cloud Foundry username: "
-    read GOVUK_CF_USER
+    read DEV_GOVUK_CF_USER
 fi
-if [[ -z "${GOVUK_CF_PWD}" ]]; then
+if [[ -z "${DEV_GOVUK_CF_PWD}" ]]; then
     echo -n "Enter your Cloud Foundry password (will be hidden): "
-    read -s GOVUK_CF_PWD
+    read -s DEV_GOVUK_CF_PWD
 fi
 if [[ -z "${INDEX}" ]]; then
     echo -n "Please choose an index to check: "
@@ -130,7 +130,7 @@ elif [[ $ENV == 'staging' ]] || [[ $ENV == staging-* ]]; then
     cf login -a api.cloud.service.gov.uk -u $GOVUK_CF_USER -p $GOVUK_CF_PWD \
       -o "office-for-product-safety-and-standards" -s "primary-authority-register-staging"
 else
-    cf login -a api.cloud.service.gov.uk -u $GOVUK_CF_USER -p $GOVUK_CF_PWD \
+    cf login -a api.cloud.service.gov.uk -u $DEV_GOVUK_CF_USER -p $DEV_GOVUK_CF_PWD \
       -o "office-for-product-safety-and-standards" -s "primary-authority-register-development"
 fi
 

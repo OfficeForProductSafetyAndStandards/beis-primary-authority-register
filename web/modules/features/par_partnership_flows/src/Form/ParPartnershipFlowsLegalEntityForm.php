@@ -2,6 +2,7 @@
 
 namespace Drupal\par_partnership_flows\Form;
 
+use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
@@ -77,7 +78,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
 
       foreach ($partnership_legal_entities as $partnership_legal_entity) {
         if ($partnership_legal_entity->getLegalEntity()->id() === $legal_entity->id()
-            && $partnership_legal_entity->isActiveDuringPeriod($start_date, $end_date)) {
+          && $partnership_legal_entity->isActiveDuringPeriod($start_date, $end_date)) {
           $id = $this->getElementId(['registered_number'], $form);
           $form_state->setErrorByName($this->getElementName('registered_number'), $this->wrapErrorMessage('This legal entity is already an active participant in the partnership.', $id));
           break;
@@ -116,15 +117,37 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       }
     }
     else {
-      // Legal entity information may be altered by the registered organisation
-      // provider when saving the data.
-      $legal_entity = ParDataLegalEntity::create([
-        'registry' => $this->getFlowDataHandler()->getTempDataValue('registry'),
-        'registered_name' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_name'),
-        'legal_entity_type' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_type'),
-        'registered_number' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_number'),
-      ]);
-      $legal_entity->save();
+      if ($form_state->getValue('registry') == 'ch_as_different_type') {
+        $legal_entity = ParDataLegalEntity::create([
+          'registry' => $this->getFlowDataHandler()->getTempDataValue('registry'),
+          'registered_name' => NestedArray::getValue($form_state->getValues(), [
+            'ch_as_different_type',
+            'legal_entity_name',
+          ]),
+          'legal_entity_type' => 'special_org',
+          'registered_number' => NestedArray::getValue(
+            $form_state->getValues(), [
+            'ch_as_different_type',
+            'legal_entity_number',
+          ]),
+        ]);
+        $legal_entity->save();
+      }
+      else {
+        // Legal entity information may be altered by the registered
+        // organisation provider when saving the data.
+        $legal_entity = ParDataLegalEntity::create([
+          'registry' => $this->getFlowDataHandler()
+            ->getTempDataValue('registry'),
+          'registered_name' => $this->getFlowDataHandler()
+            ->getTempDataValue('legal_entity_name'),
+          'legal_entity_type' => $this->getFlowDataHandler()
+            ->getTempDataValue('legal_entity_type'),
+          'registered_number' => $this->getFlowDataHandler()
+            ->getTempDataValue('legal_entity_number'),
+        ]);
+        $legal_entity->save();
+      }
 
       // Now add the legal entity to the partnership.
       /* @var ParDataPartnership $par_data_partnership */

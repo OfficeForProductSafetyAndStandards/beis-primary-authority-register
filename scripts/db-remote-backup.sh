@@ -108,8 +108,8 @@ NAME=$1
 
 ####################################################################################
 # Allow manual input of missing parameters
-#    GOVUK_CF_USER (required) - the user deploying the script
-#    GOVUK_CF_PWD (required) - the password for the user account
+#    DEV_GOVUK_CF_USER (required) - the user deploying the script
+#    DEV_GOVUK_CF_PWD (required) - the password for the user account
 ####################################################################################
 if [[ -z "${DEV_GOVUK_CF_USER}" ]]; then
     echo -n "Enter your Cloud Foundry username: "
