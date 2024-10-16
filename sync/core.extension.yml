@@ -36,7 +36,7 @@ module:
   filter: 0
   flysystem: 0
   flysystem_s3: 0
-  google_analytics: 0
+  google_tag: 0
   govuk_cookies: 0
   govuk_notify: 0
   health_check: 0

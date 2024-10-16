@@ -1,0 +1,31 @@
+uuid: 71da20d5-52df-4943-ac2b-3734385f7e06
+langcode: en
+status: true
+dependencies: {  }
+id: GTM-M6W3NDD3.670e8b570afd75.95232720
+label: GTM-M6W3NDD3
+weight: 0
+tag_container_ids:
+  - GTM-M6W3NDD3
+advanced_settings:
+  consent_mode: true
+  gtm:
+    GTM-M6W3NDD3:
+      data_layer: dataLayer
+      include_classes: false
+      allowlist_classes: ''
+      blocklist_classes: ''
+      include_environment: false
+      environment_id: ''
+      environment_token: ''
+dimensions_metrics: {  }
+conditions: {  }
+events:
+  sign_up:
+    method: CMS
+  generate_lead:
+    value: ''
+    currency: ''
+  custom: {  }
+  login:
+    method: CMS
