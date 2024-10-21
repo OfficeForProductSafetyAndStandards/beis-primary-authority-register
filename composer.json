@@ -62,7 +62,7 @@
         "drupal/google_analytics": "~4.0.0",
         "drupal/govuk_cookies": "1.0.x-dev",
         "drupal/govuk_notify": "^3.1",
-        "drupal/govuk_theme": "dev-1.x",
+        "drupal/govuk_theme": "^2.1",
         "drupal/health_check": "^3.1",
         "drupal/http_response_headers": "~2.0.0",
         "drupal/inline_entity_form": "^3.0@RC",
@@ -190,10 +190,6 @@
             },
             "drupal/govuk_notify": {
                 "Message body formatting array to string": "https://www.drupal.org/files/issues/2021-08-11/3227617-2-govuk-notify-message-body-formatting.diff"
-            },
-            "drupal/govuk_theme": {
-                "Remove style sheet": "https://www.drupal.org/files/issues/2023-08-30/3202722-6-remove_generated_css.patch",
-                "Correct version dependencies": "./patches/yargs-version.patch"
             },
             "drupal/redis": {
                 "Unable to override default scheme with settings": "https://www.drupal.org/files/issues/2021-02-16/redis-support_tls_on_predis-3004561-33.patch",

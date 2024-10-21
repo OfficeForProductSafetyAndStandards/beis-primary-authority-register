@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d1172321ba0d641dfce67e718554ae37",
+    "content-hash": "c9d71fe495948cc703cde4c0cb330f17",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -3642,78 +3642,6 @@
             }
         },
         {
-            "name": "drupal/google_tag",
-            "version": "2.0.6",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/google_tag.git",
-                "reference": "2.0.6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/google_tag-2.0.6.zip",
-                "reference": "2.0.6",
-                "shasum": "c8f2895a81a7898ac909bdc693fcd25ffe6f62be"
-            },
-            "require": {
-                "drupal/core": "^9.5 || ^10 || ^11"
-            },
-            "require-dev": {
-                "drupal/commerce": "^2.0",
-                "drupal/commerce_wishlist": "^3.0@beta",
-                "drupal/csp": "^1.0",
-                "drupal/google_analytics": "^4.0",
-                "drupal/search_api": "^1.28.0",
-                "drupal/token": "^1.11.0",
-                "drupal/webform": "^6.0"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "2.0.6",
-                    "datestamp": "1721948116",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                },
-                "branch-alias": {
-                    "dev-main": "2.x-dev"
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "acquia",
-                    "homepage": "https://www.drupal.org/user/1231722"
-                },
-                {
-                    "name": "japerry",
-                    "homepage": "https://www.drupal.org/user/45640"
-                },
-                {
-                    "name": "kaynen",
-                    "homepage": "https://www.drupal.org/user/733308"
-                },
-                {
-                    "name": "mglaman",
-                    "homepage": "https://www.drupal.org/user/2416470"
-                },
-                {
-                    "name": "solotandem",
-                    "homepage": "https://www.drupal.org/user/240748"
-                }
-            ],
-            "description": "Provides support for Google Tag and Google Tag Manager in Drupal.",
-            "homepage": "https://www.drupal.org/project/google_tag",
-            "support": {
-                "source": "https://git.drupalcode.org/project/google_tag"
-            }
-        },
-        {
             "name": "drupal/govuk_cookies",
             "version": "dev-1.0.x",
             "source": {
@@ -3810,26 +3738,29 @@
         },
         {
             "name": "drupal/govuk_theme",
-            "version": "dev-1.x",
+            "version": "2.1.5",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/govuk_theme.git",
-                "reference": "37c77e0e5be22da4361cfc8f94c4086b9a1f6858"
+                "reference": "2.1.5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/govuk_theme-2.1.5.zip",
+                "reference": "2.1.5",
+                "shasum": "9950410083030eba71474224d9c56e65ab1e813e"
             },
             "require": {
-                "drupal/core": "^8 || ^9 || ^10"
+                "drupal/core": "^8 || ^9 || ^10 || ^11"
             },
             "type": "drupal-theme",
             "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
                 "drupal": {
-                    "version": "8.x-1.18+3-dev",
-                    "datestamp": "1709199578",
+                    "version": "2.1.5",
+                    "datestamp": "1725376736",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Dev releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },
@@ -20675,7 +20606,6 @@
         "drupal/config_update": 15,
         "drupal/default_content": 15,
         "drupal/govuk_cookies": 20,
-        "drupal/govuk_theme": 20,
         "drupal/inline_entity_form": 5,
         "drupal/invite": 20,
         "drupal/login_destination": 10,
