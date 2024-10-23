@@ -41,7 +41,7 @@ p {
   @extend .govuk-body;
 }
 
-a:not(a.*) {
+a:link {
   @extend .govuk-link;
 }
 
