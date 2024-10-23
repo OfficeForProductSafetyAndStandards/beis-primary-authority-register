@@ -76,6 +76,13 @@
   @include govuk-clearfix;
 }
 
+.govuk-header__content,
+.govuk-header__navigation-item {
+  a {
+    text-decoration: none;
+  }
+}
+
 // Account Menu block.
 .govuk-header__navigation {
   clear: both;

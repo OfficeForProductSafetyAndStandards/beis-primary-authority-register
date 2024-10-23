@@ -29,27 +29,26 @@
 {% macro menu_links(items, attributes, menu_level) %}
   {% import _self as menus %}
   {% if items %}
-    {% if menu_level == 0 %}
-      <ul{{ attributes.addClass("govuk-header__navigation") }}>
-    {% else %}
-      <ul class="app-navigation__list govuk-header__navigation">
-    {% endif %}
-    {% for item in items %}
-       {%
-        set classes = [
-          'govuk-header__navigation-item',
-          item.is_expanded ? 'menu-item--expanded',
-          item.is_collapsed ? 'menu-item--collapsed',
-          item.in_active_trail ? 'govuk-header__navigation-item--active',
-        ]
-      %}
-      <li{{ item.attributes.addClass(classes) }}>
-        {{ link(item.title, item.url, { 'class':['govuk-header__link']}) }}
-        {% if item.below %}
-          {{ menus.menu_links(item.below, attributes, menu_level + 1) }}
+    <nav aria-label="Menu" class="govuk-header__navigation">
+      {% if menu_level == 0 %}
+        <ul{{ attributes.addClass("govuk-header__navigation-list") }} id="navigation">
+      {% else %}
+        <ul>
+      {% endif %}
+      {% for item in items %}
+        {% if item.in_active_trail %}
+          <li{{ item.attributes.addClass("govuk-header-navigation__item govuk-header__navigation-item--active") }}>
+            <a href="{{ item.url }}" class="govuk-header__link" aria-current="true">
+              {{ item.title }}
+            </a>
+          </li>
+        {% else %}
+          <li{{ item.attributes.addClass("govuk-header__navigation-item") }}>
+            <a href="{{ item.url }}" class="govuk-header__link">{{ item.title }}</a>
+          </li>
         {% endif %}
-      </li>
-    {% endfor %}
-    </ul>
+      {% endfor %}
+      </ul>
+    </nav>
   {% endif %}
 {% endmacro %}

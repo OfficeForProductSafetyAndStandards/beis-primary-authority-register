@@ -1,12 +1,8 @@
 {
-  "name": "drupal-govuk",
-  "version": "2.0.0",
-  "description": "GOV.UK theme for Drupal",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/UKGovernmentBEIS/beis-primary-authority-register.git"
-  },
-  "author": "John Burch",
+  "name": "PAR Theme",
+  "version": "1.0.0",
+  "description": "Custom theme built up from GOV.UK theme for Drupal",
+  "author": "Robert Wild",
   "license": "ISC",
   "homepage": "https://github.com/UKGovernmentBEIS/beis-primary-authority-register#readme",
   "engines": {
