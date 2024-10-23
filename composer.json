@@ -60,6 +60,7 @@
         "drupal/flysystem": "2.1.0-rc6",
         "drupal/flysystem_s3": "~2.1.0",
         "drupal/google_analytics": "~4.0.0",
+        "drupal/google_tag": "^2.0",
         "drupal/govuk_cookies": "1.0.x-dev",
         "drupal/govuk_notify": "^3.1",
         "drupal/govuk_theme": "^2.1",
@@ -171,7 +172,11 @@
             "file-mapping": {
                 "[web-root]/robots.txt": false,
                 "[web-root]/.ht.router.php": false,
-                "[web-root]/web.config": false
+                "[web-root]/web.config": false,
+                "[web-root]/.htaccess": {
+                    "mode": "append",
+                    "append": "patches/well-known-traffic.txt"
+                }
             }
         },
         "composer-exit-on-patch-failure": true,
