@@ -92,8 +92,8 @@
         "drupal/registered_organisations": "1.0.x-dev",
         "drupal/robotstxt": "~1.5.0",
         "drupal/role_delegation": "~1.2.0",
-        "drupal/search_api": "~1.31.0",
-        "drupal/search_api_opensearch": "~2.0.0",
+        "drupal/search_api": "1.35",
+        "drupal/search_api_opensearch": "2.1",
         "drupal/symfony_mailer": "~1.4.0",
         "drupal/token": "~1.13.0",
         "drupal/tracer": "~1.0.0",
@@ -103,6 +103,7 @@
         "drupal/ultimate_cron": "~2.0.0",
         "drupal/upgrade_status": "^4.0.0",
         "drupal/vbo_export": "~4.1.0",
+        "drupal/views_aggregator": "^2.0",
         "drupal/views_bulk_operations": "~4.2.0",
         "drupal/views_contextual_filters_or": "~1.4.0",
         "drupal/views_data_export": "~1.4.0",
@@ -144,7 +145,8 @@
             "drupal/console-extend-plugin": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "php-http/discovery": true,
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "tbachert/spi": true
         }
     },
     "extra": {
@@ -168,7 +170,11 @@
             "file-mapping": {
                 "[web-root]/robots.txt": false,
                 "[web-root]/.ht.router.php": false,
-                "[web-root]/web.config": false
+                "[web-root]/web.config": false,
+                "[web-root]/.htaccess": {
+                    "mode": "append",
+                    "append": "patches/well-known-traffic.txt"
+                }
             }
         },
         "composer-exit-on-patch-failure": true,
@@ -188,19 +194,12 @@
             "drupal/govuk_notify": {
                 "Message body formatting array to string": "https://www.drupal.org/files/issues/2021-08-11/3227617-2-govuk-notify-message-body-formatting.diff"
             },
-            "drupal/govuk_theme": {
-                "Remove style sheet": "https://www.drupal.org/files/issues/2023-08-30/3202722-6-remove_generated_css.patch",
-                "Correct version dependencies": "./patches/yargs-version.patch"
-            },
             "drupal/redis": {
                 "Unable to override default scheme with settings": "https://www.drupal.org/files/issues/2021-02-16/redis-support_tls_on_predis-3004561-33.patch",
                 "Take into account CONFIG command may not work": "https://www.drupal.org/files/issues/2021-02-16/redis-allow_disabled_config-3173988-4.patch"
             },
             "drupal/pagerer": {
                 "Pagerer upgrade issue": "https://git.drupalcode.org/project/pagerer/-/merge_requests/18.diff"
-            },
-            "drupal/search_api": {
-                "Add support for rendering computed fields to the \"field\" views field handler": "https://git.drupalcode.org/project/search_api/-/merge_requests/75.diff"
             },
             "drupal/vbo_export": {
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2021-11-23/allow_configurable_scheme-2988257-18.patch"
