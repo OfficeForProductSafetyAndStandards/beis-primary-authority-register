@@ -87,7 +87,21 @@
 .govuk-header__navigation {
   clear: both;
 
-  .govuk-header__navigation-item--active {
+  &-list {
+
+    margin-bottom: 10px;
+  }
+
+  li {
+    padding: 5px 0;
+    a {
+      font-weight: 700;
+      font-size: 1rem;
+      line-height: 1.25;
+    }
+  }
+
+  &-item--active {
     a {
       &:link,
       &:hover,
