@@ -37,7 +37,7 @@
       {% endif %}
       {% for item in items %}
         {% if item.in_active_trail %}
-          <li{{ item.attributes.addClass("govuk-header-navigation__item govuk-header__navigation-item--active") }}>
+          <li{{ item.attributes.addClass("govuk-header__navigation-item govuk-header__navigation-item--active") }}>
             <a href="{{ item.url }}" class="govuk-header__link" aria-current="true">
               {{ item.title }}
             </a>
