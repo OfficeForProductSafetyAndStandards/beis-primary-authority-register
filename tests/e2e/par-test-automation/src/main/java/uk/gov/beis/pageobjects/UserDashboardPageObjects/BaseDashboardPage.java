@@ -21,7 +21,7 @@ public class BaseDashboardPage extends BasePageObject{
 	@FindBy(linkText = "Manage your profile details")
 	private WebElement manageYourProfileDetailsBtn;
 	
-	private String userAccountLocator = "//nav[@id=\"block-par-theme-account-menu\"]/ul/li/a[contains(text(), '?')]";
+	private String userAccountLocator = "//a[contains(normalize-space(), '?')]";
 	
 	public BaseDashboardPage() throws ClassNotFoundException, IOException {
 		super();
