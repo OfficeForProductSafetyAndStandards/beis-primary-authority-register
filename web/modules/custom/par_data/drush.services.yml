@@ -1,0 +1,6 @@
+services:
+  par_data.commands:
+    class: \Drupal\par_data\Drush\Commands\ParDataCommands
+    tags:
+      - { name: drush.command }
+    arguments: ['@par_data.manager', '@entity_type.manager', '@database']

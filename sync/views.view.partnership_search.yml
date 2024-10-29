@@ -907,7 +907,7 @@ display:
         options:
           perm: 'search partnerships'
       cache:
-        type: none
+        type: search_api_none
         options: {  }
       empty: {  }
       sorts:
@@ -1059,8 +1059,8 @@ display:
           group_type: group
           admin_label: ''
           plugin_id: search_api_boolean
-          operator: '='
-          value: '0'
+          operator: '!='
+          value: '1'
           group: 1
           exposed: false
           expose:
