@@ -1,9 +1,8 @@
 uuid: 97fa9ee5-a4ad-4976-838f-243b9568c70a
 langcode: en
-status: true
+status: false
 dependencies:
   module:
-    - govuk_cookies
     - par_cookies
     - system
   theme:
@@ -20,11 +19,6 @@ settings:
   label_display: visible
   provider: par_cookies
 visibility:
-  govuk_cookie:
-    id: govuk_cookie
-    enable: 0
-    negate: false
-    context_mapping: {  }
   request_path:
     id: request_path
     negate: false
