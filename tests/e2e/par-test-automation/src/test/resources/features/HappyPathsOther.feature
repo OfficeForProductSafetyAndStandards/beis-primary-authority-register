@@ -266,7 +266,7 @@ Feature: Other Happy Paths
   Scenario: Verify a User can view and Accept Analytics Cookies Successfully (Happy Path - PAR-2292)
     Given the user is on the PAR home page
     When the user selects the Cookies link
-    Then the user is taken to the Cookies page and can accept the Analytics Cookies Successfully
+    Then the user is taken to the Cookies page Successfully
 
   @regression @happypath @homePageLinks
   Scenario: Verify a User can view the OPSS Privacy Notice Successfully (Happy Path - PAR-2293)

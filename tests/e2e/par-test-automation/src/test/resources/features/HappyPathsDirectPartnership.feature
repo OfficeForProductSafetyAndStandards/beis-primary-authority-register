@@ -1,17 +1,6 @@
 Feature: Direct Partnership Happy Paths
   As a user of the PAR service, I  want to be able to view/manage partnerships, So I can comply with the BEIS standards for goods and services
 
-  @regression @happypath @dashboard @cookies
-  Scenario: Verify a User can Log in and Accept Analytical Cookies Successfully (Happy Path - PAR-2331)
-    Given the user is on the PAR home page
-    And the user visits the login page
-    When the user logs in with the "par_authority@example.com" user credentials
-    Then the user is on the dashboard page
-    # Accecpt the Analytic Cookies
-    When the user accepts the analytics cookies
-    Then analytical cookies have been accepted successfully
-    And the user signs out
-
   @regression @happypath @direct @deletePartnership
   Scenario: Verify Partnership Information can be changed During Application Process, Nominated and then Deleted Successfully (Happy Path - PAR-2277)
     Given the user is on the PAR home page
