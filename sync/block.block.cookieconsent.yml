@@ -1,6 +1,6 @@
 uuid: aaacc237-b533-4e75-9288-debd38ddd9ba
 langcode: en
-status: true
+status: false
 dependencies:
   module:
     - govuk_cookies

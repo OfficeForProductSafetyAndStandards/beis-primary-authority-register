@@ -64,22 +64,6 @@ public class PARStepDefs {
 		Assert.assertTrue("Failed: Dashboard Header was not found.", websiteManager.dashboardPage.checkPage());
 	}
 	
-	@When("^the user accepts the analytics cookies$")
-	public void the_user_accepts_the_analytics_cookies() throws Throwable {
-		websiteManager.dashboardPage.acceptCookies();
-	}
-
-	@Then("^analytical cookies have been accepted successfully$")
-	public void analytical_cookies_have_been_accepted_successfully() throws Throwable {
-		LOG.info("Verifying the Analytical Cookies have been Accepted.");
-		Assert.assertTrue("Failed: Analytics Cookies have not been Accepted.", websiteManager.dashboardPage.checkCookiesAccepted());
-		
-		websiteManager.dashboardPage.hideCookieBanner();
-		
-		LOG.info("Verifying the Cookie Banner is not Displayed.");
-		Assert.assertTrue("Failed: The Cookie Banner is still Displayed.", websiteManager.dashboardPage.checkCookieBannerExists());
-	}
-	
 	@Then("^the user signs out$")
 	public void the_user_signs_out() throws Throwable {
 		LOG.info("Signing out of User account.");
@@ -1306,10 +1290,6 @@ public class PARStepDefs {
 	@When("^the user completes the user creation journey$")
 	public void the_user_completes_the_user_creation_journey() throws Throwable {
 		LOG.info("Completing the User Creation Journey.");
-		//websiteManager.passwordPage.clickDrupalHideButton();
-		websiteManager.dashboardPage.acceptCookies();
-		websiteManager.dashboardPage.hideCookieBanner();
-		
 		websiteManager.passwordPage.enterPassword("TestPassword", "TestPassword");
 		websiteManager.passwordPage.clickRegisterButton();
 		
@@ -2276,14 +2256,10 @@ public class PARStepDefs {
 		websiteManager.homePage.selectCookiesFooterLink();
 	}
 
-	@Then("^the user is taken to the Cookies page and can accept the Analytics Cookies Successfully$")
-	public void the_user_is_taken_to_the_Cookies_page_and_can_accept_the_Analytics_Cookies_Successfully() throws Throwable {
-		LOG.info("Verifying the Cookies page is Displayed and the User Accepts the Analytics Cookies.");
-		
+	@Then("^the user is taken to the Cookies page Successfully$")
+	public void the_user_is_taken_to_the_Cookies_page_Successfully() throws Throwable {
+		LOG.info("Verifying the Cookies page is Displayed.");
 		Assert.assertTrue("Failed: Cookies Header is not Displayed.", websiteManager.cookiesPage.checkPageHeaderDisplayed());
-		
-		websiteManager.cookiesPage.acceptCookies();
-		websiteManager.cookiesPage.selectSaveButton();
 	}
 
 	@When("^the user selects the Privacy link$")

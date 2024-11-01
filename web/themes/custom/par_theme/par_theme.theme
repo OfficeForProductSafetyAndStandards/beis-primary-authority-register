@@ -252,3 +252,11 @@ function par_theme_theme_suggestions_views_view_alter(array &$suggestions, array
 function par_theme_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#attributes']['novalidate'] = 'novalidate';
 }
+
+/**
+ * Implements hook_css_alter()
+ */
+function par_theme_css_alter(&$css, \Drupal\Core\Asset\AttachedAssetsInterface $assets, \Drupal\Core\Language\LanguageInterface $language) {
+  unset($css['themes/contrib/govuk_theme/css/govuk.css']);
+  unset($css['themes/contrib/govuk_theme/css/style.css']);
+}

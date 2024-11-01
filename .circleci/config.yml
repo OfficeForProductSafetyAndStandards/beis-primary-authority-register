@@ -68,6 +68,7 @@ references:
     run:
       name: "Install drupal scaffold files"
       command: |
+        composer install
         composer drupal:scaffold
 
   configure_webroot: &configure_webroot

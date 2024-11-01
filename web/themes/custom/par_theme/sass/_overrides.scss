@@ -64,6 +64,13 @@
     & {
       background: #006633;
     }
+
+    a {
+      &:hover,
+      &:focus {
+        color: govuk-colour("white");
+      }
+    }
   }
 
   .govuk-footer__copyright-logo {
@@ -76,11 +83,36 @@
   @include govuk-clearfix;
 }
 
+.govuk-header__content,
+.govuk-header__navigation-item {
+  a {
+    text-decoration: none;
+  }
+}
+
 // Account Menu block.
 .govuk-header__navigation {
   clear: both;
 
-  .govuk-header__navigation-item--active {
+  &-list {
+    margin-bottom: 10px;
+  }
+
+  li {
+    padding: 5px 0;
+    a {
+      font-weight: 700;
+      font-size: 1rem;
+      line-height: 1.25;
+
+      &:hover,
+      &:focus {
+        color: govuk-colour("white");
+      }
+    }
+  }
+
+  &-item--active {
     a {
       &:link,
       &:hover,
@@ -145,6 +177,11 @@
 }
 
 .govuk-button {
+  &:hover,
+  &:focus {
+    color: govuk-colour("white");
+  }
+
   &.add-action {
     margin-top: 30px;
   }
