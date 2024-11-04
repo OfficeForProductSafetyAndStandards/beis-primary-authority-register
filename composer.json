@@ -97,6 +97,7 @@
         "drupal/role_delegation": "~1.2.0",
         "drupal/search_api": "^1.35",
         "drupal/search_api_opensearch": "^2.1",
+        "drupal/seckit": "^2.0",
         "drupal/symfony_mailer": "~1.4.0",
         "drupal/token": "^1.15",
         "drupal/tracer": "~1.0.0",
@@ -195,6 +196,9 @@
             },
             "drupal/govuk_notify": {
                 "Message body formatting array to string": "https://www.drupal.org/files/issues/2021-08-11/3227617-2-govuk-notify-message-body-formatting.diff"
+            },
+            "drupal/govuk_cookies": {
+                "Swap out cookie options and update cookie values": "./patches/govuk_cookie_gtm.patch"
             },
             "drupal/redis": {
                 "Unable to override default scheme with settings": "https://www.drupal.org/files/issues/2021-02-16/redis-support_tls_on_predis-3004561-33.patch",

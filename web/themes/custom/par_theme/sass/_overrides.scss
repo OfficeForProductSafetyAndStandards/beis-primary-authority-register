@@ -179,7 +179,7 @@
 .govuk-button {
   &:hover,
   &:focus {
-    color: govuk-colour("white");
+    color: govuk-colour("white") !important;
   }
 
   &.add-action {

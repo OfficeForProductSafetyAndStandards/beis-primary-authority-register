@@ -1,3 +1,4 @@
-name: _cookie_policy
+name: cookie_policy
 types:
-  - analytics
+  - usage
+  - campaigns

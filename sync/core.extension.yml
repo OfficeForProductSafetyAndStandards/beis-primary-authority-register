@@ -78,7 +78,6 @@ module:
   par_authority_add_flows: 0
   par_authority_update_flows: 0
   par_cache: 0
-  par_cookies: 0
   par_dashboards: 0
   par_data: 0
   par_data_config: 0
@@ -155,6 +154,7 @@ module:
   search_api: 0
   search_api_db: 0
   search_api_opensearch: 0
+  seckit: 0
   serialization: 0
   shortcut: 0
   syslog: 0
