@@ -18,12 +18,12 @@ var cookieName = '';
 
 function acceptCookiePolicy () {
   setCookie('cookie_preferences_set', 'true', 365);
-  setCookie('cookie_policy', '"usage":true,"campaigns":true', 365);
+  setCookie('cookie_policy', '{"usage":true,"campaigns":true}', 365);
 }
 
 function rejectCookiePolicy () {
   setCookie('cookie_preferences_set', 'false', 365);
-  setCookie('cookie_policy', '"usage":false,"campaigns":false', 365);
+  setCookie('cookie_policy', '{"usage":false,"campaigns":false}', 365);
 }
 
 function setCookie(cname, cvalue, exdays) {

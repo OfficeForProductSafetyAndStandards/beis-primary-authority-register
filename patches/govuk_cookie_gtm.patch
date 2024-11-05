@@ -32,7 +32,7 @@ index 00fc62d..e24b8a9 100644
 -      // Set default values if cookie policy is not set.
 -      $cookie_policy = $this->getCookieTypes();
 -    }
- 
+
      foreach ($this->getCookieTypes() as $type) {
        $options = [
 @@ -110,9 +102,7 @@ class CookieConsentForm extends FormBase {
@@ -45,7 +45,7 @@ index 00fc62d..e24b8a9 100644
 +        '#required' => TRUE,
        ];
      }
- 
+
 @@ -140,7 +130,7 @@ class CookieConsentForm extends FormBase {
      // Add flood protection for unauthenticated users.
      $fid = implode(':', [$this->getRequest()->getClientIP(), $this->currentUser()->id()]);
@@ -63,13 +63,13 @@ index 00fc62d..e24b8a9 100644
 +        $cookie_policy[] = '"'. $type . '":true';
        }
      }
- 
+
 @@ -169,10 +159,10 @@ class CookieConsentForm extends FormBase {
      // Set the new cookie policy.
      $response->headers->setCookie(new Cookie(
        $this->getCookieName(),
 -      Json::encode($cookie_policy),
-+      implode(",", $cookie_policy),
++      '{' . implode(",", $cookie_policy) .'}',
        \Drupal::time()->getRequestTime() + 31536000,
        '/',
 -      ".{$this->getRequest()->getHost()}",
@@ -82,9 +82,9 @@ index 9b2c50e..0de64d3 100644
 --- a/src/Plugin/Block/CookieBannerBlock.php
 +++ b/src/Plugin/Block/CookieBannerBlock.php
 @@ -2,14 +2,9 @@
- 
+
  namespace Drupal\govuk_cookies\Plugin\Block;
- 
+
 -use Drupal\Component\Serialization\Json;
 -use Drupal\Core\Access\AccessResult;
  use Drupal\Core\Block\BlockBase;
@@ -94,12 +94,12 @@ index 9b2c50e..0de64d3 100644
  use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 -use Drupal\Core\Session\AccountInterface;
  use Symfony\Component\DependencyInjection\ContainerInterface;
- 
+
  /**
 @@ -81,6 +76,15 @@ class CookieBannerBlock extends BlockBase implements ContainerFactoryPluginInter
      return \Drupal::config('govuk_cookies.settings')->get('types');
    }
- 
+
 +  /**
 +   * {@inheritdoc}
 +   */
@@ -138,7 +138,7 @@ index 9b2c50e..0de64d3 100644
 @@ -145,11 +149,11 @@ class CookieBannerBlock extends BlockBase implements ContainerFactoryPluginInter
          '#theme' => 'govuk_cookie_message',
        ];
- 
+
 -      // @TODO Replace with configurable cookie types.
 -      $cookie_types = ['analytics', 'functional', 'other'];
 -      $type = ($cookie_types && count($cookie_types) === 1 && current($cookie_types) === 'analytics') ?
@@ -149,7 +149,7 @@ index 9b2c50e..0de64d3 100644
 +      $type = ($cookie_types && count($cookie_types) === 1 && current($cookie_types) === 'usage') ?
 +        'usage' :
 +        'campaigns';
- 
+
        // Only display additional messages if non-essential cookies are being set.
        if (!empty($cookie_types)) {
 @@ -166,8 +170,7 @@ class CookieBannerBlock extends BlockBase implements ContainerFactoryPluginInter

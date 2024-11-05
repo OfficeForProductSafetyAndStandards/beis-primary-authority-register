@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3535871f7d1a9ab0a00cd8212b1be1aa",
+    "content-hash": "657ad65e6785574bc2c1ac190d08db4c",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -20754,7 +20754,6 @@
         "drupal/audit_log": 20,
         "drupal/config_update": 15,
         "drupal/default_content": 15,
-        "drupal/govuk_cookies": 20,
         "drupal/inline_entity_form": 5,
         "drupal/invite": 20,
         "drupal/login_destination": 10,
