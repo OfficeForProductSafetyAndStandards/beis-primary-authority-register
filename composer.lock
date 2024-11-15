@@ -20754,6 +20754,7 @@
         "drupal/audit_log": 20,
         "drupal/config_update": 15,
         "drupal/default_content": 15,
+        "drupal/govuk_cookies": 20,
         "drupal/inline_entity_form": 5,
         "drupal/invite": 20,
         "drupal/login_destination": 10,
