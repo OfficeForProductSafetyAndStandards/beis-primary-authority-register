@@ -29,18 +29,26 @@
     attach: function (context, settings) {
       document.querySelectorAll('.par-govuk-cookie-banner__message .govuk-button').forEach(function (el) {
         el.addEventListener('click', function (event) {
+          const banner_settings = settings.par_govuk_cookies.banner;
           let button = event.target.value;
 
           // Accepted.
           if (button === 'accept') {
-            setCookie('cookie_policy', '{"usage":true,"campaigns":true,"other":true}', 365);
             setCookie('cookie_preferences_set', 'true', 365);
+            setCookie('cookie_policy', '{"usage":true,"campaigns":true}', 365);
           }
 
           // Rejected.
           if (button === 'reject') {
-            setCookie('cookie_policy', '', 365);
-            setCookie('cookie_preferences_set', 'false', 365);
+            setCookie('cookie_preferences_set', 'true', 365);
+            setCookie('cookie_policy', '{"usage":false,"campaigns":false}', 365);
+          }
+
+          function setCookie(cname, cvalue, exdays) {
+            const d = new Date();
+            d.setTime(d.getTime() + (exdays*24*60*60*1000));
+            let expires = "expires="+ d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/;SameSite=Strict";
           }
 
           // Hide the current cookie message.

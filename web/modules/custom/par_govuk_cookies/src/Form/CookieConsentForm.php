@@ -87,7 +87,7 @@ class CookieConsentForm extends FormBase {
         '#type' => 'radios',
         '#title' => "Do you want to accept $type cookies?",
         '#options' => $options,
-        '#default_value' => array_search($type, $cookie_policy) !== false ?
+        '#default_value' => $cookie_policy[$type] !== false ?
           self::ALLOW_VALUE :
           self::BLOCK_VALUE,
       ];
@@ -153,7 +153,7 @@ class CookieConsentForm extends FormBase {
       Json::encode($cookie_policy),
       \Drupal::time()->getRequestTime() + 31536000,
       '/',
-      ".{$this->getRequest()->getHost()}",
+      "",
       false,
       false,
       true,
