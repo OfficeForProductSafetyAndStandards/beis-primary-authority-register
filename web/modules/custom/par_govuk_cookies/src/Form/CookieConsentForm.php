@@ -79,18 +79,35 @@ class CookieConsentForm extends FormBase {
     }
 
     foreach ($this->getCookieTypes() as $type) {
-      $options = [
-        self::ALLOW_VALUE => 'Yes',
-        self::BLOCK_VALUE => 'No',
-      ];
-      $form[$type] = [
-        '#type' => 'radios',
-        '#title' => "Do you want to accept $type cookies?",
-        '#options' => $options,
-        '#default_value' => $cookie_policy[$type] !== false ?
-          self::ALLOW_VALUE :
-          self::BLOCK_VALUE,
-      ];
+
+      if ($type !== 'essential') {
+        $options = [
+          self::ALLOW_VALUE => 'Yes',
+          self::BLOCK_VALUE => 'No',
+        ];
+        $form[$type] = [
+          '#type' => 'radios',
+          '#title' => "Do you want to accept $type cookies?",
+          '#options' => $options,
+          '#default_value' => $cookie_policy[$type] !== false ?
+            self::ALLOW_VALUE :
+            self::BLOCK_VALUE,
+        ];
+      } else {
+        $form[$type] = [
+          '#type' => 'checkbox',
+          '#title' => "Essential cookies",
+          '#options' => 'true',
+          '#attributes' => array('checked' => 'checked'),
+          '#disabled' => TRUE,
+          '#wrapper_attributes' => [
+            'class' => [
+              'visually-hidden',
+            ],
+          ],
+        ];
+
+      }
     }
 
     $form['actions']['save'] = [
@@ -117,7 +134,7 @@ class CookieConsentForm extends FormBase {
     // Add flood protection for unauthenticated users.
     $fid = implode(':', [$this->getRequest()->getClientIP(), $this->currentUser()->id()]);
     if ($this->currentUser()->isAnonymous() &&
-      !$this->flood->isAllowed("govuk_cookies.{$this->getFormId()}", 10, 3600, $fid)) {
+      !$this->flood->isAllowed("govuk_cookies.{$this->getFormId()}", 100, 3600, $fid)) {
       $form_state->setErrorByName('text', $this->t(
         'Too many form submissions from your location.
         This IP address is temporarily blocked. Please try again later.'
@@ -136,11 +153,15 @@ class CookieConsentForm extends FormBase {
 
     $cookie_policy = [];
     foreach ($this->getCookieTypes() as $type) {
-      if ($form_state->getValue($type) === self::ALLOW_VALUE) {
+
+      if ($type !== 'essential') {
+        if ($form_state->getValue($type) === self::ALLOW_VALUE) {
+          $cookie_policy[$type] = true;
+        } else {
+          $cookie_policy[$type] = false;
+        }
+      } else {
         $cookie_policy[$type] = true;
-      }
-      else {
-        $cookie_policy[$type] = false;
       }
     }
 

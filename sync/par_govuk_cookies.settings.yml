@@ -1,4 +1,5 @@
 name: cookie_policy
 types:
+  - essential
   - usage
   - campaigns

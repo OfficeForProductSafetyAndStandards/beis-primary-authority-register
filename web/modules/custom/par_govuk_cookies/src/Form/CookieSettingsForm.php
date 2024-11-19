@@ -64,6 +64,7 @@ class CookieSettingsForm extends ConfigFormBase {
       '#title' => $this->t('Cookie types'),
       '#description' => $this->t('List any non-essential cookies used by this site.'),
       '#options' => [
+        'essential' => 'Essential',
         'usage' => 'Usage',
         'campaigns' => 'Campaigns'],
       '#required' => TRUE,

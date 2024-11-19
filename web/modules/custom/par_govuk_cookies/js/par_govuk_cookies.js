@@ -35,13 +35,13 @@
           // Accepted.
           if (button === 'accept') {
             setCookie('cookie_preferences_set', 'true', 365);
-            setCookie('cookie_policy', '{"usage":true,"campaigns":true}', 365);
+            setCookie('cookie_policy', '{"essential":true,"usage":true,"campaigns":true}', 365);
           }
 
           // Rejected.
           if (button === 'reject') {
             setCookie('cookie_preferences_set', 'true', 365);
-            setCookie('cookie_policy', '{"usage":false,"campaigns":false}', 365);
+            setCookie('cookie_policy', '{"essential":true,"usage":false,"campaigns":false}', 365);
           }
 
           function setCookie(cname, cvalue, exdays) {
