@@ -13,9 +13,6 @@ libraries-override:
     js:
       user.js: false
       user.theme.js: false
-  govuk_cookies/banner:
-    js:
-      js/banner.js: js/banner.js
   govuk/framework:
     js:
       js/govuk.js: js/govuk.js

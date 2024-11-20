@@ -187,3 +187,13 @@
   }
 }
 
+.govuk-cookie-banner {
+  border-bottom: 0;
+  padding-top: 0;
+}
+
+.par-govuk-cookie-banner__message {
+  border-bottom: 10px solid transparent;
+  padding-top: 20px;
+}
+
