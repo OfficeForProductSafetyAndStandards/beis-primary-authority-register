@@ -325,6 +325,14 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
       }
     }
 
+    // Add help text.
+    $form['partnership_legal_entities']['help_text'] = [
+      '#type' => 'markup',
+      '#markup' => $this->t('You must inform your Primary Authority of all legal entities added to ensure that they are eligible and that you have agreed in writing, suitable partnership arrangements.'),
+      '#prefix' => '<p>',
+      '#suffix' => '</p>',
+    ];
+
     return $form;
   }
 
