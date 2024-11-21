@@ -1,26 +1,25 @@
-uuid: aaacc237-b533-4e75-9288-debd38ddd9ba
+uuid: 00f720d4-c3f8-4fdf-b2fa-df8ef8a865b6
 langcode: en
-status: false
+status: true
 dependencies:
   module:
-    - govuk_cookies
+    - par_govuk_cookies
     - system
   theme:
     - par_theme
-id: cookieconsent
+id: par_theme_cookieconsent
 theme: par_theme
 region: content
-weight: 1
+weight: 0
 provider: null
 plugin: cookie_policy
 settings:
   id: cookie_policy
   label: 'Cookie Consent'
-  label_display: ''
-  provider: govuk_cookies
+  label_display: visible
+  provider: par_govuk_cookies
 visibility:
   request_path:
     id: request_path
     negate: false
-    context_mapping: {  }
     pages: /cookies

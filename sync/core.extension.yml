@@ -37,7 +37,6 @@ module:
   flysystem: 0
   flysystem_s3: 0
   google_tag: 0
-  govuk_cookies: 0
   govuk_notify: 0
   health_check: 0
   help: 0
@@ -78,7 +77,6 @@ module:
   par_authority_add_flows: 0
   par_authority_update_flows: 0
   par_cache: 0
-  par_cookies: 0
   par_dashboards: 0
   par_data: 0
   par_data_config: 0
@@ -94,6 +92,7 @@ module:
   par_error_handling: 0
   par_flows: 0
   par_forms: 0
+  par_govuk_cookies: 0
   par_header: 0
   par_inspection_feedback_flows: 0
   par_inspection_feedback_view_flows: 0
@@ -155,6 +154,7 @@ module:
   search_api: 0
   search_api_db: 0
   search_api_opensearch: 0
+  seckit: 0
   serialization: 0
   shortcut: 0
   syslog: 0

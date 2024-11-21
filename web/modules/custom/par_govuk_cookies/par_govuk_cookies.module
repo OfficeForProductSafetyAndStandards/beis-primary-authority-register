@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * Implements hook_theme().
+ */
+function par_govuk_cookies_theme() {
+  $site_name = \Drupal::config('system.site')->get('name');
+  $cookie_name = \Drupal::config('par_govuk_cookies.settings')->get('name');
+  $cookie_policy = \Drupal::config('par_govuk_cookies.settings')->get('types');
+
+  $message[] = [
+    '#type' => 'html_tag',
+    '#tag' => 'p',
+    '#value' => 'We use some essential cookies to make this service work.',
+  ];
+
+  if (!empty($cookie_policy) && count($cookie_policy) === 1 && current($cookie_policy) === 'analytics') {
+    $message[] = [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#value' => 'We’d also like to use analytics cookies so we can understand how you use the service and make improvements.',
+    ];
+  }
+  elseif (!empty($cookie_policy)) {
+    $message[] = [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#value' => 'We’d like to set additional cookies so we can remember your settings, understand how people use the service and make improvements.',
+    ];
+  }
+
+  return [
+    'par_govuk_cookies_banner' => [
+      'variables' => [
+        'attributes' => [],
+        'message' => $message,
+        'title' => "Cookies for $site_name",
+        'cookie_policy' => $cookie_policy,
+        'cookie_name' => $cookie_name,
+        'cookie' => false,
+        'acceptance_message' => 'par-govuk-cookies-accepted',
+        'rejection_message' => 'par-govuk-cookies-rejected',
+      ],
+      'template' => 'par-govuk-cookies-banner',
+    ]
+  ];
+}
+
+/**
+ * Implements hook_preprocess_par_govuk_cookie().
+ */
+function par_govuk_cookies_preprocess_par_govuk_cookies_banner(&$variables) {
+  $request = \Drupal::request();
+  $cookie_name = \Drupal::config('par_govuk_cookies.settings')->get('name');
+  $variables['cookie'] = $request->cookies->get($cookie_name);
+
+  $variables['attributes']['class'] = ['par-govuk-cookie-banner__message', 'govuk-width-container'];
+}
