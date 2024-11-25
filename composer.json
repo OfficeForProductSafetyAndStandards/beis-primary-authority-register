@@ -44,6 +44,7 @@
         "drupal/autologout": "~1.4.0",
         "drupal/better_exposed_filters": "^6.0",
         "drupal/block_classes": "^1.0",
+        "drupal/cacheexclude": "^2.0",
         "drupal/chosen": "~3.0.0",
         "drupal/clamav": "~2.0.0",
         "drupal/config_filter": "^2.7",

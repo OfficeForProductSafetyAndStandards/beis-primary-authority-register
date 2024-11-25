@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a4c4abae118da4895dff069284888ae4",
+    "content-hash": "e2d2114bc46a57b3907c8f081b5d629c",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -2258,6 +2258,70 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/block_classes",
                 "issues": "https://www.drupal.org/project/issues/block_classes"
+            }
+        },
+        {
+            "name": "drupal/cacheexclude",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/cacheexclude.git",
+                "reference": "2.0.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/cacheexclude-2.0.1.zip",
+                "reference": "2.0.1",
+                "shasum": "3c7eb4f360a1e16c4862cd862d9e2e518cfa81fd"
+            },
+            "require": {
+                "drupal/core": "^9 || ^10"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.1",
+                    "datestamp": "1673643879",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "agentrickard",
+                    "homepage": "https://www.drupal.org/user/20975"
+                },
+                {
+                    "name": "gobinathm",
+                    "homepage": "https://www.drupal.org/user/21629"
+                },
+                {
+                    "name": "mbutcher",
+                    "homepage": "https://www.drupal.org/user/201798"
+                },
+                {
+                    "name": "naiduharish",
+                    "homepage": "https://www.drupal.org/user/1883760"
+                },
+                {
+                    "name": "Nitesh Sethia",
+                    "homepage": "https://www.drupal.org/user/2474982"
+                },
+                {
+                    "name": "nitvirus",
+                    "homepage": "https://www.drupal.org/user/965290"
+                }
+            ],
+            "description": "Exclude certain pages from being cached.",
+            "homepage": "https://www.drupal.org/project/cacheexclude",
+            "support": {
+                "source": "https://git.drupalcode.org/project/cacheexclude"
             }
         },
         {
