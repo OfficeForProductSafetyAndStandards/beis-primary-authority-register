@@ -10,6 +10,7 @@ module:
   block_classes: 0
   block_content: 0
   breakpoint: 0
+  cacheexclude: 0
   comment: 0
   config: 0
   config_filter: 0
