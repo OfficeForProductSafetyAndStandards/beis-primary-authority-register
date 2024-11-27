@@ -637,8 +637,8 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
    *   Pseudo field value.
    */
   public function getCommunicationFieldText($text, $preference_field) {
-    if ($preference_message = $this->getCommunicationPreferredText($preference_field)) {
-      return "{$text} ({$preference_message})";
+    if ($preference_message = $this->getCommunicationPreferredText($preference_field) && (!empty($text))) {
+      return "{$text} (preferred)";
     }
 
     return $text;
