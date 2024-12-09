@@ -54,11 +54,19 @@ class ParNotificationAction extends FieldPluginBase {
       return NULL;
     }
 
+    $link_value = $this->getLinkManager()->link($message)->toString();
+
     $tasks = $this->getLinkManager()->retrieveTasks($message->getTemplate());
-    if (!empty($tasks) && $this->getLinkManager()->isComplete($message) === FALSE) {
-      // Display a red tag for tasks with action required.
-      $colour = 'govuk-tag--red';
-      $status = 'Action required';
+    if (!empty($tasks) &&
+      ($this->getLinkManager()->isComplete($message) === FALSE)) {
+       if (strip_tags($link_value) != 'Approve the notification of enforcement action') {
+        // Display a red tag for tasks with action required.
+        $colour = 'govuk-tag--red';
+        $status = 'Action required';
+      } else {
+        $colour = 'govuk-tag--grey';
+        $status = 'No action needed';
+      }
     }
     else if (!empty($tasks)) {
       // Display a blue tag for tasks that have been completed.
