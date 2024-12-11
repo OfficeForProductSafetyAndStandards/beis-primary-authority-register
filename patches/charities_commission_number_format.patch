@@ -1,0 +1,17 @@
+diff --git a/src/Plugin/OrganisationRegister/CharityCommissionRegister.php b/src/Plugin/OrganisationRegister/CharityCommissionRegister.php
+index 13884a2..0033381 100644
+--- a/src/Plugin/OrganisationRegister/CharityCommissionRegister.php
++++ b/src/Plugin/OrganisationRegister/CharityCommissionRegister.php
+@@ -93,10 +93,10 @@ class CharityCommissionRegister extends OrganisationRegisterApi {
+   /**
+    * {@inheritDoc}
+    *
+-   * @see https://foodstandardsagency.github.io/enterprise-data-models/patterns/charity_commission_number.html
++   * Check for a valid format, allows for 6 to 8 characters
+    */
+   public function isValidId(string $id): bool {
+-    $pattern = "/^\d{7,8}$/";
++    $pattern = "/^\d{6,8}$/";
+     return parent::isValidId($id) && preg_match($pattern, $id) === 1;
+   }
+
