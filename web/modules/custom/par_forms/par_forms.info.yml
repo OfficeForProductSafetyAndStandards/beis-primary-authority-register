@@ -1,5 +1,5 @@
 name: PAR Forms
 type: module
 description: Adds all the necessary form builder components used to construct each form.
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^9 || ^10 || ^11
 package: PAR

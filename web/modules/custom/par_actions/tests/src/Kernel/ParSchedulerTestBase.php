@@ -3,11 +3,7 @@
 namespace Drupal\Tests\par_actions\Kernel;
 
 use Drupal\Core\Session\AccountInterface;
-use Drupal\file\Entity\File;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
-use Drupal\KernelTests\Core\Plugin\PluginTestBase;
-use Drupal\par_data_test_entity\Entity\ParDataTestEntity;
-use Drupal\par_data_test_entity\Entity\ParDataTestEntityType;
 use Drupal\par_data_test_entity\Plugin\TestSchedulerManager;
 
 /**

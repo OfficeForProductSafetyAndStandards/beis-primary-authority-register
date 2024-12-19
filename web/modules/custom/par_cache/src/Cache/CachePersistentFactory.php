@@ -10,8 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 /**
  * Wraps a cache factory to register all calls to the cache system.
  */
-class CachePersistentFactory implements CacheFactoryInterface, ContainerAwareInterface {
-  use ContainerAwareTrait;
+class CachePersistentFactory implements CacheFactoryInterface {
 
   const CACHE_LIFECYCLE_PERSIST = 'persistent';
 
