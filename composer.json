@@ -50,7 +50,7 @@
         "drupal/config_split": "~2.0.0",
         "drupal/config_update": "^2.0@alpha",
         "drupal/core-composer-scaffold": "~10.2.0",
-        "drupal/core-recommended": "~10.2.0",
+        "drupal/core-recommended": "10.3.11",
         "drupal/csv_serialization": "^4.0",
         "drupal/ctools": "^4.1",
         "drupal/default_content": "^2.0@alpha",
@@ -178,11 +178,7 @@
         "composer-exit-on-patch-failure": true,
         "patches": {
             "drupal/core": {
-                "Ensure the table alias is no longer than 60 characters long": "https://www.drupal.org/files/issues/2022-06-30/571548-165.patch",
-                "Broken aria-describedby in radios and checkboxes": "https://www.drupal.org/files/issues/2020-09-08/2839344_0.patch",
-                "Add events for matching entity hooks": "https://www.drupal.org/files/issues/2024-01-30/2551893-122.patch",
-                "PostgreSQL: email case insensitivity": "https://www.drupal.org/files/issues/2022-12-19/drupal-case_sensitive_email-2490294-58-d95.patch",
-                "System: Removed batch column update": "./patches/core-system_update_10201-removed-batch-column-update.patch"
+                "Add events for matching entity hooks": "./patches/event-entity-hook.patch"
             },
             "drupal/govuk_notify": {
                 "Message body formatting array to string": "https://www.drupal.org/files/issues/2021-08-11/3227617-2-govuk-notify-message-body-formatting.diff"
