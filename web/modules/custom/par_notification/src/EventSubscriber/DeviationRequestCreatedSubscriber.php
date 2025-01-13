@@ -2,13 +2,9 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
-use Drupal\Core\Entity\EntityEvent;
-use Drupal\Core\Entity\EntityEvents;
-use Drupal\message\Entity\Message;
+use Drupal\Core\Entity\Event\EntityInsertEvent;
 use Drupal\par_data\Entity\ParDataDeviationRequest;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Event\ParDataEventInterface;
-use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParEventSubscriberBase;
 
 class DeviationRequestCreatedSubscriber extends ParEventSubscriberBase {
@@ -26,30 +22,32 @@ class DeviationRequestCreatedSubscriber extends ParEventSubscriberBase {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[EntityEvents::insert('par_data_deviation_request')][] = ['onEvent', 800];
+    $events[EntityInsertEvent::class][] = ['onEvent', 800];
 
     return $events;
   }
 
   /**
-   * @param EntityEvent $event
+   * @param EntityInsertEvent $event
    */
-  public function onEvent(EntityEvent $event) {
-    $this->setEvent($event);
+  public function onEvent(EntityInsertEvent $event) {
+    if ($event->getEntity() instanceof ParDataDeviationRequest) {
+      $this->setEvent($event);
 
-    /** @var ParDataDeviationRequest $entity */
-    $entity = $event->getEntity();
-    $par_data_partnership = $entity?->getPartnership(TRUE);
+      /** @var ParDataDeviationRequest $entity */
+      $entity = $event->getEntity();
+      $par_data_partnership = $entity?->getPartnership(TRUE);
 
-    // Only send messages for active deviation requests.
-    if ($entity instanceof ParDataDeviationRequest &&
-      $par_data_partnership instanceof ParDataPartnership) {
+      // Only send messages for active deviation requests.
+      if ($entity instanceof ParDataDeviationRequest &&
+        $par_data_partnership instanceof ParDataPartnership) {
 
-      // Send the message.
-      $arguments = [
-        '@partnership_label' => strtolower($par_data_partnership->label()),
-      ];
-      $this->sendMessage($arguments);
+        // Send the message.
+        $arguments = [
+          '@partnership_label' => strtolower($par_data_partnership->label()),
+        ];
+        $this->sendMessage($arguments);
+      }
     }
   }
 }

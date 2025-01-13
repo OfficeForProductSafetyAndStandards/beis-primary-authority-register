@@ -2,12 +2,9 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
-use Drupal\Core\Entity\EntityEvent;
-use Drupal\Core\Entity\EntityEvents;
-use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\Core\Entity\Event\EntityInsertEvent;
 use Drupal\par_data\Entity\ParDataInspectionFeedback;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Event\ParDataEventInterface;
 use Drupal\par_notification\ParEventSubscriberBase;
 
 class NewInspectionFeedbackSubscriber extends ParEventSubscriberBase {
@@ -25,15 +22,15 @@ class NewInspectionFeedbackSubscriber extends ParEventSubscriberBase {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[EntityEvents::insert('par_data_inspection_feedback')][] = ['onEvent', 800];
+    $events[EntityInsertEvent::class][] = ['onEvent', 800];
 
     return $events;
   }
 
   /**
-   * @param EntityEvent $event
+   * @param EntityInsertEvent $event
    */
-  public function onEvent(EntityEvent $event) {
+  public function onEvent(EntityInsertEvent $event) {
     $this->setEvent($event);
 
     /** @var ParDataInspectionFeedback $entity */

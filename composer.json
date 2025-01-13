@@ -49,7 +49,7 @@
         "drupal/config_readonly": "^1.0",
         "drupal/config_split": "~2.0.0",
         "drupal/config_update": "^2.0@alpha",
-        "drupal/core-composer-scaffold": "~10.2.0",
+        "drupal/core-composer-scaffold": "10.3.11",
         "drupal/core-recommended": "10.3.11",
         "drupal/csv_serialization": "^4.0",
         "drupal/ctools": "^4.1",
@@ -107,7 +107,7 @@
         "drupal/views_contextual_filters_or": "~1.4.0",
         "drupal/views_data_export": "^1.5",
         "drupal/xmlsitemap": "~1.5.0",
-        "drush/drush": "^12.5",
+        "drush/drush": "13.3.3",
         "predis/predis": "~2.2.2",
         "rapidwebltd/php-uk-bank-holidays": "~5.0.0",
         "vlucas/phpdotenv": "~5.6.0"
@@ -176,6 +176,9 @@
             }
         },
         "composer-exit-on-patch-failure": true,
+        "patchLevel": {
+            "drupal/core": "-p2"
+        },
         "patches": {
             "drupal/core": {
                 "Add events for matching entity hooks": "./patches/event-entity-hook.patch"

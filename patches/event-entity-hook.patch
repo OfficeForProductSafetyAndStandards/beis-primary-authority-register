@@ -1,41 +1,30 @@
 diff --git a/core/core.services.yml b/core/core.services.yml
-index 3f9619f430..3bc7a9bdd0 100644
+index 3f9619f430..959039c105 100644
 --- a/core/core.services.yml
 +++ b/core/core.services.yml
-@@ -758,6 +758,18 @@ services:
+@@ -758,6 +758,16 @@ services:
    entity_route_subscriber:
      class: Drupal\Core\EventSubscriber\EntityRouteProviderSubscriber
      arguments: ['@entity_type.manager']
-+    tags:
-+      - { name: event_subscriber }
 +  entity_event_subscriber:
 +    class: Drupal\Core\EventSubscriber\EntityEventSubscriber
-+    arguments: ['@module_handler']
++    arguments: [ '@module_handler' ]
 +    tags:
 +      - { name: event_subscriber }
-+  content_entity_event_subscriber:
-+    class: Drupal\Core\EventSubscriber\ContentEntityEventSubscriber
-+    arguments: ['@entity_type.manager', '@module_handler']
-+    tags:
-+      - { name: event_subscriber }
++    content_entity_event_subscriber:
++      class: Drupal\Core\EventSubscriber\ContentEntityEventSubscriber
++      arguments: [ '@entity_type.manager', '@module_handler' ]
++      tags:
++        - { name: event_subscriber }
    entity.definition_update_manager:
      class: Drupal\Core\Entity\EntityDefinitionUpdateManager
      arguments: ['@entity_type.manager', '@entity.last_installed_schema.repository', '@entity_field.manager', '@entity_type.listener', '@field_storage_definition.listener']
 diff --git a/core/lib/Drupal/Core/Entity/ContentEntityStorageBase.php b/core/lib/Drupal/Core/Entity/ContentEntityStorageBase.php
-index 67a80f91a9..7b49691d10 100644
+index 67a80f91a9..f1226d7c45 100644
 --- a/core/lib/Drupal/Core/Entity/ContentEntityStorageBase.php
 +++ b/core/lib/Drupal/Core/Entity/ContentEntityStorageBase.php
-@@ -878,26 +878,28 @@ function (callable $hook, string $module) use (&$entities) {
-   }
- 
-   /**
--   * {@inheritdoc}
-+   * Invokes a hook on behalf of the entity.
-+   *
-+   * @param string $hook
-+   *   A content entity hook name.
-+   * @param \Drupal\Core\Entity\EntityInterface $entity
-+   *   The entity object.
+@@ -881,23 +881,20 @@ function (callable $hook, string $module) use (&$entities) {
+    * {@inheritdoc}
     */
    protected function invokeHook($hook, EntityInterface $entity) {
 -    /** @var \Drupal\Core\Entity\ContentEntityInterface $entity */
@@ -71,7 +60,7 @@ index 67a80f91a9..7b49691d10 100644
    }
  
    /**
-@@ -914,7 +916,7 @@ protected function invokeHook($hook, EntityInterface $entity) {
+@@ -914,7 +911,7 @@ protected function invokeHook($hook, EntityInterface $entity) {
     *   A multidimensional associative array of results, keyed by entity
     *   translation language code and field name.
     */
@@ -80,7 +69,7 @@ index 67a80f91a9..7b49691d10 100644
      $result = [];
      $args = array_slice(func_get_args(), 2);
      $langcodes = array_keys($entity->getTranslationLanguages());
-@@ -977,7 +979,7 @@ protected function invokeFieldMethod($method, ContentEntityInterface $entity) {
+@@ -977,7 +974,7 @@ protected function invokeFieldMethod($method, ContentEntityInterface $entity) {
     * @param bool $update
     *   Specifies whether the entity is being updated or created.
     */
@@ -90,7 +79,7 @@ index 67a80f91a9..7b49691d10 100644
      // by field name, thus we merge them to obtain a list of fields to resave.
      $resave = [];
 diff --git a/core/lib/Drupal/Core/Entity/EntityStorageBase.php b/core/lib/Drupal/Core/Entity/EntityStorageBase.php
-index a117120141..a83578dba6 100644
+index a117120141..4097747290 100644
 --- a/core/lib/Drupal/Core/Entity/EntityStorageBase.php
 +++ b/core/lib/Drupal/Core/Entity/EntityStorageBase.php
 @@ -2,6 +2,12 @@
@@ -140,42 +129,33 @@ index a117120141..a83578dba6 100644
  
      return $entity;
    }
-@@ -446,21 +438,25 @@ public function delete(array $entities) {
+@@ -444,12 +436,15 @@ public function delete(array $entities) {
+     }
+ 
      $entities_by_class = $this->getEntitiesByClass($entities);
++    $event_dispatcher = \Drupal::service('event_dispatcher');
  
      // Allow code to run before deleting.
--    foreach ($entities_by_class as $entity_class => &$items) {
--      $entity_class::preDelete($this, $items);
--      foreach ($items as $entity) {
+     foreach ($entities_by_class as $entity_class => &$items) {
+       $entity_class::preDelete($this, $items);
++
+       foreach ($items as $entity) {
 -        $this->invokeHook('predelete', $entity);
--      }
-+    $entity_class = $this->entityClass;
-+    $entity_class::preDelete($this, $keyed_entities);
-+
-+    $event_dispatcher = \Drupal::service('event_dispatcher');
-+
-+    foreach ($keyed_entities as $entity) {
-+      $event = new EntityPreDeleteEvent($entity);
-+      $event_dispatcher->dispatch($event);
-+    }
++        $event = new EntityPreDeleteEvent($entity);
++        $event_dispatcher->dispatch($event);
+       }
  
        // Perform the delete and reset the static cache for the deleted entities.
-       $this->doDelete($items);
-       $this->resetCache(array_keys($items));
- 
--      // Allow code to run after deleting.
--      $entity_class::postDelete($this, $items);
--      foreach ($items as $entity) {
+@@ -459,7 +454,8 @@ public function delete(array $entities) {
+       // Allow code to run after deleting.
+       $entity_class::postDelete($this, $items);
+       foreach ($items as $entity) {
 -        $this->invokeHook('delete', $entity);
--      }
-+    // Allow code to run after deleting.
-+    $entity_class::postDelete($this, $keyed_entities);
-+    foreach ($keyed_entities as $entity) {
-+      $event = new EntityDeleteEvent($entity);
-+      $event_dispatcher->dispatch($event);
++        $event = new EntityDeleteEvent($entity);
++        $event_dispatcher->dispatch($event);
+       }
      }
    }
- 
 @@ -479,13 +475,13 @@ public function save(EntityInterface $entity) {
      // Track if this entity is new.
      $is_new = $entity->isNew();
@@ -767,150 +747,11 @@ index 0000000000..ff9537627b
 +  }
 +
 +}
-diff --git a/core/tests/Drupal/Tests/Core/Config/Entity/ConfigEntityStorageTest.php b/core/tests/Drupal/Tests/Core/Config/Entity/ConfigEntityStorageTest.php
-index 53e5ab25a1..13b496e125 100644
---- a/core/tests/Drupal/Tests/Core/Config/Entity/ConfigEntityStorageTest.php
-+++ b/core/tests/Drupal/Tests/Core/Config/Entity/ConfigEntityStorageTest.php
-@@ -23,6 +23,12 @@
- use Drupal\Core\Entity\EntityMalformedException;
- use Drupal\Core\Entity\EntityStorageException;
- use Drupal\Core\Entity\EntityTypeManagerInterface;
-+use Drupal\Core\Entity\Event\EntityCreateEvent;
-+use Drupal\Core\Entity\Event\EntityDeleteEvent;
-+use Drupal\Core\Entity\Event\EntityInsertEvent;
-+use Drupal\Core\Entity\Event\EntityPreDeleteEvent;
-+use Drupal\Core\Entity\Event\EntityPreSaveEvent;
-+use Drupal\Core\Entity\Event\EntityUpdateEvent;
- use Drupal\Core\Entity\Query\QueryFactoryInterface;
- use Drupal\Core\Entity\Query\QueryInterface;
- use Drupal\Core\Extension\ModuleHandlerInterface;
-@@ -31,6 +37,7 @@
- use Drupal\Tests\UnitTestCase;
- use Prophecy\Argument;
- use Symfony\Component\DependencyInjection\ContainerBuilder;
-+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
- 
- /**
-  * @coversDefaultClass \Drupal\Core\Config\Entity\ConfigEntityStorage
-@@ -66,6 +73,13 @@ class ConfigEntityStorageTest extends UnitTestCase {
-    */
-   protected $languageManager;
- 
-+  /**
-+   * The event dispatcher.
-+   *
-+   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface|\Prophecy\Prophecy\ProphecyInterface
-+   */
-+  protected $eventDispatcher;
-+
-   /**
-    * The config storage.
-    *
-@@ -136,6 +150,7 @@ protected function setUp(): void {
- 
-     $this->configFactory = $this->prophesize(ConfigFactoryInterface::class);
- 
-+    $this->eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
-     $this->entityQuery = $this->prophesize(QueryInterface::class);
-     $entity_query_factory = $this->prophesize(QueryFactoryInterface::class);
-     $entity_query_factory->get($entity_type, 'AND')->willReturn($this->entityQuery->reveal());
-@@ -162,6 +177,7 @@ protected function setUp(): void {
-     $container->set('cache_tags.invalidator', $this->cacheTagsInvalidator->reveal());
-     $container->set('config.manager', $this->configManager->reveal());
-     $container->set('language_manager', $this->languageManager->reveal());
-+    $container->set('event_dispatcher', $this->eventDispatcher->reveal());
-     \Drupal::setContainer($container);
- 
-   }
-@@ -180,10 +196,8 @@ public function testCreateWithPredefinedUuid(): void {
-     $entity->setOriginalId('foo');
-     $entity->enforceIsNew();
- 
--    $this->moduleHandler->invokeAll('test_entity_type_create', [$entity])
--      ->shouldBeCalled();
--    $this->moduleHandler->invokeAll('entity_create', [$entity, 'test_entity_type'])
--      ->shouldBeCalled();
-+    $event = new EntityCreateEvent($entity);
-+    $this->eventDispatcher->dispatch($event)->shouldBeCalled();
- 
-     $this->uuidService->generate()->shouldNotBeCalled();
- 
-@@ -209,10 +223,8 @@ public function testCreate() {
-     $entity->setOriginalId('foo');
-     $entity->enforceIsNew();
- 
--    $this->moduleHandler->invokeAll('test_entity_type_create', [$entity])
--      ->shouldBeCalled();
--    $this->moduleHandler->invokeAll('entity_create', [$entity, 'test_entity_type'])
--      ->shouldBeCalled();
-+    $event = new EntityCreateEvent($entity);
-+    $this->eventDispatcher->dispatch($event)->shouldBeCalled();
- 
-     $this->uuidService->generate()->willReturn('bar');
- 
-@@ -281,14 +293,10 @@ public function testSaveInsert(EntityInterface $entity) {
-     $this->configFactory->getEditable('the_provider.the_config_prefix.foo')
-       ->willReturn($config_object->reveal());
- 
--    $this->moduleHandler->invokeAll('test_entity_type_presave', [$entity])
--      ->shouldBeCalled();
--    $this->moduleHandler->invokeAll('entity_presave', [$entity, 'test_entity_type'])
--      ->shouldBeCalled();
--    $this->moduleHandler->invokeAll('test_entity_type_insert', [$entity])
--      ->shouldBeCalled();
--    $this->moduleHandler->invokeAll('entity_insert', [$entity, 'test_entity_type'])
--      ->shouldBeCalled();
-+    $event = new EntityPreSaveEvent($entity);
-+    $this->eventDispatcher->dispatch($event)->shouldBeCalled();
-+    $event = new EntityInsertEvent($entity);
-+    $this->eventDispatcher->dispatch($event)->shouldBeCalled();
- 
-     $this->entityQuery->condition('uuid', 'bar')->willReturn($this->entityQuery);
-     $this->entityQuery->execute()->willReturn([]);
-@@ -341,14 +349,10 @@ public function testSaveUpdate(EntityInterface $entity) {
-       ->willReturn($config_object->reveal())
-       ->shouldBeCalledTimes(1);
- 
--    $this->moduleHandler->invokeAll('test_entity_type_presave', [$entity])
--      ->shouldBeCalled();
--    $this->moduleHandler->invokeAll('entity_presave', [$entity, 'test_entity_type'])
--      ->shouldBeCalled();
--    $this->moduleHandler->invokeAll('test_entity_type_update', [$entity])
--      ->shouldBeCalled();
--    $this->moduleHandler->invokeAll('entity_update', [$entity, 'test_entity_type'])
--      ->shouldBeCalled();
-+    $event = new EntityPreSaveEvent($entity);
-+    $this->eventDispatcher->dispatch($event)->shouldBeCalled();
-+    $event = new EntityUpdateEvent($entity);
-+    $this->eventDispatcher->dispatch($event)->shouldBeCalled();
- 
-     $this->entityQuery->condition('uuid', 'bar')->willReturn($this->entityQuery);
-     $this->entityQuery->execute()->willReturn([$entity->id()]);
-@@ -677,15 +681,11 @@ public function testDelete(): void {
-       $this->configFactory->getEditable("the_provider.the_config_prefix.$id")
-         ->willReturn($config_object->reveal());
- 
--      $this->moduleHandler->invokeAll('test_entity_type_predelete', [$entity])
--        ->shouldBeCalled();
--      $this->moduleHandler->invokeAll('entity_predelete', [$entity, 'test_entity_type'])
--        ->shouldBeCalled();
-+      $event = new EntityPreDeleteEvent($entity);
-+      $this->eventDispatcher->dispatch($event)->shouldBeCalled();
- 
--      $this->moduleHandler->invokeAll('test_entity_type_delete', [$entity])
--        ->shouldBeCalled();
--      $this->moduleHandler->invokeAll('entity_delete', [$entity, 'test_entity_type'])
--        ->shouldBeCalled();
-+      $event = new EntityDeleteEvent($entity);
-+      $this->eventDispatcher->dispatch($event)->shouldBeCalled();
-     }
- 
-     $this->cacheTagsInvalidator->invalidateTags([$this->entityTypeId . '_list'])
 diff --git a/core/tests/Drupal/Tests/Core/Entity/KeyValueStore/KeyValueEntityStorageTest.php b/core/tests/Drupal/Tests/Core/Entity/KeyValueStore/KeyValueEntityStorageTest.php
-index 2c6546f072..c7ead49448 100644
+index 2c6546f072..c80024c06c 100644
 --- a/core/tests/Drupal/Tests/Core/Entity/KeyValueStore/KeyValueEntityStorageTest.php
 +++ b/core/tests/Drupal/Tests/Core/Entity/KeyValueStore/KeyValueEntityStorageTest.php
-@@ -14,9 +14,16 @@
+@@ -14,6 +14,12 @@
  use Drupal\Core\Entity\EntityMalformedException;
  use Drupal\Core\Entity\EntityStorageException;
  use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -923,11 +764,7 @@ index 2c6546f072..c7ead49448 100644
  use Drupal\Core\Language\Language;
  use Drupal\Tests\UnitTestCase;
  use Drupal\Core\Entity\KeyValueStore\KeyValueEntityStorage;
-+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
- 
- /**
-  * @coversDefaultClass \Drupal\Core\Entity\KeyValueStore\KeyValueEntityStorage
-@@ -85,6 +92,13 @@ class KeyValueEntityStorageTest extends UnitTestCase {
+@@ -85,6 +91,13 @@ class KeyValueEntityStorageTest extends UnitTestCase {
     */
    protected $cacheTagsInvalidator;
  
@@ -941,16 +778,16 @@ index 2c6546f072..c7ead49448 100644
    /**
     * {@inheritdoc}
     */
-@@ -136,7 +150,7 @@ protected function setUpKeyValueEntityStorage($uuid_key = 'uuid') {
-       ->willReturn($language);
+@@ -137,6 +150,8 @@ protected function setUpKeyValueEntityStorage($uuid_key = 'uuid') {
      $this->languageManager->expects($this->any())
        ->method('getCurrentLanguage')
--      ->willReturn($language);
-+      ->will($this->returnValue($language));
+       ->willReturn($language);
++    $event_dispatcher = $this->prophesize(EventDispatcherInterface::class);
++    $this->eventDispatcher = $event_dispatcher;
  
      $this->entityStorage = new KeyValueEntityStorage($this->entityType, $this->keyValueStore, $this->uuidService, $this->languageManager, new MemoryCache(new Time()));
      $this->entityStorage->setModuleHandler($this->moduleHandler);
-@@ -144,6 +158,7 @@ protected function setUpKeyValueEntityStorage($uuid_key = 'uuid') {
+@@ -144,6 +159,7 @@ protected function setUpKeyValueEntityStorage($uuid_key = 'uuid') {
      $container = new ContainerBuilder();
      $container->set('entity_field.manager', $this->entityFieldManager);
      $container->set('entity_type.manager', $this->entityTypeManager);
@@ -958,10 +795,11 @@ index 2c6546f072..c7ead49448 100644
      $container->set('language_manager', $this->languageManager);
      $container->set('cache_tags.invalidator', $this->cacheTagsInvalidator);
      \Drupal::setContainer($container);
-@@ -159,12 +174,6 @@ public function testCreateWithPredefinedUuid(): void {
+@@ -158,13 +174,6 @@ public function testCreateWithPredefinedUuid(): void {
+       ->method('getClass')
        ->willReturn(get_class($this->getMockEntity()));
      $this->setUpKeyValueEntityStorage();
- 
+-
 -    $hooks = ['test_entity_type_create', 'entity_create'];
 -    $this->moduleHandler->expects($this->exactly(count($hooks)))
 -      ->method('invokeAll')
@@ -981,10 +819,11 @@ index 2c6546f072..c7ead49448 100644
    }
  
    /**
-@@ -185,12 +197,6 @@ public function testCreateWithoutUuidKey(): void {
+@@ -184,13 +196,6 @@ public function testCreateWithoutUuidKey(): void {
+       ->method('getClass')
        ->willReturn(get_class($this->getMockEntity()));
      $this->setUpKeyValueEntityStorage(NULL);
- 
+-
 -    $hooks = ['test_entity_type_create', 'entity_create'];
 -    $this->moduleHandler->expects($this->exactly(count($hooks)))
 -      ->method('invokeAll')
@@ -994,7 +833,7 @@ index 2c6546f072..c7ead49448 100644
      $this->uuidService->expects($this->never())
        ->method('generate');
  
-@@ -198,6 +204,9 @@ public function testCreateWithoutUuidKey(): void {
+@@ -198,6 +203,9 @@ public function testCreateWithoutUuidKey(): void {
      $this->assertInstanceOf('Drupal\Core\Entity\EntityInterface', $entity);
      $this->assertSame('foo', $entity->id());
      $this->assertSame('baz', $entity->uuid());
@@ -1004,10 +843,11 @@ index 2c6546f072..c7ead49448 100644
    }
  
    /**
-@@ -213,12 +222,6 @@ public function testCreate() {
+@@ -212,13 +220,6 @@ public function testCreate() {
+       ->method('getClass')
        ->willReturn(get_class($entity));
      $this->setUpKeyValueEntityStorage();
- 
+-
 -    $hooks = ['test_entity_type_create', 'entity_create'];
 -    $this->moduleHandler->expects($this->exactly(count($hooks)))
 -      ->method('invokeAll')
@@ -1017,7 +857,7 @@ index 2c6546f072..c7ead49448 100644
      $this->uuidService->expects($this->once())
        ->method('generate')
        ->willReturn('bar');
-@@ -227,6 +230,10 @@ public function testCreate() {
+@@ -227,6 +228,10 @@ public function testCreate() {
      $this->assertInstanceOf('Drupal\Core\Entity\EntityInterface', $entity);
      $this->assertSame('foo', $entity->id());
      $this->assertSame('bar', $entity->uuid());
@@ -1028,10 +868,11 @@ index 2c6546f072..c7ead49448 100644
      return $entity;
    }
  
-@@ -258,13 +265,10 @@ public function testSaveInsert(EntityInterface $entity) {
+@@ -257,14 +262,10 @@ public function testSaveInsert(EntityInterface $entity) {
+     $entity->expects($this->atLeastOnce())
        ->method('toArray')
        ->willReturn($expected);
- 
+-
 -    $hooks = ['test_entity_type_presave', 'entity_presave', 'test_entity_type_insert', 'entity_insert'];
 -    $this->moduleHandler->expects($this->exactly(count($hooks)))
 -      ->method('invokeAll')
@@ -1046,7 +887,7 @@ index 2c6546f072..c7ead49448 100644
      $this->keyValueStore->expects($this->once())
        ->method('set')
        ->with('foo', $expected);
-@@ -302,12 +306,19 @@ public function testSaveUpdate(EntityInterface $entity) {
+@@ -302,12 +303,10 @@ public function testSaveUpdate(EntityInterface $entity) {
      $this->keyValueStore->expects($this->never())
        ->method('delete');
  
@@ -1056,15 +897,6 @@ index 2c6546f072..c7ead49448 100644
 -      ->with($this->callback(function (string $hook) use (&$hooks): bool {
 -        return array_shift($hooks) === $hook;
 -      }));
-+    $this->moduleHandler->expects($this->at(0))
-+      ->method('getImplementations')
-+      ->with('entity_load')
-+      ->will($this->returnValue([]));
-+    $this->moduleHandler->expects($this->at(1))
-+      ->method('getImplementations')
-+      ->with('test_entity_type_load')
-+      ->will($this->returnValue([]));
-+
 +    $event = new EntityPreSaveEvent($entity);
 +    $this->eventDispatcher->dispatch($event)->shouldBeCalled();
 +    $event = new EntityUpdateEvent($entity);
@@ -1072,7 +904,7 @@ index 2c6546f072..c7ead49448 100644
  
      $this->keyValueStore->expects($this->once())
        ->method('set')
-@@ -583,21 +594,14 @@ public function testDelete(): void {
+@@ -583,21 +582,14 @@ public function testDelete(): void {
      $entities['bar'] = $this->getMockEntity(EntityBaseTest::class, [['id' => 'bar']]);
      $this->setUpKeyValueEntityStorage();
  
@@ -1103,7 +935,7 @@ index 2c6546f072..c7ead49448 100644
      $this->keyValueStore->expects($this->once())
        ->method('deleteMultiple')
 diff --git a/core/tests/Drupal/Tests/Core/Entity/Sql/SqlContentEntityStorageTest.php b/core/tests/Drupal/Tests/Core/Entity/Sql/SqlContentEntityStorageTest.php
-index e27a27dbed..bd07448f7f 100644
+index e27a27dbed..9cf2073888 100644
 --- a/core/tests/Drupal/Tests/Core/Entity/Sql/SqlContentEntityStorageTest.php
 +++ b/core/tests/Drupal/Tests/Core/Entity/Sql/SqlContentEntityStorageTest.php
 @@ -103,6 +103,13 @@ class SqlContentEntityStorageTest extends UnitTestCase {
@@ -1128,14 +960,10 @@ index e27a27dbed..bd07448f7f 100644
      $this->languageManager->expects($this->any())
        ->method('getDefaultLanguage')
        ->willReturn(new Language(['langcode' => 'en']));
-@@ -137,8 +145,9 @@ protected function setUp(): void {
-       ->disableOriginalConstructor()
-       ->getMock();
+@@ -139,6 +147,7 @@ protected function setUp(): void {
  
--    $this->container->set('entity_type.manager', $this->entityTypeManager->reveal());
--    $this->container->set('entity_field.manager', $this->entityFieldManager->reveal());
-+    $this->container->set('entity_type.manager', $this->entityTypeManager);
-+    $this->container->set('entity_field.manager', $this->entityFieldManager);
+     $this->container->set('entity_type.manager', $this->entityTypeManager->reveal());
+     $this->container->set('entity_field.manager', $this->entityFieldManager->reveal());
 +    $this->container->set('event_dispatcher', $this->eventDispatcher);
    }
  

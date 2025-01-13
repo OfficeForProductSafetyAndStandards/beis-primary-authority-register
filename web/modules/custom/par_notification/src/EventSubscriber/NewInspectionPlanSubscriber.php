@@ -2,8 +2,6 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
-use Drupal\Core\Entity\EntityEvent;
-use Drupal\Core\Entity\EntityEvents;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Drupal\par_data\Entity\ParDataInspectionPlan;
@@ -32,7 +30,7 @@ class NewInspectionPlanSubscriber extends ParEventSubscriberBase {
   }
 
   /**
-   * @param EntityEvent $event
+   * @param ParDataEventInterface $event
    */
   public function onEvent(ParDataEventInterface $event) {
     $this->setEvent($event);

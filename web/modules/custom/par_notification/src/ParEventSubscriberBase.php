@@ -23,9 +23,9 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
   const MESSAGE_ID = '';
 
   /**
-   * @var ParDataEventInterface|EntityEvent $event
+   * @var ParDataEventInterface $event
    */
-  protected ParDataEventInterface|EntityEvent $event;
+  protected ParDataEventInterface $event;
 
   /**
    * Returns the logger channel specific to errors logged by PAR Forms.

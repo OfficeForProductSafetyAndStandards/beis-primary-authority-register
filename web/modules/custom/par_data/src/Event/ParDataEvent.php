@@ -4,12 +4,13 @@ namespace Drupal\par_data\Event;
 
 use Drupal\Core\Entity\EntityEvent;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\Event\EntityUpdateEvent;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 
 /**
  * The event fired for crud operations on PAR Data entities.
  */
-class ParDataEvent extends EntityEvent implements ParDataEventInterface {
+class ParDataEvent extends EntityUpdateEvent implements ParDataEventInterface {
 
   /**
    * The name of the event triggered when an existing par entity is updated.
