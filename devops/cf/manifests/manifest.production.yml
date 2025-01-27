@@ -3,7 +3,7 @@ applications:
     routes:
       - route: primary-authority.beis.gov.uk
     buildpacks:
-      - https://github.com/cloudfoundry/php-buildpack.git#v4.6.26
+      - https://github.com/cloudfoundry/php-buildpack.git#v4.6.17
     stack: cflinuxfs3
     memory: 2G
     disk_quota: 5G
