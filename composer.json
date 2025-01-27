@@ -202,6 +202,9 @@
                 "Unable to override default scheme with settings": "https://www.drupal.org/files/issues/2021-02-16/redis-support_tls_on_predis-3004561-33.patch",
                 "Take into account CONFIG command may not work": "https://www.drupal.org/files/issues/2021-02-16/redis-allow_disabled_config-3173988-4.patch"
             },
+            "drupal/registered_organisations": {
+                "Change form validation to allow for 6 characters": "./patches/charities_commission_number_format.patch"
+            },
             "drupal/pagerer": {
                 "Pagerer upgrade issue": "https://git.drupalcode.org/project/pagerer/-/merge_requests/18.diff"
             },
