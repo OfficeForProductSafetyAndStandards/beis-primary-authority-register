@@ -11,7 +11,6 @@ use Drupal\message_expire\MessageExpiryManagerInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Drupal\Core\Entity\EntityEvent;
 
 abstract class ParEventSubscriberBase implements EventSubscriberInterface {
 
