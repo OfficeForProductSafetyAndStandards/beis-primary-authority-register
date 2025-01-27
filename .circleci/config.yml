@@ -12,7 +12,7 @@ references:
           APP_ENV: ci
           SENTRY_ENVIRONMENT: ci
 
-      - image: cimg/postgres:16.4-postgis
+      - image: cimg/postgres:13.8-postgis
         environment:
           PGHOST: localhost
           POSTGRES_USER: par
@@ -365,7 +365,7 @@ jobs:
           command: |
             DEPLOY_ENV="staging"
             printf "$DEPLOY_ENV\n"
-            ./devops/cf/push.local.sh -T $CIRCLE_TAG -d /tmp/workspace $DEPLOY_ENV
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
 
   deploy_prod:
     circleci_ip_ranges: true
