@@ -3,7 +3,7 @@ applications:
     routes:
       - route: ((app)).cloudapps.digital
     buildpacks:
-      - https://github.com/cloudfoundry/php-buildpack.git#v4.6.17
+      - https://github.com/cloudfoundry/php-buildpack.git#v4.6.26
     stack: cflinuxfs3
     memory: 2G
     disk_quota: 5G

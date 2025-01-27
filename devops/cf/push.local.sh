@@ -463,7 +463,7 @@ printf "Checking and enabling backing services...\n"
 
 ## Ensure the right service plan is selected
 if [[ $ENV = "production" ]] || [[ $ENV = "staging" ]]; then
-    PG_PLAN='medium-ha-13'
+    PG_PLAN='medium-ha-16'
     REDIS_PLAN='medium-ha-6.x'
     OS_PLAN='small-ha-1'
 else
