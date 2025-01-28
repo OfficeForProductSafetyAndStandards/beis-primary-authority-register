@@ -544,7 +544,7 @@ printf "Starting the application...\n"
 cf start $TARGET_ENV
 
 ## Import the seed database and then delete it.
-if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
+if [[ $ENV != "production" ]] && [[ $ENV != "staging" ]] && [[ $DB_RESET ]]; then
     if [[ ! -f "$BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz" ]]; then
         printf "Seed database required, but could not find one at '$BUILD_DIR/$DB_DIR/sanitised-db.sql'.\n"
         exit 6
