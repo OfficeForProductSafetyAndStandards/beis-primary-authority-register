@@ -108,7 +108,7 @@ rm -f $DIRECTORY/$FILE_NAME.sql
 
 printf "Exporting database dump...\n"
 printf "Running: drush $DRUPAL_ALIAS sql-dump --result-file='$DIRECTORY/$FILE_NAME.sql'\n"
-../vendor/drush/drush/drush $DRUPAL_ALIAS sql-dump --result-file="$DIRECTORY/${FILE_NAME}_raw.sql"
+../vendor/bin/drush $DRUPAL_ALIAS sql-dump --result-file="$DIRECTORY/${FILE_NAME}_raw.sql"
 
 ## Remove erroneous pg_dump roles applied despite --no-owner flags.
 ## https://stackoverflow.com/questions/60605491/using-pg-dump-with-no-owner-information-still-outputting-role-information
@@ -120,8 +120,8 @@ tar -zcvf $DIRECTORY/$FILE_NAME-$DATE.tar.gz -C $DIRECTORY "$FILE_NAME.sql"
 
 if [[ $AWS_PUSH == y ]]; then
     printf "Uploading database archives...\n"
-    ../vendor/drush/drush/drush fsp s3backups $DIRECTORY/$FILE_NAME-latest.tar.gz $FILE_NAME-latest.tar.gz
-    ../vendor/drush/drush/drush fsp s3backups $DIRECTORY/$FILE_NAME-$DATE.tar.gz $FILE_NAME-$DATE.tar.gz
+    ../vendor/bin/drush fsp s3backups $DIRECTORY/$FILE_NAME-latest.tar.gz $FILE_NAME-latest.tar.gz
+    ../vendor/bin/drush fsp s3backups $DIRECTORY/$FILE_NAME-$DATE.tar.gz $FILE_NAME-$DATE.tar.gz
 fi
 
 printf "Database archive completed...\n"

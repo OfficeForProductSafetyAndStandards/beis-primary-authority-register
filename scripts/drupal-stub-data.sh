@@ -9,8 +9,8 @@ cd $ROOT
 echo "Current working directory is ${PWD}"
 
 # Enable the test content.
-../vendor/drush/drush/drush pm-uninstall par_data_test -y;
-../vendor/drush/drush/drush en par_data_test -y;
+../vendor/bin/drush pm-uninstall par_data_test -y;
+../vendor/bin/drush en par_data_test -y;
 # Put the site in stubbed mode.
-../vendor/drush/drush/drush config-set par_data.settings stubbed true -y;
-../vendor/drush/drush/drush cache:rebuild;
+../vendor/bin/drush config-set par_data.settings stubbed true -y;
+../vendor/bin/drush cache:rebuild;
