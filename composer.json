@@ -56,8 +56,8 @@
         "drupal/default_content": "^2.0@alpha",
         "drupal/email_registration": "^2.0@RC",
         "drupal/features": "~3.14.0",
-        "drupal/flysystem": "^2.2@alpha",
-        "drupal/flysystem_s3": "^2.1",
+        "drupal/flysystem": "2.1.0-rc6",
+        "drupal/flysystem_s3": "~2.1.0",
         "drupal/google_tag": "^2.0",
         "drupal/govuk_notify": "^3.1",
         "drupal/govuk_theme": "^2.1",
@@ -88,7 +88,7 @@
         "drupal/password_policy": "^4.0",
         "drupal/queue_ui": "~3.1.0",
         "drupal/raven": "^5.0",
-        "drupal/redis": "^1.8",
+        "drupal/redis": "1.7",
         "drupal/registered_organisations": "1.0.x-dev",
         "drupal/robotstxt": "^1.6",
         "drupal/role_delegation": "~1.2.0",
@@ -107,7 +107,7 @@
         "drupal/views_contextual_filters_or": "~1.4.0",
         "drupal/views_data_export": "^1.5",
         "drupal/xmlsitemap": "~1.5.0",
-        "drush/drush": "13.3.3",
+        "drush/drush": "^12.5",
         "predis/predis": "~2.2.2",
         "rapidwebltd/php-uk-bank-holidays": "~5.0.0",
         "vlucas/phpdotenv": "~5.6.0"
@@ -183,11 +183,20 @@
             "drupal/core": {
                 "Add events for matching entity hooks": "./patches/event-entity-hook.patch"
             },
+            "drupal/flysystem": {
+                "Add Drush commands for sending and receiving files": "https://www.drupal.org/files/issues/2023-08-31/3192777-4-added_drush_commands.patch",
+                "Support new lazy asset collection optimizers": "https://git.drupalcode.org/project/flysystem/-/merge_requests/26.diff",
+                "Remove $state in CollectionOptimizerLazy asset handlers": "https://git.drupalcode.org/project/flysystem/-/merge_requests/46.diff"
+            },
             "drupal/govuk_notify": {
                 "Message body formatting array to string": "https://www.drupal.org/files/issues/2021-08-11/3227617-2-govuk-notify-message-body-formatting.diff"
             },
             "drupal/pagerer": {
                 "Pagerer upgrade issue": "https://git.drupalcode.org/project/pagerer/-/merge_requests/18.diff"
+            },
+            "drupal/redis": {
+                "Unable to override default scheme with settings": "https://www.drupal.org/files/issues/2021-02-16/redis-support_tls_on_predis-3004561-33.patch",
+                "Take into account CONFIG command may not work": "https://www.drupal.org/files/issues/2021-02-16/redis-allow_disabled_config-3173988-4.patch"
             },
             "twistor/flysystem-stream-wrapper": {
                 "Fix PHP error on flystem (see https://github.com/twistor/flysystem-stream-wrapper/issues/27 & https://www.drupal.org/project/flysystem/issues/3387094": "patches/flysystem-deprecated-dynamic-prop.patch"

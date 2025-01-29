@@ -3,6 +3,7 @@
 namespace Drupal\par_notification;
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\Event\EntityInsertEvent;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\message\MessageInterface;
 use Drupal\Core\Session\AccountProxyInterface;
