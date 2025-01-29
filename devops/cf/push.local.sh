@@ -476,7 +476,7 @@ fi
 # TODO Error happens here if there's an error during the creation of services.
 # some services may not be in the correct state to tear down and so may not be removed.
 # Catch any service errors and don't tear down until all services are ready.
-if [[ $ENV != "production" ]] && [[ $ENV != "staging" ]]; then
+if [[ $ENV != "production" ]]; then
     ## Check for the postgres database service
     if ! cf service $PG_BACKING_SERVICE 2>&1; then
         echo "################################################################################################"
