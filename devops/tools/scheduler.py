@@ -19,7 +19,7 @@ os.environ["PATH"] = os.environ["PATH"] + ":/home/vcap/app/bin/pgsql/bin"
 s = sched.scheduler(time.time, time.sleep)
 
 def run_cron(sc):
-    os.system("cd /home/vcap/app/web; ../vendor/bin/drush cron;")
+    os.system("cd /home/vcap/app/web; ../vendor/drush/drush/drush cron;")
     s.enter(60, 1, run_cron, (sc,))
 
 s.enter(60, 1, run_cron, (s,))

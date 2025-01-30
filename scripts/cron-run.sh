@@ -8,4 +8,4 @@ WEBROOT="${BASH_SOURCE%/*}/../web"
 cd $WEBROOT
 echo "Current working directory is ${PWD}"
 
-../vendor/bin/drush cron
+../vendor/drush/drush/drush cron

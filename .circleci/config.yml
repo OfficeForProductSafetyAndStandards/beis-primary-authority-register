@@ -87,7 +87,7 @@ references:
       name: "Import & set up the database"
       command: |
         cd web
-        ../vendor/bin/drush @par.dev sql:cli < ../backups/${SANITISED_DATABASE}.sql
+        ../vendor/drush/drush/drush @par.dev sql:cli < ../backups/${SANITISED_DATABASE}.sql
         pg_restore --username= USERNAME --host=HOST --port= --clean --if-exists --no-owner --no-privileges --no-password
         ../drupal-update.sh
 
@@ -103,7 +103,7 @@ references:
       name: "Prepare the application"
       command: |
         cd web
-        ../vendor/bin/drush cron
+        ../vendor/drush/drush/drush cron
         ../scripts/cache-warmer.sh
         ../scripts/re-index.sh partnership_index --rebuild
 
@@ -112,10 +112,10 @@ references:
       name: "Application checklist"
       command: |
         cd web
-        ../vendor/bin/drush --yes --quiet config-split:export dev_config
-        ../vendor/bin/drush --yes --quiet config-split:export test_config
-        ../vendor/bin/drush --no --diff config:import
-        ../vendor/bin/drush core-requirements --severity=2
+        ../vendor/drush/drush/drush --yes --quiet config-split:export dev_config
+        ../vendor/drush/drush/drush --yes --quiet config-split:export test_config
+        ../vendor/drush/drush/drush --no --diff config:import
+        ../vendor/drush/drush/drush core-requirements --severity=2
         curl -sD - -o /dev/null http://par.localhost
 
   build_assets: &build_assets
@@ -457,21 +457,21 @@ jobs:
           command: cd backups && ls -lah ${UNSANITISED_DATABASE}.sql
       - run:
           name: "Importing database"
-          command: cd web && sed -e '/-- do not execute if not member of manager role/,+4d' < ../backups/${UNSANITISED_DATABASE}.sql | ../vendor/bin/drush @par.paas sql:cli
+          command: cd web && sed -e '/-- do not execute if not member of manager role/,+4d' < ../backups/${UNSANITISED_DATABASE}.sql | ../vendor/drush/drush/drush @par.paas sql:cli
           environment:
             APP_ENV: ci-sanitise
       - run:
           name: "Sanitise database"
           command: |
             cd web
-            ../vendor/bin/drush @par.paas sql:sanitize -y
+            ../vendor/drush/drush/drush @par.paas sql:sanitize -y
           environment:
             APP_ENV: ci-sanitise
       - run:
           name: "Sanitise PAR Data"
           command: |
             cd web
-            ../vendor/bin/drush spp
+            ../vendor/drush/drush/drush spp
           environment:
             APP_ENV: ci-sanitise
       - run:

@@ -78,7 +78,7 @@ To run commands within the primary container:
 ```
 docker exec -it beis-par-web /bin/bash
 $ cd /var/www/html/web
-$ ../vendor/bin/drush cr
+$ ../vendor/drush/drush/drush cr
 ```
 
 Once you have a working development environment PAR should be available at [https://par.localhost:8080](https://par.localhost:8080)
@@ -154,8 +154,8 @@ You will need the `settings.local.php` before you run this, see the Drupal insta
 
 ```
 cd ./web
-../vendor/bin/drush sql:drop
-../vendor/bin/drush sql:cli < ../backups/db-dump-production-{DB_TYPE}.sql
+../vendor/drush/drush/drush sql:drop
+../vendor/drush/drush/drush sql:cli < ../backups/db-dump-production-{DB_TYPE}.sql
 ```
 
 #### Drupal install
@@ -231,8 +231,8 @@ Import the newly downloaded production db:
 ```
 cd ./web
 tar -zxvf ./location/of/downloaded/sql/drush-dump-production-unsanitized-latest.sql.tar.gz
-../vendor/bin/drush @par.paas sql:drop -y
-../vendor/bin/drush @par.paas sql:cli < ./location/of/downloaded/sql/drush-dump-production-unsanitized-latest.sql
+../vendor/drush/drush/drush @par.paas sql:drop -y
+../vendor/drush/drush/drush @par.paas sql:cli < ./location/of/downloaded/sql/drush-dump-production-unsanitized-latest.sql
 cd ..
 ./drupal-update.sh
 ```
@@ -240,10 +240,10 @@ cd ..
 Check that the data looks right and then sanitise:
 ```
 cd ./web
-../vendor/bin/drush @par.paas sql:sanitize -y
+../vendor/drush/drush/drush @par.paas sql:sanitize -y
 ```
 
 Then dump the db, zip it and upload it back to the S3 artifacts bucket with the correct name:
-```../vendor/bin/drush @par.paas sql-dump --result-file=./drush-dump-production-sanitized-latest.sql --extra="-O -x"
+```../vendor/drush/drush/drush @par.paas sql-dump --result-file=./drush-dump-production-sanitized-latest.sql --extra="-O -x"
 tar -zcvf drush-dump-production-sanitized-latest.sql.tar.gz -C ./ drush-dump-production-sanitized-latest.sql
-../vendor/bin/drush fsp s3backups drush-dump-production-sanitized-latest.sql.tar.gz drush-dump-production-sanitized-latest.sql.tar.gz```
+../vendor/drush/drush/drush fsp s3backups drush-dump-production-sanitized-latest.sql.tar.gz drush-dump-production-sanitized-latest.sql.tar.gz```

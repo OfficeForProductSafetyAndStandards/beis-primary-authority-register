@@ -59,10 +59,10 @@ echo "Current working directory is ${PWD}"
 if [[ $REBUILD == y ]]; then
   # Rebuild all indexes and schedule for re-indexing.
   echo "Rebuilding the index..."
-  ../vendor/bin/drush search-api:rebuild-tracker $INDEX
-  ../vendor/bin/drush search-api:clear $INDEX
+  ../vendor/drush/drush/drush search-api:rebuild-tracker $INDEX
+  ../vendor/drush/drush/drush search-api:clear $INDEX
 fi
 
 # Re-index all indexes.
   echo "Re-indexing..."
-../vendor/bin/drush search-api:index $INDEX --batch-size=100
+../vendor/drush/drush/drush search-api:index $INDEX --batch-size=100

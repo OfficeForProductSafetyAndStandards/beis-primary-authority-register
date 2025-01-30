@@ -13,7 +13,7 @@ Active configuration is stored in the database, and managed through the administ
 Configuration is always deployed with the code, so any changes made to the active configuration must be exported to the staged configuration in order to be deployed. From the `/web` directory run:
 
 ```
-../vendor/bin/drush config:export
+../vendor/drush/drush/drush config:export
 ```
 
 ## Staged configuration
@@ -22,7 +22,7 @@ Staged configuration is stored in yaml files in the `/sync` directory.
 
 Any changes made to these files must be imported into the site before they will take effect. From the `/web` directory run:
 ```
-../vendor/bin/drush config:import
+../vendor/drush/drush/drush config:import
 ```
 
 ## Make changes to the configuration
