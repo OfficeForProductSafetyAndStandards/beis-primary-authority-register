@@ -9,7 +9,7 @@ Cron is a utility for running events at regular intervals and helps ensure that 
 Cron can be run:
 * By visiting the [cron admin page](https://primary-authority.beis.gov.uk/admin/config/system/cron) as an administrative user.
 * By making an http request against the cron endpoint listed on this page.
-* By running `../vendor/drush/drush/drush cron` from the `/web` directory.
+* By running `../vendor/bin/drush cron` from the `/web` directory.
 
 The service [Uptime Robot](https://uptimerobot.com/) is also used to run cron every 5 minutes.
 
