@@ -3,7 +3,6 @@
 namespace Drupal\par_notification;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\Event\EntityInsertEvent;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\message\MessageInterface;
 use Drupal\Core\Session\AccountProxyInterface;
@@ -77,7 +76,12 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
    * Setter for the event.
    */
   public function setEvent($event) {
-    $this->event = $event;
+    if ($event instanceof ParDataEventInterface) {
+      $this->event = $event;
+    } else {
+      // Handle the incompatible event type (log an error, throw an exception, etc.)
+      $this->getLogger('PAR')->error('Incompatible event type provided to ParEventSubscriberBase::setEvent(). Expected ParDataEventInterface, got @type.', ['@type' => get_class($event)]);
+    }
   }
 
   /**
