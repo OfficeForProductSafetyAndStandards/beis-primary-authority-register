@@ -555,6 +555,7 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
     printf "Importing the database...\n"
     cf run-task $TARGET_ENV -m 2G -k 2G --name DB_IMPORT -c "./scripts/drop.sh && \
         cd $REMOTE_BUILD_DIR/web && \
+        tar --no-same-owner -zxvf $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz -C $REMOTE_BUILD_DIR/$DB_DIR && \
         ../vendor/bin/drush @par.paas sql:cli < $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
         ../vendor/bin/drush spp && \
         rm -f $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql"
