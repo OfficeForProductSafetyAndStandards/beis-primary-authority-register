@@ -425,17 +425,17 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - - run:
-            name: "Extend env values for Production"
-            command: |
-              echo "S3_ACCESS_KEY=$PROD_S3_ACCESS_KEY" >> .env
-              echo "S3_SECRET_KEY=$PROD_S3_SECRET_KEY" >> .env
-              echo "S3_BUCKET_PRIVATE=$PROD_S3_BUCKET_PRIVATE" >> .env
-              echo "S3_BUCKET_PUBLIC=$PROD_S3_BUCKET_PUBLIC" >> .env
-              echo "COMPANIES_HOUSE_API_KEY=$PROD_COMPANIES_HOUSE_API_KEY" >> .env
-              echo "IDEAL_POSTCODES_API_KEY=$PROD_IDEAL_POSTCODES_API_KEY" >> .env
-              echo "PAR_GOVUK_NOTIFY_KEY=$PROD_PAR_GOVUK_NOTIFY_KEY" >> .env
-              echo "PAR_GOVUK_NOTIFY_TEMPLATE=$PROD_PAR_GOVUK_NOTIFY_TEMPLATE" >> .env
+      - run:
+          name: "Extend env values for Production"
+          command: |
+            echo "S3_ACCESS_KEY=$PROD_S3_ACCESS_KEY" >> .env
+            echo "S3_SECRET_KEY=$PROD_S3_SECRET_KEY" >> .env
+            echo "S3_BUCKET_PRIVATE=$PROD_S3_BUCKET_PRIVATE" >> .env
+            echo "S3_BUCKET_PUBLIC=$PROD_S3_BUCKET_PUBLIC" >> .env
+            echo "COMPANIES_HOUSE_API_KEY=$PROD_COMPANIES_HOUSE_API_KEY" >> .env
+            echo "IDEAL_POSTCODES_API_KEY=$PROD_IDEAL_POSTCODES_API_KEY" >> .env
+            echo "PAR_GOVUK_NOTIFY_KEY=$PROD_PAR_GOVUK_NOTIFY_KEY" >> .env
+            echo "PAR_GOVUK_NOTIFY_TEMPLATE=$PROD_PAR_GOVUK_NOTIFY_TEMPLATE" >> .env
       - *remove_assets
       - run:
           name: "Remove additional sensitive assets"
