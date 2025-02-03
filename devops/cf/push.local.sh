@@ -216,7 +216,7 @@ fi
 
 ## Set the environment variables by generating an .env file
 printf "Using vault keystore: '$VAULT_ENV'...\n"
-rm -f .env
+
 VAULT_VARS=($(vault kv get -tls-skip-verify secret/par/env/$VAULT_ENV | awk 'NR > 3 {print $1}'))
 for VAR_NAME in "${VAULT_VARS[@]}"
 do
