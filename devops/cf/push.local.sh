@@ -367,6 +367,13 @@ cf push --no-start -f $MANIFEST -p $BUILD_DIR --var app=$TARGET_ENV $TARGET_ENV
 ## Set the cf environment variables directly
 printf "Setting the environment variables...\n"
 
+ENV_FILE="$BUILD_DIR/.env"
+if [[! -f "$ENV_FILE" ]]; then
+    printf ".env file does NOT exist\n"
+else
+    printf ".env file exists\n"
+fi
+
 # Set the additional app_env variables.
 cf set-env $TARGET_ENV APP_ENV $ENV
 cf set-env $TARGET_ENV SENTRY_ENVIRONMENT $ENV
