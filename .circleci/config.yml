@@ -82,11 +82,27 @@ references:
         echo 127.0.0.1 par.localhost | sudo tee -a /etc/hosts
         cat /etc/hosts
 
+  env_global: &env_global
+    run:
+      name: "Export environment variables"
+      command: |
+        echo "APP_ENV=$APP_ENV" >> .env
+        echo "BUILD_VERSION=$APP_ENV" >> .env
+        echo "CHARITY_COMMISSION_API_KEY=$CHARITY_COMMISSION_API_KEY" >> .env
+        echo "CLAMAV_HTTP_PASS=$CLAMAV_HTTP_PASS" >> .env
+        echo "CLAMAV_HTTP_USER=CLAMAV_HTTP_USER" >> .env
+        echo "PAR_HASH_SALT=$PAR_HASH_SALT" >> .env
+        echo "S3_BUCKET_ARTIFACTS=$S3_BUCKET_ARTIFACTS" >> .env
+        echo "S3_REGION=$S3_REGION" >> .env
+        echo "SENTRY_DSN=$SENTRY_DSN" >> .env
+        echo "SENTRY_DSN_PUBLIC=$SENTRY_DSN_PUBLIC" >> .env
+        echo "SENTRY_ENVIRONMENT=$APP_ENV" >> .env
+        echo "SENTRY_RELEASE=$APP_ENV" >> .env
+
   env_np: &env_np
     run:
       name: "Extend env values for non prod environments"
       command: |
-        cd /tmp/workspace
         echo "S3_ACCESS_KEY=$NP_S3_ACCESS_KEY" >> .env
         echo "S3_SECRET_KEY=$NP_S3_SECRET_KEY" >> .env
         echo "S3_BUCKET_PRIVATE=$NP_S3_BUCKET_PRIVATE" >> .env
@@ -100,7 +116,6 @@ references:
     run:
       name: "Extend env values for staging"
       command: |
-        cd /tmp/workspace
         echo "S3_ACCESS_KEY=$STAGING_S3_ACCESS_KEY" >> .env
         echo "S3_SECRET_KEY=$STAGING_S3_SECRET_KEY" >> .env
         echo "S3_BUCKET_PRIVATE=$STAGING_S3_BUCKET_PRIVATE" >> .env
@@ -114,7 +129,6 @@ references:
     run:
       name: "Extend env values for prod"
       command: |
-        cd /tmp/workspace
         echo "S3_ACCESS_KEY=$PROD_S3_ACCESS_KEY" >> .env
         echo "S3_SECRET_KEY=$PROD_S3_SECRET_KEY" >> .env
         echo "S3_BUCKET_PRIVATE=$PROD_S3_BUCKET_PRIVATE" >> .env
@@ -194,22 +208,6 @@ jobs:
           post:
             - git fetch --tags
       - run:
-          name: "Export environment variables"
-          command: |
-            cd /tmp/workspace
-            echo "APP_ENV=$APP_ENV" >> .env
-            echo "BUILD_VERSION=$APP_ENV" >> .env
-            echo "CHARITY_COMMISSION_API_KEY=$CHARITY_COMMISSION_API_KEY" >> .env
-            echo "CLAMAV_HTTP_PASS=$CLAMAV_HTTP_PASS" >> .env
-            echo "CLAMAV_HTTP_USER=CLAMAV_HTTP_USER" >> .env
-            echo "PAR_HASH_SALT=$PAR_HASH_SALT" >> .env
-            echo "S3_BUCKET_ARTIFACTS=$S3_BUCKET_ARTIFACTS" >> .env
-            echo "S3_REGION=$S3_REGION" >> .env
-            echo "SENTRY_DSN=$SENTRY_DSN" >> .env
-            echo "SENTRY_DSN_PUBLIC=$SENTRY_DSN_PUBLIC" >> .env
-            echo "SENTRY_ENVIRONMENT=$APP_ENV" >> .env
-            echo "SENTRY_RELEASE=$APP_ENV" >> .env
-      - run:
           name: "Database preparation"
           command: |
             mkdir -p backups
@@ -286,6 +284,8 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *env_global
+      - *env_np
       - run:
           name: "Add workflow url to build summary"
           command: |
@@ -306,6 +306,7 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *env_global
       - *env_np
       - run:
           name: "Run unit tests"
@@ -324,6 +325,7 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *env_global
       - *env_np
       # Save artifacts
       - store_artifacts:
@@ -340,6 +342,7 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *env_global
       - *env_np
       - *build_assets
       - *remove_assets
@@ -400,6 +403,7 @@ jobs:
       - *configure_webroot
       - *build_assets
       - *remove_assets
+      - *env_global
       - *env_stage
       - run:
           name: "Examine asset bundle."
@@ -428,6 +432,7 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *env_global
       - *env_prod
       - *remove_assets
       - run:
@@ -458,6 +463,7 @@ jobs:
       - *configure_webroot
       - *build_assets
       - *remove_assets
+      - *env_global
       - *env_np
       - run:
           name: "Examine asset bundle."
