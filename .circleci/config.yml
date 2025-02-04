@@ -82,6 +82,48 @@ references:
         echo 127.0.0.1 par.localhost | sudo tee -a /etc/hosts
         cat /etc/hosts
 
+  env_np: &env_np
+    run:
+      name: "Extend env values for non prod environments"
+      command: |
+        cd /tmp/workspace
+        echo "S3_ACCESS_KEY=$NP_S3_ACCESS_KEY" >> .env
+        echo "S3_SECRET_KEY=$NP_S3_SECRET_KEY" >> .env
+        echo "S3_BUCKET_PRIVATE=$NP_S3_BUCKET_PRIVATE" >> .env
+        echo "S3_BUCKET_PUBLIC=$NP_S3_BUCKET_PUBLIC" >> .env
+        echo "COMPANIES_HOUSE_API_KEY=$NP_COMPANIES_HOUSE_API_KEY" >> .env
+        echo "IDEAL_POSTCODES_API_KEY=$NP_IDEAL_POSTCODES_API_KEY" >> .env
+        echo "PAR_GOVUK_NOTIFY_KEY=$NP_PAR_GOVUK_NOTIFY_KEY" >> .env
+        echo "PAR_GOVUK_NOTIFY_TEMPLATE=$NP_PAR_GOVUK_NOTIFY_TEMPLATE" >> .env
+
+  env_stage: &env_stage
+    run:
+      name: "Extend env values for staging"
+      command: |
+        cd /tmp/workspace
+        echo "S3_ACCESS_KEY=$STAGING_S3_ACCESS_KEY" >> .env
+        echo "S3_SECRET_KEY=$STAGING_S3_SECRET_KEY" >> .env
+        echo "S3_BUCKET_PRIVATE=$STAGING_S3_BUCKET_PRIVATE" >> .env
+        echo "S3_BUCKET_PUBLIC=$STAGING_S3_BUCKET_PUBLIC" >> .env
+        echo "COMPANIES_HOUSE_API_KEY=$STAGING_COMPANIES_HOUSE_API_KEY" >> .env
+        echo "IDEAL_POSTCODES_API_KEY=$STAGING_IDEAL_POSTCODES_API_KEY" >> .env
+        echo "PAR_GOVUK_NOTIFY_KEY=$STAGING_PAR_GOVUK_NOTIFY_KEY" >> .env
+        echo "PAR_GOVUK_NOTIFY_TEMPLATE=$STAGING_PAR_GOVUK_NOTIFY_TEMPLATE" >> .env
+
+  env_prod: &env_prod
+    run:
+      name: "Extend env values for prod"
+      command: |
+        cd /tmp/workspace
+        echo "S3_ACCESS_KEY=$PROD_S3_ACCESS_KEY" >> .env
+        echo "S3_SECRET_KEY=$PROD_S3_SECRET_KEY" >> .env
+        echo "S3_BUCKET_PRIVATE=$PROD_S3_BUCKET_PRIVATE" >> .env
+        echo "S3_BUCKET_PUBLIC=$PROD_S3_BUCKET_PUBLIC" >> .env
+        echo "COMPANIES_HOUSE_API_KEY=$PROD_COMPANIES_HOUSE_API_KEY" >> .env
+        echo "IDEAL_POSTCODES_API_KEY=$PROD_IDEAL_POSTCODES_API_KEY" >> .env
+        echo "PAR_GOVUK_NOTIFY_KEY=$PROD_PAR_GOVUK_NOTIFY_KEY" >> .env
+        echo "PAR_GOVUK_NOTIFY_TEMPLATE=$PROD_PAR_GOVUK_NOTIFY_TEMPLATE" >> .env
+
   import_database: &import_database
     run:
       name: "Import & set up the database"
@@ -154,6 +196,7 @@ jobs:
       - run:
           name: "Export environment variables"
           command: |
+            cd /tmp/workspace
             echo "APP_ENV=$APP_ENV" >> .env
             echo "BUILD_VERSION=$APP_ENV" >> .env
             echo "CHARITY_COMMISSION_API_KEY=$CHARITY_COMMISSION_API_KEY" >> .env
@@ -263,17 +306,7 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - run:
-            name: "Extend env values for testing"
-            command: |
-              echo "S3_ACCESS_KEY=$NP_S3_ACCESS_KEY" >> .env
-              echo "S3_SECRET_KEY=$NP_S3_SECRET_KEY" >> .env
-              echo "S3_BUCKET_PRIVATE=$NP_S3_BUCKET_PRIVATE" >> .env
-              echo "S3_BUCKET_PUBLIC=$NP_S3_BUCKET_PUBLIC" >> .env
-              echo "COMPANIES_HOUSE_API_KEY=$NP_COMPANIES_HOUSE_API_KEY" >> .env
-              echo "IDEAL_POSTCODES_API_KEY=$NP_IDEAL_POSTCODES_API_KEY" >> .env
-              echo "PAR_GOVUK_NOTIFY_KEY=$NP_PAR_GOVUK_NOTIFY_KEY" >> .env
-              echo "PAR_GOVUK_NOTIFY_TEMPLATE=$NP_PAR_GOVUK_NOTIFY_TEMPLATE" >> .env
+      - *env_np
       - run:
           name: "Run unit tests"
           command: |
@@ -291,17 +324,7 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - run:
-          name: "Extend env values for testing"
-          command: |
-            echo "S3_ACCESS_KEY=$NP_S3_ACCESS_KEY" >> .env
-            echo "S3_SECRET_KEY=$NP_S3_SECRET_KEY" >> .env
-            echo "S3_BUCKET_PRIVATE=$NP_S3_BUCKET_PRIVATE" >> .env
-            echo "S3_BUCKET_PUBLIC=$NP_S3_BUCKET_PUBLIC" >> .env
-            echo "COMPANIES_HOUSE_API_KEY=$NP_COMPANIES_HOUSE_API_KEY" >> .env
-            echo "IDEAL_POSTCODES_API_KEY=$NP_IDEAL_POSTCODES_API_KEY" >> .env
-            echo "PAR_GOVUK_NOTIFY_KEY=$NP_PAR_GOVUK_NOTIFY_KEY" >> .env
-            echo "PAR_GOVUK_NOTIFY_TEMPLATE=$NP_PAR_GOVUK_NOTIFY_TEMPLATE" >> .env
+      - *env_np
       # Save artifacts
       - store_artifacts:
           path: /var/www/html/tests/reports
@@ -317,17 +340,7 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - run:
-          name: "Extend env values for testing"
-          command: |
-            echo "S3_ACCESS_KEY=$NP_S3_ACCESS_KEY" >> .env
-            echo "S3_SECRET_KEY=$NP_S3_SECRET_KEY" >> .env
-            echo "S3_BUCKET_PRIVATE=$NP_S3_BUCKET_PRIVATE" >> .env
-            echo "S3_BUCKET_PUBLIC=$NP_S3_BUCKET_PUBLIC" >> .env
-            echo "COMPANIES_HOUSE_API_KEY=$NP_COMPANIES_HOUSE_API_KEY" >> .env
-            echo "IDEAL_POSTCODES_API_KEY=$NP_IDEAL_POSTCODES_API_KEY" >> .env
-            echo "PAR_GOVUK_NOTIFY_KEY=$NP_PAR_GOVUK_NOTIFY_KEY" >> .env
-            echo "PAR_GOVUK_NOTIFY_TEMPLATE=$NP_PAR_GOVUK_NOTIFY_TEMPLATE" >> .env
+      - *env_np
       - *build_assets
       - *remove_assets
       - run:
@@ -387,17 +400,7 @@ jobs:
       - *configure_webroot
       - *build_assets
       - *remove_assets
-      - run:
-          name: "Extend env values for staging"
-          command: |
-            echo "S3_ACCESS_KEY=$STAGING_S3_ACCESS_KEY" >> .env
-            echo "S3_SECRET_KEY=$STAGING_S3_SECRET_KEY" >> .env
-            echo "S3_BUCKET_PRIVATE=$STAGING_S3_BUCKET_PRIVATE" >> .env
-            echo "S3_BUCKET_PUBLIC=$STAGING_S3_BUCKET_PUBLIC" >> .env
-            echo "COMPANIES_HOUSE_API_KEY=$STAGING_COMPANIES_HOUSE_API_KEY" >> .env
-            echo "IDEAL_POSTCODES_API_KEY=$STAGING_IDEAL_POSTCODES_API_KEY" >> .env
-            echo "PAR_GOVUK_NOTIFY_KEY=$STAGING_PAR_GOVUK_NOTIFY_KEY" >> .env
-            echo "PAR_GOVUK_NOTIFY_TEMPLATE=$STAGING_PAR_GOVUK_NOTIFY_TEMPLATE" >> .env
+      - *env_stage
       - run:
           name: "Examine asset bundle."
           command: |
@@ -425,17 +428,7 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - run:
-          name: "Extend env values for Production"
-          command: |
-            echo "S3_ACCESS_KEY=$PROD_S3_ACCESS_KEY" >> .env
-            echo "S3_SECRET_KEY=$PROD_S3_SECRET_KEY" >> .env
-            echo "S3_BUCKET_PRIVATE=$PROD_S3_BUCKET_PRIVATE" >> .env
-            echo "S3_BUCKET_PUBLIC=$PROD_S3_BUCKET_PUBLIC" >> .env
-            echo "COMPANIES_HOUSE_API_KEY=$PROD_COMPANIES_HOUSE_API_KEY" >> .env
-            echo "IDEAL_POSTCODES_API_KEY=$PROD_IDEAL_POSTCODES_API_KEY" >> .env
-            echo "PAR_GOVUK_NOTIFY_KEY=$PROD_PAR_GOVUK_NOTIFY_KEY" >> .env
-            echo "PAR_GOVUK_NOTIFY_TEMPLATE=$PROD_PAR_GOVUK_NOTIFY_TEMPLATE" >> .env
+      - *env_prod
       - *remove_assets
       - run:
           name: "Remove additional sensitive assets"
@@ -465,17 +458,7 @@ jobs:
       - *configure_webroot
       - *build_assets
       - *remove_assets
-      - run:
-          name: "Extend env values for testing"
-          command: |
-            echo "S3_ACCESS_KEY=$NP_S3_ACCESS_KEY" >> .env
-            echo "S3_SECRET_KEY=$NP_S3_SECRET_KEY" >> .env
-            echo "S3_BUCKET_PRIVATE=$NP_S3_BUCKET_PRIVATE" >> .env
-            echo "S3_BUCKET_PUBLIC=$NP_S3_BUCKET_PUBLIC" >> .env
-            echo "COMPANIES_HOUSE_API_KEY=$NP_COMPANIES_HOUSE_API_KEY" >> .env
-            echo "IDEAL_POSTCODES_API_KEY=$NP_IDEAL_POSTCODES_API_KEY" >> .env
-            echo "PAR_GOVUK_NOTIFY_KEY=$NP_PAR_GOVUK_NOTIFY_KEY" >> .env
-            echo "PAR_GOVUK_NOTIFY_TEMPLATE=$NP_PAR_GOVUK_NOTIFY_TEMPLATE" >> .envx
+      - *env_np
       - run:
           name: "Examine asset bundle."
           command: |
@@ -513,17 +496,6 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - run:
-            name: "Extend env values for Production"
-            command: |
-              echo "S3_ACCESS_KEY=$PROD_S3_ACCESS_KEY" >> .env
-              echo "S3_SECRET_KEY=$PROD_S3_SECRET_KEY" >> .env
-              echo "S3_BUCKET_PRIVATE=$PROD_S3_BUCKET_PRIVATE" >> .env
-              echo "S3_BUCKET_PUBLIC=$PROD_S3_BUCKET_PUBLIC" >> .env
-              echo "COMPANIES_HOUSE_API_KEY=$PROD_COMPANIES_HOUSE_API_KEY" >> .env
-              echo "IDEAL_POSTCODES_API_KEY=$PROD_IDEAL_POSTCODES_API_KEY" >> .env
-              echo "PAR_GOVUK_NOTIFY_KEY=$PROD_PAR_GOVUK_NOTIFY_KEY" >> .env
-              echo "PAR_GOVUK_NOTIFY_TEMPLATE=$PROD_PAR_GOVUK_NOTIFY_TEMPLATE" >> .env
       - *aws_setup
       - aws-s3/copy:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${UNSANITISED_DATABASE}-latest.tar.gz"

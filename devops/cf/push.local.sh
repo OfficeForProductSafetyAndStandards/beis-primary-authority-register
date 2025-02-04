@@ -366,10 +366,7 @@ cf push --no-start -f $MANIFEST -p $BUILD_DIR --var app=$TARGET_ENV $TARGET_ENV
 
 ## Set the cf environment variables directly
 printf "Setting the environment variables...\n"
-for VAR_NAME in "${VAULT_VARS[@]}"
-do
-    cf set-env $TARGET_ENV $VAR_NAME ${!VAR_NAME} > /dev/null
-done
+
 # Set the additional app_env variables.
 cf set-env $TARGET_ENV APP_ENV $ENV
 cf set-env $TARGET_ENV SENTRY_ENVIRONMENT $ENV
