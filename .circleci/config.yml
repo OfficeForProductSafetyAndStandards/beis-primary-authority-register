@@ -85,18 +85,18 @@ references:
   env_np: &env_np
     run:
       name: "Create non production .env file"
-      command: envsubst <devops/envs/non-production/env.example >.env
+      command: circleci env subst < devops/envs/non-production/env.example > .env
 
   env_stage: &env_stage
     run:
       name: "Create staging .env file"
-      command: envsubst <devops/envs/staging/env.example >.env
+      command: circleci env subst < devops/envs/staging/env.example > .env
 
 
   env_prod: &env_prod
     run:
       name: "Create production .env file"
-      command: envsubst <devops/envs/production/env.example >.env
+      command: circleci env subst < devops/envs/production/env.example > .env
 
   import_database: &import_database
     run:
