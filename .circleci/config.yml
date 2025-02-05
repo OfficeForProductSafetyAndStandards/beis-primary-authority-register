@@ -93,6 +93,7 @@ references:
     run:
       name: "Create staging .env file"
       command: |
+        cd /tmp/workspace
         touch .env
         circleci env subst < .env-stage.example > .env
 
@@ -101,6 +102,7 @@ references:
     run:
       name: "Create production .env file"
       command: |
+        cd /tmp/workspace
         touch .env
         circleci env subst < .env-prod.example > .env
 
