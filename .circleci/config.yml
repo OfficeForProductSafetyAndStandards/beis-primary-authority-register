@@ -86,12 +86,14 @@ references:
     run:
       name: "Create non production .env file"
       command: |
+        touch .env
         circleci env subst < .env-np.example > .env
 
   env_stage: &env_stage
     run:
       name: "Create staging .env file"
       command: |
+        touch .env
         circleci env subst < .env-stage.example > .env
 
 
@@ -99,6 +101,7 @@ references:
     run:
       name: "Create production .env file"
       command: |
+        touch .env
         circleci env subst < .env-prod.example > .env
 
   import_database: &import_database
@@ -109,13 +112,6 @@ references:
         ../vendor/bin/drush @par.dev sql:cli < ../backups/${SANITISED_DATABASE}.sql
         pg_restore --username= USERNAME --host=HOST --port= --clean --if-exists --no-owner --no-privileges --no-password
         ../drupal-update.sh
-
-  configure_secrets: &configure_secrets
-    run:
-      name: "Configure secrets from Vault"
-      command: |
-        curl icanhazip.com
-        ./devops/vault/vault-export.sh ci
 
   prepare_application: &prepare_application
     run:
