@@ -296,9 +296,9 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *env_np
       - *build_assets
       - *remove_assets
-      - *env_np
       - run:
           name: "Examine asset bundle."
           command: |
@@ -354,9 +354,9 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *env_stage
       - *build_assets
       - *remove_assets
-      - *env_stage
       - run:
           name: "Examine asset bundle."
           command: |
@@ -412,9 +412,9 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *env_np
       - *build_assets
       - *remove_assets
-      - *env_np
       - run:
           name: "Examine asset bundle."
           command: |
