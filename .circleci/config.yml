@@ -366,7 +366,7 @@ jobs:
           command: |
             DEPLOY_ENV="staging"
             printf "$DEPLOY_ENV\n"
-            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace -ccapi ${CHARITY_COMMISSION_API_KEY} -chp ${CLAMAV_HTTP_PASS} -chu ${CLAMAV_HTTP_USER} $DEPLOY_ENV
 
   deploy_prod:
     circleci_ip_ranges: true

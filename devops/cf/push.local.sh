@@ -21,13 +21,6 @@ if [[ ${PIPESTATUS[0]} -ne 4 ]]; then
     exit 1
 fi
 
-command -v vault >/dev/null 2>&1 || {
-    echo "################################################################################################"
-    echo >&2 "Please install Vault CLI - https://www.vaultproject.io/docs/install/index.html"
-    echo "################################################################################################"
-    exit 1
-}
-
 command -v cf >/dev/null 2>&1 || {
     echo "################################################################################################"
     echo >&2 "Please install Cloud Foundry CLI - https://docs.cloudfoundry.org/cf-cli/install-go-cli.html"
@@ -42,11 +35,9 @@ command -v cf >/dev/null 2>&1 || {
 #    DEV_GOVUK_CF_USER (required) - the user deploying the script
 #    DEV_GOVUK_CF_PWD (required) - the password for the user account
 #    BUILD_DIR - the directory containing the build assets
-#    VAULT_ADDR - the vault service endpoint
-#    VAULT_UNSEAL_KEY (required) - the key used to unseal the vault
 ####################################################################################
-OPTIONS=sT:u:p:i:b:rd:v:n:t:x
-LONGOPTS=single,build-tag:,user:,password:,instances:,database:,refresh-database,directory:,vault:,unseal:,token:,deploy-production
+OPTIONS=sT:u:p:i:b:rd:v:n:t:
+LONGOPTS=single,build-tag:,user:,password:,instances:,database:,refresh-database,directory:,token:,deploy-production
 
 # -use ! and PIPESTATUS to get exit code with errexit set
 # -temporarily store output to be able to check for errors
@@ -73,9 +64,9 @@ DB_NAME="db-seed"
 DB_DIR="backups"
 DB_RESET=${DB_RESET:=n}
 DEPLOY_PRODUCTION=${DEPLOY_PRODUCTION:=n}
-VAULT_ADDR=${VAULT_ADDR:="https://vault.primary-authority.services:8200"}
-VAULT_UNSEAL=${VAULT_UNSEAL:-}
-VAULT_TOKEN=${VAULT_TOKEN:-}
+CHARITY_COMMISSION_API_KEY=${CHARITY_COMMISSION_API_KEY:-}
+CLAMAV_HTTP_PASS=${CLAMAV_HTTP_PASS:-}
+CLAMAV_HTTP_USER=${CLAMAV_HTTP_USER:-}
 
 while true; do
     case "$1" in
@@ -125,6 +116,18 @@ while true; do
             ;;
         -t|--token)
             VAULT_TOKEN="$2"
+            shift 2
+            ;;
+        -ccapi|--charity-commission-api)
+            CHARITY_COMMISSION_API_KEY="$2"
+            shift 2
+            ;;
+        -chp|--clamav-http-pass)
+            CLAMAV_HTTP_PASS="$2"
+            shift 2
+            ;;
+        -chu|--clamav-http-user)
+            CLAMAV_HTTP_USER="$2"
             shift 2
             ;;
         --)
@@ -472,6 +475,40 @@ fi
 printf "Starting the application...\n"
 
 cf start $TARGET_ENV
+
+if [[ $ENV = "production" ]]; then
+  printf "Generating .env file for production"
+  if [[ ! -f ./scripts/create-prod-env.sh ]]; then
+    echo "Error: Script './scripts/create-prod-env.sh' not found."
+    exit 1
+  fi
+  cf run-task $TARGET_ENV --name CREATE_PROD_ENV -c "./scripts/create-prod-env.sh"
+  cf_poll_task $TARGET_ENV CREATE_PROD_ENV
+  printf ".env file created successfully!"
+fi
+
+if [[ $ENV = "staging" ]]; then
+  printf "Generating .env file for staging"
+  if [[ ! -f ./scripts/create-prod-env.sh ]]; then
+    echo "Error: Script './scripts/create-stage-env.sh' not found."
+    exit 1
+  fi
+  cf run-task $TARGET_ENV --name CREATE_STAGE_ENV -c "./scripts/create-stage-env.sh"
+  cf_poll_task $TARGET_ENV CREATE_STAGE_ENV
+  printf ".env file created successfully!"
+fi
+
+if [[ $ENV != "production" ]] && [[ $ENV != "staging" ]]; then
+  printf "Generating .env file for non-production"
+  if [[ ! -f ./scripts/create-np-env.sh ]]; then
+    echo "Error: Script './scripts/create-np-env.sh' not found."
+    exit 1
+  fi
+  chmod +x ./scripts/create-stage-env.sh
+  cf run-task $TARGET_ENV --name CREATE_NP_ENV  -c "./scripts/create-np-env.sh"
+  cf_poll_task $TARGET_ENV CREATE_NP_ENV
+  printf ".env file created successfully!"
+fi
 
 ## Import the seed database and then delete it.
 if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
