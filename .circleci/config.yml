@@ -82,6 +82,21 @@ references:
         echo 127.0.0.1 par.localhost | sudo tee -a /etc/hosts
         cat /etc/hosts
 
+  env_np: &env_np
+    run:
+      name: "Create non production .env file"
+      command: ./scripts/create-prod-env.sh'
+
+  env_stage: &env_stage
+    run:
+      name: "Create staging .env file"
+      command: ./scripts/create-stage-env.sh'
+
+  env_prod: &env_prod
+    run:
+      name: "Create production .env file"
+      command: ./scripts/create-np-env.sh'
+
   import_database: &import_database
     run:
       name: "Import & set up the database"
@@ -240,6 +255,7 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *env_np
       - run:
           name: "Run unit tests"
           command: |
@@ -257,6 +273,7 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *env_np
       # Save artifacts
       - store_artifacts:
           path: /var/www/html/tests/reports
@@ -272,6 +289,7 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *env_np
       - *build_assets
       - *remove_assets
       - run:
@@ -329,12 +347,14 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *env_stage
       - *build_assets
       - *remove_assets
       - run:
           name: "Examine asset bundle."
           command: |
             ls -lah /tmp/workspace
+            head -n 1 .env
       - *aws_setup
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
@@ -358,6 +378,7 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *env_prod
       - *remove_assets
       - run:
           name: "Remove additional sensitive assets"
@@ -385,6 +406,7 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *env_np
       - *build_assets
       - *remove_assets
       - run:

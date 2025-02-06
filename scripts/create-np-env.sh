@@ -2,10 +2,6 @@
 
 set -o errexit -euo pipefail -o noclobber -o nounset
 
-APPROOT="${BASH_SOURCE%/*}/../"
-cd $APPROOT
-echo "Current working directory is ${PWD}"
-
 cat <<EOF >.env
 APP_ENV=test
 BUILD_VERSION=test

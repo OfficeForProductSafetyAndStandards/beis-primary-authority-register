@@ -473,39 +473,6 @@ printf "Starting the application...\n"
 
 cf start $TARGET_ENV
 
-if [[ $ENV = "production" ]]; then
-  printf "Generating .env file for production"
-  if [[ ! -f ./scripts/create-prod-env.sh ]]; then
-    echo "Error: Script './scripts/create-prod-env.sh' not found."
-    exit 1
-  fi
-  cf run-task $TARGET_ENV --name CREATE_PROD_ENV -c "./scripts/create-prod-env.sh"
-  cf_poll_task $TARGET_ENV CREATE_PROD_ENV
-  printf ".env file created successfully!"
-fi
-
-if [[ $ENV = "staging" ]]; then
-  printf "Generating .env file for staging"
-  if [[ ! -f ./scripts/create-prod-env.sh ]]; then
-    echo "Error: Script './scripts/create-stage-env.sh' not found."
-    exit 1
-  fi
-  cf run-task $TARGET_ENV --name CREATE_STAGE_ENV -c "./scripts/create-stage-env.sh"
-  cf_poll_task $TARGET_ENV CREATE_STAGE_ENV
-  printf ".env file created successfully!"
-fi
-
-if [[ $ENV != "production" ]] && [[ $ENV != "staging" ]]; then
-  printf "Generating .env file for non-production"
-  if [[ ! -f ./scripts/create-np-env.sh ]]; then
-    echo "Error: Script './scripts/create-np-env.sh' not found."
-    exit 1
-  fi
-  cf run-task $TARGET_ENV --name CREATE_NP_ENV  -c "./scripts/create-np-env.sh"
-  cf_poll_task $TARGET_ENV CREATE_NP_ENV
-  printf ".env file created successfully!"
-fi
-
 ## Import the seed database and then delete it.
 if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
     if [[ ! -f "$BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz" ]]; then
