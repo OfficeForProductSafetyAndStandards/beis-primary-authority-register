@@ -801,7 +801,7 @@ $class_loader->addPsr4('Drupal\\par_cache\\', 'modules/custom/par_cache/src');
  * will allow the site to run off of all variants of example.com and
  * example.org, with all subdomains included.
  */
-$app_env = $_ENV['APP_ENV'];
+$app_env = getenv('APP_ENV');
 
 $settings['trusted_host_patterns'] = [
   '^beis-par-' . $app_env . '\.cloudapps\.digital',
@@ -996,16 +996,16 @@ $settings['flysystem'] = [
 ];
 
 // Only use S3 public store when required.
-if ($_ENV['S3_ACCESS_KEY'] && $_ENV['S3_SECRET_KEY'] && $_ENV['S3_REGION'] && $_ENV['S3_BUCKET_ARTIFACTS']) {
+if (getenv('S3_ACCESS_KEY') && getenv('S3_SECRET_KEY') && getenv('S3_REGION') && getenv('S3_BUCKET_ARTIFACTS')) {
   $settings['flysystem']['s3backups'] = [
     'name' => 'S3 Database Backups',
     'description' => 'The S3 store for database backups.',
     'driver' => 's3',
     'config' => [
-      'key'    => $_ENV['S3_ACCESS_KEY'],
-      'secret' => $_ENV['S3_SECRET_KEY'],
-      'region' => $_ENV['S3_REGION'],
-      'bucket' => $_ENV['S3_BUCKET_ARTIFACTS'],
+      'key'    => getenv('S3_ACCESS_KEY'),
+      'secret' => getenv('S3_SECRET_KEY'),
+      'region' => getenv('S3_REGION'),
+      'bucket' => getenv('S3_BUCKET_ARTIFACTS'),
       'prefix' => 'backups',
     ],
     'cache' => TRUE,
@@ -1015,29 +1015,29 @@ if ($_ENV['S3_ACCESS_KEY'] && $_ENV['S3_SECRET_KEY'] && $_ENV['S3_REGION'] && $_
 }
 
 // Only use S3 public store when required.
-if ($_ENV['S3_ACCESS_KEY'] && $_ENV['S3_SECRET_KEY'] && $_ENV['S3_REGION'] && $_ENV['S3_BUCKET_PUBLIC'] && $_ENV['APP_ENV']) {
+if (getenv('S3_ACCESS_KEY') && getenv('S3_SECRET_KEY') && getenv('S3_REGION') && getenv('S3_BUCKET_PUBLIC') && getenv('APP_ENV')) {
   $settings['flysystem']['s3public'] = [
     'driver' => 's3',
     'config' => [
-      'key'    => $_ENV['S3_ACCESS_KEY'],
-      'secret' => $_ENV['S3_SECRET_KEY'],
-      'region' => $_ENV['S3_REGION'],
-      'bucket' => $_ENV['S3_BUCKET_PUBLIC'],
-      'prefix' => $_ENV['APP_ENV'],
+      'key'    => getenv('S3_ACCESS_KEY'),
+      'secret' => getenv('S3_SECRET_KEY'),
+      'region' => getenv('S3_REGION'),
+      'bucket' => getenv('S3_BUCKET_PUBLIC'),
+      'prefix' => getenv('APP_ENV'),
     ],
   ] + $settings['flysystem']['s3public'];
 }
 
 // Only use S3 private store when required.
-if ($_ENV['S3_ACCESS_KEY'] && $_ENV['S3_SECRET_KEY'] && $_ENV['S3_REGION'] && $_ENV['S3_BUCKET_PRIVATE'] && $_ENV['APP_ENV']) {
+if (getenv('S3_ACCESS_KEY') && getenv('S3_SECRET_KEY') && getenv('S3_REGION') && getenv('S3_BUCKET_PRIVATE') && getenv('APP_ENV')) {
   $settings['flysystem']['s3private'] = [
     'driver' => 's3',
     'config' => [
-      'key'    => $_ENV['S3_ACCESS_KEY'],
-      'secret' => $_ENV['S3_SECRET_KEY'],
-      'region' => $_ENV['S3_REGION'],
-      'bucket' => $_ENV['S3_BUCKET_PRIVATE'],
-      'prefix' => $_ENV['APP_ENV'],
+      'key'    => getenv('S3_ACCESS_KEY'),
+      'secret' => getenv('S3_SECRET_KEY'),
+      'region' => getenv('S3_REGION'),
+      'bucket' => getenv('S3_BUCKET_PRIVATE'),
+      'prefix' => getenv('APP_ENV'),
     ],
   ] + $settings['flysystem']['s3private'];
 }
@@ -1053,8 +1053,8 @@ if ($_ENV['S3_ACCESS_KEY'] && $_ENV['S3_SECRET_KEY'] && $_ENV['S3_REGION'] && $_
  * Consider using a backup method for blocking emails on test envs.
  * @see https://www.drupal.org/docs/develop/local-server-setup/managing-mail-handling-for-development-or-testing
  */
-$config['govuk_notify.settings']['api_key'] = $_ENV['PAR_GOVUK_NOTIFY_KEY'];
-$config['govuk_notify.settings']['default_template_id'] = $_ENV['PAR_GOVUK_NOTIFY_TEMPLATE'];
+$config['govuk_notify.settings']['api_key'] = getenv('PAR_GOVUK_NOTIFY_KEY');
+$config['govuk_notify.settings']['default_template_id'] = getenv('PAR_GOVUK_NOTIFY_TEMPLATE');
 
 /**
  * Set the Companies House connection settings.
@@ -1063,7 +1063,7 @@ $config['govuk_notify.settings']['default_template_id'] = $_ENV['PAR_GOVUK_NOTIF
  *
  * @see https://developer-specs.company-information.service.gov.uk/guides/authorisation
  */
-$config['registered_organisations.settings']['companies_house_api_key'] = $_ENV['COMPANIES_HOUSE_API_KEY'];
+$config['registered_organisations.settings']['companies_house_api_key'] = getenv('COMPANIES_HOUSE_API_KEY');
 
 /**
  * Set the Charity Commission connection settings.
@@ -1072,7 +1072,7 @@ $config['registered_organisations.settings']['companies_house_api_key'] = $_ENV[
  *
  * @see https://api-portal.charitycommission.gov.uk
  */
-$config['registered_organisations.settings']['charity_commission_api_key'] = $_ENV['CHARITY_COMMISSION_API_KEY'];
+$config['registered_organisations.settings']['charity_commission_api_key'] = getenv('CHARITY_COMMISSION_API_KEY');
 
 /**
  * Set Ideal Postcodes settings.
@@ -1082,7 +1082,7 @@ $config['registered_organisations.settings']['charity_commission_api_key'] = $_E
  * Used to suggest addresses based on postcode lookups.
  * @see https://ideal-postcodes.co.uk/documentation
  */
-$settings['ideal_postcodes_api_key'] = $_ENV['IDEAL_POSTCODES_API_KEY'];
+$settings['ideal_postcodes_api_key'] = getenv('IDEAL_POSTCODES_API_KEY');
 
 /**
  * Set the Raven Sentry keys and default error settings.
@@ -1091,8 +1091,8 @@ $settings['ideal_postcodes_api_key'] = $_ENV['IDEAL_POSTCODES_API_KEY'];
  *
  * All error and exception logs are sent to Sentry for reporting.
  */
-$config['raven.settings']['client_key'] = $_ENV['SENTRY_DSN'];
-$config['raven.settings']['public_dsn'] = $_ENV['SENTRY_DSN_PUBLIC'];
+$config['raven.settings']['client_key'] = getenv('SENTRY_DSN');
+$config['raven.settings']['public_dsn'] = getenv('SENTRY_DSN_PUBLIC');
 
 $config['system.logging']['error_level'] = ERROR_REPORTING_HIDE;
 
