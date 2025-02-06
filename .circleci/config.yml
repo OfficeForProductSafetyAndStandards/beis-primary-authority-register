@@ -335,7 +335,6 @@ jobs:
           name: "Examine asset bundle."
           command: |
             ls -lah /tmp/workspace
-            head -n 1 .env
       - *aws_setup
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
