@@ -380,6 +380,8 @@ fi
 if [[ $ENV = "production" ]]; then
   echo "Generating .env file for production"
 
+  cd $REMOTE_BUILD_DIR && \
+
   cat <<EOF >.env
 APP_ENV=production
 BUILD_VERSION=production
@@ -409,6 +411,8 @@ fi
 
 if [[ $ENV = "staging" ]]; then
   echo "Generating .env file for staging"
+
+  cd $REMOTE_BUILD_DIR && \
 
   cat <<EOF >.env
 APP_ENV=staging
@@ -441,6 +445,8 @@ fi
 if [[ $ENV != "production" ]] && [[ $ENV != "staging" ]]; then
 
   echo "Generating .env file for all non production or staging environments"
+
+  cd $REMOTE_BUILD_DIR && \
 
   cat <<EOF >.env
 APP_ENV=test
