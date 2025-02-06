@@ -394,7 +394,7 @@ jobs:
           name: "Deploy to production environment"
           command: |
             DEPLOY_ENV="production"
-            printf "$DEPLOY_ENVn"
+            printf "$DEPLOY_ENV\n"
             ./devops/cf/push.local.sh -T $CIRCLE_TAG -u $DEV_GOVUK_CF_USER -p $DEV_GOVUK_CF_PWD -x -d /tmp/workspace -i 4 $DEPLOY_ENV
 
   deploy_test:
