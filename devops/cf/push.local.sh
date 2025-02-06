@@ -377,8 +377,6 @@ if [[ ! -z "${BUILD_VER}" ]]; then
   cf set-env $TARGET_ENV SENTRY_RELEASE $ENV
 fi
 
-
-
 ####################################################################################
 # Check for existing backing services and create if necessary
 # This should only be done on non-production environments
@@ -476,102 +474,24 @@ printf "Starting the application...\n"
 cf start $TARGET_ENV
 
 if [[ $ENV = "production" ]]; then
-  
-  echo "Generating .env file for production"
-
-  cd $REMOTE_BUILD_DIR && \
-
-  cat <<EOF >.env
-APP_ENV=production
-BUILD_VERSION=production
-CHARITY_COMMISSION_API_KEY=${CHARITY_COMMISSION_API_KEY:-}
-CLAMAV_HTTP_PASS=${CLAMAV_HTTP_PASS:-}
-CLAMAV_HTTP_USER=${CLAMAV_HTTP_USER:-}
-COMPANIES_HOUSE_API_KEY=${PRODUCTION_COMPANIES_HOUSE_API_KEY:-}
-IDEAL_POSTCODES_API_KEY=${PRODUCTION_IDEAL_POSTCODES_API_KEY:-}
-PAR_GOVUK_NOTIFY_KEY=${PRODUCTION_PAR_GOVUK_NOTIFY_KEY:-}
-PAR_GOVUK_NOTIFY_TEMPLATE=${PRODUCTION_PAR_GOVUK_NOTIFY_TEMPLATE:-}
-PAR_HASH_SALT=${PAR_HASH_SALT:-}
-S3_ACCESS_KEY=${PRODUCTION_S3_ACCESS_KEY:-}
-S3_BUCKET_ARTIFACTS=${S3_BUCKET_ARTIFACTS:-}
-S3_BUCKET_PRIVATE=${PRODUCTION_S3_BUCKET_PRIVATE:-}
-S3_BUCKET_PUBLIC=${PRODUCTION_S3_BUCKET_PUBLIC:-}
-S3_REGION=${S3_REGION:-}
-S3_SECRET_KEY=${PRODUCTION_S3_SECRET_KEY:-}
-SENTRY_DSN=${SENTRY_DSN:-}
-SENTRY_DSN_PUBLIC=${SENTRY_DSN_PUBLIC:-}
-SENTRY_ENVIRONMENT=production
-SENTRY_RELEASE=production
-SENTRY_RELEASE=${CIRCLE_TAG:-}
-EOF
-
-  echo ".env file created successfully!"
+  printf "Generating .env file for production"
+  cf run-task $TARGET_ENV "./scripts/create-prod-env.sh" --name CREATE_PROD_ENV
+  cf_poll_task $TARGET_ENV CREATE_PROD_ENV
+  printf ".env file created successfully!"
 fi
 
 if [[ $ENV = "staging" ]]; then
-  echo "Generating .env file for staging"
-
-  cd $REMOTE_BUILD_DIR && \
-
-  cat <<EOF >.env
-APP_ENV=staging
-BUILD_VERSION=staging
-CHARITY_COMMISSION_API_KEY=${CHARITY_COMMISSION_API_KEY:-}
-CLAMAV_HTTP_PASS=${CLAMAV_HTTP_PASS:-}
-CLAMAV_HTTP_USER=${CLAMAV_HTTP_USER:-}
-COMPANIES_HOUSE_API_KEY=${STAGING_COMPANIES_HOUSE_API_KEY:-}
-IDEAL_POSTCODES_API_KEY=${STAGING_IDEAL_POSTCODES_API_KEY:-}
-PAR_GOVUK_NOTIFY_KEY=${STAGING_PAR_GOVUK_NOTIFY_KEY:-}
-PAR_GOVUK_NOTIFY_TEMPLATE=${STAGING_PAR_GOVUK_NOTIFY_TEMPLATE:-}
-PAR_HASH_SALT=${PAR_HASH_SALT:-}
-S3_ACCESS_KEY=${STAGING_S3_ACCESS_KEY:-}
-S3_BUCKET_ARTIFACTS=${S3_BUCKET_ARTIFACTS:-}
-S3_BUCKET_PRIVATE=${STAGING_S3_BUCKET_PRIVATE:-}
-S3_BUCKET_PUBLIC=${STAGING_S3_BUCKET_PUBLIC:-}
-S3_REGION=${S3_REGION:-}
-S3_SECRET_KEY=${STAGING_S3_SECRET_KEY:-}
-SENTRY_DSN=${SENTRY_DSN:-}
-SENTRY_DSN_PUBLIC=${SENTRY_DSN_PUBLIC:-}
-SENTRY_ENVIRONMENT=staging
-SENTRY_RELEASE=staging
-SENTRY_RELEASE=${CIRCLE_TAG:-}
-EOF
-
-  echo ".env file created successfully!"
-
+  printf "Generating .env file for staging"
+  cf run-task $TARGET_ENV "./scripts/create-stage-env.sh" --name CREATE_STAGE_ENV
+  cf_poll_task $TARGET_ENV CREATE_STAGE_ENV
+  printf ".env file created successfully!"
 fi
 
 if [[ $ENV != "production" ]] && [[ $ENV != "staging" ]]; then
-
-  echo "Generating .env file for all non production or staging environments"
-
-  cd $REMOTE_BUILD_DIR && \
-
-  cat <<EOF >.env
-APP_ENV=test
-BUILD_VERSION=test
-CHARITY_COMMISSION_API_KEY=${CHARITY_COMMISSION_API_KEY:-}
-CLAMAV_HTTP_PASS=${CLAMAV_HTTP_PASS:-}
-CLAMAV_HTTP_USER=${CLAMAV_HTTP_USER:-}
-COMPANIES_HOUSE_API_KEY=${NP_COMPANIES_HOUSE_API_KEY:-}
-IDEAL_POSTCODES_API_KEY=${NP_IDEAL_POSTCODES_API_KEY:-}
-PAR_GOVUK_NOTIFY_KEY=${NP_PAR_GOVUK_NOTIFY_KEY:-}
-PAR_GOVUK_NOTIFY_TEMPLATE=${NP_PAR_GOVUK_NOTIFY_TEMPLATE:-}
-PAR_HASH_SALT=${PAR_HASH_SALT:-}
-S3_ACCESS_KEY=${NP_S3_ACCESS_KEY:-}
-S3_BUCKET_ARTIFACTS=${S3_BUCKET_ARTIFACTS:-}
-S3_BUCKET_PRIVATE=${NP_S3_BUCKET_PRIVATE:-}
-S3_BUCKET_PUBLIC=${NP_S3_BUCKET_PUBLIC:-}
-S3_REGION=${S3_REGION:-}
-S3_SECRET_KEY=${NP_S3_SECRET_KEY:-}
-SENTRY_DSN=${SENTRY_DSN:-}
-SENTRY_DSN_PUBLIC=${SENTRY_DSN_PUBLIC:-}
-SENTRY_ENVIRONMENT=test
-SENTRY_RELEASE=test
-SENTRY_RELEASE=${CIRCLE_TAG:-}
-EOF
-
-  echo ".env file created successfully!"
+  printf "Generating .env file for non-production"
+  cf run-task $TARGET_ENV "./scripts/create-np-env.sh" --name CREATE_STAGE_ENV
+  cf_poll_task $TARGET_ENV CREATE_STAGE_ENV
+  printf ".env file created successfully!"
 fi
 
 ## Import the seed database and then delete it.
