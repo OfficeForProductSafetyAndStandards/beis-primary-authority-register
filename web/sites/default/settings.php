@@ -881,7 +881,7 @@ $settings['par_branded_header_footer'] = TRUE;
  * Extract the connection credentials from the VCAP_SERVICES environment variable
  * which is configured by the PaaS service manager
  */
-if ($env_services = $_ENV["VCAP_SERVICES"]) {
+if ($env_services = getenv("VCAP_SERVICES")) {
   $services = json_decode($env_services);
   $db_credentials = isset($services->postgres) ? $services->postgres[0]->credentials : NULL;
   $redis_credentials = isset($services->redis) ? $services->redis[0]->credentials : NULL;

@@ -239,7 +239,7 @@ jobs:
           name: "Add workflow url to build summary"
           command: |
             cd /tmp/workspace
-            printf "https://app.circleci.com/pipelines/workflows/$CIRCLE_WORKFLOW_IDn" >>>> build_summary.txt
+            printf "https://app.circleci.com/pipelines/workflows/$CIRCLE_WORKFLOW_ID\n" >>>> build_summary.txt
       - run:
           name: "Write artifacts to github release"
           command: |
@@ -300,36 +300,36 @@ jobs:
           command: |
             DEPLOY_ENV="test"
             UNIQUE_NAME={$(echo $CIRCLE_WORKFLOW_ID | head -c 6)
-            printf "Deploying to test environment beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digitaln"
+            printf "Deploying to test environment beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital\n"
             ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV-$UNIQUE_NAME
       - run:
           name: "Wait for site to be ready for testing"
           command: |
             DEPLOY_ENV="test"
-            UNIQUE_NAME={$(echo $CIRCLE_WORKFLOW_ID | head -c 6)
+            UNIQUE_NAME=$(echo $CIRCLE_WORKFLOW_ID | head -c 6)
             SITE_URL="https://beis-par-${DEPLOY_ENV}-${UNIQUE_NAME}.cloudapps.digital"
-            printf "Checking that $SITE_URL is ready to perform a load testn"
-            curl -s -o /dev/null -w "Response status: %{http_code}n" $SITE_URL
+            printf "Checking that $SITE_URL is ready to perform a load test\n"
+            curl -s -o /dev/null -w "Response status: %{http_code}\n" $SITE_URL
             sleep 30;
       - run:
           name: "Run load test"
           command: |
             DEPLOY_ENV="test"
             UNIQUE_NAME={$(echo $CIRCLE_WORKFLOW_ID | head -c 6)
-            printf "Running load test against beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digitaln"
+            printf "Running load test against beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital\n"
             set +e
-            jmeter -n -t ./tests/nfr/jmeter/search_partnerships.jmx
-                -Jurl=beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital
+            jmeter -n -t ./tests/nfr/jmeter/search_partnerships.jmx \
+                -Jurl=beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital \
                 -l ./tests/reports/jmeter/jmeter-log.jtl
-            /opt/apache-jmeter-5.5/bin/JMeterPluginsCMD.sh --generate-csv ./tests/reports/jmeter/aggregate-report.csv
-                --input-jtl ./tests/reports/jmeter/jmeter-log.jtl
+            /opt/apache-jmeter-5.5/bin/JMeterPluginsCMD.sh --generate-csv ./tests/reports/jmeter/aggregate-report.csv \
+                --input-jtl ./tests/reports/jmeter/jmeter-log.jtl \
                 --plugin-type AggregateReport
       - run:
           name: "Destroy the load testing environment."
           command: |
             DEPLOY_ENV="test"
             UNIQUE_NAME={$(echo $CIRCLE_WORKFLOW_ID | head -c 6)
-            printf "Removing test environment beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digitaln"
+            printf "Removing test environment beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital\n"
             ./devops/cf/destroy.app.sh $DEPLOY_ENV-$UNIQUE_NAME
       # Save artifacts
       - store_artifacts:
@@ -365,7 +365,7 @@ jobs:
           name: "Deploy to staging environment"
           command: |
             DEPLOY_ENV="staging"
-            printf "$DEPLOY_ENVn"
+            printf "$DEPLOY_ENV\n"
             ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
 
   deploy_prod:
@@ -421,7 +421,7 @@ jobs:
           name: "Deploy to test environment"
           command: |
             DEPLOY_ENV=($(echo $CIRCLE_TAG | awk -F '-' '{print $1}'))
-            printf "Deploying to test environment: https://beis-par-$DEPLOY_ENV.cloudapps.digitaln"
+            printf "Deploying to test environment: https://beis-par-$DEPLOY_ENV.cloudapps.digital\n"
             ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
 
   archive_database:
