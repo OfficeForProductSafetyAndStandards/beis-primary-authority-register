@@ -36,8 +36,8 @@ command -v cf >/dev/null 2>&1 || {
 #    DEV_GOVUK_CF_PWD (required) - the password for the user account
 #    BUILD_DIR - the directory containing the build assets
 ####################################################################################
-OPTIONS=sT:u:p:i:b:rd:v:n:t:
-LONGOPTS=single,build-tag:,user:,password:,instances:,database:,refresh-database,directory:,token:,deploy-production
+OPTIONS=sT:u:p:i:b:rd:v:n:t:w:y:z
+LONGOPTS=single,build-tag:,user:,password:,instances:,database:,refresh-database,directory:,token:,deploy-production,charity-commission-api,clamav-http-pass,clamav-http-user
 
 # -use ! and PIPESTATUS to get exit code with errexit set
 # -temporarily store output to be able to check for errors
