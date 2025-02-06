@@ -82,6 +82,90 @@ references:
         echo 127.0.0.1 par.localhost | sudo tee -a /etc/hosts
         cat /etc/hosts
 
+  env_np: &env_np
+    run:
+      name: "Create non testing .env file"
+      command: |
+        cd /tmp/workspace
+        echo "\TAG\=\${CIRCLE_TAG}\" > .env
+        echo "\APP_ENV\=\testing\" > .env
+        echo "\BUILD_VERSION\=\testing\" > .env
+        echo "\CHARITY_COMMISSION_API_KEY\=\${CHARITY_COMMISSION_API_KEY}\" > .env
+        echo "\CLAMAV_HTTP_PASS\=\${CLAMAV_HTTP_PASS}\" > .env
+        echo "\CLAMAV_HTTP_USER\=\${CLAMAV_HTTP_USER}\" > .env
+        echo "\COMPANIES_HOUSE_API_KEY\=\${NP_COMPANIES_HOUSE_API_KEY}\" > .env
+        echo "\IDEAL_POSTCODES_API_KEY\=\${NP_IDEAL_POSTCODES_API_KEY}\" > .env
+        echo "\PAR_GOVUK_NOTIFY_KEY\=\${NP_PAR_GOVUK_NOTIFY_KEY}\" > .env
+        echo "\PAR_GOVUK_NOTIFY_TEMPLATE\=\${NP_PAR_GOVUK_NOTIFY_TEMPLATE}\" > .env
+        echo "\PAR_HASH_SALT\=\${PAR_HASH_SALT}\" > .env
+        echo "\S3_ACCESS_KEY\=\${NP_S3_ACCESS_KEY}\" > .env
+        echo "\S3_BUCKET_ARTIFACTS\=\${S3_BUCKET_ARTIFACTS}\" > .env
+        echo "\S3_BUCKET_PRIVATE\=\${NP_S3_BUCKET_PRIVATE}\" > .env
+        echo "\S3_BUCKET_PUBLIC\=\${NP_S3_BUCKET_PUBLIC}\" > .env
+        echo "\S3_REGION\=\${S3_REGION}\" > .env
+        echo "\S3_SECRET_KEY\=\${NP_S3_SECRET_KEY}\" > .env
+        echo "\SENTRY_DSN\=\${SENTRY_DSN}\" > .env
+        echo "\SENTRY_DSN_PUBLIC\=\${SENTRY_DSN_PUBLIC}\" > .env
+        echo "\SENTRY_ENVIRONMENT\=\testing\" > .env
+        echo "\SENTRY_RELEASE\=\testing\" > .env
+        echo "\SENTRY_RELEASE\=\${CIRCLE_TAG}\" > .env
+
+  env_stage: &env_stage
+    run:
+      name: "Create staging .env file"
+      command: |
+        cd /tmp/workspace
+        echo "\TAG\=\${CIRCLE_TAG}\" > .env
+        echo "\APP_ENV\=\staging\" > .env
+        echo "\BUILD_VERSION\=\staging\" > .env
+        echo "\CHARITY_COMMISSION_API_KEY\=\${CHARITY_COMMISSION_API_KEY}\" > .env
+        echo "\CLAMAV_HTTP_PASS\=\${CLAMAV_HTTP_PASS}\" > .env
+        echo "\CLAMAV_HTTP_USER\=\${CLAMAV_HTTP_USER}\" > .env
+        echo "\COMPANIES_HOUSE_API_KEY\=\${STAGING_COMPANIES_HOUSE_API_KEY}\" > .env
+        echo "\IDEAL_POSTCODES_API_KEY\=\${STAGING_IDEAL_POSTCODES_API_KEY}\" > .env
+        echo "\PAR_GOVUK_NOTIFY_KEY\=\${STAGING_PAR_GOVUK_NOTIFY_KEY}\" > .env
+        echo "\PAR_GOVUK_NOTIFY_TEMPLATE\=\${STAGING_PAR_GOVUK_NOTIFY_TEMPLATE}\" > .env
+        echo "\PAR_HASH_SALT\=\${PAR_HASH_SALT}\" > .env
+        echo "\S3_ACCESS_KEY\=\${STAGING_S3_ACCESS_KEY}\" > .env
+        echo "\S3_BUCKET_ARTIFACTS\=\${S3_BUCKET_ARTIFACTS}\" > .env
+        echo "\S3_BUCKET_PRIVATE\=\${STAGING_S3_BUCKET_PRIVATE}\" > .env
+        echo "\S3_BUCKET_PUBLIC\=\${STAGING_S3_BUCKET_PUBLIC}\" > .env
+        echo "\S3_REGION\=\${S3_REGION}\" > .env
+        echo "\S3_SECRET_KEY\=\${STAGING_S3_SECRET_KEY}\" > .env
+        echo "\SENTRY_DSN\=\${SENTRY_DSN}\" > .env
+        echo "\SENTRY_DSN_PUBLIC\=\${SENTRY_DSN_PUBLIC}\" > .env
+        echo "\SENTRY_ENVIRONMENT\=\staging\" > .env
+        echo "\SENTRY_RELEASE\=\staging\" > .env
+        echo "\SENTRY_RELEASE\=\${CIRCLE_TAG}\" > .env
+
+  env_prod: &env_prod
+    run:
+      name: "Create testing .env file"
+      command: |
+        cd /tmp/workspace
+        echo "\TAG\=\${CIRCLE_TAG}\" > .env
+        echo "\APP_ENV\=\testing\" > .env
+        echo "\BUILD_VERSION\=\testing\" > .env
+        echo "\CHARITY_COMMISSION_API_KEY\=\${CHARITY_COMMISSION_API_KEY}\" > .env
+        echo "\CLAMAV_HTTP_PASS\=\${CLAMAV_HTTP_PASS}\" > .env
+        echo "\CLAMAV_HTTP_USER\=\${CLAMAV_HTTP_USER}\" > .env
+        echo "\COMPANIES_HOUSE_API_KEY\=\${PROD_COMPANIES_HOUSE_API_KEY}\" > .env
+        echo "\IDEAL_POSTCODES_API_KEY\=\${PROD_IDEAL_POSTCODES_API_KEY}\" > .env
+        echo "\PAR_GOVUK_NOTIFY_KEY\=\${PROD_PAR_GOVUK_NOTIFY_KEY}\" > .env
+        echo "\PAR_GOVUK_NOTIFY_TEMPLATE\=\${PROD_PAR_GOVUK_NOTIFY_TEMPLATE}\" > .env
+        echo "\PAR_HASH_SALT\=\${PAR_HASH_SALT}\" > .env
+        echo "\S3_ACCESS_KEY\=\${PROD_S3_ACCESS_KEY}\" > .env
+        echo "\S3_BUCKET_ARTIFACTS\=\${S3_BUCKET_ARTIFACTS}\" > .env
+        echo "\S3_BUCKET_PRIVATE\=\${PROD_S3_BUCKET_PRIVATE}\" > .env
+        echo "\S3_BUCKET_PUBLIC\=\${PROD_S3_BUCKET_PUBLIC}\" > .env
+        echo "\S3_REGION\=\${S3_REGION}\" > .env
+        echo "\S3_SECRET_KEY\=\${PROD_S3_SECRET_KEY}\" > .env
+        echo "\SENTRY_DSN\=\${SENTRY_DSN}\" > .env
+        echo "\SENTRY_DSN_PUBLIC\=\${SENTRY_DSN_PUBLIC}\" > .env
+        echo "\SENTRY_ENVIRONMENT\=\testing\" > .env
+        echo "\SENTRY_RELEASE\=\testing\" > .env
+        echo "\SENTRY_RELEASE\=\${CIRCLE_TAG}\" > .env
+
   import_database: &import_database
     run:
       name: "Import & set up the database"
@@ -240,6 +324,7 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *env_np
       - run:
           name: "Run unit tests"
           command: |
@@ -257,6 +342,7 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *env_np
       # Save artifacts
       - store_artifacts:
           path: /var/www/html/tests/reports
@@ -272,6 +358,7 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *env_np
       - *build_assets
       - *remove_assets
       - run:
@@ -329,12 +416,14 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *env_stage
       - *build_assets
       - *remove_assets
       - run:
           name: "Examine asset bundle."
           command: |
             ls -lah /tmp/workspace
+            head -n 1 .env
       - *aws_setup
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
@@ -346,7 +435,7 @@ jobs:
           command: |
             DEPLOY_ENV="staging"
             printf "$DEPLOY_ENV\n"
-            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace -w ${CHARITY_COMMISSION_API_KEY} -y ${CLAMAV_HTTP_PASS} -z ${CLAMAV_HTTP_USER} $DEPLOY_ENV
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
 
   deploy_prod:
     circleci_ip_ranges: true
@@ -358,6 +447,7 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *env_prod
       - *remove_assets
       - run:
           name: "Remove additional sensitive assets"
@@ -385,6 +475,7 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *env_np
       - *build_assets
       - *remove_assets
       - run:

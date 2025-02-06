@@ -36,8 +36,8 @@ command -v cf >/dev/null 2>&1 || {
 #    DEV_GOVUK_CF_PWD (required) - the password for the user account
 #    BUILD_DIR - the directory containing the build assets
 ####################################################################################
-OPTIONS=sT:u:p:i:b:rd:v:n:t:w:y:z
-LONGOPTS=single,build-tag:,user:,password:,instances:,database:,refresh-database,directory:,token:,deploy-production,charity-commission-api,clamav-http-pass,clamav-http-user
+OPTIONS=sT:u:p:i:b:rd:v:n:t:
+LONGOPTS=single,build-tag:,user:,password:,instances:,database:,refresh-database,directory:,token:,deploy-production,
 
 # -use ! and PIPESTATUS to get exit code with errexit set
 # -temporarily store output to be able to check for errors
@@ -116,18 +116,6 @@ while true; do
             ;;
         -t|--token)
             VAULT_TOKEN="$2"
-            shift 2
-            ;;
-        -w|--charity-commission-api)
-            CHARITY_COMMISSION_API_KEY="$2"
-            shift 2
-            ;;
-        -y|--clamav-http-pass)
-            CLAMAV_HTTP_PASS="$2"
-            shift 2
-            ;;
-        -z|--clamav-http-user)
-            CLAMAV_HTTP_USER="$2"
             shift 2
             ;;
         --)
@@ -475,40 +463,6 @@ fi
 printf "Starting the application...\n"
 
 cf start $TARGET_ENV
-
-if [[ $ENV = "production" ]]; then
-  printf "Generating .env file for production"
-  if [[ ! -f ./scripts/create-prod-env.sh ]]; then
-    echo "Error: Script './scripts/create-prod-env.sh' not found."
-    exit 1
-  fi
-  cf run-task $TARGET_ENV --name CREATE_PROD_ENV -c "./scripts/create-prod-env.sh"
-  cf_poll_task $TARGET_ENV CREATE_PROD_ENV
-  printf ".env file created successfully!"
-fi
-
-if [[ $ENV = "staging" ]]; then
-  printf "Generating .env file for staging"
-  if [[ ! -f ./scripts/create-prod-env.sh ]]; then
-    echo "Error: Script './scripts/create-stage-env.sh' not found."
-    exit 1
-  fi
-  cf run-task $TARGET_ENV --name CREATE_STAGE_ENV -c "./scripts/create-stage-env.sh"
-  cf_poll_task $TARGET_ENV CREATE_STAGE_ENV
-  printf ".env file created successfully!"
-fi
-
-if [[ $ENV != "production" ]] && [[ $ENV != "staging" ]]; then
-  printf "Generating .env file for non-production"
-  if [[ ! -f ./scripts/create-np-env.sh ]]; then
-    echo "Error: Script './scripts/create-np-env.sh' not found."
-    exit 1
-  fi
-  chmod +x ./scripts/create-stage-env.sh
-  cf run-task $TARGET_ENV --name CREATE_NP_ENV  -c "./scripts/create-np-env.sh"
-  cf_poll_task $TARGET_ENV CREATE_NP_ENV
-  printf ".env file created successfully!"
-fi
 
 ## Import the seed database and then delete it.
 if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
