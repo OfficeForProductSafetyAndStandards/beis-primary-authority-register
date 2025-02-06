@@ -118,15 +118,15 @@ while true; do
             VAULT_TOKEN="$2"
             shift 2
             ;;
-        -ccapi|--charity-commission-api)
+        -w|--charity-commission-api)
             CHARITY_COMMISSION_API_KEY="$2"
             shift 2
             ;;
-        -chp|--clamav-http-pass)
+        -y|--clamav-http-pass)
             CLAMAV_HTTP_PASS="$2"
             shift 2
             ;;
-        -chu|--clamav-http-user)
+        -z|--clamav-http-user)
             CLAMAV_HTTP_USER="$2"
             shift 2
             ;;
