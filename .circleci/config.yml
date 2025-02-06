@@ -324,7 +324,6 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - *env_np
       - run:
           name: "Run unit tests"
           command: |
@@ -342,7 +341,6 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - *env_np
       # Save artifacts
       - store_artifacts:
           path: /var/www/html/tests/reports
@@ -423,7 +421,7 @@ jobs:
           name: "Examine asset bundle."
           command: |
             ls -lah /tmp/workspace
-            head -n 1 .env
+            head -n 2 .env
       - *aws_setup
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
