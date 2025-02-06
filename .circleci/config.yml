@@ -239,7 +239,7 @@ jobs:
           name: "Add workflow url to build summary"
           command: |
             cd /tmp/workspace
-            printf "https://app.circleci.com/pipelines/workflows/$CIRCLE_WORKFLOW_ID\n" >>>> build_summary.txt
+            printf "https://app.circleci.com/pipelines/workflows/$CIRCLE_WORKFLOW_ID\n" >> build_summary.txt
       - run:
           name: "Write artifacts to github release"
           command: |
