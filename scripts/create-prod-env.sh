@@ -2,30 +2,6 @@
 
 set -o errexit -euo pipefail -o noclobber -o nounset
 
-APPROOT="${BASH_SOURCE%/*}/../"
-cd $APPROOT
-echo "Current working directory is ${PWD}"
-
-cat <<EOF >.env
-APP_ENV=production
-BUILD_VERSION=production
-CHARITY_COMMISSION_API_KEY=${CHARITY_COMMISSION_API_KEY:-}
-CLAMAV_HTTP_PASS=${CLAMAV_HTTP_PASS:-}
-CLAMAV_HTTP_USER=${CLAMAV_HTTP_USER:-}
-COMPANIES_HOUSE_API_KEY=${PRODUCTION_COMPANIES_HOUSE_API_KEY:-}
-IDEAL_POSTCODES_API_KEY=${PRODUCTION_IDEAL_POSTCODES_API_KEY:-}
-PAR_GOVUK_NOTIFY_KEY=${PRODUCTION_PAR_GOVUK_NOTIFY_KEY:-}
-PAR_GOVUK_NOTIFY_TEMPLATE=${PRODUCTION_PAR_GOVUK_NOTIFY_TEMPLATE:-}
-PAR_HASH_SALT=${PAR_HASH_SALT:-}
-S3_ACCESS_KEY=${PRODUCTION_S3_ACCESS_KEY:-}
-S3_BUCKET_ARTIFACTS=${S3_BUCKET_ARTIFACTS:-}
-S3_BUCKET_PRIVATE=${PRODUCTION_S3_BUCKET_PRIVATE:-}
-S3_BUCKET_PUBLIC=${PRODUCTION_S3_BUCKET_PUBLIC:-}
-S3_REGION=${S3_REGION:-}
-S3_SECRET_KEY=${PRODUCTION_S3_SECRET_KEY:-}
-SENTRY_DSN=${SENTRY_DSN:-}
-SENTRY_DSN_PUBLIC=${SENTRY_DSN_PUBLIC:-}
-SENTRY_ENVIRONMENT=production
-SENTRY_RELEASE=production
-SENTRY_RELEASE=${CIRCLE_TAG:-}
-EOF
+cf env beis-par-production | \
+  awk '/environment_variables/{print; getline; while (match($0, /^[[:space:]]*".*":/)) {gsub(/[",]/, "", $0); gsub(/^[[:space:]]*{/, "", $0); gsub(/}$/, "", $0); split($0, a, ":"); printf "%s=%s\n", a[1], a[2]; getline;}}' | \
+  sed 's/^[[:space:]]*//;s/[[:space:]]*$//' > ${BASH_SOURCE%/*}/../.env
