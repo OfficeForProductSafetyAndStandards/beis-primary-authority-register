@@ -405,7 +405,7 @@ SENTRY_RELEASE=${CIRCLE_TAG:-}
 EOF
 
   echo ".env file created successfully!"
-fi
+else
 
 if [[ $ENV = "staging" ]]; then
   echo "Generating .env file for staging"
@@ -435,10 +435,10 @@ SENTRY_RELEASE=${CIRCLE_TAG:-}
 EOF
 
   echo ".env file created successfully!"
-fi
 
-if [[ $ENV != "production" ]] || [[ $ENV != "staging" ]]; then
-    echo "Generating .env file for all non production or staging environments"
+else
+
+  echo "Generating .env file for all non production or staging environments"
 
     cat <<EOF >.env
 APP_ENV=test
