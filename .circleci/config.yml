@@ -473,8 +473,7 @@ jobs:
       - run:
           name: "Sanitise PAR Data"
           command: |
-            cd web
-            ../vendor/bin/drush spp
+            ./scripts/sanitise-par-people.sh
           environment:
             APP_ENV: ci-sanitise
       - run:
