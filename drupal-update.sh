@@ -50,7 +50,7 @@ drush features:import:all -y;
 
 # Take the site out of maintenance mode.
 printf "Disabling maintenance mode...\n"
-/drush state:set system.maintenance_mode 0;
+drush state:set system.maintenance_mode 0;
 
 # Clear cache.
 printf "Clearing final cache...\n"
