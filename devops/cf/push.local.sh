@@ -491,10 +491,42 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
     printf "Sanitisation completed...\n"
 fi
 
-printf "Running post deployment tasks...\n"
-cf run-task $TARGET_ENV -m 4G -k 4G --name POST_DEPLOY -c "cd $REMOTE_BUILD_DIR/web && ./scripts/drupal-update.sh"
+printf "Clearing the cache..."
+cf run-task $TARGET_ENV -m 2G -k 2G --name CC_1 -c "drush cr"
+cf_poll_task $CC_1
 
-cf_poll_task $TARGET_ENV POST_DEPLOY
+printf "Putting the site into maintenance mode..."
+cf run-task $TARGET_ENV -m 2G -k 2G --name MAINTENANCE_ON -c "drush state:set system.maintenance_mode 1"
+cf_poll_task $MAINTENANCE_ON
+
+printf "Clearing the cache..."
+cf run-task $TARGET_ENV -m 2G -k 2G --name CC_2 -c "drush cr"
+cf_poll_task $CC_2
+
+printf "Running db updates..."
+cf run-task $TARGET_ENV -m 2G -k 2G --name UPDB -c "drush updb -y"
+cf_poll_task $UPDB
+
+printf "Importing config..."
+cf run-task $TARGET_ENV -m 2G -k 2G --name CIM -c "drush cim -y"
+cf_poll_task $CIM
+
+printf "Clearing the cache..."
+cf run-task $TARGET_ENV -m 2G -k 2G --name CC_3 -c "drush cr"
+cf_poll_task $CC_3
+
+printf "Reverting features..."
+cf run-task $TARGET_ENV -m 2G -k 2G --name FR -c "drush features:import:all -y"
+cf_poll_task $FR
+
+printf "Putting the site out of maintenance mode..."
+cf run-task $TARGET_ENV -m 2G -k 2G --name MAINTENANCE_OFF -c "drush state:set system.maintenance_mode 0"
+cf_poll_task $MAINTENANCE_OFF
+
+printf "Clearing the cache..."
+cf run-task $TARGET_ENV -m 2G -k 2G --name CC_4 -c "drush cr"
+cf_poll_task $CC_4
+
 printf "Deployment completed...\n"
 
 ####################################################################################
