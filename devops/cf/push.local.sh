@@ -478,13 +478,15 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
         cd $REMOTE_BUILD_DIR/web && \
         tar --no-same-owner -zxvf $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz -C $REMOTE_BUILD_DIR/$DB_DIR && \
         drush @par.paas sql:cli < $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
-        drush spp && \
         rm -f $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql"
 
     # Wait for database to be imported.
     cf_poll_task $TARGET_ENV DB_IMPORT
-
     printf "Database imported...\n"
+
+    cf run-task $TARGET_ENV -m 2G -k 2G --name SANITISE_PAR_PEOPLE -c "./scripts/sanitise-par-people.sh"
+    cf_poll_task $SANITISE_PAR_PEOPLE
+    printf "Database sanitised...\n"
 fi
 
 printf "Running post deployment tasks...\n"
