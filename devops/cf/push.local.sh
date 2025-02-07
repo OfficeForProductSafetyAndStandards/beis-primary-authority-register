@@ -492,7 +492,7 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
 fi
 
 printf "Running post deployment tasks...\n"
-cf run-task $TARGET_ENV -m 4G -k 4G --name POST_DEPLOY -c "./scripts/drupal-update.sh"
+cf run-task $TARGET_ENV -m 4G -k 4G --name POST_DEPLOY -c "cd $REMOTE_BUILD_DIR/web && ./scripts/drupal-update.sh"
 
 cf_poll_task $TARGET_ENV POST_DEPLOY
 printf "Deployment completed...\n"

@@ -1,14 +1,11 @@
 #!/bin/bash
-
 echo $BASH_VERSION
-
 set -o errexit -euo pipefail -o noclobber -o nounset
 
-WEBROOT="${BASH_SOURCE%/*}/../web"
-cd $WEBROOT
-
+ROOT="${BASH_SOURCE%/*}/../web"
+cd $ROOT
 echo "Current working directory is ${PWD}"
-
+echo "Current working directory is ${PWD}"
 echo "Clearing the cache..."
 drush cr
 echo "Putting the site into maintenance mode..."
