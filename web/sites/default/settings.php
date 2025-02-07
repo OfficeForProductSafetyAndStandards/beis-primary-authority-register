@@ -289,7 +289,13 @@ $settings['config_sync_directory'] = '../sync';
  *   $settings['hash_salt'] = file_get_contents('/home/example/salt.txt');
  * @endcode
  */
-$settings['hash_salt'] = getenv('PAR_HASH_SALT');
+
+if (null !==(getenv('PAR_HASH_SALT'))) {
+  $settings['hash_salt'] = getenv('PAR_HASH_SALT');
+} else {
+  $settings['hash_salt'] = 'xGYH_obcrTogvLS8xcil1-YlRaqdiRqa2UQzvmZfYiV9ZY7-OvnRjvU0KYOzt3U7dJp7ypvWDw';
+}
+
 
 /**
  * Deployment identifier.
