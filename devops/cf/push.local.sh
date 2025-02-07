@@ -486,48 +486,15 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
 
     printf "Sanitising PAR People Data...\n"
     cf run-task $TARGET_ENV -m 4G -k 4G --name SPP -c "./scripts/sanitise-par-people.sh"
-
     cf_poll_task $TARGET_ENV SPP
     printf "Sanitisation completed...\n"
+
+    printf "Running post deploy...\n"
+    cf run-task $TARGET_ENV -m 4G -k 4G --name POST_DEPLOY -c "./scripts/post-deploy.sh"
+    cf_poll_task $TARGET_ENV POST_DEPLOY
+    printf "Deploy completed...\n"
 fi
 
-printf "Clearing the cache..."
-cf run-task $TARGET_ENV -m 2G -k 2G --name CC_1 -c "drush cr"
-cf_poll_task $TARGET_ENV CC_1
-
-printf "Putting the site into maintenance mode..."
-cf run-task $TARGET_ENV -m 2G -k 2G --name MAINTENANCE_ON -c "drush state:set system.maintenance_mode 1"
-cf_poll_task $TARGET_ENV MAINTENANCE_ON
-
-printf "Clearing the cache..."
-cf run-task $TARGET_ENV -m 2G -k 2G --name CC_2 -c "drush cr"
-cf_poll_task $TARGET_ENV CC_2
-
-printf "Running db updates..."
-cf run-task $TARGET_ENV -m 2G -k 2G --name UPDB -c "drush updb -y"
-cf_poll_task $TARGET_ENV UPDB
-
-printf "Importing config..."
-cf run-task $TARGET_ENV -m 2G -k 2G --name CIM -c "drush cim -y"
-cf_poll_task $TARGET_ENV CIM
-
-printf "Clearing the cache..."
-cf run-task $TARGET_ENV -m 2G -k 2G --name CC_3 -c "drush cr"
-cf_poll_task $TARGET_ENV CC_3
-
-printf "Reverting features..."
-cf run-task $TARGET_ENV -m 2G -k 2G --name FR -c "drush features:import:all -y"
-cf_poll_task $TARGET_ENV FR
-
-printf "Putting the site out of maintenance mode..."
-cf run-task $TARGET_ENV -m 2G -k 2G --name MAINTENANCE_OFF -c "drush state:set system.maintenance_mode 0"
-cf_poll_task $TARGET_ENV MAINTENANCE_OFF
-
-printf "Clearing the cache..."
-cf run-task $TARGET_ENV -m 2G -k 2G --name CC_4 -c "drush cr"
-cf_poll_task $TARGET_ENV CC_4
-
-printf "Deployment completed...\n"
 
 ####################################################################################
 # Blue-green deployment switch
