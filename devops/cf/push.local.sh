@@ -546,23 +546,24 @@ echo "##########################################################################
 echo >&2 "Deployment has been successfully deployed to 'https://$TARGET_ENV.cloudapps.digital'"
 echo "################################################################################################"
 
-printf "Running post deploy...\n"
+printf "Running post deploy Drupal updates...\n"
 cf run-task $TARGET_ENV -m 4G -k 4G --name POST_DEPLOY -c "./scripts/post-deploy.sh"
-cf_poll_task $TARGET_ENV SPP
-printf "Deploy completed...\n"
+cf_poll_task $TARGET_ENV POST_DEPLOY
+printf "Post deploy Drupal updates completed...\n"
 
-printf "Running the post deployment scripts...\n"
+printf "Running the remaining post deployment scripts...\n"
 
 ## Run cron to perform necessary startup tasks
 cf run-task $TARGET_ENV -c "./scripts/cron-run.sh" -m 4G -k 4G --name CRON_RUNNER
 cf_poll_task $TARGET_ENV CRON_RUNNER
-
-## Run the cache warmer asynchronously with lots of memory
-cf run-task $TARGET_ENV -c "./scripts/cache-warmer.sh" -m 4G -k 4G --name CACHE_WARMER
+printf "Cron completed...\n"
 
 ## Index the search engine
 cf run-task $TARGET_ENV -c "./scripts/re-index.sh partnership_index --rebuild" -m 4G -k 4G --name SEARCH_REINDEX
-
-# Poll running tasks so that the job reports the completion status of each task
-cf_poll_task $TARGET_ENV CACHE_WARMER
 cf_poll_task $TARGET_ENV SEARCH_REINDEX
+printf "Search re-indexing complete...\n"
+
+## Run the cache warmer asynchronously with lots of memory
+cf run-task $TARGET_ENV -c "./scripts/cache-warmer.sh" -m 4G -k 4G --name CACHE_WARMER
+cf_poll_task $TARGET_ENV CACHE_WARMER
+printf "Cache warming complete...\n"
