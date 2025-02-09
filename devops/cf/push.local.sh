@@ -488,13 +488,7 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
     cf run-task $TARGET_ENV -m 4G -k 4G --name SPP -c "./scripts/sanitise-par-people.sh"
     cf_poll_task $TARGET_ENV SPP
     printf "Sanitisation completed...\n"
-
-    printf "Running post deploy...\n"
-    cf run-task $TARGET_ENV -m 4G -k 4G --name POST_DEPLOY -c "./scripts/post-deploy.sh"
-    cf_poll_task $TARGET_ENV POST_DEPLOY
-    printf "Deploy completed...\n"
 fi
-
 
 ####################################################################################
 # Blue-green deployment switch
@@ -551,6 +545,11 @@ fi
 echo "################################################################################################"
 echo >&2 "Deployment has been successfully deployed to 'https://$TARGET_ENV.cloudapps.digital'"
 echo "################################################################################################"
+
+printf "Running post deploy...\n"
+cf run-task $TARGET_ENV -m 4G -k 4G --name POST_DEPLOY -c "./scripts/post-deploy.sh"
+cf_poll_task $TARGET_ENV SPP
+printf "Deploy completed...\n"
 
 printf "Running the post deployment scripts...\n"
 
