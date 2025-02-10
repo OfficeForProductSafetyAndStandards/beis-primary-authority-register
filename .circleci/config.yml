@@ -343,11 +343,15 @@ jobs:
           arguments: |
             --cache-control "max-age=0"
       - run:
+          name: "Setting env vars for staging"
+          command: |
+            cf login -a api.cloud.service.gov.uk -u $DEV_GOVUK_CF_USER -p $DEV_GOVUK_CF_PWD -o "office-for-product-safety-and-standards" -s "primary-authority-register-staging"
+            ./devops/cf/create-stage-env.sh
+      - run:
           name: "Deploy to staging environment"
           command: |
             DEPLOY_ENV="staging"
             printf "$DEPLOY_ENV\n"
-            ./devops/cf/create-stage-env.sh
             ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
 
   deploy_prod:
