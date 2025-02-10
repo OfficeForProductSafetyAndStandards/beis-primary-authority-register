@@ -2,6 +2,7 @@
 
 set -o errexit -euo pipefail -o noclobber -o nounset
 
+cd /var/www/html/
 echo "TAG=${CIRCLE_TAG}" >> .env
 echo "APP_ENV=staging" >> .env
 echo "BUILD_VERSION=staging" >> .env
