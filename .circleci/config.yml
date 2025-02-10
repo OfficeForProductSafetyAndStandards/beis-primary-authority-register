@@ -332,12 +332,10 @@ jobs:
       - *configure_webroot
       - *build_assets
       - *remove_assets
-
       - run:
           name: "Examine asset bundle."
           command: |
             ls -lah /tmp/workspace
-            head -n 2 .env
       - *aws_setup
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
