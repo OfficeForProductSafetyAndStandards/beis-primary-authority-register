@@ -370,67 +370,6 @@ printf "Pushing the application...\n"
 export COMPOSER_VENDOR_DIR={BUILD_DIR}/vendor
 cf push --no-start -f $MANIFEST -p $BUILD_DIR --var app=$TARGET_ENV $TARGET_ENV
 
-## Set the cf environment variables directly
-printf "Setting the environment variables...\n"
-
-# Set the additional app_env variables.
-cf set-env $TARGET_ENV APP_ENV $ENV
-cf set-env $TARGET_ENV SENTRY_ENVIRONMENT $ENV
-
-# Ensure that the sentry release is also set.
-if [[ ! -z "${BUILD_VER}" ]]; then
-  cf set-env $TARGET_ENV BUILD_VERSION $ENV
-  cf set-env $TARGET_ENV SENTRY_RELEASE ${CIRCLE_TAG}
-  cf set-env $TARGET_ENV SENTRY_DSN ${SENTRY_DSN}
-  cf set-env $TARGET_ENV SENTRY_DSN_PUBLIC ${SENTRY_DSN_PUBLIC}
-fi
-
-# Set all other env vars applicable to all environments
-cf set-env $TARGET_ENV PAR_HASH_SALT ${PAR_HASH_SALT}
-cf set-env $TARGET_ENV TAG ${CIRCLE_TAG}
-cf set-env $TARGET_ENV CHARITY_COMMISSION_API_KEY ${CHARITY_COMMISSION_API_KEY}
-cf set-env $TARGET_ENV CLAMAV_HTTP_PASS ${CLAMAV_HTTP_PASS}
-cf set-env $TARGET_ENV CLAMAV_HTTP_USER ${CLAMAV_HTTP_USER}
-cf set-env $TARGET_ENV S3_BUCKET_ARTIFACTS ${S3_BUCKET_ARTIFACTS}
-cf set-env $TARGET_ENV S3_REGION ${S3_REGION}
-
-# Set environment specific env vars
-if [[ $ENV = "staging" ]]; then
-  cf set-env $TARGET_ENV COMPANIES_HOUSE_API_KEY ${STAGING_COMPANIES_HOUSE_API_KEY}
-  cf set-env $TARGET_ENV IDEAL_POSTCODES_API_KEY ${STAGING_IDEAL_POSTCODES_API_KEY}
-  cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_KEY ${STAGING_PAR_GOVUK_NOTIFY_KEY}
-  cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_TEMPLATE ${STAGING_PAR_GOVUK_NOTIFY_TEMPLATE}
-  cf set-env $TARGET_ENV S3_ACCESS_KEY ${STAGING_S3_ACCESS_KEY}
-  cf set-env $TARGET_ENV S3_BUCKET_PRIVATE ${STAGING_S3_BUCKET_PRIVATE}
-  cf set-env $TARGET_ENV S3_BUCKET_PUBLIC ${STAGING_S3_BUCKET_PUBLIC}
-  cf set-env $TARGET_ENV S3_SECRET_KEY ${STAGING_S3_SECRET_KEY}
-  cf set-env $TARGET_ENV S3_BUCKET_ARTIFACTS ${STAGING_S3_BUCKET_ARTIFACTS}
-fi
-
-if [[ $ENV = "production" ]]; then
-  cf set-env $TARGET_ENV COMPANIES_HOUSE_API_KEY ${PROD_COMPANIES_HOUSE_API_KEY}
-  cf set-env $TARGET_ENV IDEAL_POSTCODES_API_KEY ${PROD_IDEAL_POSTCODES_API_KEY}
-  cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_KEY ${PROD_PAR_GOVUK_NOTIFY_KEY}
-  cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_TEMPLATE ${PROD_PAR_GOVUK_NOTIFY_TEMPLATE}
-  cf set-env $TARGET_ENV S3_ACCESS_KEY ${PROD_S3_ACCESS_KEY}
-  cf set-env $TARGET_ENV S3_BUCKET_PRIVATE ${PROD_S3_BUCKET_PRIVATE}
-  cf set-env $TARGET_ENV S3_BUCKET_PUBLIC ${PROD_S3_BUCKET_PUBLIC}
-  cf set-env $TARGET_ENV S3_SECRET_KEY ${PROD_S3_SECRET_KEY}
-  cf set-env $TARGET_ENV S3_BUCKET_ARTIFACTS ${PROD_S3_BUCKET_ARTIFACTS}
-fi
-
-if [[ $ENV != "production" ]] || [[ $ENV != "staging" ]]; then
-  cf set-env $TARGET_ENV COMPANIES_HOUSE_API_KEY ${NP_COMPANIES_HOUSE_API_KEY}
-  cf set-env $TARGET_ENV IDEAL_POSTCODES_API_KEY ${NP_IDEAL_POSTCODES_API_KEY}
-  cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_KEY ${NP_PAR_GOVUK_NOTIFY_KEY}
-  cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_TEMPLATE ${NP_PAR_GOVUK_NOTIFY_TEMPLATE}
-  cf set-env $TARGET_ENV S3_ACCESS_KEY ${NP_S3_ACCESS_KEY}
-  cf set-env $TARGET_ENV S3_BUCKET_PRIVATE ${NP_S3_BUCKET_PRIVATE}
-  cf set-env $TARGET_ENV S3_BUCKET_PUBLIC ${NP_S3_BUCKET_PUBLIC}
-  cf set-env $TARGET_ENV S3_SECRET_KEY ${NP_S3_SECRET_KEY}
-  cf set-env $TARGET_ENV S3_BUCKET_ARTIFACTS ${NP_S3_BUCKET_ARTIFACTS}
-fi
-
 ####################################################################################
 # Check for existing backing services and create if necessary
 # This should only be done on non-production environments
@@ -598,6 +537,71 @@ printf "Scaling up the application...\n"
 
 if [[ $CF_INSTANCES -gt 1 ]]; then
     cf scale $TARGET_ENV -i $CF_INSTANCES
+fi
+
+####################################################################################
+# Setting env vars of the build
+####################################################################################
+
+## Set the cf environment variables directly
+printf "Setting the environment variables...\n"
+
+# Set the additional app_env variables.
+cf set-env $TARGET_ENV APP_ENV $ENV
+cf set-env $TARGET_ENV SENTRY_ENVIRONMENT $ENV
+
+# Ensure that the sentry release is also set.
+if [[ ! -z "${BUILD_VER}" ]]; then
+  cf set-env $TARGET_ENV BUILD_VERSION $ENV
+  cf set-env $TARGET_ENV SENTRY_RELEASE ${CIRCLE_TAG}
+  cf set-env $TARGET_ENV SENTRY_DSN ${SENTRY_DSN}
+  cf set-env $TARGET_ENV SENTRY_DSN_PUBLIC ${SENTRY_DSN_PUBLIC}
+fi
+
+# Set all other env vars applicable to all environments
+cf set-env $TARGET_ENV PAR_HASH_SALT ${PAR_HASH_SALT}
+cf set-env $TARGET_ENV TAG ${CIRCLE_TAG}
+cf set-env $TARGET_ENV CHARITY_COMMISSION_API_KEY ${CHARITY_COMMISSION_API_KEY}
+cf set-env $TARGET_ENV CLAMAV_HTTP_PASS ${CLAMAV_HTTP_PASS}
+cf set-env $TARGET_ENV CLAMAV_HTTP_USER ${CLAMAV_HTTP_USER}
+cf set-env $TARGET_ENV S3_BUCKET_ARTIFACTS ${S3_BUCKET_ARTIFACTS}
+cf set-env $TARGET_ENV S3_REGION ${S3_REGION}
+
+# Set environment specific env vars
+if [[ $ENV = "staging" ]]; then
+  cf set-env $TARGET_ENV COMPANIES_HOUSE_API_KEY ${STAGING_COMPANIES_HOUSE_API_KEY}
+  cf set-env $TARGET_ENV IDEAL_POSTCODES_API_KEY ${STAGING_IDEAL_POSTCODES_API_KEY}
+  cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_KEY ${STAGING_PAR_GOVUK_NOTIFY_KEY}
+  cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_TEMPLATE ${STAGING_PAR_GOVUK_NOTIFY_TEMPLATE}
+  cf set-env $TARGET_ENV S3_ACCESS_KEY ${STAGING_S3_ACCESS_KEY}
+  cf set-env $TARGET_ENV S3_BUCKET_PRIVATE ${STAGING_S3_BUCKET_PRIVATE}
+  cf set-env $TARGET_ENV S3_BUCKET_PUBLIC ${STAGING_S3_BUCKET_PUBLIC}
+  cf set-env $TARGET_ENV S3_SECRET_KEY ${STAGING_S3_SECRET_KEY}
+  cf set-env $TARGET_ENV S3_BUCKET_ARTIFACTS ${STAGING_S3_BUCKET_ARTIFACTS}
+fi
+
+if [[ $ENV = "production" ]]; then
+  cf set-env $TARGET_ENV COMPANIES_HOUSE_API_KEY ${PROD_COMPANIES_HOUSE_API_KEY}
+  cf set-env $TARGET_ENV IDEAL_POSTCODES_API_KEY ${PROD_IDEAL_POSTCODES_API_KEY}
+  cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_KEY ${PROD_PAR_GOVUK_NOTIFY_KEY}
+  cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_TEMPLATE ${PROD_PAR_GOVUK_NOTIFY_TEMPLATE}
+  cf set-env $TARGET_ENV S3_ACCESS_KEY ${PROD_S3_ACCESS_KEY}
+  cf set-env $TARGET_ENV S3_BUCKET_PRIVATE ${PROD_S3_BUCKET_PRIVATE}
+  cf set-env $TARGET_ENV S3_BUCKET_PUBLIC ${PROD_S3_BUCKET_PUBLIC}
+  cf set-env $TARGET_ENV S3_SECRET_KEY ${PROD_S3_SECRET_KEY}
+  cf set-env $TARGET_ENV S3_BUCKET_ARTIFACTS ${PROD_S3_BUCKET_ARTIFACTS}
+fi
+
+if [[ $ENV != "production" ]] && [[ $ENV != "staging" ]]; then
+  cf set-env $TARGET_ENV COMPANIES_HOUSE_API_KEY ${NP_COMPANIES_HOUSE_API_KEY}
+  cf set-env $TARGET_ENV IDEAL_POSTCODES_API_KEY ${NP_IDEAL_POSTCODES_API_KEY}
+  cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_KEY ${NP_PAR_GOVUK_NOTIFY_KEY}
+  cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_TEMPLATE ${NP_PAR_GOVUK_NOTIFY_TEMPLATE}
+  cf set-env $TARGET_ENV S3_ACCESS_KEY ${NP_S3_ACCESS_KEY}
+  cf set-env $TARGET_ENV S3_BUCKET_PRIVATE ${NP_S3_BUCKET_PRIVATE}
+  cf set-env $TARGET_ENV S3_BUCKET_PUBLIC ${NP_S3_BUCKET_PUBLIC}
+  cf set-env $TARGET_ENV S3_SECRET_KEY ${NP_S3_SECRET_KEY}
+  cf set-env $TARGET_ENV S3_BUCKET_ARTIFACTS ${S3_BUCKET_ARTIFACTS}
 fi
 
 
