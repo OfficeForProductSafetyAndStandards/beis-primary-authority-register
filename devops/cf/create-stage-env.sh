@@ -26,4 +26,4 @@ cf set-env beis-par-staging SENTRY_DSN_PUBLIC ${SENTRY_DSN_PUBLIC}
 cf set-env beis-par-staging SENTRY_ENVIRONMENT staging
 cf set-env beis-par-staging SENTRY_RELEASE staging
 cf set-env beis-par-staging SENTRY_RELEASE ${CIRCLE_TAG}
-cf re-stage beis-par-staging
+cf restage beis-par-staging
