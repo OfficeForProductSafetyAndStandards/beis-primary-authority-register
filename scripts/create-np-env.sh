@@ -2,7 +2,6 @@
 
 set -o errexit -euo pipefail -o noclobber -o nounset
 
-cd /tmp/workspace
 echo "TAG=${CIRCLE_TAG}" >> .env
 echo "APP_ENV=testing" >> .env
 echo "BUILD_VERSION=testing" >> .env
@@ -25,3 +24,5 @@ echo "SENTRY_DSN_PUBLIC=${SENTRY_DSN_PUBLIC}" >> .env
 echo "SENTRY_ENVIRONMENT=testing" >> .env
 echo "SENTRY_RELEASE=testing" >> .env
 echo "SENTRY_RELEASE=${CIRCLE_TAG}" >> .env
+chmod 600 .env
+cp .env /tmp/workspace/.env
