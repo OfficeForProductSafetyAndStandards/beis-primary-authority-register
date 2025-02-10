@@ -43,7 +43,7 @@ drush cim -y
 
 # To doubly make sure drush registers features commands.
 printf "Clearing drush caches...\n"
-drush cr drush;
+drush cr;
 # Revert all features
 printf "Reverting features...\n"
 drush features:import:all -y;
