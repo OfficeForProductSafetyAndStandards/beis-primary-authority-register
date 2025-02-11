@@ -1,9 +1,10 @@
 <?php
 $root_path = dirname(__DIR__) . '/../../';
 require "{$root_path}/vendor/autoload.php";
-
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->safeLoad();
+if (file_exists($root_path . '.env')) {
+  $dotenv = Dotenv\Dotenv::createImmutable($root_path);
+  $dotenv->safeLoad();
+}
 
 // @codingStandardsIgnoreFile
 
@@ -289,12 +290,7 @@ $settings['config_sync_directory'] = '../sync';
  * @endcode
  */
 
-if (null !==(getenv('PAR_HASH_SALT'))) {
-  $settings['hash_salt'] = getenv('PAR_HASH_SALT');
-} else {
-  $settings['hash_salt'] = 'xGYH_obcrTogvLS8xcil1-YlRaqdiRqa2UQzvmZfYiV9ZY7-OvnRjvU0KYOzt3U7dJp7ypvWDw';
-}
-
+$settings['hash_salt'] = getenv('PAR_HASH_SALT');
 
 /**
  * Deployment identifier.
@@ -1159,8 +1155,10 @@ if (file_exists("{$app_root}/{$site_path}/settings.local.php")) {
  *
  * Load specific service file for each app environment.
  */
-if ($config['config_split.config_split.dev_config']['status'] || $config['config_split.config_split.test_config']['status']) {
-  $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.local.non-production.yml';
+if ($app_env != 'staging') {
+  if ($config['config_split.config_split.dev_config']['status'] || $config['config_split.config_split.test_config']['status']) {
+    $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.local.non-production.yml';
+  }
 }
 
 # Allow php to run with increased memory from the CLI.

@@ -7,3 +7,4 @@ cd $WEBROOT
 echo "Current working directory is ${PWD}"
 
 drush spp
+drush cr

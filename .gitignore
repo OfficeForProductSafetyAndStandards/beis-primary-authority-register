@@ -80,6 +80,9 @@ package.box
 # Exclude any docker containers
 .docker-sync/
 
+# Exclude local environment settings
+.env
+
 auth.json
 /.csslintrc
 /.editorconfig
