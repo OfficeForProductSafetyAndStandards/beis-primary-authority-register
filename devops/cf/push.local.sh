@@ -610,15 +610,6 @@ if [[ $ENV_ONLY != y ]]; then
 fi
 
 ####################################################################################
-# Scale up the application if required
-####################################################################################
-printf "Scaling up the application...\n"
-
-if [[ $CF_INSTANCES -gt 1 ]]; then
-    cf scale $TARGET_ENV -i $CF_INSTANCES
-fi
-
-####################################################################################
 # Setting env vars of the build
 ####################################################################################
 
@@ -680,6 +671,15 @@ if [[ $ENV != "production" ]] && [[ $ENV != "staging" ]]; then
   cf set-env $TARGET_ENV S3_BUCKET_PUBLIC ${NP_S3_BUCKET_PUBLIC}
   cf set-env $TARGET_ENV S3_SECRET_KEY ${NP_S3_SECRET_KEY}
   cf set-env $TARGET_ENV S3_BUCKET_ARTIFACTS ${S3_BUCKET_ARTIFACTS}
+fi
+
+####################################################################################
+# Scale up the application if required
+####################################################################################
+printf "Scaling up the application...\n"
+
+if [[ $CF_INSTANCES -gt 1 ]]; then
+    cf scale $TARGET_ENV -i $CF_INSTANCES
 fi
 
 ####################################################################################
