@@ -63,7 +63,6 @@ REMOTE_BUILD_DIR=${REMOTE_BUILD_DIR:="/home/vcap/app"}
 DB_NAME="db-seed"
 DB_DIR="backups"
 DB_RESET=${DB_RESET:=n}
-DEPLOY_PRODUCTION=${DEPLOY_PRODUCTION:=n}
 CHARITY_COMMISSION_API_KEY=${CHARITY_COMMISSION_API_KEY:-}
 CLAMAV_HTTP_PASS=${CLAMAV_HTTP_PASS:-}
 CLAMAV_HTTP_USER=${CLAMAV_HTTP_USER:-}
@@ -131,10 +130,6 @@ while true; do
             DB_RESET=y
             shift
             ;;
-        -x|--deploy-production)
-            DEPLOY_PRODUCTION=y
-            shift
-            ;;
         -d|--directory)
             BUILD_DIR="$2"
             shift 2
@@ -172,21 +167,6 @@ if [[ $# -ne 1 ]]; then
 fi
 ENV=$1
 
-## Automated deployment to production needs to be to the production environment.
-if [[ $ENV == 'production' ]] && [[ $DEPLOY_PRODUCTION != 'y' ]]; then
-    read -r -p "Are you sure you wish to deploy to production? [y/N] " response
-    case "$response" in
-        [yY][eE][sS]|[yY])
-            echo "Deploying to production."
-            ;;
-        *)
-            echo "Deployment to production isn't supported at this time."
-            exit 11
-            ;;
-    esac
-fi
-
-
 ####################################################################################
 # Login to GovUK PaaS
 ####################################################################################
@@ -202,7 +182,6 @@ else
     cf login -a api.cloud.service.gov.uk -u $DEV_GOVUK_CF_USER -p $DEV_GOVUK_CF_PWD \
       -o office-for-product-safety-and-standards -s primary-authority-register-development
 fi
-
 
 ####################################################################################
 # Configure the application
