@@ -41,13 +41,13 @@ content:
     weight: 5
     region: content
   par_label:
-    type: string
     label: hidden
+    weight: 0
+    region: content
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 0
-    region: content
+    type: string
   summary:
     type: text_default
     label: hidden
@@ -69,8 +69,8 @@ content:
     settings:
       timezone_override: ''
       format_type: gds_date_format
-      from_to: both
       separator: ' to '
+      from_to: both
     third_party_settings: {  }
     weight: 4
     region: content
