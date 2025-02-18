@@ -49,8 +49,9 @@
         "drupal/config_readonly": "^1.0",
         "drupal/config_split": "~2.0.0",
         "drupal/config_update": "^2.0@alpha",
-        "drupal/core-composer-scaffold": "10.3.11",
-        "drupal/core-recommended": "10.3.11",
+        "drupal/core-composer-scaffold": "10.3.12",
+        "drupal/core-project-message": "10.3.12",
+        "drupal/core-recommended": "10.3.12",
         "drupal/csv_serialization": "^4.0",
         "drupal/ctools": "^4.1",
         "drupal/default_content": "^2.0@alpha",
@@ -144,7 +145,8 @@
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "php-http/discovery": true,
             "phpstan/extension-installer": true,
-            "tbachert/spi": true
+            "tbachert/spi": true,
+            "drupal/core-project-message": true
         }
     },
     "extra": {
