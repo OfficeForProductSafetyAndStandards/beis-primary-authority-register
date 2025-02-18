@@ -2,8 +2,9 @@
 
 namespace Drupal\par_subscriptions\EventSubscriber;
 
-use Drupal\Core\Entity\EntityEvent;
-use Drupal\Core\Entity\EntityEvents;
+use Drupal\Core\Entity\Event\EntityInsertEvent;
+use Drupal\par_subscriptions\Entity\ParSubscriptionInterface;
+use Drupal\user\UserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class UserDefaultSubscriber implements EventSubscriberInterface {
@@ -14,7 +15,7 @@ class UserDefaultSubscriber implements EventSubscriberInterface {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[EntityEvents::insert('user')][] = ['onEvent', 10];
+    $events[EntityInsertEvent::class][] = ['onEvent', 10];
     return $events;
   }
 
@@ -23,22 +24,24 @@ class UserDefaultSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * @param EntityEvent $event
+   * @param EntityInsertEvent $event
    */
-  public function onEvent(EntityEvent $event) {
-    /** @var \Drupal\user\Entity\User $user */
-    $user = $event->getEntity();
+  public function onEvent(EntityInsertEvent $event) {
+    if ($event->getEntity() instanceof UserInterface) {
+      /** @var \Drupal\user\Entity\User $user */
+      $user = $event->getEntity();
 
-    $lists = $this->getSubscriptionManager()->getLists();
+      $lists = $this->getSubscriptionManager()->getLists();
 
-    foreach ($lists as $list) {
-      $subscription = $user->id() > 1 ?
-        $this->getSubscriptionManager()->createSubscription($list, $user->getEmail()) :
-        NULL;
+      foreach ($lists as $list) {
+        $subscription = $user->id() > 1 ?
+          $this->getSubscriptionManager()->createSubscription($list, $user->getEmail()) :
+          NULL;
 
-      // Silently subscribe & verify the user.
-      if ($subscription instanceof \Drupal\par_subscriptions\Entity\ParSubscriptionInterface) {
-        $subscription->verify();
+        // Silently subscribe & verify the user.
+        if ($subscription instanceof ParSubscriptionInterface) {
+          $subscription->verify();
+        }
       }
     }
   }

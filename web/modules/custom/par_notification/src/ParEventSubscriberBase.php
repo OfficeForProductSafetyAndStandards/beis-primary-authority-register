@@ -11,7 +11,6 @@ use Drupal\message_expire\MessageExpiryManagerInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Drupal\Core\Entity\EntityEvent;
 
 abstract class ParEventSubscriberBase implements EventSubscriberInterface {
 
@@ -23,9 +22,9 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
   const MESSAGE_ID = '';
 
   /**
-   * @var ParDataEventInterface|EntityEvent $event
+   * @var ParDataEventInterface $event
    */
-  protected ParDataEventInterface|EntityEvent $event;
+  protected ParDataEventInterface $event;
 
   /**
    * Returns the logger channel specific to errors logged by PAR Forms.
@@ -77,7 +76,12 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
    * Setter for the event.
    */
   public function setEvent($event) {
-    $this->event = $event;
+    if ($event instanceof ParDataEventInterface) {
+      $this->event = $event;
+    } else {
+      // Handle the incompatible event type (log an error, throw an exception, etc.)
+      $this->getLogger('PAR')->error('Incompatible event type provided to ParEventSubscriberBase::setEvent(). Expected ParDataEventInterface, got @type.', ['@type' => get_class($event)]);
+    }
   }
 
   /**

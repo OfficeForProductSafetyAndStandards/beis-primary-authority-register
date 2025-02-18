@@ -2,9 +2,7 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
-use Drupal\Core\Entity\EntityEvent;
-use Drupal\Core\Entity\EntityEvents;
-use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\Core\Entity\Event\EntityInsertEvent;
 use Drupal\par_data\Entity\ParDataInspectionFeedback;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Event\ParDataEventInterface;
@@ -25,19 +23,32 @@ class NewInspectionFeedbackSubscriber extends ParEventSubscriberBase {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[EntityEvents::insert('par_data_inspection_feedback')][] = ['onEvent', 800];
+    $events[EntityInsertEvent::class][] = ['onEvent', 800];
 
     return $events;
   }
 
   /**
-   * @param EntityEvent $event
+   * @param EntityInsertEvent $event
    */
-  public function onEvent(EntityEvent $event) {
-    $this->setEvent($event);
+  public function onEvent(EntityInsertEvent $event) {
+    if ($event instanceof ParDataEventInterface) {
+      $this->event = $event;
+    } else {
+      // Handle the incompatible event type (log an error, throw an exception, etc.)
+      $this->getLogger('PAR')->error('Incompatible event type provided to NewInspectionFeedbackSubscriber::setEvent(). Expected ParDataEventInterface, got @type.', ['@type' => get_class($event)]);
+    }
 
     /** @var ParDataInspectionFeedback $entity */
     $entity = $event->getEntity();
+
+    // Check if the entity is of the correct type.
+    if (!$entity instanceof ParDataInspectionFeedback) {
+      // Log a message or handle the unexpected entity type as needed.
+      $this->getLogger('PAR')->warning('Unexpected entity type received in NewInspectionFeedbackSubscriber::onEvent(). Expected ParDataInspectionFeedback, got @type.', ['@type' => get_class($entity)]);
+      return; // Exit early if the entity type is not correct.
+    }
+
     $par_data_partnership = $entity?->getPartnership(TRUE);
 
     // Only send messages for active general enquiries.
