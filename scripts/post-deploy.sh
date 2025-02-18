@@ -1,11 +1,11 @@
 #!/bin/bash
-## Commands that must be run to update a drupal instance.
-## Use as `./drupal-update.sh`
+## For dropping a database.
+## Use as `./post-deploy.sh`
 echo $BASH_VERSION
 set -o errexit -euo pipefail -o noclobber -o nounset
 
-ROOT="${BASH_SOURCE%/*}/web"
-cd $ROOT;
+ROOT="${BASH_SOURCE%/*}/../web"
+cd $ROOT
 echo "Current working directory is ${PWD}"
 
 # Put the site in maintenance mode.
@@ -43,7 +43,7 @@ drush cim -y
 
 # To doubly make sure drush registers features commands.
 printf "Clearing drush caches...\n"
-drush cr drush;
+drush cr;
 # Revert all features
 printf "Reverting features...\n"
 drush features:import:all -y;
@@ -55,3 +55,5 @@ drush state:set system.maintenance_mode 0;
 # Clear cache.
 printf "Clearing final cache...\n"
 drush cr;
+
+

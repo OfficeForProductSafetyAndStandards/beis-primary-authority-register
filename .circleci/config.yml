@@ -91,13 +91,6 @@ references:
         pg_restore --username= USERNAME --host=HOST --port= --clean --if-exists --no-owner --no-privileges --no-password
         ../drupal-update.sh
 
-  configure_secrets: &configure_secrets
-    run:
-      name: "Configure secrets from Vault"
-      command: |
-        curl icanhazip.com
-        ./devops/vault/vault-export.sh ci
-
   prepare_application: &prepare_application
     run:
       name: "Prepare the application"
@@ -123,8 +116,7 @@ references:
       name: "Make asset bundle"
       command: |
         cd /tmp/workspace
-        echo "{ \"build\" : \"${CIRCLE_BUILD_NUM}\", \"tag\":\"${CIRCLE_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt
-        echo "SENTRY_RELEASE=$CIRCLE_TAG" >> .env
+        echo "{ "build" : "${CIRCLE_BUILD_NUM}", "tag":"${CIRCLE_TAG}", "time":"$(date -u)"}" >> web/build_version.txt
         tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
 
   remove_assets: &remove_assets
@@ -151,16 +143,6 @@ jobs:
       - checkout:
           post:
             - git fetch --tags
-      - run:
-          name: "Export environment variables"
-          command: |
-            echo "S3_REGION=$S3_REGION" >> .env
-            echo "S3_ACCESS_KEY=$S3_ACCESS_KEY" >> .env
-            echo "S3_SECRET_KEY=$S3_SECRET_KEY" >> .env
-            echo "S3_BUCKET_ARTIFACTS=$S3_BUCKET_ARTIFACTS" >> .env
-            echo "S3_BUCKET_PRIVATE=$S3_BUCKET_PRIVATE" >> .env
-            echo "S3_BUCKET_PUBLIC=$S3_BUCKET_PUBLIC" >> .env
-            echo "APP_ENV=$APP_ENV" >> .env
       - run:
           name: "Database preparation"
           command: |
@@ -219,7 +201,6 @@ jobs:
             - ./web/themes/contrib
             - ./web/themes/custom
             - ./drush/contrib
-      - *configure_secrets
       - run:
           name: "Create workspace"
           command: |
@@ -293,6 +274,7 @@ jobs:
       - *configure_webroot
       - *build_assets
       - *remove_assets
+
       - run:
           name: "Examine asset bundle."
           command: |
@@ -324,7 +306,7 @@ jobs:
                 -Jurl=beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital \
                 -l ./tests/reports/jmeter/jmeter-log.jtl
             /opt/apache-jmeter-5.5/bin/JMeterPluginsCMD.sh --generate-csv ./tests/reports/jmeter/aggregate-report.csv \
-                --input-jtl ./tests/reports/jmeter/jmeter-log.jtl  \
+                --input-jtl ./tests/reports/jmeter/jmeter-log.jtl \
                 --plugin-type AggregateReport
       - run:
           name: "Destroy the load testing environment."
@@ -393,7 +375,7 @@ jobs:
           command: |
             DEPLOY_ENV="production"
             printf "$DEPLOY_ENV\n"
-            ./devops/cf/push.local.sh -T $CIRCLE_TAG -u $DEV_GOVUK_CF_USER -p $DEV_GOVUK_CF_PWD -x -d /tmp/workspace -i 4 $DEPLOY_ENV
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -u $DEV_GOVUK_CF_USER -p $DEV_GOVUK_CF_PWD -d /tmp/workspace -i 4 $DEPLOY_ENV
 
   deploy_test:
     <<: *defaults
@@ -470,8 +452,7 @@ jobs:
       - run:
           name: "Sanitise PAR Data"
           command: |
-            cd web
-            ../vendor/bin/drush spp
+            ./scripts/sanitise-par-people.sh
           environment:
             APP_ENV: ci-sanitise
       - run:

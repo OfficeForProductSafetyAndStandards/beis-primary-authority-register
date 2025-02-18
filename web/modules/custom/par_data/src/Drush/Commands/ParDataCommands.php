@@ -90,10 +90,6 @@ final class ParDataCommands extends DrushCommands {
         $this->databaseConnection->query($query)->execute();
       }
     }
-
-    // Clear the caches.
-    $this->output->writeln(dt('Clearing caches...'));
-    drupal_flush_all_caches();
   }
 
   /**

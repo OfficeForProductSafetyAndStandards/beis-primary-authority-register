@@ -21,13 +21,6 @@ if [[ ${PIPESTATUS[0]} -ne 4 ]]; then
     exit 1
 fi
 
-command -v vault >/dev/null 2>&1 || {
-    echo "################################################################################################"
-    echo >&2 "Please install Vault CLI - https://www.vaultproject.io/docs/install/index.html"
-    echo "################################################################################################"
-    exit 1
-}
-
 command -v cf >/dev/null 2>&1 || {
     echo "################################################################################################"
     echo >&2 "Please install Cloud Foundry CLI - https://docs.cloudfoundry.org/cf-cli/install-go-cli.html"
@@ -42,11 +35,9 @@ command -v cf >/dev/null 2>&1 || {
 #    DEV_GOVUK_CF_USER (required) - the user deploying the script
 #    DEV_GOVUK_CF_PWD (required) - the password for the user account
 #    BUILD_DIR - the directory containing the build assets
-#    VAULT_ADDR - the vault service endpoint
-#    VAULT_UNSEAL_KEY (required) - the key used to unseal the vault
 ####################################################################################
-OPTIONS=sT:u:p:i:b:rd:v:n:t:x
-LONGOPTS=single,build-tag:,user:,password:,instances:,database:,refresh-database,directory:,vault:,unseal:,token:,deploy-production
+OPTIONS=sT:u:p:i:b:rd:v:n:t:
+LONGOPTS=single,build-tag:,user:,password:,instances:,database:,refresh-database,directory:,token:,deploy-production,
 
 # -use ! and PIPESTATUS to get exit code with errexit set
 # -temporarily store output to be able to check for errors
@@ -72,10 +63,42 @@ REMOTE_BUILD_DIR=${REMOTE_BUILD_DIR:="/home/vcap/app"}
 DB_NAME="db-seed"
 DB_DIR="backups"
 DB_RESET=${DB_RESET:=n}
-DEPLOY_PRODUCTION=${DEPLOY_PRODUCTION:=n}
-VAULT_ADDR=${VAULT_ADDR:="https://vault.primary-authority.services:8200"}
-VAULT_UNSEAL=${VAULT_UNSEAL:-}
-VAULT_TOKEN=${VAULT_TOKEN:-}
+CHARITY_COMMISSION_API_KEY=${CHARITY_COMMISSION_API_KEY:-}
+CLAMAV_HTTP_PASS=${CLAMAV_HTTP_PASS:-}
+CLAMAV_HTTP_USER=${CLAMAV_HTTP_USER:-}
+TAG=${CIRCLE_TAG:-}
+PAR_HASH_SALT=${PAR_HASH_SALT:-}
+S3_REGION=${S3_REGION:-}
+SENTRY_DSN=${SENTRY_DSN:-}
+SENTRY_DSN_PUBLIC=${SENTRY_DSN_PUBLIC:-}
+SENTRY_RELEASE=${CIRCLE_TAG:-}
+STAGING_S3_SECRET_KEY=${STAGING_S3_SECRET_KEY:-}
+STAGING_S3_ACCESS_KEY=${STAGING_S3_ACCESS_KEY:-}
+STAGING_S3_BUCKET_ARTIFACTS=${S3_BUCKET_ARTIFACTS:-}
+STAGING_S3_BUCKET_PRIVATE=${STAGING_S3_BUCKET_PRIVATE:-}
+STAGING_S3_BUCKET_PUBLIC=${STAGING_S3_BUCKET_PUBLIC:-}
+STAGING_COMPANIES_HOUSE_API_KEY=${STAGING_COMPANIES_HOUSE_API_KEY:-}
+STAGING_IDEAL_POSTCODES_API_KEY=${STAGING_IDEAL_POSTCODES_API_KEY:-}
+STAGING_PAR_GOVUK_NOTIFY_KEY=${STAGING_PAR_GOVUK_NOTIFY_KEY:-}
+STAGING_PAR_GOVUK_NOTIFY_TEMPLATE=${STAGING_PAR_GOVUK_NOTIFY_TEMPLATE:-}
+PROD_S3_SECRET_KEY=${PROD_S3_SECRET_KEY:-}
+PROD_S3_ACCESS_KEY=${PROD_S3_ACCESS_KEY:-}
+PROD_S3_BUCKET_ARTIFACTS=${S3_BUCKET_ARTIFACTS:-}
+PROD_S3_BUCKET_PRIVATE=${PROD_S3_BUCKET_PRIVATE:-}
+PROD_S3_BUCKET_PUBLIC=${PROD_S3_BUCKET_PUBLIC:-}
+PROD_COMPANIES_HOUSE_API_KEY=${PROD_COMPANIES_HOUSE_API_KEY:-}
+PROD_IDEAL_POSTCODES_API_KEY=${PROD_IDEAL_POSTCODES_API_KEY:-}
+PROD_PAR_GOVUK_NOTIFY_KEY=${PROD_PAR_GOVUK_NOTIFY_KEY:-}
+PROD_PAR_GOVUK_NOTIFY_TEMPLATE=${PROD_PAR_GOVUK_NOTIFY_TEMPLATE:-}
+NP_S3_SECRET_KEY=${NP_S3_SECRET_KEY:-}
+NP_S3_ACCESS_KEY=${NP_S3_ACCESS_KEY:-}
+NP_S3_BUCKET_ARTIFACTS=${S3_BUCKET_ARTIFACTS:-}
+NP_S3_BUCKET_PRIVATE=${NP_S3_BUCKET_PRIVATE:-}
+NP_S3_BUCKET_PUBLIC=${NP_S3_BUCKET_PUBLIC:-}
+NP_COMPANIES_HOUSE_API_KEY=${NP_COMPANIES_HOUSE_API_KEY:-}
+NP_IDEAL_POSTCODES_API_KEY=${NP_IDEAL_POSTCODES_API_KEY:-}
+NP_PAR_GOVUK_NOTIFY_KEY=${NP_PAR_GOVUK_NOTIFY_KEY:-}
+NP_PAR_GOVUK_NOTIFY_TEMPLATE=${NP_PAR_GOVUK_NOTIFY_TEMPLATE:-}
 
 while true; do
     case "$1" in
@@ -105,10 +128,6 @@ while true; do
             ;;
         -r|--refresh-database)
             DB_RESET=y
-            shift
-            ;;
-        -x|--deploy-production)
-            DEPLOY_PRODUCTION=y
             shift
             ;;
         -d|--directory)
@@ -148,87 +167,6 @@ if [[ $# -ne 1 ]]; then
 fi
 ENV=$1
 
-## Automated deployment to production needs to be to the production environment.
-if [[ $ENV == 'production' ]] && [[ $DEPLOY_PRODUCTION != 'y' ]]; then
-    read -r -p "Are you sure you wish to deploy to production? [y/N] " response
-    case "$response" in
-        [yY][eE][sS]|[yY])
-            echo "Deploying to production."
-            ;;
-        *)
-            echo "Deployment to production isn't supported at this time."
-            exit 11
-            ;;
-    esac
-fi
-
-
-####################################################################################
-# Allow manual input of missing parameters
-#    ENV (required) - the password for the user account
-#    DEV_GOVUK_CF_USER (required) - the user deploying the script
-#    DEV_GOVUK_CF_PWD (required) - the password for the user account
-#    BUILD_DIR - the directory containing the build assets
-#    VAULT_ADDR - the vault service endpoint
-#    VAULT_UNSEAL_KEY (required) - the key used to unseal the vault
-####################################################################################
-if [[ -z "${DEV_GOVUK_CF_USER}" ]]; then
-    echo -n "Enter your Cloud Foundry username: "
-    read DEV_GOVUK_CF_USER
-fi
-if [[ -z "${DEV_GOVUK_CF_PWD}" ]]; then
-    echo -n "Enter your Cloud Foundry password (will be hidden): "
-    read -s DEV_GOVUK_CF_PWD
-fi
-if [[ -z "${VAULT_UNSEAL}" ]]; then
-    echo -n "Enter your Vault unseal key (will be hidden): "
-    read -s VAULT_UNSEAL
-fi
-if [[ -z "${VAULT_TOKEN}" ]]; then
-    echo -n "Enter your Vault master token (will be hidden): "
-    read -s VAULT_TOKEN
-fi
-
-
-####################################################################################
-# Unseal the vault and read all variables in scope for this environment
-# Vault is first sealed to ensure that deployment can't happen unless user has
-# the unseal token.
-####################################################################################
-printf "Extracting Vault secrets...\n"
-
-export VAULT_ADDR
-export VAULT_TOKEN
-
-vault operator unseal -tls-skip-verify $VAULT_UNSEAL
-
-if [[ $(vault kv list -tls-skip-verify secret/par/env | awk 'NR > 2 {print $1}' | grep $ENV) ]]; then
-    VAULT_ENV=$ENV
-else
-    VAULT_ENV='paas'
-fi
-
-## Ensure the production deployment uses the production vault keystore
-if [[ $ENV == 'production' ]] && [[ $VAULT_ENV != $ENV ]]; then
-    printf "Can't access the vault store for production secrets...\n"
-    exit 12
-fi
-
-## Set the environment variables by generating an .env file
-printf "Using vault keystore: '$VAULT_ENV'...\n"
-rm -f .env
-VAULT_VARS=($(vault kv get -tls-skip-verify secret/par/env/$VAULT_ENV | awk 'NR > 3 {print $1}'))
-for VAR_NAME in "${VAULT_VARS[@]}"
-do
-  printf "$VAR_NAME='$(vault kv get --field=$VAR_NAME -tls-skip-verify secret/par/env/$VAULT_ENV)'\n" >> .env
-done
-## Export the vars in .env for use in this script
-export $(egrep -v '^#' .env | xargs)
-
-## Seal the vault now in case of an error
-vault operator seal -tls-skip-verify
-
-
 ####################################################################################
 # Login to GovUK PaaS
 ####################################################################################
@@ -244,7 +182,6 @@ else
     cf login -a api.cloud.service.gov.uk -u $DEV_GOVUK_CF_USER -p $DEV_GOVUK_CF_PWD \
       -o office-for-product-safety-and-standards -s primary-authority-register-development
 fi
-
 
 ####################################################################################
 # Configure the application
@@ -431,11 +368,8 @@ export COMPOSER_VENDOR_DIR={BUILD_DIR}/vendor
 cf push --no-start -f $MANIFEST -p $BUILD_DIR --var app=$TARGET_ENV $TARGET_ENV
 
 ## Set the cf environment variables directly
-printf "Setting the environment variables...\n"
-for VAR_NAME in "${VAULT_VARS[@]}"
-do
-    cf set-env $TARGET_ENV $VAR_NAME ${!VAR_NAME} > /dev/null
-done
+printf "Set the environment variables...\n"
+
 # Set the additional app_env variables.
 cf set-env $TARGET_ENV APP_ENV $ENV
 cf set-env $TARGET_ENV SENTRY_ENVIRONMENT $ENV
@@ -443,7 +377,54 @@ cf set-env $TARGET_ENV SENTRY_ENVIRONMENT $ENV
 # Ensure that the sentry release is also set.
 if [[ ! -z "${BUILD_VER}" ]]; then
   cf set-env $TARGET_ENV BUILD_VERSION $ENV
-  cf set-env $TARGET_ENV SENTRY_RELEASE $ENV
+  cf set-env $TARGET_ENV SENTRY_RELEASE ${CIRCLE_TAG}
+  cf set-env $TARGET_ENV SENTRY_DSN ${SENTRY_DSN}
+  cf set-env $TARGET_ENV SENTRY_DSN_PUBLIC ${SENTRY_DSN_PUBLIC}
+fi
+
+# Set all other env vars applicable to all environments
+cf set-env $TARGET_ENV PAR_HASH_SALT ${PAR_HASH_SALT}
+cf set-env $TARGET_ENV TAG ${CIRCLE_TAG}
+cf set-env $TARGET_ENV CHARITY_COMMISSION_API_KEY ${CHARITY_COMMISSION_API_KEY}
+cf set-env $TARGET_ENV CLAMAV_HTTP_PASS ${CLAMAV_HTTP_PASS}
+cf set-env $TARGET_ENV CLAMAV_HTTP_USER ${CLAMAV_HTTP_USER}
+cf set-env $TARGET_ENV S3_REGION ${S3_REGION}
+
+# Set environment specific env vars
+if [[ $ENV = "staging" ]]; then
+  cf set-env $TARGET_ENV COMPANIES_HOUSE_API_KEY ${STAGING_COMPANIES_HOUSE_API_KEY}
+  cf set-env $TARGET_ENV IDEAL_POSTCODES_API_KEY ${STAGING_IDEAL_POSTCODES_API_KEY}
+  cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_KEY ${STAGING_PAR_GOVUK_NOTIFY_KEY}
+  cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_TEMPLATE ${STAGING_PAR_GOVUK_NOTIFY_TEMPLATE}
+  cf set-env $TARGET_ENV S3_ACCESS_KEY ${STAGING_S3_ACCESS_KEY}
+  cf set-env $TARGET_ENV S3_BUCKET_PRIVATE ${STAGING_S3_BUCKET_PRIVATE}
+  cf set-env $TARGET_ENV S3_BUCKET_PUBLIC ${STAGING_S3_BUCKET_PUBLIC}
+  cf set-env $TARGET_ENV S3_SECRET_KEY ${STAGING_S3_SECRET_KEY}
+  cf set-env $TARGET_ENV S3_BUCKET_ARTIFACTS ${STAGING_S3_BUCKET_ARTIFACTS}
+fi
+
+if [[ $ENV = "production" ]]; then
+  cf set-env $TARGET_ENV COMPANIES_HOUSE_API_KEY ${PROD_COMPANIES_HOUSE_API_KEY}
+  cf set-env $TARGET_ENV IDEAL_POSTCODES_API_KEY ${PROD_IDEAL_POSTCODES_API_KEY}
+  cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_KEY ${PROD_PAR_GOVUK_NOTIFY_KEY}
+  cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_TEMPLATE ${PROD_PAR_GOVUK_NOTIFY_TEMPLATE}
+  cf set-env $TARGET_ENV S3_ACCESS_KEY ${PROD_S3_ACCESS_KEY}
+  cf set-env $TARGET_ENV S3_BUCKET_PRIVATE ${PROD_S3_BUCKET_PRIVATE}
+  cf set-env $TARGET_ENV S3_BUCKET_PUBLIC ${PROD_S3_BUCKET_PUBLIC}
+  cf set-env $TARGET_ENV S3_SECRET_KEY ${PROD_S3_SECRET_KEY}
+  cf set-env $TARGET_ENV S3_BUCKET_ARTIFACTS ${PROD_S3_BUCKET_ARTIFACTS}
+fi
+
+if [[ $ENV != "production" ]] && [[ $ENV != "staging" ]]; then
+  cf set-env $TARGET_ENV COMPANIES_HOUSE_API_KEY ${NP_COMPANIES_HOUSE_API_KEY}
+  cf set-env $TARGET_ENV IDEAL_POSTCODES_API_KEY ${NP_IDEAL_POSTCODES_API_KEY}
+  cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_KEY ${NP_PAR_GOVUK_NOTIFY_KEY}
+  cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_TEMPLATE ${NP_PAR_GOVUK_NOTIFY_TEMPLATE}
+  cf set-env $TARGET_ENV S3_ACCESS_KEY ${NP_S3_ACCESS_KEY}
+  cf set-env $TARGET_ENV S3_BUCKET_PRIVATE ${NP_S3_BUCKET_PRIVATE}
+  cf set-env $TARGET_ENV S3_BUCKET_PUBLIC ${NP_S3_BUCKET_PUBLIC}
+  cf set-env $TARGET_ENV S3_SECRET_KEY ${NP_S3_SECRET_KEY}
+  cf set-env $TARGET_ENV S3_BUCKET_ARTIFACTS ${S3_BUCKET_ARTIFACTS}
 fi
 
 
@@ -556,21 +537,18 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
     cf run-task $TARGET_ENV -m 2G -k 2G --name DB_IMPORT -c "./scripts/drop.sh && \
         cd $REMOTE_BUILD_DIR/web && \
         tar --no-same-owner -zxvf $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz -C $REMOTE_BUILD_DIR/$DB_DIR && \
-        ../vendor/bin/drush @par.paas sql:cli < $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
-        ../vendor/bin/drush spp && \
+        drush @par.paas sql:cli < $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql && \
         rm -f $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.sql"
 
     # Wait for database to be imported.
     cf_poll_task $TARGET_ENV DB_IMPORT
-
     printf "Database imported...\n"
+
+    printf "Sanitising PAR People Data...\n"
+    cf run-task $TARGET_ENV -m 4G -k 4G --name SPP -c "./scripts/sanitise-par-people.sh"
+    cf_poll_task $TARGET_ENV SPP
+    printf "Sanitisation completed...\n"
 fi
-
-printf "Running post deployment tasks...\n"
-cf run-task $TARGET_ENV -m 4G -k 4G --name POST_DEPLOY -c "./drupal-update.sh"
-
-cf_poll_task $TARGET_ENV POST_DEPLOY
-printf "Deployment completed...\n"
 
 ####################################################################################
 # Blue-green deployment switch
@@ -610,6 +588,69 @@ if [[ $ENV_ONLY != y ]]; then
     TARGET_ENV=$BLUE_ENV
 fi
 
+####################################################################################
+# Setting env vars of the build
+####################################################################################
+
+## Set the cf environment variables directly
+printf "Update the environment variables...\n"
+
+# Set the additional app_env variables.
+cf set-env $TARGET_ENV APP_ENV $ENV
+cf set-env $TARGET_ENV SENTRY_ENVIRONMENT $ENV
+
+# Ensure that the sentry release is also set.
+if [[ ! -z "${BUILD_VER}" ]]; then
+  cf set-env $TARGET_ENV BUILD_VERSION $ENV
+  cf set-env $TARGET_ENV SENTRY_RELEASE ${CIRCLE_TAG}
+  cf set-env $TARGET_ENV SENTRY_DSN ${SENTRY_DSN}
+  cf set-env $TARGET_ENV SENTRY_DSN_PUBLIC ${SENTRY_DSN_PUBLIC}
+fi
+
+# Set all other env vars applicable to all environments
+cf set-env $TARGET_ENV PAR_HASH_SALT ${PAR_HASH_SALT}
+cf set-env $TARGET_ENV TAG ${CIRCLE_TAG}
+cf set-env $TARGET_ENV CHARITY_COMMISSION_API_KEY ${CHARITY_COMMISSION_API_KEY}
+cf set-env $TARGET_ENV CLAMAV_HTTP_PASS ${CLAMAV_HTTP_PASS}
+cf set-env $TARGET_ENV CLAMAV_HTTP_USER ${CLAMAV_HTTP_USER}
+cf set-env $TARGET_ENV S3_REGION ${S3_REGION}
+
+# Set environment specific env vars
+if [[ $ENV = "staging" ]]; then
+  cf set-env $TARGET_ENV COMPANIES_HOUSE_API_KEY ${STAGING_COMPANIES_HOUSE_API_KEY}
+  cf set-env $TARGET_ENV IDEAL_POSTCODES_API_KEY ${STAGING_IDEAL_POSTCODES_API_KEY}
+  cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_KEY ${STAGING_PAR_GOVUK_NOTIFY_KEY}
+  cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_TEMPLATE ${STAGING_PAR_GOVUK_NOTIFY_TEMPLATE}
+  cf set-env $TARGET_ENV S3_ACCESS_KEY ${STAGING_S3_ACCESS_KEY}
+  cf set-env $TARGET_ENV S3_BUCKET_PRIVATE ${STAGING_S3_BUCKET_PRIVATE}
+  cf set-env $TARGET_ENV S3_BUCKET_PUBLIC ${STAGING_S3_BUCKET_PUBLIC}
+  cf set-env $TARGET_ENV S3_SECRET_KEY ${STAGING_S3_SECRET_KEY}
+  cf set-env $TARGET_ENV S3_BUCKET_ARTIFACTS ${STAGING_S3_BUCKET_ARTIFACTS}
+fi
+
+if [[ $ENV = "production" ]]; then
+  cf set-env $TARGET_ENV COMPANIES_HOUSE_API_KEY ${PROD_COMPANIES_HOUSE_API_KEY}
+  cf set-env $TARGET_ENV IDEAL_POSTCODES_API_KEY ${PROD_IDEAL_POSTCODES_API_KEY}
+  cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_KEY ${PROD_PAR_GOVUK_NOTIFY_KEY}
+  cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_TEMPLATE ${PROD_PAR_GOVUK_NOTIFY_TEMPLATE}
+  cf set-env $TARGET_ENV S3_ACCESS_KEY ${PROD_S3_ACCESS_KEY}
+  cf set-env $TARGET_ENV S3_BUCKET_PRIVATE ${PROD_S3_BUCKET_PRIVATE}
+  cf set-env $TARGET_ENV S3_BUCKET_PUBLIC ${PROD_S3_BUCKET_PUBLIC}
+  cf set-env $TARGET_ENV S3_SECRET_KEY ${PROD_S3_SECRET_KEY}
+  cf set-env $TARGET_ENV S3_BUCKET_ARTIFACTS ${PROD_S3_BUCKET_ARTIFACTS}
+fi
+
+if [[ $ENV != "production" ]] && [[ $ENV != "staging" ]]; then
+  cf set-env $TARGET_ENV COMPANIES_HOUSE_API_KEY ${NP_COMPANIES_HOUSE_API_KEY}
+  cf set-env $TARGET_ENV IDEAL_POSTCODES_API_KEY ${NP_IDEAL_POSTCODES_API_KEY}
+  cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_KEY ${NP_PAR_GOVUK_NOTIFY_KEY}
+  cf set-env $TARGET_ENV PAR_GOVUK_NOTIFY_TEMPLATE ${NP_PAR_GOVUK_NOTIFY_TEMPLATE}
+  cf set-env $TARGET_ENV S3_ACCESS_KEY ${NP_S3_ACCESS_KEY}
+  cf set-env $TARGET_ENV S3_BUCKET_PRIVATE ${NP_S3_BUCKET_PRIVATE}
+  cf set-env $TARGET_ENV S3_BUCKET_PUBLIC ${NP_S3_BUCKET_PUBLIC}
+  cf set-env $TARGET_ENV S3_SECRET_KEY ${NP_S3_SECRET_KEY}
+  cf set-env $TARGET_ENV S3_BUCKET_ARTIFACTS ${S3_BUCKET_ARTIFACTS}
+fi
 
 ####################################################################################
 # Scale up the application if required
@@ -620,7 +661,6 @@ if [[ $CF_INSTANCES -gt 1 ]]; then
     cf scale $TARGET_ENV -i $CF_INSTANCES
 fi
 
-
 ####################################################################################
 # Run post deployment scripts
 ####################################################################################
@@ -628,18 +668,24 @@ echo "##########################################################################
 echo >&2 "Deployment has been successfully deployed to 'https://$TARGET_ENV.cloudapps.digital'"
 echo "################################################################################################"
 
-printf "Running the post deployment scripts...\n"
+printf "Running post deploy Drupal updates...\n"
+cf run-task $TARGET_ENV -m 4G -k 4G --name POST_DEPLOY -c "./scripts/post-deploy.sh"
+cf_poll_task $TARGET_ENV POST_DEPLOY
+printf "Post deploy Drupal updates completed...\n"
+
+printf "Running the remaining post deployment scripts...\n"
 
 ## Run cron to perform necessary startup tasks
 cf run-task $TARGET_ENV -c "./scripts/cron-run.sh" -m 4G -k 4G --name CRON_RUNNER
 cf_poll_task $TARGET_ENV CRON_RUNNER
-
-## Run the cache warmer asynchronously with lots of memory
-cf run-task $TARGET_ENV -c "./scripts/cache-warmer.sh" -m 4G -k 4G --name CACHE_WARMER
+printf "Cron completed...\n"
 
 ## Index the search engine
 cf run-task $TARGET_ENV -c "./scripts/re-index.sh partnership_index --rebuild" -m 4G -k 4G --name SEARCH_REINDEX
-
-# Poll running tasks so that the job reports the completion status of each task
-cf_poll_task $TARGET_ENV CACHE_WARMER
 cf_poll_task $TARGET_ENV SEARCH_REINDEX
+printf "Search re-indexing complete...\n"
+
+## Run the cache warmer asynchronously with lots of memory
+cf run-task $TARGET_ENV -c "./scripts/cache-warmer.sh" -m 4G -k 4G --name CACHE_WARMER
+cf_poll_task $TARGET_ENV CACHE_WARMER
+printf "Cache warming complete...\n"
