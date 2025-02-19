@@ -452,7 +452,7 @@ jobs:
       - run:
           name: "Sanitise PAR People Data"
           command: |
-            ../vendor/bin/drush spp -y
+            ../vendor/bin/drush spp
           environment:
             APP_ENV: ci-sanitise
       - run:
