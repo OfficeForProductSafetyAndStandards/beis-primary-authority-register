@@ -524,6 +524,25 @@ printf "Starting the application...\n"
 
 cf start $TARGET_ENV
 
+## Take a db backup before we start
+if [[ $ENV == 'production' ]]; then
+
+  # 1. Take Database Backup
+  printf "Taking database backup...\n"
+    DB_BACKUP_FILE="$REMOTE_BUILD_DIR/backups/production_backup_$LIVE_RELEASE_TAG.sql"
+    cf run-task $TARGET_ENV -m 4G -k 4G --name DB_RELEASE_BACKUP -c "drush sql-dump --result-file='$DB_BACKUP_FILE'"
+    cf_poll_task $TARGET_ENV DB_RELEASE_BACKUP
+    printf "DB backup primed...\n"
+
+  printf "Fetching initial release code from AWS...\n"
+    cf run-task $TARGET_ENV -m 2G -k 2G --name FETCH_BACKUP_CODE -c "cp s3://${S3_ARTIFACTS_BUCKET}/builds/${LIVE_RELEASE_TAG}.tar.gz $REMOTE_BUILD_DIR/backups/active_release_tag.tar.gz"
+    cf_poll_task $TARGET_ENV FETCH_BACKUP_CODE
+    printf "Code backup primed...\n"
+
+    tar -zxvf $BUILD_DIR/initial_release.tar.gz -C $BUILD_DIR
+    rm $BUILD_DIR/initial_release.tar.gz
+fi
+
 ## Import the seed database and then delete it.
 if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
     if [[ ! -f "$BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz" ]]; then
