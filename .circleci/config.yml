@@ -450,9 +450,9 @@ jobs:
           environment:
             APP_ENV: ci-sanitise
       - run:
-          name: "Sanitise PAR Data"
+          name: "Sanitise PAR People Data"
           command: |
-            ./scripts/sanitise-par-people.sh
+            ../vendor/bin/drush spp -y
           environment:
             APP_ENV: ci-sanitise
       - run:
