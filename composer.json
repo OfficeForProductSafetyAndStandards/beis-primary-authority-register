@@ -94,11 +94,13 @@
         "drupal/raven": "^5.0",
         "drupal/redis": "1.7",
         "drupal/registered_organisations": "1.0.x-dev",
+        "drupal/rest_api_authentication": "^2.0",
         "drupal/robotstxt": "^1.6",
         "drupal/role_delegation": "~1.2.0",
         "drupal/search_api": "^1.35",
         "drupal/search_api_opensearch": "^2.1",
         "drupal/seckit": "^2.0",
+        "drupal/simple_oauth": "^6.0@beta",
         "drupal/symfony_mailer": "~1.4.0",
         "drupal/token": "^1.15",
         "drupal/tracer": "~1.0.0",
@@ -150,7 +152,8 @@
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "php-http/discovery": true,
             "phpstan/extension-installer": true,
-            "tbachert/spi": true
+            "tbachert/spi": true,
+            "drupal/core-project-message": true
         }
     },
     "extra": {
