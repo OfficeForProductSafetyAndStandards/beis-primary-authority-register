@@ -1,0 +1,4 @@
+# Permissions that the general public are able to use.
+access jsonapi routes:
+  title: 'Access JSON:API Routes'
+  description: 'Allows access to JSON:API routes.'

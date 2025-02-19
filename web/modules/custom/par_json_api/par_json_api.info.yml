@@ -1,0 +1,5 @@
+name: PAR JSON API
+type: module
+description: Configures JOSN API access in PAR
+core_version_requirement: ^10 || ^11
+package: PAR
