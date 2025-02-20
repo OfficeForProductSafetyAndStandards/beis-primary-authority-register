@@ -35,6 +35,7 @@ module:
   field_ui: 0
   file: 0
   filter: 0
+  flood_control: 0
   flysystem: 0
   flysystem_s3: 0
   google_tag: 0

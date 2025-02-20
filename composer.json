@@ -57,6 +57,7 @@
         "drupal/default_content": "^2.0@alpha",
         "drupal/email_registration": "^2.0@RC",
         "drupal/features": "~3.14.0",
+        "drupal/flood_control": "^3.0",
         "drupal/flysystem": "2.1.0-rc6",
         "drupal/flysystem_s3": "~2.1.0",
         "drupal/google_tag": "^2.0",
