@@ -738,15 +738,6 @@ $settings['session_write_interval'] = 180;
  */
 $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
 
-/**
- * Load the par cache backend.
- *
- * To enable the backends at the same time as enabling the module the drupal
- * boostrap container must be aware of the cache backends. To do so register
- * the par_cache.services.yml in the Drupal settings file:
- */
-$settings['container_yamls'][] = 'modules/custom/par_cache/par_cache.services.yml';
-$class_loader->addPsr4('Drupal\\par_cache\\', 'modules/custom/par_cache/src');
 
 /**
  * Override the default service container class.
