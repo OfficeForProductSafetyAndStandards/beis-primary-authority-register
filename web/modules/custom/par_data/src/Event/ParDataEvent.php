@@ -2,6 +2,8 @@
 
 namespace Drupal\par_data\Event;
 
+use Drupal\Core\Entity\EntityEvent;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\Event\EntityUpdateEvent;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 

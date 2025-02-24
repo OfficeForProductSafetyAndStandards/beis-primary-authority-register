@@ -1157,3 +1157,11 @@ if (PHP_SAPI === 'cli') {
   ini_set('memory_limit', '4G');
   ini_set('max_execution_time', '3600');
 }
+
+$settings['state_cache'] = TRUE;
+
+// Automatically generated include for settings managed by ddev.
+$ddev_settings = dirname(__FILE__) . '/settings.ddev.php';
+if (getenv('IS_DDEV_PROJECT') == 'true' && is_readable($ddev_settings)) {
+  require $ddev_settings;
+}
