@@ -31,19 +31,19 @@ public class BaseDashboardPage extends BasePageObject{
 	public void acceptCookies() {
 		driver.manage().deleteAllCookies();
 		
-		WebElement acceptBtn = cookieBanner.findElement(By.xpath("//button[contains(text(),'Accept')]"));
-		acceptBtn.click();
+		//WebElement acceptBtn = cookieBanner.findElement(By.xpath("//button[contains(text(),'Accept')]"));
+		//acceptBtn.click();
 	}
 	
 	public void hideCookieBanner() {
-		cookieBanner.findElement(By.xpath("//button[contains(text(),'Hide this message')]")).click();
+		//cookieBanner.findElement(By.xpath("//button[contains(text(),'Hide this message')]")).click();
 	}
 	
-	public Boolean checkCookiesAccepted() {
-		WebElement cookiesAccepted = cookieBanner.findElement(By.id("govuk-cookies-accepted"));
-		
-		return cookiesAccepted.getText().contains("You’ve accepted additional cookies.");
-	}
+	//public Boolean checkCookiesAccepted() {
+	//	WebElement cookiesAccepted = cookieBanner.findElement(By.id("govuk-cookies-accepted"));
+	//	
+	//	return cookiesAccepted.getText().contains("You’ve accepted additional cookies.");
+	//}
 	
 	public Boolean checkCookieBannerExists() {
 		return driver.findElements(By.id("block-cookiebanner")).isEmpty();
