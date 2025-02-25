@@ -16,9 +16,6 @@ public class BaseDashboardPage extends BasePageObject{
 	//@FindBy(id = "block-cookiebanner")
 	//private WebElement cookieBanner;
 	
-	//@FindBy(id = "block-cookiebanner")
-	//private WebElement cookieBanner;
-	
 	@FindBy(id = "block-par-theme-page-title")
 	private WebElement dashBoardHeader;
 	
