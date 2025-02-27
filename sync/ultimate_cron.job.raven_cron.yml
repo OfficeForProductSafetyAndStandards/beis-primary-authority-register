@@ -8,7 +8,7 @@ title: 'Default cron handler'
 id: raven_cron
 weight: 0
 module: raven
-callback: raven_cron
+callback: 'raven#cron'
 scheduler:
   id: simple
 launcher:

@@ -3,23 +3,23 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.par_data_partnership.field_advice
     - field.storage.par_data_advice.field_regulatory_function
-    - field.storage.par_data_partnership.field_authority
     - field.storage.par_data_coordinated_business.field_legal_entity
-    - field.storage.par_data_partnership.field_coordinated_business
     - field.storage.par_data_coordinated_business.field_organisation
+    - field.storage.par_data_organisation.field_legal_entity
+    - field.storage.par_data_partnership.field_advice
+    - field.storage.par_data_partnership.field_authority
+    - field.storage.par_data_partnership.field_coordinated_business
     - field.storage.par_data_partnership.field_inspection_plan
     - field.storage.par_data_partnership.field_organisation
-    - field.storage.par_data_organisation.field_legal_entity
     - field.storage.par_data_partnership.field_partnership_legal_entity
-    - field.storage.par_data_partnership_le.field_legal_entity
     - field.storage.par_data_partnership.field_regulatory_function
+    - field.storage.par_data_partnership_le.field_legal_entity
     - search_api.server.opensearch
   module:
-    - par_data
     - file
-    - search_api
+    - par_data
+    - search_api_opensearch
 id: partnership_index
 name: 'Partnership Index'
 description: ''

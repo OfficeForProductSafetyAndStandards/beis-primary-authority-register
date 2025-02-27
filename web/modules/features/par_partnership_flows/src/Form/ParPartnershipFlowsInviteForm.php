@@ -9,6 +9,7 @@ use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\user\Entity\User;
+use Drupal\user\Entity\Role;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
@@ -224,7 +225,9 @@ HEREDOC;
     // role until full user management and contacts are on a partnership basis.
     if (!$this->getFlowDataHandler()->getDefaultValues('recipient_exists', FALSE)) {
 
-      foreach (user_roles() as $user_role) {
+      $roles = Role::loadMultiple();
+
+      foreach ($roles as $role) {
         if (empty($user_role->get('_core'))) {
           $par_roles[$user_role->id()] = $user_role->label();
         }

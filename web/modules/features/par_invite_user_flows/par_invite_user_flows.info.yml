@@ -1,7 +1,7 @@
 name: 'PAR User Invite Flows'
 type: module
 description: 'Creates the flows required to invite an existing person to create an account.'
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^9 || ^10 || ^11
 package: PAR
 dependencies:
   - par_data
