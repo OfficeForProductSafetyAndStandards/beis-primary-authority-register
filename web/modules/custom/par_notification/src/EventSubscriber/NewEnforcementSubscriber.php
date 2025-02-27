@@ -21,7 +21,9 @@ class NewEnforcementSubscriber extends ParEventSubscriberBase {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[EntityInsertEvent::class][] = ['onEvent', 800];
+    if (class_exists('\ParDataEvent')) {
+      $events[EntityInsertEvent::class][] = ['onEvent', 800];
+    }
 
     return $events;
   }

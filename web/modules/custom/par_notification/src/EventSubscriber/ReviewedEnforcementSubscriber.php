@@ -27,7 +27,9 @@ class ReviewedEnforcementSubscriber extends ParEventSubscriberBase {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[ParDataEvent::statusChange('par_data_enforcement_notice', 'reviewed')][] = ['onEvent', 800];
+    if (class_exists('\ParDataEvent')) {
+      $events[ParDataEvent::statusChange('par_data_enforcement_notice', 'reviewed')][] = ['onEvent', 800];
+    }
 
     return $events;
   }

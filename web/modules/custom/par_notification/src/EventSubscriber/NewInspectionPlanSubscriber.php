@@ -24,7 +24,9 @@ class NewInspectionPlanSubscriber extends ParEventSubscriberBase {
    */
   static function getSubscribedEvents() {
     // React to custom reference event bring dispatched.
-    $events[ParDataEvent::customAction('par_data_inspection_plan', 'post_create')][] = ['onEvent', 800];
+    if (class_exists('\ParDataEvent')) {
+      $events[ParDataEvent::customAction('par_data_inspection_plan', 'post_create')][] = ['onEvent', 800];
+    }
 
     return $events;
   }

@@ -22,7 +22,9 @@ class PartnershipAmendmentConfirmedTaskSubscriber extends ParEventSubscriberBase
    */
   static function getSubscribedEvents() {
     // Confirmation event should fire after a partnership has been confirmed.
-    $events[ParDataEvent::customAction('par_data_partnership', 'amendment_confirmed')][] = ['onEvent', -101];
+    if (class_exists('\ParDataEvent')) {
+      $events[ParDataEvent::customAction('par_data_partnership', 'amendment_confirmed')][] = ['onEvent', -101];
+    }
 
     return $events;
   }

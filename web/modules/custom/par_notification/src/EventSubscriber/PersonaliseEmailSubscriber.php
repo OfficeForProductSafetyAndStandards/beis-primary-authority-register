@@ -21,7 +21,9 @@ class PersonaliseEmailSubscriber implements EventSubscriberInterface {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[ParNotificationEvent::SEND][] = ['onSend', 100];
+    if (class_exists('\ParDataEvent')) {
+      $events[ParNotificationEvent::SEND][] = ['onSend', 100];
+    }
 
     return $events;
   }
