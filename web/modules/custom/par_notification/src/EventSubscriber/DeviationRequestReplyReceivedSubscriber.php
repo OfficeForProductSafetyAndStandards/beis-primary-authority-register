@@ -3,7 +3,7 @@
 namespace Drupal\par_notification\EventSubscriber;
 
 use Drupal\comment\CommentInterface;
-use Drupal\Core\Entity\Event\EntityInsertEvent;
+use Drupal\core_event_dispatcher\Event\Entity\EntityInsertEvent;
 use Drupal\par_data\Entity\ParDataDeviationRequest;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_notification\ParEventSubscriberBase;

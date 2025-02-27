@@ -2,7 +2,7 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
-use Drupal\Core\Entity\Event\EntityPreDeleteEvent;
+use Drupal\core_event_dispatcher\Event\Entity\EntityPredeleteEvent;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_notification\ParEventSubscriberBase;
 

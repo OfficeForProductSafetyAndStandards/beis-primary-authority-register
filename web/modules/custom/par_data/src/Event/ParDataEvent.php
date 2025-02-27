@@ -2,9 +2,8 @@
 
 namespace Drupal\par_data\Event;
 
-use Drupal\Core\Entity\EntityEvent;
+use Drupal\core_event_dispatcher\Event\Entity\EntityUpdateEvent;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\Event\EntityUpdateEvent;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 
 /**
@@ -23,8 +22,7 @@ class ParDataEvent extends EntityUpdateEvent implements ParDataEventInterface {
 
 
   /**
-   * The name of the event triggered when entity reference is actioned.
-   *
+   * The name of the event triggered when entity reference is actioned
    * @Event
    *
    * @var string

@@ -64,6 +64,7 @@
         "drupal/govuk_notify": "^3.1",
         "drupal/govuk_theme": "^2.1",
         "drupal/health_check": "^3.1",
+        "drupal/hook_event_dispatcher": "^4.2",
         "drupal/http_response_headers": "~2.0.0",
         "drupal/inline_entity_form": "^3.0@RC",
         "drupal/invite": "8.x-1.x-dev",
@@ -183,9 +184,6 @@
             "drupal/core": "-p2"
         },
         "patches": {
-            "drupal/core": {
-                "Add events for matching entity hooks": "./patches/core/event-entity-hook.patch"
-            },
             "drupal/registered_organisations": {
                 "Fix number format for regsistered charities": "./patches/registered_organisations/charities_commission_number_format.patch"
             },

@@ -19,6 +19,7 @@ module:
   config_update: 0
   content_translation: 0
   contextual: 0
+  core_event_dispatcher: 0
   csv_serialization: 0
   ctools: 0
   datetime: 0
@@ -41,6 +42,7 @@ module:
   govuk_notify: 0
   health_check: 0
   help: 0
+  hook_event_dispatcher: 0
   http_response_headers: 0
   image: 0
   inline_entity_form: 0

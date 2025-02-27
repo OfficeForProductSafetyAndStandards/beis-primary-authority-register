@@ -2,7 +2,7 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
-use Drupal\Core\Entity\Event\EntityInsertEvent;
+use Drupal\core_event_dispatcher\Event\Entity\EntityInsertEvent;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
 use Drupal\par_notification\ParEventSubscriberBase;
 

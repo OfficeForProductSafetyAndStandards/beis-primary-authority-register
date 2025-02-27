@@ -2,7 +2,8 @@
 
 namespace Drupal\par_subscriptions\EventSubscriber;
 
-use Drupal\Core\Entity\Event\EntityInsertEvent;
+use Drupal\core_event_dispatcher\Event\Entity\EntityInsertEvent;
+
 use Drupal\par_subscriptions\Entity\ParSubscriptionInterface;
 use Drupal\user\UserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
