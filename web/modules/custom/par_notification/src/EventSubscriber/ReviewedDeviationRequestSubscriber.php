@@ -27,7 +27,7 @@ class ReviewedDeviationRequestSubscriber extends ParEventSubscriberBase {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    if (class_exists('\ParDataEvent')) {
+    if (class_exists('Drupal\par_data\Event\ParDataEvent')) {
       $events[ParDataEvent::statusChange('par_data_deviation_request', 'approved')][] = ['onEvent', 800];
       $events[ParDataEvent::statusChange('par_data_deviation_request', 'blocked')][] = ['onEvent', 800];
     }

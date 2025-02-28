@@ -22,7 +22,7 @@ class PartnershipDeletedSubscriber extends ParEventSubscriberBase {
    */
   static function getSubscribedEvents() {
     // Notify on partnership removal.
-    if (class_exists('\ParDataEvent')) {
+    if (class_exists('Drupal\par_data\Event\ParDataEvent')) {
       $events[EntityPreDeleteEvent::class][] = ['onEvent', -100];
     }
 

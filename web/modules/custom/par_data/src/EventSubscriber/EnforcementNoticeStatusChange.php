@@ -17,7 +17,7 @@ class EnforcementNoticeStatusChange implements EventSubscriberInterface {
   static function getSubscribedEvents() {
     // React to Enforcement Actions being reviewed.
 
-    if (class_exists('\ParDataEvent')) {
+    if (class_exists('Drupal\par_data\Event\ParDataEvent')) {
       $events[ParDataEvent::statusChange('par_data_enforcement_action', 'approved')][] = ['onNoticeStatusChange', 900];
       $events[ParDataEvent::statusChange('par_data_enforcement_action', 'blocked')][] = ['onNoticeStatusChange', 900];
       $events[ParDataEvent::statusChange('par_data_enforcement_action', 'referred')][] = ['onNoticeStatusChange', 900];
