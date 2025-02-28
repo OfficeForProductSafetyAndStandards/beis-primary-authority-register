@@ -882,6 +882,11 @@ $settings['par_branded_header_footer'] = TRUE;
  * Extract the connection credentials from the VCAP_SERVICES environment variable
  * which is configured by the PaaS service manager
  */
+if (PHP_SAPI === 'cli' && $env_services = getenv("SECRET_VCAP_SERVICES")) {
+  // Need to decode the VCAP_SERVICES environment variable.
+  putenv('VCAP_SERVICES=' . json_decode($env_services));
+}
+
 if ($env_services = getenv("VCAP_SERVICES")) {
   $services = json_decode($env_services);
   $db_credentials = isset($services->postgres) ? $services->postgres[0]->credentials : NULL;
@@ -892,7 +897,7 @@ if ($env_services = getenv("VCAP_SERVICES")) {
 // Set the PaaS database connection credentials.
 if (isset($db_credentials)) {
   $databases['default']['default'] = [
-    'namespace' => 'Drupal\\Core\\Database\\Driver\\pgsql',
+    'namespace' => 'Drupal\\pgsql\\Driver\\Database\\pgsql',
     'driver' => 'pgsql',
     'database' => $db_credentials->name,
     'username' => $db_credentials->username,
@@ -901,14 +906,15 @@ if (isset($db_credentials)) {
     'host' => $db_credentials->host,
     'port' => $db_credentials->port,
     'collation' => 'utf8mb4_general_ci',
+    'autoload' => 'core/modules/pgsql/src/Driver/Database/pgsql/',
   ];
 }
 
-// Set the PaaS redis conneciton credentials.
+// Set the PaaS redis connection credentials.
 if (isset($redis_credentials)) {
   // Enable Redis services.
   $settings['redis.connection']['interface'] = 'Predis';
-  $settings['redis.connection']['scheme'] = 'tls';
+  $settings['redis.connection']['scheme'] = $redis_credentials->scheme ?? 'tls';
   $settings['redis.connection']['host'] = $redis_credentials->host;
   $settings['redis.connection']['port'] = $redis_credentials->port;
   $settings['redis.connection']['password'] = $redis_credentials->password;
