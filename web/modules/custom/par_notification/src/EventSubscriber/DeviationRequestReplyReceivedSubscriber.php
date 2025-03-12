@@ -3,16 +3,9 @@
 namespace Drupal\par_notification\EventSubscriber;
 
 use Drupal\comment\CommentInterface;
-use Drupal\Core\Entity\EntityEvent;
-use Drupal\Core\Entity\EntityEvents;
-use Drupal\message\Entity\Message;
+use Drupal\core_event_dispatcher\Event\Entity\EntityInsertEvent;
 use Drupal\par_data\Entity\ParDataDeviationRequest;
-use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_data\Entity\ParDataGeneralEnquiry;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Event\ParDataEventInterface;
-use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParEventSubscriberBase;
 
 class DeviationRequestReplyReceivedSubscriber extends ParEventSubscriberBase {
@@ -30,34 +23,39 @@ class DeviationRequestReplyReceivedSubscriber extends ParEventSubscriberBase {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[EntityEvents::insert('comment')][] = ['onEvent', 800];
+    if (class_exists('Drupal\par_data\Event\ParDataEvent')) {
+      $events[EntityInsertEvent::class][] = ['onEvent', 800];
+    }
 
     return $events;
   }
 
   /**
-   * @param EntityEvent $event
+   * @param EntityInsertEvent $event
    */
-  public function onEvent(EntityEvent $event) {
-    $this->setEvent($event);
+  public function onEvent(EntityInsertEvent $event) {
+    if ($event->getEntity() instanceof CommentInterface) {
+      /** @var CommentInterface $entity */
+      $entity = $event->getEntity();
 
-    /** @var CommentInterface $entity */
-    $entity = $event->getEntity();
-    /** @var ParDataDeviationRequest $commented_entity */
-    $commented_entity = $entity->getCommentedEntity();
-    $par_data_partnership = $commented_entity?->getPartnership(TRUE);
+      $this->setEvent($event);
 
-    // Only send messages for active deviation requests.
-    if ($commented_entity instanceof ParDataDeviationRequest &&
-      $par_data_partnership instanceof ParDataPartnership &&
-      $commented_entity->isActive()) {
+      /** @var ParDataDeviationRequest $commented_entity */
+      $commented_entity = $entity->getCommentedEntity();
+      $par_data_partnership = $commented_entity?->getPartnership(TRUE);
 
-      // Send the message.
-      $arguments = [
-        '@partnership_label' => strtolower($par_data_partnership->label()),
-      ];
-      $additional_parameters = ['field_deviation_request' => $commented_entity];
-      $this->sendMessage($arguments, $additional_parameters);
+      // Only send messages for active deviation requests.
+      if ($commented_entity instanceof ParDataDeviationRequest &&
+        $par_data_partnership instanceof ParDataPartnership &&
+        $commented_entity->isActive()) {
+
+        // Send the message.
+        $arguments = [
+          '@partnership_label' => strtolower($par_data_partnership->label()),
+        ];
+        $additional_parameters = ['field_deviation_request' => $commented_entity];
+        $this->sendMessage($arguments, $additional_parameters);
+      }
     }
   }
 

@@ -2,16 +2,9 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
-use Drupal\Core\Entity\EntityEvent;
-use Drupal\Core\Entity\EntityEvents;
-use Drupal\message\Entity\Message;
-use Drupal\par_data\Entity\ParDataDeviationRequest;
-use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\core_event_dispatcher\Event\Entity\EntityInsertEvent;
 use Drupal\par_data\Entity\ParDataGeneralEnquiry;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Event\ParDataEventInterface;
-use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParEventSubscriberBase;
 
 class NewGeneralEnquirySubscriber extends ParEventSubscriberBase {
@@ -29,31 +22,35 @@ class NewGeneralEnquirySubscriber extends ParEventSubscriberBase {
    * @return mixed
    */
   static function getSubscribedEvents() {
-    $events[EntityEvents::insert('par_data_general_enquiry')][] = ['onEvent', 800];
+    if (class_exists('Drupal\par_data\Event\ParDataEvent')) {
+      $events[EntityInsertEvent::class][] = ['onEvent', 800];
+    }
 
     return $events;
   }
 
   /**
-   * @param EntityEvent $event
+   * @param EntityInsertEvent $event
    */
-  public function onEvent(EntityEvent $event) {
-    $this->setEvent($event);
+  public function onEvent(EntityInsertEvent $event) {
+    if ($event->getEntity() instanceof ParDataGeneralEnquiry) {
+      $this->setEvent($event);
 
-    /** @var ParDataGeneralEnquiry $entity */
-    $entity = $event->getEntity();
-    $par_data_partnership = $entity?->getPartnership(TRUE);
+      /** @var ParDataGeneralEnquiry $entity */
+      $entity = $event->getEntity();
+      $par_data_partnership = $entity?->getPartnership(TRUE);
 
-    // Only send messages for active general enquiries.
-    if ($entity instanceof ParDataGeneralEnquiry &&
-      $par_data_partnership instanceof ParDataPartnership &&
-      $entity->isActive()) {
+      // Only send messages for active general enquiries.
+      if ($entity instanceof ParDataGeneralEnquiry &&
+        $par_data_partnership instanceof ParDataPartnership &&
+        $entity->isActive()) {
 
-      // Send the message.
-      $arguments = [
-        '@partnership_label' => strtolower($par_data_partnership->label()),
-      ];
-      $this->sendMessage($arguments);
+        // Send the message.
+        $arguments = [
+          '@partnership_label' => strtolower($par_data_partnership->label()),
+        ];
+        $this->sendMessage($arguments);
+      }
     }
   }
 
