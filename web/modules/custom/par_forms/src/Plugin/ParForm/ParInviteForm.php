@@ -3,12 +3,11 @@
 namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\TypedData\DataDefinition;
-use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormException;
 use Drupal\par_forms\ParFormPluginBase;
+use Drupal\user\Entity\Role;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -115,7 +114,8 @@ HEREDOC;
     }
 
     // Determine which roles can be invited.
-    foreach (user_roles() as $user_role) {
+    $roles = Role::loadMultiple();
+    foreach ($roles as $role) {
       if (empty($user_role->get('_core'))) {
         $par_roles[$user_role->id()] = $user_role->label();
       }

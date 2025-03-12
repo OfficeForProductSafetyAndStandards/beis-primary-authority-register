@@ -3,7 +3,6 @@
 namespace Drupal\par_actions\Plugin\Factory;
 
 use Drupal\Core\Datetime\DrupalDateTime;
-use RapidWeb\UkBankHolidays\Factories\UkBankHolidayFactory;
 
 class BusinessDaysCalculator {
 
@@ -19,6 +18,32 @@ class BusinessDaysCalculator {
    * @param DrupalDateTime   $startDate       Date to start calculations from
    * @param DrupalDateTime[] $holidays        Array of holidays, holidays are not considered business days.
    * @param int[]      $nonBusinessDays Array of days of the week which are not business days.
+   */
+  protected DrupalDateTime $date;
+
+  /**
+   * Array of holidays.
+   *
+   * @var \Drupal\Core\Datetime\DrupalDateTime
+   */
+  protected array $holidays;
+
+  /**
+   * Array of days of the week which are not business days.
+   *
+   * @var int
+   */
+  protected array $nonBusinessDays;
+
+  /**
+   * Constructs a BusinessDaysCalculator object.
+   *
+   * @param \Drupal\Core\Datetime\DrupalDateTime $startDate
+   * Date to start calculations from.
+   * @param \Drupal\Core\Datetime\DrupalDateTime$holidays
+   * Array of holidays, holidays are not considered business days.
+   * @param int$nonBusinessDays
+   * Array of days of the week which are not business days.
    */
   public function __construct(DrupalDateTime $startDate, array $holidays, array $nonBusinessDays) {
     $this->date = $startDate;

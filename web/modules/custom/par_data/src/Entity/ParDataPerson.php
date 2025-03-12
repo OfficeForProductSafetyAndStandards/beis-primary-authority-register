@@ -640,7 +640,6 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
     if ($preference_message = $this->getCommunicationPreferredText($preference_field) && (!empty($text))) {
       return "{$text} (preferred)";
     }
-
     return $text;
   }
 

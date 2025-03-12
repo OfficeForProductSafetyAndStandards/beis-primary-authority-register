@@ -1219,6 +1219,7 @@ display:
               allow_secondary: false
               secondary_label: 'Advanced options'
               secondary_open: false
+              autosubmit_textfield_minimum_length: 3
             sort:
               plugin_id: default
               advanced:
@@ -1236,6 +1237,7 @@ display:
                   placeholder_text: ''
                   collapsible: false
                   is_secondary: false
+                  hide_label: false
       access:
         type: perm
         options:
@@ -1299,7 +1301,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: numeric
+          plugin_id: entity_target_id
           default_action: default
           exception:
             value: all
@@ -1325,6 +1327,7 @@ display:
           validate_options: {  }
           break_phrase: false
           not: false
+          target_entity_type_id: par_data_authority
         field_enforcing_authority_target_id:
           id: field_enforcing_authority_target_id
           table: par_data_enforcement_notice__field_enforcing_authority
@@ -1332,7 +1335,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: numeric
+          plugin_id: entity_target_id
           default_action: default
           exception:
             value: all
@@ -1358,6 +1361,7 @@ display:
           validate_options: {  }
           break_phrase: false
           not: false
+          target_entity_type_id: par_data_authority
       filters:
         type:
           id: type

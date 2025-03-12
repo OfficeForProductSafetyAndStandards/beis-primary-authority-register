@@ -28,7 +28,9 @@ class StaleMemberListWarningSubscriber extends ParEventSubscriberBase {
    */
   static function getSubscribedEvents() {
     // Get the custom event, dispatched when a member list needs updating.
-    $events[ParDataEvent::customAction('par_data_partnership', 'stale_list_notification')][] = ['onEvent', -100];
+    if (class_exists('Drupal\par_data\Event\ParDataEvent')) {
+      $events[ParDataEvent::customAction('par_data_partnership', 'stale_list_notification')][] = ['onEvent', -100];
+    }
 
     return $events;
   }
