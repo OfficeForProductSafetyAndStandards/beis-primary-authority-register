@@ -289,6 +289,7 @@ $settings['config_sync_directory'] = '../sync';
  *   $settings['hash_salt'] = file_get_contents('/home/example/salt.txt');
  * @endcode
  */
+
 $settings['hash_salt'] = getenv('PAR_HASH_SALT');
 
 /**
@@ -737,15 +738,6 @@ $settings['session_write_interval'] = 180;
  */
 $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
 
-/**
- * Load the par cache backend.
- *
- * To enable the backends at the same time as enabling the module the drupal
- * boostrap container must be aware of the cache backends. To do so register
- * the par_cache.services.yml in the Drupal settings file:
- */
-$settings['container_yamls'][] = 'modules/custom/par_cache/par_cache.services.yml';
-$class_loader->addPsr4('Drupal\\par_cache\\', 'modules/custom/par_cache/src');
 
 /**
  * Override the default service container class.
@@ -1154,12 +1146,22 @@ if (file_exists("{$app_root}/{$site_path}/settings.local.php")) {
  *
  * Load specific service file for each app environment.
  */
-if ($config['config_split.config_split.dev_config']['status'] || $config['config_split.config_split.test_config']['status']) {
-  $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.local.non-production.yml';
+if ($app_env != 'staging') {
+  if ($config['config_split.config_split.dev_config']['status'] || $config['config_split.config_split.test_config']['status']) {
+    $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.local.non-production.yml';
+  }
 }
 
 # Allow php to run with increased memory from the CLI.
 if (PHP_SAPI === 'cli') {
   ini_set('memory_limit', '4G');
   ini_set('max_execution_time', '3600');
+}
+
+$settings['state_cache'] = TRUE;
+
+// Automatically generated include for settings managed by ddev.
+$ddev_settings = dirname(__FILE__) . '/settings.ddev.php';
+if (getenv('IS_DDEV_PROJECT') == 'true' && is_readable($ddev_settings)) {
+  require $ddev_settings;
 }

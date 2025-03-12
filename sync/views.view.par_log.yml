@@ -536,6 +536,7 @@ display:
               allow_secondary: false
               secondary_label: 'Advanced options'
               secondary_open: false
+              autosubmit_textfield_minimum_length: 3
             filter:
               event:
                 plugin_id: default
@@ -545,6 +546,7 @@ display:
                     filter_rewrite_values: "Insert|Created\r\nUpdate|Updated\r\nDelete|Deleted"
                   collapsible: false
                   is_secondary: false
+                  hide_label: false
       access:
         type: perm
         options:

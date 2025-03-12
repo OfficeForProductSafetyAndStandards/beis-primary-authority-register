@@ -110,6 +110,37 @@ function par_theme_element_info_alter(array &$info) {
     $info['actions']['#attributes']['class'][] = 'govuk-button-group';
     $info['actions']['#weight'] = 999;
   }
+  $info['checkboxes']['#process'][] = '_par_theme_process_options_element';
+  $info['radios']['#process'][] = '_par_theme_process_options_element';
+}
+
+/**
+ * Processes checkboxes and radios elements.
+ *
+ * Checkboxes and radios have an accessibility bug where the child option
+ * elements inherit an empty aria-describedby attribute from the parent.
+ * Because the child elements are fully rendered before the parent, this can't
+ * be handled in preprocess functions.
+ *
+ * @param array $element
+ *   An options form element.
+ *
+ * @return array
+ *   The processed options form element.
+ *
+ * @see https://www.drupal.org/project/drupal/issues/2839344
+ */
+function _par_theme_process_options_element(array $element) {
+  foreach ($element as $key => $value) {
+    if (substr((string) $key, 0, 1) == '#') {
+      continue;
+    }
+    if (!isset($value['#description']) && isset($value['#attributes']['aria-describedby'])) {
+      unset($value['#attributes']['aria-describedby']);
+      $element[$key] = $value;
+    }
+  }
+  return $element;
 }
 
 /**
