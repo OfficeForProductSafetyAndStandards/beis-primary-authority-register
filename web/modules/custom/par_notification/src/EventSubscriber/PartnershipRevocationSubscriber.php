@@ -28,7 +28,9 @@ class PartnershipRevocationSubscriber extends ParEventSubscriberBase {
   static function getSubscribedEvents() {
     // Revocation event should fire after most default events to make sure
     // revocation has not been cancelled.
-    $events[ParDataEvent::statusChange('par_data_partnership', 'revoked')][] = ['onEvent', -100];
+    if (class_exists('Drupal\par_data\Event\ParDataEvent')) {
+      $events[ParDataEvent::statusChange('par_data_partnership', 'revoked')][] = ['onEvent', -100];
+    }
 
     return $events;
   }

@@ -8,7 +8,7 @@ title: 'Default cron handler'
 id: message_cron
 weight: 0
 module: message
-callback: message_cron
+callback: 'message#cron'
 scheduler:
   id: crontab
   configuration:

@@ -2,13 +2,6 @@
 
 namespace Drupal\par_data\EventSubscriber;
 
-use Drupal\Core\Entity\EntityEvent;
-use Drupal\Core\Entity\EntityEvents;
-use Drupal\Core\Link;
-use Drupal\Core\Url;
-use Drupal\message\Entity\Message;
-use Drupal\message\MessageInterface;
-use Drupal\par_data\Entity\ParDataEnforcementAction;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
@@ -23,9 +16,12 @@ class EnforcementNoticeStatusChange implements EventSubscriberInterface {
    */
   static function getSubscribedEvents() {
     // React to Enforcement Actions being reviewed.
-    $events[ParDataEvent::statusChange('par_data_enforcement_action', 'approved')][] = ['onNoticeStatusChange', 900];
-    $events[ParDataEvent::statusChange('par_data_enforcement_action', 'blocked')][] = ['onNoticeStatusChange', 900];
-    $events[ParDataEvent::statusChange('par_data_enforcement_action', 'referred')][] = ['onNoticeStatusChange', 900];
+
+    if (class_exists('Drupal\par_data\Event\ParDataEvent')) {
+      $events[ParDataEvent::statusChange('par_data_enforcement_action', 'approved')][] = ['onNoticeStatusChange', 900];
+      $events[ParDataEvent::statusChange('par_data_enforcement_action', 'blocked')][] = ['onNoticeStatusChange', 900];
+      $events[ParDataEvent::statusChange('par_data_enforcement_action', 'referred')][] = ['onNoticeStatusChange', 900];
+    }
 
     return $events;
   }

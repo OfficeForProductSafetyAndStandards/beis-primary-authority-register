@@ -8,7 +8,7 @@ title: 'Default cron handler'
 id: xmlsitemap_cron
 weight: 0
 module: xmlsitemap
-callback: xmlsitemap_cron
+callback: 'xmlsitemap#cron'
 scheduler:
   id: crontab
   configuration:

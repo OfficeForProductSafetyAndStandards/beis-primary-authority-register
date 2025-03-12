@@ -1,7 +1,7 @@
 name: PAR Member List Unlock Flows
 type: module
 description: Creates the flows required for the member list to be unlocked.
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^9 || ^10 || ^11
 package: PAR
 dependencies:
   - par_data
