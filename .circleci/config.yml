@@ -446,13 +446,7 @@ jobs:
           name: "Sanitise database"
           command: |
             cd web
-            ../vendor/bin/drush @par.paas sql:sanitize -y
-          environment:
-            APP_ENV: ci-sanitise
-      - run:
-          name: "Sanitise PAR Data"
-          command: |
-            ./scripts/sanitise-par-people.sh
+            ../vendor/bin/drush @par.paas sql:sanitize -y && ../vendor/bin/drush spp
           environment:
             APP_ENV: ci-sanitise
       - run:
