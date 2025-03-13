@@ -206,7 +206,7 @@
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2021-11-23/allow_configurable_scheme-2988257-18.patch"
             },
             "twistor/flysystem-stream-wrapper": {
-                "Fix PHP error on flystem (see https://github.com/twistor/flysystem-stream-wrapper/issues/27 & https://www.drupal.org/project/flysystem/issues/3387094": "patches/flysystem-stream-wrapper/flysystem-deprecated-dynamic-property.patch"
+                "Fix PHP error on flystem (see https://github.com/twistor/flysystem-stream-wrapper/issues/27 & https://www.drupal.org/project/flysystem/issues/3387094": "./patches/flysystem-stream-wrapper/flysystem-deprecated-dynamic-property.patch"
             }
         }
     },
