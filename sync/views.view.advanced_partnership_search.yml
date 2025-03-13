@@ -1219,6 +1219,7 @@ display:
               autosubmit: false
               autosubmit_exclude_textfield: true
               autosubmit_textfield_delay: 500
+              autosubmit_textfield_minimum_length: 3
               autosubmit_hide: false
               input_required: false
               allow_secondary: false
@@ -3900,10 +3901,10 @@ display:
       export_method: batch
       export_batch_size: 100
       export_limit: 0
-      export_filesystem: s3private
       custom_redirect_path: false
       redirect_to_display: advanced_search
       include_query_params: false
+      export_filesystem: s3private
     cache_metadata:
       max-age: -1
       contexts:

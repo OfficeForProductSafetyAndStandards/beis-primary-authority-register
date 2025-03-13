@@ -379,6 +379,7 @@ display:
             general:
               autosubmit: false
               autosubmit_exclude_textfield: false
+              autosubmit_textfield_minimum_length: 3
               autosubmit_hide: false
               allow_secondary: false
               secondary_label: 'Advanced options'

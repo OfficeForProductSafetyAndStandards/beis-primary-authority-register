@@ -202,14 +202,11 @@
                 "Unable to override default scheme with settings": "https://www.drupal.org/files/issues/2021-02-16/redis-support_tls_on_predis-3004561-33.patch",
                 "Take into account CONFIG command may not work": "https://www.drupal.org/files/issues/2021-02-16/redis-allow_disabled_config-3173988-4.patch"
             },
-            "drupal/registered_organisations": {
-                "Change form validation to allow for 6 characters": "./patches/charities_commission_number_format.patch"
-            },
             "drupal/vbo_export": {
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2021-11-23/allow_configurable_scheme-2988257-18.patch"
             },
             "twistor/flysystem-stream-wrapper": {
-                "Fix PHP error on flystem (see https://github.com/twistor/flysystem-stream-wrapper/issues/27 & https://www.drupal.org/project/flysystem/issues/3387094": "patches/flysystem-stream-wrapper/flysystem-deprecated-dynamic-property.patch"
+                "Fix PHP error on flystem (see https://github.com/twistor/flysystem-stream-wrapper/issues/27 & https://www.drupal.org/project/flysystem/issues/3387094": "./patches/flysystem-stream-wrapper/flysystem-deprecated-dynamic-property.patch"
             }
         }
     },
