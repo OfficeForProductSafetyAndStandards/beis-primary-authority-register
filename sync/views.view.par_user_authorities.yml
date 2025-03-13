@@ -377,10 +377,10 @@ display:
             general:
               autosubmit: false
               autosubmit_exclude_textfield: false
+              autosubmit_textfield_minimum_length: 3
               autosubmit_hide: false
               allow_secondary: false
               secondary_label: 'Advanced options'
-              autosubmit_textfield_minimum_length: 3
             authority_name:
               bef_format: default
               more_options:
