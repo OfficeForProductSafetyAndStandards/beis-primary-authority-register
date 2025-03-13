@@ -329,7 +329,6 @@ display:
               autosubmit_hide: false
               allow_secondary: false
               secondary_label: 'Advanced options'
-              autosubmit_textfield_minimum_length: 3
             list:
               bef_format: default
               more_options:

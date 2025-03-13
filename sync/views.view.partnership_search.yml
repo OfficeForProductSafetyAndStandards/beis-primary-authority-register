@@ -894,7 +894,6 @@ display:
               allow_secondary: false
               secondary_label: 'Advanced options'
               secondary_open: false
-              autosubmit_textfield_minimum_length: 3
             filter:
               search_api_fulltext:
                 plugin_id: default
