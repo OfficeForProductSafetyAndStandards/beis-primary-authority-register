@@ -55,9 +55,12 @@ HEREDOC;
   public function loadData(int $index = 1): void {
     $invitation_type = $this->getFlowDataHandler()->getDefaultValues('invitation_type', FALSE);
 
-    if ($invitation_type && $invite_type_config = $this->config("invite.invite_type.{$invitation_type}")) {
-      $data = unserialize($invite_type_config->get('data'));
-      $this->getFlowDataHandler()->setFormPermValue('invitation_type_data', $data);
+    if ($invitation_type) {
+      $invite_type_config = $this->config("invite.invite_type.{$invitation_type}");
+      if ($invite_type_config) {
+        $data = unserialize($invite_type_config->get('data'));
+        $this->getFlowDataHandler()->setFormPermValue('invitation_type_data', $data);
+      }
     }
 
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
