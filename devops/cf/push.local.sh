@@ -99,6 +99,7 @@ NP_COMPANIES_HOUSE_API_KEY=${NP_COMPANIES_HOUSE_API_KEY:-}
 NP_IDEAL_POSTCODES_API_KEY=${NP_IDEAL_POSTCODES_API_KEY:-}
 NP_PAR_GOVUK_NOTIFY_KEY=${NP_PAR_GOVUK_NOTIFY_KEY:-}
 NP_PAR_GOVUK_NOTIFY_TEMPLATE=${NP_PAR_GOVUK_NOTIFY_TEMPLATE:-}
+JSON_API_KEY=${JSON_API_KEY:-}
 
 while true; do
     case "$1" in
@@ -228,7 +229,7 @@ fi
 # to the exception list.
 ####################################################################################
 function cf_teardown {
-    if [[ $ENV != "production" ]] && [[ $ENV != "staging" ]]; then
+    if [[ $ENV != "production" ]] && [[ $ENV != "staging" ]] && [[ $ENV != "migration" ]]; then
 
         ## Remove any postgres backing services, unbind services first
         if cf service $PG_BACKING_SERVICE >/dev/null 2>&1; then
@@ -389,6 +390,7 @@ cf set-env $TARGET_ENV CHARITY_COMMISSION_API_KEY ${CHARITY_COMMISSION_API_KEY}
 cf set-env $TARGET_ENV CLAMAV_HTTP_PASS ${CLAMAV_HTTP_PASS}
 cf set-env $TARGET_ENV CLAMAV_HTTP_USER ${CLAMAV_HTTP_USER}
 cf set-env $TARGET_ENV S3_REGION ${S3_REGION}
+cf set-env $TARGET_ENV JSON_API_KEY ${JSON_API_KEY}
 
 # Set environment specific env vars
 if [[ $ENV = "staging" ]]; then
@@ -614,6 +616,7 @@ cf set-env $TARGET_ENV CHARITY_COMMISSION_API_KEY ${CHARITY_COMMISSION_API_KEY}
 cf set-env $TARGET_ENV CLAMAV_HTTP_PASS ${CLAMAV_HTTP_PASS}
 cf set-env $TARGET_ENV CLAMAV_HTTP_USER ${CLAMAV_HTTP_USER}
 cf set-env $TARGET_ENV S3_REGION ${S3_REGION}
+cf set-env $TARGET_ENV JSON_API_KEY ${JSON_API_KEY}
 
 # Set environment specific env vars
 if [[ $ENV = "staging" ]]; then
