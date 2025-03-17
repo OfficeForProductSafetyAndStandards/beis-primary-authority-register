@@ -1,0 +1,24 @@
+uuid: 632d962d-25b2-49cf-b75c-9f89751f886b
+langcode: en
+status: true
+dependencies: {  }
+id: migration_config
+label: 'Migration Config'
+description: ''
+weight: 0
+stackable: false
+no_patching: false
+storage: folder
+folder: ../sync-migration
+module:
+  jsonapi: 0
+  par_json_api: 0
+  rest_api_authentication: 0
+theme: {  }
+complete_list:
+  - core.date_format.json_api
+  - rest_api_authentication.settings
+  - user.role.json_api_consumer
+  - views.view.json_api_par_users
+  - views.view.json_api_people
+partial_list: {  }

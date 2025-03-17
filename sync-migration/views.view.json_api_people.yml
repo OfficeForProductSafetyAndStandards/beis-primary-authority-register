@@ -4,12 +4,14 @@ status: true
 dependencies:
   config:
     - field.storage.par_data_person.field_user_account
+    - user.role.json_api_consumer
   module:
     - par_data
     - rest
     - serialization
     - text
-id: api_people
+    - user
+id: json_api_people
 label: 'JSON API - PAR People'
 module: views
 description: ''
@@ -319,7 +321,7 @@ display:
             more_link: false
             more_link_text: ''
             more_link_path: ''
-            strip_tags: false
+            strip_tags: true
             trim: false
             preserve_tags: ''
             html: false
@@ -338,7 +340,7 @@ display:
           click_sort_column: value
           type: timestamp
           settings:
-            date_format: html_date
+            date_format: json_api
             custom_date_format: ''
             timezone: ''
             tooltip:
@@ -661,7 +663,7 @@ display:
             more_link: false
             more_link_text: ''
             more_link_path: ''
-            strip_tags: false
+            strip_tags: true
             trim: false
             preserve_tags: ''
             html: false
@@ -680,11 +682,11 @@ display:
           click_sort_column: value
           type: timestamp
           settings:
-            date_format: html_date
-            custom_date_format: ''
+            date_format: json_api
+            custom_date_format: c
             timezone: ''
             tooltip:
-              date_format: long
+              date_format: ''
               custom_date_format: ''
             time_diff:
               enabled: false
@@ -1893,15 +1895,70 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       access:
-        type: none
-        options: {  }
+        type: role
+        options:
+          role:
+            json_api_consumer: json_api_consumer
       cache:
         type: tag
         options: {  }
       empty: {  }
       sorts: {  }
       arguments: {  }
-      filters: {  }
+      filters:
+        uuid:
+          id: uuid
+          table: par_people
+          field: uuid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: par_data_person
+          entity_field: uuid
+          plugin_id: string
+          operator: '='
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: uuid_op
+            label: UUID
+            description: ''
+            use_operator: false
+            operator: uuid_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: uuid
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              par_enforcement: '0'
+              par_authority: '0'
+              par_authority_manager: '0'
+              par_organisation: '0'
+              par_organisation_manager: '0'
+              national_regulator: '0'
+              par_helpdesk: '0'
+              senior_administration_officer: '0'
+              secretary_state: '0'
+              administrator: '0'
+              json_api_consumer: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
       filter_groups:
         operator: AND
         groups:
@@ -1934,7 +1991,9 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - request_format
+        - url
         - url.query_args
+        - user.roles
       tags:
         - 'config:field.storage.par_data_person.field_user_account'
   par_people:
@@ -1944,10 +2003,9 @@ display:
     position: 1
     display_options:
       pager:
-        type: some
+        type: none
         options:
           offset: 0
-          items_per_page: 10
       style:
         type: serializer
         options:
@@ -1961,6 +2019,90 @@ display:
             name:
               alias: ''
               raw_output: false
+            archive_reason__value:
+              alias: ''
+              raw_output: false
+            archived:
+              alias: ''
+              raw_output: false
+            user_id:
+              alias: ''
+              raw_output: false
+            changed:
+              alias: ''
+              raw_output: true
+            communication_email:
+              alias: ''
+              raw_output: false
+            communication_mobile:
+              alias: ''
+              raw_output: false
+            communication_phone:
+              alias: ''
+              raw_output: false
+            communication_notes__value:
+              alias: ''
+              raw_output: false
+            created:
+              alias: ''
+              raw_output: true
+            deleted:
+              alias: ''
+              raw_output: false
+            deleted_reason__value:
+              alias: ''
+              raw_output: false
+            email:
+              alias: ''
+              raw_output: false
+            first_name:
+              alias: ''
+              raw_output: false
+            id:
+              alias: ''
+              raw_output: false
+            job_title:
+              alias: ''
+              raw_output: false
+            last_name:
+              alias: ''
+              raw_output: false
+            mobile_phone:
+              alias: ''
+              raw_output: false
+            par_label:
+              alias: ''
+              raw_output: false
+            par_status:
+              alias: ''
+              raw_output: false
+            par_status_author:
+              alias: ''
+              raw_output: false
+            par_status_time:
+              alias: ''
+              raw_output: false
+            par_person_email:
+              alias: ''
+              raw_output: false
+            revocation_reason__value:
+              alias: ''
+              raw_output: false
+            revoked:
+              alias: ''
+              raw_output: false
+            type:
+              alias: ''
+              raw_output: false
+            field_user_account:
+              alias: ''
+              raw_output: false
+            uuid:
+              alias: ''
+              raw_output: false
+            work_phone:
+              alias: ''
+              raw_output: false
       display_extenders: {  }
       path: jsonapi/par-people
       auth:
@@ -1971,5 +2113,7 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - request_format
+        - url
+        - user.roles
       tags:
         - 'config:field.storage.par_data_person.field_user_account'

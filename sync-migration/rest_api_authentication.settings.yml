@@ -7,5 +7,5 @@ rest_api_authentication_customer_admin_token: ''
 rest_api_authentication_customer_api_key: ''
 rest_api_authentication_status: ''
 enable_authentication: 1
-authentication_method: 1
+authentication_method: 0
 api_token: JSON_API_KEY

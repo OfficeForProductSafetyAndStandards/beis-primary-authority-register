@@ -14,7 +14,6 @@ module:
   comment: 0
   config: 0
   config_filter: 0
-  config_readonly: 0
   config_split: 0
   config_translation: 0
   config_update: 0
@@ -55,7 +54,6 @@ module:
   jquery_ui_slider: 0
   jquery_ui_tabs: 0
   jquery_ui_touch_punch: 0
-  jsonapi: 0
   language: 0
   link: 0
   locale: 0
@@ -100,7 +98,6 @@ module:
   par_inspection_feedback_view_flows: 0
   par_invite: 0
   par_invite_user_flows: 0
-  par_json_api: 0
   par_log: 0
   par_login: 0
   par_manage_subscription_list_flows: 0
@@ -152,7 +149,6 @@ module:
   redis: 0
   registered_organisations: 0
   rest: 0
-  rest_api_authentication: 0
   robotstxt: 0
   role_delegation: 0
   search_api: 0

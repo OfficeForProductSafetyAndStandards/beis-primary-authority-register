@@ -7,6 +7,7 @@ dependencies:
     - field.storage.user.field_last_password_reset
     - field.storage.user.field_password_expiration
     - field.storage.user.field_pending_expire_sent
+    - user.role.json_api_consumer
   module:
     - datetime
     - rest
@@ -1066,15 +1067,70 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       access:
-        type: none
-        options: {  }
+        type: role
+        options:
+          role:
+            json_api_consumer: json_api_consumer
       cache:
         type: tag
         options: {  }
       empty: {  }
       sorts: {  }
       arguments: {  }
-      filters: {  }
+      filters:
+        uuid:
+          id: uuid
+          table: users
+          field: uuid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: user
+          entity_field: uuid
+          plugin_id: string
+          operator: '='
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: uuid_op
+            label: UUID
+            description: ''
+            use_operator: false
+            operator: uuid_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: uuid
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              par_enforcement: '0'
+              par_authority: '0'
+              par_authority_manager: '0'
+              par_organisation: '0'
+              par_organisation_manager: '0'
+              national_regulator: '0'
+              par_helpdesk: '0'
+              senior_administration_officer: '0'
+              secretary_state: '0'
+              administrator: '0'
+              json_api_consumer: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
       filter_groups:
         operator: AND
         groups:
@@ -1098,6 +1154,7 @@ display:
           query_tags: {  }
           contextual_filters_or: false
       relationships: {  }
+      group_by: true
       header: {  }
       footer: {  }
       display_extenders: {  }
@@ -1107,7 +1164,9 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - request_format
+        - url
         - url.query_args
+        - user.roles
       tags:
         - 'config:field.storage.user.field_gdpr'
         - 'config:field.storage.user.field_last_password_reset'
@@ -1120,10 +1179,9 @@ display:
     position: 1
     display_options:
       pager:
-        type: some
+        type: none
         options:
           offset: 0
-          items_per_page: 10
       style:
         type: serializer
         options:
@@ -1136,6 +1194,48 @@ display:
             name:
               alias: ''
               raw_output: false
+            created:
+              alias: ''
+              raw_output: true
+            mail:
+              alias: ''
+              raw_output: false
+            field_gdpr:
+              alias: ''
+              raw_output: false
+            init:
+              alias: ''
+              raw_output: false
+            access:
+              alias: ''
+              raw_output: false
+            login:
+              alias: ''
+              raw_output: false
+            field_last_password_reset:
+              alias: ''
+              raw_output: false
+            field_password_expiration:
+              alias: ''
+              raw_output: false
+            field_pending_expire_sent:
+              alias: ''
+              raw_output: false
+            roles_target_id:
+              alias: ''
+              raw_output: false
+            changed:
+              alias: ''
+              raw_output: true
+            uid:
+              alias: ''
+              raw_output: false
+            status:
+              alias: ''
+              raw_output: false
+            uuid:
+              alias: ''
+              raw_output: false
       display_extenders: {  }
       path: jsonapi/par-users
       auth:
@@ -1146,6 +1246,8 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - request_format
+        - url
+        - user.roles
       tags:
         - 'config:field.storage.user.field_gdpr'
         - 'config:field.storage.user.field_last_password_reset'
