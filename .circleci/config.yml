@@ -532,7 +532,7 @@ workflows:
               ignore: /.*/
       - deploy_migration:
           requires:
-            - hold_stage
+            - hold_migration
           filters:
             tags:
               only: /^m.*/
