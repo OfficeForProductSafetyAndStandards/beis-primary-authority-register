@@ -527,7 +527,7 @@ workflows:
             - test_full
           filters:
             tags:
-              only: /^v.*/
+              only: /^m.*/
             branches:
               ignore: /.*/
       - deploy_migration:
