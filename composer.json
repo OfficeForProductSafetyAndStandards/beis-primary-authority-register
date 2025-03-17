@@ -100,7 +100,6 @@
         "drupal/search_api": "^1.35",
         "drupal/search_api_opensearch": "^2.1",
         "drupal/seckit": "^2.0",
-        "drupal/simple_oauth": "^6.0@beta",
         "drupal/symfony_mailer": "~1.4.0",
         "drupal/token": "^1.15",
         "drupal/tracer": "~1.0.0",
