@@ -94,6 +94,7 @@
         "drupal/raven": "^5.0",
         "drupal/redis": "1.7",
         "drupal/registered_organisations": "1.0.x-dev",
+        "drupal/rest_api_authentication": "^2.0",
         "drupal/robotstxt": "^1.6",
         "drupal/role_delegation": "~1.2.0",
         "drupal/search_api": "^1.35",
@@ -150,7 +151,8 @@
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "php-http/discovery": true,
             "phpstan/extension-installer": true,
-            "tbachert/spi": true
+            "tbachert/spi": true,
+            "drupal/core-project-message": true
         }
     },
     "extra": {

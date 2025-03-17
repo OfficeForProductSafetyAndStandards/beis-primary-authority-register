@@ -1,0 +1,14 @@
+uuid: 7b84caa2-e461-46be-8e16-114948c8f43e
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.json_api_consumer
+  module:
+    - user
+id: user_remove_role_action.json_api_consumer
+label: 'Remove the JSON:API Consumer role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: json_api_consumer
