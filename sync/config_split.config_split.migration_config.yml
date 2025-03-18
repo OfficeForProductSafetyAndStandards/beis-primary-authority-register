@@ -19,6 +19,7 @@ complete_list:
   - core.date_format.json_api
   - rest_api_authentication.settings
   - user.role.json_api_consumer
+  - views.view.json_api_par_organisations
   - views.view.json_api_par_users
   - views.view.json_api_people
 partial_list: {  }

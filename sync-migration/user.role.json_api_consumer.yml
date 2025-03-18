@@ -3,10 +3,58 @@ langcode: en
 status: true
 dependencies:
   module:
+    - par_authority_update_flows
+    - par_data
     - par_json_api
+    - par_organisation_update_flows
+    - par_validation
 id: json_api_consumer
 label: 'JSON:API Consumer'
 weight: 1
 is_admin: null
 permissions:
   - 'access jsonapi routes'
+  - 'access par_data_advice entities'
+  - 'access par_data_authority entities'
+  - 'access par_data_coordinated_business entities'
+  - 'access par_data_deviation_request entities'
+  - 'access par_data_enforcement_action entities'
+  - 'access par_data_enforcement_notice entities'
+  - 'access par_data_general_enquiry entities'
+  - 'access par_data_information_referral entities'
+  - 'access par_data_inspection_feedback entities'
+  - 'access par_data_inspection_plan entities'
+  - 'access par_data_legal_entity entities'
+  - 'access par_data_organisation entities'
+  - 'access par_data_partnership entities'
+  - 'access par_data_partnership_le entities'
+  - 'access par_data_person entities'
+  - 'access par_data_premises entities'
+  - 'access par_data_regulatory_function entities'
+  - 'access par_data_sic_code entities'
+  - 'access user profiles'
+  - 'bypass par_data access'
+  - 'bypass par_data membership'
+  - 'manage all authorities'
+  - 'manage all organisations'
+  - 'manage own authority'
+  - 'manage own organisation'
+  - 'par bypass validation'
+  - 'view unpublished par_data_advice entities'
+  - 'view unpublished par_data_authority entities'
+  - 'view unpublished par_data_coordinated_business entities'
+  - 'view unpublished par_data_deviation_request entities'
+  - 'view unpublished par_data_enforcement_action entities'
+  - 'view unpublished par_data_enforcement_notice entities'
+  - 'view unpublished par_data_general_enquiry entities'
+  - 'view unpublished par_data_information_referral entities'
+  - 'view unpublished par_data_inspection_feedback entities'
+  - 'view unpublished par_data_inspection_plan entities'
+  - 'view unpublished par_data_legal_entity entities'
+  - 'view unpublished par_data_organisation entities'
+  - 'view unpublished par_data_partnership entities'
+  - 'view unpublished par_data_partnership_le entities'
+  - 'view unpublished par_data_person entities'
+  - 'view unpublished par_data_premises entities'
+  - 'view unpublished par_data_regulatory_function entities'
+  - 'view unpublished par_data_sic_code entities'

@@ -570,7 +570,7 @@ display:
           type: datetime_default
           settings:
             timezone_override: ''
-            format_type: medium
+            format_type: json_api
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -1078,30 +1078,32 @@ display:
       sorts: {  }
       arguments: {  }
       filters:
-        uuid:
-          id: uuid
-          table: users
-          field: uuid
+        uid_raw:
+          id: uid_raw
+          table: users_field_data
+          field: uid_raw
           relationship: none
           group_type: group
           admin_label: ''
           entity_type: user
-          entity_field: uuid
-          plugin_id: string
+          plugin_id: numeric
           operator: '='
-          value: ''
+          value:
+            min: ''
+            max: ''
+            value: ''
           group: 1
           exposed: true
           expose:
-            operator_id: uuid_op
-            label: UUID
+            operator_id: uid_raw_op
+            label: 'The user ID'
             description: ''
             use_operator: false
-            operator: uuid_op
+            operator: uid_raw_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: uuid
-            required: false
+            identifier: uid
+            required: true
             remember: false
             multiple: false
             remember_roles:
@@ -1118,6 +1120,8 @@ display:
               secretary_state: '0'
               administrator: '0'
               json_api_consumer: '0'
+            min_placeholder: ''
+            max_placeholder: ''
             placeholder: ''
           is_grouped: false
           group_info:
@@ -1214,7 +1218,7 @@ display:
               raw_output: false
             field_last_password_reset:
               alias: ''
-              raw_output: false
+              raw_output: true
             field_password_expiration:
               alias: ''
               raw_output: false
