@@ -107,7 +107,7 @@ function par_data_update_8007() {
 
     $entity_type = \Drupal::service('par_data.manager')->getParEntityType('par_data_organisation');
     $table_mapping = new DefaultTableMapping($entity_type, [$storage]);
-    $table_names = $table_mapping->getDedicatedTableNames($storage);
+    $table_names = $table_mapping->getDedicatedTableNames();
 
     foreach ($table_names as $table) {
       $query = $db->update($table)
@@ -154,8 +154,7 @@ function par_data_update_8010() {
     $entities = \Drupal::entityTypeManager()
       ->getStorage('par_data_organisation')
       ->loadByProperties(['type' => 'business']);
-  } catch (InvalidPluginDefinitionException $e) {
-  } catch (PluginNotFoundException $e) {
+  } catch (InvalidPluginDefinitionException|PluginNotFoundException) {
   }
 
   foreach ($entities as $entity) {
@@ -175,7 +174,7 @@ function par_data_update_8010() {
 
     $entity_type = \Drupal::service('par_data.manager')->getParEntityType('par_data_organisation');
     $table_mapping = new DefaultTableMapping($entity_type, [$storage]);
-    $table_names = $table_mapping->getDedicatedTableNames($storage);
+    $table_names = $table_mapping->getDedicatedTableNames();
 
     foreach ($table_names as $table) {
       $db->update($table)
@@ -460,7 +459,7 @@ function par_data_update_8027() {
   foreach ($premises_entities as $entity) {
     // See if we can convert the entity.
     $nation = $entity->get('nation')->getString();
-    if (!empty($nation) && $key = array_search(trim($nation), $allowed)) {
+    if (!empty($nation) && $key = array_search(trim((string) $nation), $allowed)) {
       $entity->setNation($key, TRUE);
       $entity->save();
     }
@@ -469,7 +468,7 @@ function par_data_update_8027() {
   foreach ($organisation_entities as $entity) {
     // See if we can convert the entity.
     $nation = $entity->get('nation')->getString();
-    if (!empty($nation) && $key = array_search(trim($nation), $allowed)) {
+    if (!empty($nation) && $key = array_search(trim((string) $nation), $allowed)) {
       $entity->setNation($key, TRUE);
       $entity->save();
     }
@@ -694,7 +693,7 @@ function par_data_update_8034() {
     }
     // Set the issue date.
     $issue_date = $par_data_advice->get('issue_date')->getString();
-    if (empty($issue_date) || !preg_match('/2\d{3}-\d{2}-\d{2}/', $issue_date)) {
+    if (empty($issue_date) || !preg_match('/2\d{3}-\d{2}-\d{2}/', (string) $issue_date)) {
       $timestamp = $par_data_advice->get('created')->value;
       $request_date = DrupalDateTime::createFromTimestamp($timestamp, NULL, ['validate_format' => FALSE]);
       $par_data_advice->set('issue_date', $request_date->format("Y-m-d"));
@@ -766,7 +765,7 @@ function par_data_update_8035() {
     if ($document) {
       /* @var \Drupal\file\Entity\File $document */
       $filename = $document->getFilename();
-      $sanitised = pathinfo($filename, PATHINFO_FILENAME);
+      $sanitised = pathinfo((string) $filename, PATHINFO_FILENAME);
 
       $a->setAdviceTitle($sanitised);
       $a->save();
@@ -902,7 +901,7 @@ function par_data_update_8038() {
     if ($document) {
       /* @var \Drupal\file\Entity\File $document */
       $filename = $document->getFilename();
-      $sanitised = pathinfo($filename, PATHINFO_FILENAME);
+      $sanitised = pathinfo((string) $filename, PATHINFO_FILENAME);
 
       $inspection_plan_entity->setTitle($sanitised);
       $inspection_plan_entity->save();

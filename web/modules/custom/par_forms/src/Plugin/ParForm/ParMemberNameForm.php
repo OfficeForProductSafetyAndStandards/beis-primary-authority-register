@@ -28,6 +28,7 @@ class ParMemberNameForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     if ($par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation')) {
       $this->getFlowDataHandler()->setFormPermValue('name', $par_data_organisation->get('organisation_name')->getString());
@@ -39,6 +40,7 @@ class ParMemberNameForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
 
     $form['name'] = [

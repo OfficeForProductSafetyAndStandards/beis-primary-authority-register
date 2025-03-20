@@ -13,6 +13,7 @@ use Drupal\views\Plugin\views\filter\FilterPluginBase;
  */
 class TaskMessages extends FilterPluginBase {
 
+  #[\Override]
   public function query() {
     // Ensure the base table.
     $this->ensureMyTable();

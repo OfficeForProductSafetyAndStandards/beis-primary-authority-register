@@ -27,6 +27,7 @@ class ParOrganisationInformationDisplay extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
@@ -51,6 +52,7 @@ class ParOrganisationInformationDisplay extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // Partnership Organisation Information - component.
     $form['organisation_info'] = [
@@ -149,6 +151,7 @@ class ParOrganisationInformationDisplay extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
@@ -156,6 +159,7 @@ class ParOrganisationInformationDisplay extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }

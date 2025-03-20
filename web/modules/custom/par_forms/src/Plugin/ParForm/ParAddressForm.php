@@ -36,6 +36,7 @@ class ParAddressForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     if ($par_data_premises = $this->getFlowDataHandler()->getParameter('par_data_premises')) {
       $address = $par_data_premises->get('address')->first();
@@ -65,6 +66,7 @@ class ParAddressForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $premises_bundle = $this->getParDataManager()->getParBundleEntity('par_data_premises');
 

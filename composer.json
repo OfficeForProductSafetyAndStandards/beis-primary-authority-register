@@ -123,7 +123,7 @@
         "drupal/devel": "^5.2",
         "drupal/webprofiler": "10.1.4",
         "mglaman/drupal-check": "^1.4",
-        "palantirnet/drupal-rector": "^0.19.0",
+        "palantirnet/drupal-rector": "*",
         "phpspec/prophecy": "^1.8.0",
         "phpspec/prophecy-phpunit": "^2",
         "zaporylie/composer-drupal-optimizations": "^1.2"
@@ -212,7 +212,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Drupal\\Core\\Composer\\": "core/lib/Drupal/Core/Composer"
+            "Drupal\\Core\\Composer\\": "core/lib/Drupal/Core/Composer",
+            "Par\\Rector\\": "tests/rector/src"
         }
     },
     "scripts": {

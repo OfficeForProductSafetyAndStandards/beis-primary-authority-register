@@ -31,8 +31,9 @@ class GdsDate extends FormElement {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getInfo() {
-    $class = get_class($this);
+    $class = static::class;
 
     return [
       '#input' => TRUE,
@@ -117,7 +118,7 @@ class GdsDate extends FormElement {
         $date = DrupalDateTime::createFromFormat($date_format, $date_input, NULL, ['validate_format' => FALSE]);
         $element['#value'] = $date->format($date_format);
       }
-      catch (\Exception $e) {
+      catch (\Exception) {
         $date = NULL;
       }
 
@@ -130,6 +131,7 @@ class GdsDate extends FormElement {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function valueCallback(&$element, $input, FormStateInterface $form_state) {
     $date_format = !empty($element['#date_date_format']) ? $element['#date_date_format'] : 'Y-m-d';
 
@@ -141,7 +143,7 @@ class GdsDate extends FormElement {
           'month' => $date->format('m'),
           'year' => $date->format('Y'),
         ];
-      } catch (\Exception $e) {
+      } catch (\Exception) {
         $value = [];
       }
       return $value;

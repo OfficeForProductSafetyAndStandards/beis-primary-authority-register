@@ -61,6 +61,7 @@ class CachePersistentFactory implements CacheFactoryInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function get($bin) {
     if (!isset($this->cacheBackends[$bin])) {
       $cache_lifecycle_settings = $this->settings->get('cache_lifecycle_bins');

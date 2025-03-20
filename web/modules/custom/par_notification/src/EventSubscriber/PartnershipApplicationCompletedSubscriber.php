@@ -27,10 +27,11 @@ class PartnershipApplicationCompletedSubscriber extends ParEventSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  #[\Override]
+  static function getSubscribedEvents(): array {
     $events = [];
     // Confirmation event should fire after a partnership has been confirmed.
-    if (class_exists('Drupal\par_data\Event\ParDataEvent')) {
+    if (class_exists(ParDataEvent::class)) {
       $events[ParDataEvent::statusChange('par_data_partnership', 'confirmed_business')][] = ['onEvent', -101];
     }
 

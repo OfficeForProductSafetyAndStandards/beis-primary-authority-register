@@ -4,7 +4,8 @@
  * @file
  * Functions to support theming in the PAR theme.
  */
-
+use Drupal\Core\Asset\AttachedAssetsInterface;
+use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Site\Settings;
 use Drupal\Core\Routing\RouteObjectInterface;
@@ -25,14 +26,12 @@ function par_theme_preprocess(&$variables) {
  */
 function par_theme_preprocess_html(array &$variables) {
   // As per accessibility issue PAR-1545 page titles must not contain duplicate names.
-  $title_fragments = isset($variables['head_title']['title']) ? explode('|', $variables['head_title']['title']) : NULL;
+  $title_fragments = isset($variables['head_title']['title']) ? explode('|', (string) $variables['head_title']['title']) : NULL;
   $title_fragments = array_map('trim', $title_fragments);
   $name = (string) $variables['head_title']['name'] ?? '';
 
   // Remove the duplicate site name from the title.
-  $title_fragments = array_filter($title_fragments, function ($value) use ($name) {
-    return $value !== $name;
-  });
+  $title_fragments = array_filter($title_fragments, fn($value) => $value !== $name);
 
   // The second part of the title is the most important.
   if (count($title_fragments) > 1) {
@@ -43,7 +42,7 @@ function par_theme_preprocess_html(array &$variables) {
   if (empty($title_fragments)) {
 
     $route_name = \Drupal::routeMatch()->getRouteName();
-    if (strpos($route_name, 'view') === 0) {
+    if (str_starts_with((string) $route_name, 'view')) {
       $request = \Drupal::service('request_stack')->getCurrentRequest();
       $route = $request->attributes->get(RouteObjectInterface::ROUTE_OBJECT);
       if ($route instanceof Route) {
@@ -132,7 +131,7 @@ function par_theme_element_info_alter(array &$info) {
  */
 function _par_theme_process_options_element(array $element) {
   foreach ($element as $key => $value) {
-    if (substr((string) $key, 0, 1) == '#') {
+    if (str_starts_with((string) $key, '#')) {
       continue;
     }
     if (!isset($value['#description']) && isset($value['#attributes']['aria-describedby'])) {
@@ -287,7 +286,7 @@ function par_theme_form_alter(&$form, FormStateInterface $form_state, $form_id) 
 /**
  * Implements hook_css_alter()
  */
-function par_theme_css_alter(&$css, \Drupal\Core\Asset\AttachedAssetsInterface $assets, \Drupal\Core\Language\LanguageInterface $language) {
+function par_theme_css_alter(&$css, AttachedAssetsInterface $assets, LanguageInterface $language) {
   unset($css['themes/contrib/govuk_theme/css/govuk.css']);
   unset($css['themes/contrib/govuk_theme/css/style.css']);
 }

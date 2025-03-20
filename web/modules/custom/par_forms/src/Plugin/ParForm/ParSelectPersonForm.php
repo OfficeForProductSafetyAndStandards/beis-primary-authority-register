@@ -23,6 +23,7 @@ class ParSelectPersonForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
     $user_people = [];
@@ -32,9 +33,7 @@ class ParSelectPersonForm extends ParFormPluginBase {
     $account = $this->getFlowDataHandler()->getParameter('user');
     if ($account && $account->isAuthenticated() && $people = $this->getParDataManager()->getUserPeople($account)) {
       // Ignore deleted person accounts.
-      $people = array_filter($people, function ($person) {
-        return !$person->isDeleted();
-      });
+      $people = array_filter($people, fn($person) => !$person->isDeleted());
 
       $user_people = $this->getParDataManager()->getEntitiesAsOptions($people, $user_people, 'summary');
     }
@@ -53,6 +52,7 @@ class ParSelectPersonForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // Get all the allowed authorities.
     $user_people = $this->getFlowDataHandler()->getFormPermValue('user_people');
@@ -91,6 +91,7 @@ class ParSelectPersonForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $person_id_key = $this->getElementKey('user_person');
     if (empty($form_state->getValue($person_id_key))) {

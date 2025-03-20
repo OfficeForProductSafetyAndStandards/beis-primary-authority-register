@@ -78,13 +78,6 @@ class ParDataManager implements ParDataManagerInterface {
   protected $renderer;
 
   /**
-   * The current user.
-   *
-   * @var \Drupal\Core\Session\AccountProxyInterface
-   */
-  protected $currentUser;
-
-  /**
    * Iteration limit for recursive membership lookups.
    */
   protected $membershipIterations = 5;
@@ -109,16 +102,18 @@ class ParDataManager implements ParDataManagerInterface {
    *   The messenger service
    * @param \Drupal\Core\Render\RendererInterface $renderer
    *   The renderer service
-   * @param \Drupal\Core\Session\AccountProxyInterface $current_user
+   * @param \Drupal\Core\Session\AccountProxyInterface $currentUser
    *   The current user
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, MessengerInterface $messenger, RendererInterface $renderer, $current_user) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityFieldManagerInterface $entity_field_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, MessengerInterface $messenger, RendererInterface $renderer, /**
+   * The current user.
+   */
+  protected $currentUser) {
     $this->entityTypeManager = $entity_type_manager;
     $this->entityFieldManager = $entity_field_manager;
     $this->entityTypeBundleInfo = $entity_type_bundle_info;
     $this->messenger = $messenger;
     $this->renderer = $renderer;
-    $this->currentUser = $current_user;
   }
 
   /**
@@ -169,6 +164,7 @@ class ParDataManager implements ParDataManagerInterface {
   /**
   * @inheritdoc}
   */
+  #[\Override]
   public function getParEntityTypes(): array {
     // We're obviously assuming that all par entities begin with this prefix.
     $par_entity_prefix = 'par_data_';
@@ -189,6 +185,7 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getParEntityType(string $type): ?EntityTypeInterface {
     $types = $this->getParEntityTypes();
     return $types[$type] ?? NULL;
@@ -197,6 +194,7 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getEntityBundleDefinition(EntityTypeInterface $definition): ?EntityTypeInterface {
     return $definition->getBundleEntityType() ? $this->entityTypeManager->getDefinition($definition->getBundleEntityType()) : NULL;
   }
@@ -204,6 +202,7 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getParBundleEntity(string $type, $bundle = NULL): ?ParDataTypeInterface {
     $entity_type = $this->getParEntityType($type);
     $definition = $this->entityTypeManager->hasDefinition($type) ? $this->getEntityBundleDefinition($entity_type) : NULL;
@@ -215,6 +214,7 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getEntityTypeStorage($definition): ?EntityStorageInterface {
     return $this->entityTypeManager->getStorage($definition) ?: NULL;
   }
@@ -229,6 +229,7 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getFieldDefinition(string $entity_type, string $field, $bundle = NULL): ?FieldDefinitionInterface {
     if (!$bundle) {
       $bundle_definition = $this->getParBundleEntity($entity_type, $bundle);
@@ -433,9 +434,7 @@ class ParDataManager implements ParDataManagerInterface {
 
     // Do not return any deleted entities.
     // @see PAR-1462 - Removing all deleted entities from loading.
-    $memberships = array_filter($memberships, function ($membership) {
-      return (!$membership instanceof ParDataEntityInterface || !$membership->isDeleted());
-    });
+    $memberships = array_filter($memberships, fn($membership) => !$membership instanceof ParDataEntityInterface || !$membership->isDeleted());
 
     return !empty($memberships) ? $memberships : [];
   }
@@ -456,9 +455,7 @@ class ParDataManager implements ParDataManagerInterface {
   public function hasMembershipsByType(UserInterface $account, $type, $direct = FALSE) {
     $memberships = $this->hasMemberships($account, $direct);
 
-    $memberships = array_filter($memberships, function ($membership) use ($type) {
-      return ($type === $membership->getEntityTypeId());
-    });
+    $memberships = array_filter($memberships, fn($membership) => $type === $membership->getEntityTypeId());
 
     return $memberships;
   }
@@ -479,9 +476,7 @@ class ParDataManager implements ParDataManagerInterface {
   public function hasInProgressMembershipsByType(UserInterface $account, $type, $direct = FALSE) {
     $memberships = $this->hasMembershipsByType($account, $type, $direct);
 
-    $memberships = array_filter($memberships, function ($membership) {
-      return $membership->inProgress();
-    });
+    $memberships = array_filter($memberships, fn($membership) => $membership->inProgress());
 
     return $memberships;
   }
@@ -693,9 +688,7 @@ class ParDataManager implements ParDataManagerInterface {
     // Do not return any entities that are deleted.
     // @see PAR-1462 - Removing all deleted entities from loading.
     if ($deleted) {
-      $entities = array_filter($entities, function ($entity) {
-        return (!$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
-      });
+      $entities = array_filter($entities, fn($entity) => !$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
     }
 
     return $entities;
@@ -719,9 +712,7 @@ class ParDataManager implements ParDataManagerInterface {
 
     // Do not return any entities that are deleted.
     // @see PAR-1462 - Removing all deleted entities from loading.
-    $entities = array_filter($entities, function ($entity) {
-      return (!$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
-    });
+    $entities = array_filter($entities, fn($entity) => !$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
 
     return $entities;
   }
@@ -755,6 +746,7 @@ class ParDataManager implements ParDataManagerInterface {
    * ];
    * @endcode
    */
+  #[\Override]
   public function getEntitiesByQuery(string $type, array $conditions, $limit = NULL, $sort = NULL, $direction = 'ASC', $conjunction = 'AND', $remove_deleted_entities = TRUE): array {
     $entities = [];
 
@@ -762,7 +754,7 @@ class ParDataManager implements ParDataManagerInterface {
 
     foreach ($conditions as $row) {
       foreach ($row as $condition_operator => $condition_row) {
-        $group = (strtoupper($condition_operator) === 'OR') ? $query->orConditionGroup() : $query->andConditionGroup();
+        $group = (strtoupper((string) $condition_operator) === 'OR') ? $query->orConditionGroup() : $query->andConditionGroup();
 
         foreach ($condition_row as $row) {
           $group->condition(...$row);
@@ -787,9 +779,7 @@ class ParDataManager implements ParDataManagerInterface {
     if ($remove_deleted_entities) {
       // Do not return any entities that are deleted.
       // @see PAR-1462 - Removing all deleted entities from loading.
-      $entities = array_filter($entities, function ($entity) {
-        return (!$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
-      });
+      $entities = array_filter($entities, fn($entity) => !$entity instanceof ParDataEntityInterface || !$entity->isDeleted());
     }
 
     return $entities;
@@ -1115,9 +1105,7 @@ EOT;
       foreach ($bundles as $bundle) {
         $current_references = $this->getReferences($entity_type_id, $bundle->id());
         // Only use the reverse references.
-        $current_references = array_filter($current_references, function ($relationship) {
-          return ($relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_REVERSE);
-        });
+        $current_references = array_filter($current_references, fn($relationship) => $relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_REVERSE);
 
         // Allow a debug tree to be built.
         if ($this->debug) {

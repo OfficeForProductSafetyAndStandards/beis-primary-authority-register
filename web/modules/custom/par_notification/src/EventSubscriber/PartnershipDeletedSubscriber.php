@@ -2,6 +2,7 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
+use Drupal\par_data\Event\ParDataEvent;
 use Drupal\core_event_dispatcher\Event\Entity\EntityPredeleteEvent;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_notification\ParEventSubscriberBase;
@@ -20,10 +21,11 @@ class PartnershipDeletedSubscriber extends ParEventSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  #[\Override]
+  static function getSubscribedEvents(): array {
     $events = [];
     // Notify on partnership removal.
-    if (class_exists('Drupal\par_data\Event\ParDataEvent')) {
+    if (class_exists(ParDataEvent::class)) {
       $events[EntityPreDeleteEvent::class][] = ['onEvent', -100];
     }
 

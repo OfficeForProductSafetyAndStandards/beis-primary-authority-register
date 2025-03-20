@@ -35,6 +35,7 @@ class ParNotificationLink extends FieldPluginBase {
   /**
    * @{inheritdoc}
    */
+  #[\Override]
   public function query() {
     // Leave empty to avoid a query on this field.
   }
@@ -46,6 +47,7 @@ class ParNotificationLink extends FieldPluginBase {
    *
    * @return string
    */
+  #[\Override]
   public function render(ResultRow $values) {
     $message = $this->getEntity($values);
 
@@ -54,7 +56,9 @@ class ParNotificationLink extends FieldPluginBase {
       return NULL;
     }
 
-    $link = $this->getLinkManager()->link($message);
+    // TODO: Drupal Rector Notice: Please delete the following comment after you've made any necessary changes.
+    // Please confirm that `$` is an instance of `\Drupal\Core\Entity\EntityInterface`. Only the method name and not the class name was checked for this replacement, so this may be a false positive.
+    $link = $this->getLinkManager()->toLink($message)->toString();
     if ($link instanceof Link &&
         $link->getUrl()->access() &&
         $link->getUrl()->isRouted()) {

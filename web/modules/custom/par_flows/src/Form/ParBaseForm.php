@@ -54,6 +54,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   /**
    * Do not serialize the components, they will be fetched as required.
    */
+  #[\Override]
   public function __sleep() {
     $ignore = ['components'];
     return array_diff(parent::__sleep(), $ignore);
@@ -89,7 +90,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    *
    * @var ?array $ignoreValues
    */
-  protected ?array $ignoreValues;
+  protected ?array $ignoreValues = null;
 
   /*
    * Constructs a \Drupal\par_flows\Form\ParBaseForm.
@@ -118,7 +119,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       $this->getFlowNegotiator()->getFlow();
 
       $this->loadData();
-    } catch (ParFlowException $e) {
+    } catch (ParFlowException) {
 
     }
   }
@@ -126,6 +127,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('par_flows.negotiator'),
@@ -195,6 +197,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getFormId() {
     if ($form_id = $this->getFlowNegotiator()->getFlow()->getFormIdByCurrentStep()) {
       return $form_id;
@@ -204,6 +207,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     $this->initializeFlow();
 
@@ -376,6 +380,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // Validate all the plugins first.
     foreach ($this->getComponents() as $component) {
@@ -426,6 +431,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Always store the values whenever we submit the form.
     $this->storeData($form_state);
@@ -439,7 +445,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       // Get the next route from the flow.
       $url = $this->getFlowNegotiator()->getFlow()->progress($submit_action);
     }
-    catch (ParFlowException | RouteNotFoundException $e) {
+    catch (ParFlowException | RouteNotFoundException) {
 
     }
 
@@ -479,7 +485,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $triggering_element = $form_state->getTriggeringElement() ?
       $form_state->getTriggeringElement()['#name'] : NULL;
     if ($triggering_element) {
-      [$button, $plugin_namespace, $index] = explode(':', $triggering_element);
+      [$button, $plugin_namespace, $index] = explode(':', (string) $triggering_element);
     }
 
     // Get the component.
@@ -505,7 +511,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     $triggering_element = $form_state->getTriggeringElement() ?
       $form_state->getTriggeringElement()['#name'] : NULL;
     if ($triggering_element) {
-      [$button, $plugin_namespace, $index] = explode(':', $triggering_element);
+      [$button, $plugin_namespace, $index] = explode(':', (string) $triggering_element);
     }
 
     // Get the component.
@@ -559,10 +565,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       // Get the cancel route from the flow.
       $url = $this->getFlowNegotiator()->getFlow()->progress('cancel');
     }
-    catch (ParFlowException $e) {
-
-    }
-    catch (RouteNotFoundException $e) {
+    catch (ParFlowException|RouteNotFoundException) {
 
     }
 
@@ -597,10 +600,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
       // Get the cancel route from the flow.
       $url = $this->getFlowNegotiator()->getFlow()->progress('back');
     }
-    catch (ParFlowException $e) {
-
-    }
-    catch (RouteNotFoundException $e) {
+    catch (ParFlowException|RouteNotFoundException) {
 
     }
 
@@ -756,7 +756,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     try {
       $url = $this->getPathValidator()->getUrlIfValid($entry_point);
     }
-    catch (\InvalidArgumentException $e) {
+    catch (\InvalidArgumentException) {
 
     }
 
@@ -813,17 +813,10 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
     }
 
     // Several options e.g. radios, checkboxes are appended with --wrapper.
-    switch ($form_element['#type']) {
-
-      case 'radios':
-      case 'checkboxes':
-        $form_element_page_anchor = $form_element['#id'] . '--wrapper';
-        break;
-      default:
-        $form_element_page_anchor = $form_element['#id'];
-        break;
-
-    }
+    $form_element_page_anchor = match ($form_element['#type']) {
+        'radios', 'checkboxes' => $form_element['#id'] . '--wrapper',
+        default => $form_element['#id'],
+    };
 
     return $form_element_page_anchor;
 
@@ -843,7 +836,7 @@ abstract class ParBaseForm extends FormBase implements ParBaseInterface {
    * @return mixed
    *   The new value for the entity.
    */
-  public function decideBooleanValue($input, $on = 'on', $off = 'off') {
+  public function decideBooleanValue(mixed $input, mixed $on = 'on', mixed $off = 'off') {
     return ($on === $input || $input === TRUE) ? TRUE : FALSE;
   }
 

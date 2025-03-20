@@ -63,6 +63,7 @@ class SubscriptionEvent extends EventBase implements SubscriptionEventInterface 
    * @return \Drupal\Core\Entity\EntityInterface
    *   The entity object.
    */
+  #[\Override]
   public function getEntity() {
     return $this->entity;
   }
@@ -70,6 +71,7 @@ class SubscriptionEvent extends EventBase implements SubscriptionEventInterface 
   /**
    * @return string
    */
+  #[\Override]
   public function getEmail(){
     return $this->email;
   }
@@ -77,6 +79,7 @@ class SubscriptionEvent extends EventBase implements SubscriptionEventInterface 
   /**
    * @return string
    */
+  #[\Override]
   public function getListName(){
     return $this->listName;
   }
@@ -84,6 +87,7 @@ class SubscriptionEvent extends EventBase implements SubscriptionEventInterface 
   /**
    * @return \Drupal\par_subscriptions\Entity\ParSubscriptionInterface
    */
+  #[\Override]
   public function getSubscription(){
     return $this->subscription;
   }

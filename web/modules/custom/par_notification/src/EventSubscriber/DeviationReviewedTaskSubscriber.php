@@ -20,10 +20,11 @@ class DeviationReviewedTaskSubscriber extends ParEventSubscriberBase  {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  #[\Override]
+  static function getSubscribedEvents(): array {
     $events = [];
     // Deviation request has been reviewed.
-    if (class_exists('Drupal\par_data\Event\ParDataEvent')) {
+    if (class_exists(ParDataEvent::class)) {
       $events[ParDataEvent::statusChange('par_data_deviation_request', 'approved')][] = ['onDeviationRequestReviewed', 200];
       $events[ParDataEvent::statusChange('par_data_deviation_request', 'blocked')][] = ['onDeviationRequestReviewed', 200];
     }

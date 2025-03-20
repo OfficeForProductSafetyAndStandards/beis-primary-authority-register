@@ -4,7 +4,7 @@
  * @file
  * Contains validation routines for user forms.
  */
-
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Form\FormStateInterface;
 use \Drupal\Core\Link;
 
@@ -106,7 +106,7 @@ function par_login_menu_links_discovered_alter(&$links) {
   }
 }
 
-function par_login_user_format_name_alter(&$name, \Drupal\Core\Session\AccountInterface $account) {
+function par_login_user_format_name_alter(&$name, AccountInterface $account) {
   // Display the user's email instead of name.
   if ($account->isAuthenticated()) {
     $name = $account->getEmail();

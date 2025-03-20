@@ -21,10 +21,11 @@ class PartnershipNominatedSubscriber extends ParEventSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  #[\Override]
+  static function getSubscribedEvents(): array {
     $events = [];
     // Nomination event should fire after a partnership has been nominated.
-    if (class_exists('Drupal\par_data\Event\ParDataEvent')) {
+    if (class_exists(ParDataEvent::class)) {
       $events[ParDataEvent::statusChange('par_data_partnership', 'confirmed_rd')][] = ['onEvent', -101];
     }
 

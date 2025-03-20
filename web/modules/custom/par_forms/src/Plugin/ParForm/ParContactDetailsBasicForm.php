@@ -34,6 +34,7 @@ class ParContactDetailsBasicForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
       $this->setDefaultValuesByKey("first_name", $index, $par_data_person->get('first_name')->getString());
@@ -47,6 +48,7 @@ class ParContactDetailsBasicForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $form['first_name'] = [
       '#type' => 'textfield',

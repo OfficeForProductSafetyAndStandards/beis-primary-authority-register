@@ -66,6 +66,7 @@ class ParQueueCheckController extends ControllerBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('page_cache_kill_switch'),
@@ -95,7 +96,7 @@ class ParQueueCheckController extends ControllerBase {
 
     foreach ($this->queueWorker->getDefinitions() as $name => $queue_definition) {
       // Let's only list the PAR queues.
-      if (substr($name, 0, 4 ) !== "par_") {
+      if (!str_starts_with($name, "par_")) {
         continue;
       }
 

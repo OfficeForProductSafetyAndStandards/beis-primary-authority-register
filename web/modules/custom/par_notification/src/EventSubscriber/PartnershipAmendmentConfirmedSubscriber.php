@@ -22,10 +22,11 @@ class PartnershipAmendmentConfirmedSubscriber extends ParEventSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  #[\Override]
+  static function getSubscribedEvents(): array {
     $events = [];
     // Confirmation event should fire after a partnership has been confirmed.
-    if (class_exists('Drupal\par_data\Event\ParDataEvent')) {
+    if (class_exists(ParDataEvent::class)) {
       $events[ParDataEvent::customAction('par_data_partnership', 'amendment_confirmed')][] = ['onEvent', -101];
     }
 
@@ -44,9 +45,7 @@ class PartnershipAmendmentConfirmedSubscriber extends ParEventSubscriberBase {
 
     $partnership_legal_entities = $entity->getPartnershipLegalEntities();
     // Get only the partnership legal entities that are awaiting nomination.
-    $partnership_legal_entities = array_filter($partnership_legal_entities, function ($partnership_legal_entity) {
-      return $partnership_legal_entity->getRawStatus() === 'confirmed_business';
-    });
+    $partnership_legal_entities = array_filter($partnership_legal_entities, fn($partnership_legal_entity) => $partnership_legal_entity->getRawStatus() === 'confirmed_business');
 
     // Only send the notification if there are legal entities awaiting confirmation.
     if ($entity instanceof ParDataPartnership &&

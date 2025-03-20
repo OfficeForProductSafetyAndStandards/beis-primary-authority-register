@@ -52,6 +52,7 @@ HEREDOC;
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $invitation_type = $this->getFlowDataHandler()->getDefaultValues('invitation_type', FALSE);
 
@@ -144,6 +145,7 @@ HEREDOC;
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // There must be an invitation type specified.
     if (!$this->getFlowDataHandler()->getDefaultValues('invitation_type', FALSE)) {
@@ -264,6 +266,7 @@ HEREDOC;
   /**
    * Validate date field.
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $role_key = $this->getElementKey('target_role');
     if (!$form_state->getValue($role_key)) {
@@ -286,7 +289,7 @@ HEREDOC;
       $form_state->setErrorByName($this->getElementName($email_body_key), $message);
     }
 
-    if (!strpos($form_state->getValue($email_body_key), '[invite:invite-accept-link]')) {
+    if (!strpos((string) $form_state->getValue($email_body_key), '[invite:invite-accept-link]')) {
       $id_key = $this->getElementKey(['email', 'body'], $index, TRUE);
       $message = $this->wrapErrorMessage("Please make sure you have the invite link '[invite:invite-accept-link]' somewhere in your message.", $this->getElementId($id_key, $form));
       $form_state->setErrorByName($this->getElementName($email_body_key), $message);
