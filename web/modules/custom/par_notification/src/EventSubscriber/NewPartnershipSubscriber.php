@@ -22,6 +22,7 @@ class NewPartnershipSubscriber extends ParEventSubscriberBase {
    * @return mixed
    */
   static function getSubscribedEvents() {
+    $events = [];
     // Confirmation event should fire after a partnership has been confirmed.
     if (class_exists('Drupal\par_data\Event\ParDataEvent')) {
       $events[EntityInsertEvent::class][] = ['onEvent', -101];

@@ -15,6 +15,8 @@ class EnforcementNoticeStatusChange implements EventSubscriberInterface {
    * @return mixed
    */
   static function getSubscribedEvents() {
+    $events = [];
+
     // React to Enforcement Actions being reviewed.
 
     if (class_exists('Drupal\par_data\Event\ParDataEvent')) {

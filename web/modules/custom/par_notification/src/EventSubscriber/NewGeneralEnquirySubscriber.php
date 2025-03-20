@@ -22,6 +22,7 @@ class NewGeneralEnquirySubscriber extends ParEventSubscriberBase {
    * @return mixed
    */
   static function getSubscribedEvents() {
+    $events = [];
     if (class_exists('Drupal\par_data\Event\ParDataEvent')) {
       $events[EntityInsertEvent::class][] = ['onEvent', 800];
     }

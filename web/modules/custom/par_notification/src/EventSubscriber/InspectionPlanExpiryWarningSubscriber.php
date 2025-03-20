@@ -29,6 +29,7 @@ class InspectionPlanExpiryWarningSubscriber extends ParEventSubscriberBase {
    * @return mixed
    */
   static function getSubscribedEvents() {
+    $events = [];
     // Revocation event should fire after most default events to make sure
     // revocation has not been cancelled.
     if (class_exists('Drupal\par_data\Event\ParDataEvent')) {

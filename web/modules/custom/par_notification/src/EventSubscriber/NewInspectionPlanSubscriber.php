@@ -23,6 +23,7 @@ class NewInspectionPlanSubscriber extends ParEventSubscriberBase {
    * @return mixed
    */
   static function getSubscribedEvents() {
+    $events = [];
     // React to custom reference event bring dispatched.
     if (class_exists('Drupal\par_data\Event\ParDataEvent')) {
       $events[ParDataEvent::customAction('par_data_inspection_plan', 'post_create')][] = ['onEvent', 800];

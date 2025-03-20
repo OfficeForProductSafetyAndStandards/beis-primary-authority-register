@@ -20,6 +20,7 @@ class ParFlowFallbackSubscriber extends ParFlowSubscriberBase {
    * @return mixed
    */
   static function getSubscribedEvents() {
+    $events = [];
     foreach (ParFlowEvents::getAlLEvents() as $event) {
       $events[$event][] = ['onEvent', -800];
     }
