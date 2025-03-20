@@ -1,7 +1,7 @@
 name: Par Data Test
 type: module
 description: Test data for the PAR Data model.
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^9 || ^10 || ^11
 package: PAR
 dependencies:
   - par_data:par_data
