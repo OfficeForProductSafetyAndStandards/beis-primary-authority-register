@@ -124,6 +124,7 @@
         "drupal/webprofiler": "10.1.4",
         "mglaman/drupal-check": "^1.4",
         "palantirnet/drupal-rector": "*",
+        "phpcompatibility/php-compatibility": "*",
         "phpspec/prophecy": "^1.8.0",
         "phpspec/prophecy-phpunit": "^2",
         "zaporylie/composer-drupal-optimizations": "^1.2"
