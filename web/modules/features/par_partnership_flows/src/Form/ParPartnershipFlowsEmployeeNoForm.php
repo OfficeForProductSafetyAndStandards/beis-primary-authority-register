@@ -39,6 +39,7 @@ class ParPartnershipFlowsEmployeeNoForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
     $organisation_bundle = $this->getParDataManager()->getParBundleEntity('par_data_organisation');
@@ -60,6 +61,7 @@ class ParPartnershipFlowsEmployeeNoForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
@@ -68,6 +70,7 @@ class ParPartnershipFlowsEmployeeNoForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

@@ -149,6 +149,7 @@ HEREDOC;
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $par_data_person);
 
@@ -267,6 +268,7 @@ HEREDOC;
   /**
    * Validate the form to make sure the correct values have been entered.
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
 
     if (empty($form_state->getValue('recipient_email'))) {
@@ -291,7 +293,7 @@ HEREDOC;
     else{
       $required_token = '[invite:invite-accept-link]';
     }
-    if (!strpos($form_state->getValue('email_body'), $required_token)) {
+    if (!strpos((string) $form_state->getValue('email_body'), $required_token)) {
       $id = $this->getElementId(['email_body'], $form);
       $form_state->setErrorByName($this->getElementName('email_body'), $this->wrapErrorMessage($this->t('You must make sure you have the invite token \'@invite_token\' somewhere in your message', ['@invite_token' => $required_token]), $id));
     }
@@ -302,6 +304,7 @@ HEREDOC;
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

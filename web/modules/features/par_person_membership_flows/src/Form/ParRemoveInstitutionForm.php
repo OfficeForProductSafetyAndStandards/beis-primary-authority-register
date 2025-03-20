@@ -42,6 +42,7 @@ class ParRemoveInstitutionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     $account = $this->getFlowDataHandler()->getParameter('user');
     $institution_type = $this->getFlowDataHandler()->getParameter('institution_type');
@@ -58,6 +59,7 @@ class ParRemoveInstitutionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form['institution'] = [
       '#type' => 'container',
@@ -78,6 +80,7 @@ class ParRemoveInstitutionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

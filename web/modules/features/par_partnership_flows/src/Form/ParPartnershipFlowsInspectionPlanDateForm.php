@@ -22,6 +22,7 @@ class ParPartnershipFlowsInspectionPlanDateForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     $inspection_plan = $this->getFlowDataHandler()->getParameter('par_data_inspection_plan');
     $this->pageTitle = $inspection_plan ? 'Change the expiry date' : 'When does this inspeciton plan expire?';
@@ -32,6 +33,7 @@ class ParPartnershipFlowsInspectionPlanDateForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $expiry = $form_state->getValue('expire');
 
@@ -57,6 +59,7 @@ class ParPartnershipFlowsInspectionPlanDateForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

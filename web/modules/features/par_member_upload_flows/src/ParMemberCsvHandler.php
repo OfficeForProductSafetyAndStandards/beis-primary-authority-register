@@ -85,34 +85,6 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
    */
   protected string $directory = 's3private://member-csv/';
 
-  /**
-   * The symfony serializer.
-   *
-   * @var Serializer
-   */
-  protected Serializer $seriailzer;
-
-  /**
-   * The PAR data manager for acting upon PAR Data.
-   *
-   * @var ParDataManagerInterface
-   */
-  protected ParDataManagerInterface $parDataManager;
-
-  /**
-   * The flow negotiator.
-   *
-   * @var ParFlowNegotiatorInterface
-   */
-  protected ParFlowNegotiatorInterface $negotiator;
-
-  /**
-   * The flow data manager.
-   *
-   * @var ParFlowDataHandlerInterface
-   */
-  protected ParFlowDataHandlerInterface $flowDataHandler;
-
   public function getMappings(): array {
     $mappings = [
       'partnership_id' => 'Partnership id',
@@ -150,21 +122,28 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   /**
    * Constructs a ParFlowNegotiator instance.
    *
-   * @param Serializer $serializer
+   * @param Serializer $seriailzer
    *   The entity type manager.
-   * @param ParDataManagerInterface $par_data_manager
+   * @param ParDataManagerInterface $parDataManager
    *   The par data manager.
    * @param ParFlowNegotiatorInterface $negotiator
    *   The flow negotiator.
-   * @param \Drupal\par_flows\ParFlowDataHandlerInterface $data_handler
+   * @param \Drupal\par_flows\ParFlowDataHandlerInterface $flowDataHandler
    *   The flow data handler.
    */
-  public function __construct(Serializer $serializer, ParDataManagerInterface $par_data_manager, ParFlowNegotiatorInterface $negotiator, ParFlowDataHandlerInterface $data_handler) {
-    $this->seriailzer = $serializer;
-    $this->parDataManager = $par_data_manager;
-    $this->negotiator = $negotiator;
-    $this->flowDataHandler = $data_handler;
-
+  public function __construct(/**
+   * The symfony serializer.
+   */
+  protected Serializer $seriailzer, /**
+   * The PAR data manager for acting upon PAR Data.
+   */
+  protected ParDataManagerInterface $parDataManager, /**
+   * The flow negotiator.
+   */
+  protected ParFlowNegotiatorInterface $negotiator, /**
+   * The flow data manager.
+   */
+  protected ParFlowDataHandlerInterface $flowDataHandler) {
     // Prepare the member-csv directory for reads and writes.
     $this->getFileSystem()->prepareDirectory($this->directory);
   }
@@ -196,7 +175,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
    *   The arguments to be passed to the called method
    */
   public static function __callStatic($method, $args) {
-    if (str_starts_with($method, 'batch__')) {
+    if (str_starts_with((string) $method, 'batch__')) {
       $csv_handler = Drupal::service('par_member_upload_flows.csv_handler');
 
       sleep(3);
@@ -306,7 +285,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     // The end date must be greater than the start date @see PAR-1477, however,
     // the start date must first be converted to a valid DateTime string.
-    $start_date_input = isset($row[$this->getMapping('membership_start')]) ? $row[$this->getMapping('membership_start')] : '';
+    $start_date_input = $row[$this->getMapping('membership_start')] ?? '';
     if ($start_date_input) {
       try {
         $date = \DateTime::createFromFormat(self::DATE_FORMAT . " H:i:s", $start_date_input . " 23:59:59");
@@ -455,7 +434,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
           break;
 
         case 'email':
-          $data[$column] = strtolower($value);
+          $data[$column] = strtolower((string) $value);
           break;
 
         case 'membership_start':
@@ -489,7 +468,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
           break;
 
         case 'covered':
-          $data[$column] = !(strtolower($value) === 'no' || strtolower($value) === 'n');
+          $data[$column] = !(strtolower((string) $value) === 'no' || strtolower((string) $value) === 'n');
           break;
 
         case 'legal_entity_type_first':
@@ -723,6 +702,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadFile(FileInterface $file, array &$rows = []): void {
     // Need to set auto_detect_line_endings to deal with Mac line endings.
     // @see http://php.net/manual/en/function.fgetcsv.php
@@ -770,6 +750,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
    * @return bool|FileInterface
    *   Return the file if successfully saved, otherwise return false.
    */
+  #[\Override]
   public function saveFile(ParDataPartnership $par_data_partnership, array $rows = []): bool|FileInterface {
     $data = $this->getSerializer()->encode($rows, 'csv');
 
@@ -789,6 +770,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getColumns($processed = TRUE): array {
     $mappings = $this->getMappings();
 
@@ -801,9 +783,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     // Exclude processed properties if not requested.
     if (!$processed) {
-      $mappings = array_filter($mappings, function($key) use ($processed_properties) {
-        return !in_array($key, $processed_properties);
-      }, ARRAY_FILTER_USE_KEY);
+      $mappings = array_filter($mappings, fn($key) => !in_array($key, $processed_properties), ARRAY_FILTER_USE_KEY);
     }
 
     return array_values($mappings);
@@ -812,6 +792,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function lock(ParDataPartnership $par_data_partnership): void {
     if (!$par_data_partnership->lockMembership()) {
       throw new ParCsvProcessingException('The membership list could not be locked, processing cannot continue.');
@@ -821,6 +802,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function unlock(ParDataPartnership $par_data_partnership): void {
     $par_data_partnership->unlockMembership();
   }
@@ -840,7 +822,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       // Ignore empty rows.
       if (!empty($row)) {
         foreach ($row as $column => $value) {
-          $data[$index][strtolower($column)] = Xss::filter(trim($value));
+          $data[$index][strtolower($column)] = Xss::filter(trim((string) $value));
         }
       }
     }
@@ -852,12 +834,13 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
    * Case insensitive compare.
    */
   protected function caseInsensitiveCompare($value, $comparison): bool {
-    return !empty($value) && (strtolower($value) === strtolower($comparison));
+    return !empty($value) && (strtolower((string) $value) === strtolower((string) $comparison));
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validate(array $rows): ?array {
     $errors = [];
 
@@ -927,9 +910,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
    * @return array
    */
   public function filterFatalErrors(array $errors): array {
-    return array_filter($errors, function ($error) {
-      return ($error instanceof ParCsvViolation && $error->isFatal());
-    });
+    return array_filter($errors, fn($error) => $error instanceof ParCsvViolation && $error->isFatal());
   }
 
   public function backup(ParDataPartnership $par_data_partnership) {
@@ -1066,9 +1047,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function update(ParDataPartnership $par_data_partnership, $members): ?int {
-    $new_members = array_filter($members, function ($v) {
-      return ($v instanceof ParDataCoordinatedBusiness);
-    });
+    $new_members = array_filter($members, fn($v) => $v instanceof ParDataCoordinatedBusiness);
 
     $par_data_partnership->set('field_coordinated_business', array_values($new_members));
     return $par_data_partnership->save();
@@ -1096,9 +1075,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   }
 
   public function clean($old, $new, $par_data_partnership): void {
-    $diff = array_udiff($old, $new, function ($a, $b) {
-      return $a->id() - $b->id();
-    }
+    $diff = array_udiff($old, $new, fn($a, $b) => $a->id() - $b->id()
     );
 
     // Re-load the partnership to get any updates perforced during batch processes.

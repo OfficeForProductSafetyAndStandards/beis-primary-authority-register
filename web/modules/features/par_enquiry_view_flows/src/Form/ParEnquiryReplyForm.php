@@ -31,6 +31,7 @@ class ParEnquiryReplyForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
@@ -44,7 +45,7 @@ class ParEnquiryReplyForm extends ParBaseForm {
         'field_name'  => 'messages',
         'uid' => \Drupal::currentUser()->id(),
         'comment_type' => 'par_general_enquiry_comments',
-        'subject' => substr($par_data_general_enquiry->label(), 0, 64),
+        'subject' => substr((string) $par_data_general_enquiry->label(), 0, 64),
         'status' => 1,
       ]);
     }

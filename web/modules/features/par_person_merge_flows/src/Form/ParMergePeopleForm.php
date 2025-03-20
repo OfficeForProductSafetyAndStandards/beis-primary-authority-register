@@ -26,6 +26,7 @@ class ParMergePeopleForm extends ParBaseForm {
    */
   protected $pageTitle = "Choose which people to combine";
 
+  #[\Override]
   public function loadData() {
     $person = $this->getFlowDataHandler()->getParameter('par_data_person');
     $people = $person->getSimilarPeople();
@@ -40,6 +41,7 @@ class ParMergePeopleForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPerson $par_data_person = NULL, User $user = NULL) {
     if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
       $this->addCacheableDependency($par_data_person);

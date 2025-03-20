@@ -2,6 +2,8 @@
 
 namespace Drupal\par_manage_subscription_list_flows\Routing;
 
+use Drupal\par_manage_subscription_list_flows\Form\ParSubscriptionManageForm;
+use Drupal\par_manage_subscription_list_flows\Form\ParSubscriptionReviewForm;
 use Drupal\Component\Utility\Html;
 use Drupal\par_subscriptions\ParSubscriptionManagerInterface;
 use Symfony\Component\Routing\Route;
@@ -27,6 +29,7 @@ class ParSubscriptionManagementRoutes implements ContainerInjectionInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container) {
     return new static($container->get('par_subscriptions.manager'));
   }
@@ -63,7 +66,7 @@ class ParSubscriptionManagementRoutes implements ContainerInjectionInterface {
       $route = new Route(
         "/helpdesk/subscriptions/$list_slug/manage",
         [
-          '_form' => 'Drupal\par_manage_subscription_list_flows\Form\ParSubscriptionManageForm',
+          '_form' => ParSubscriptionManageForm::class,
           '_title_callback' => 'Drupal\par_manage_subscription_list_flows\Form\ParSubscriptionManageForm::titleCallback',
           'list' => $list,
         ],
@@ -91,7 +94,7 @@ class ParSubscriptionManagementRoutes implements ContainerInjectionInterface {
       $route = new Route(
         "/helpdesk/subscriptions/$list_slug/review",
         [
-          '_form' => 'Drupal\par_manage_subscription_list_flows\Form\ParSubscriptionReviewForm',
+          '_form' => ParSubscriptionReviewForm::class,
           '_title_callback' => 'Drupal\par_manage_subscription_list_flows\Form\ParSubscriptionReviewForm::titleCallback',
           'list' => $list,
         ],

@@ -32,6 +32,7 @@ class ParPartnershipFlowsApplicationOrganisationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
 
     $form['organisation_name'] = [
@@ -46,6 +47,7 @@ class ParPartnershipFlowsApplicationOrganisationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
   }

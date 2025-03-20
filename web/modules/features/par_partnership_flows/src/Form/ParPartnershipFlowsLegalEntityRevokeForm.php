@@ -27,6 +27,7 @@ class ParPartnershipFlowsLegalEntityRevokeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
 
     $this->pageTitle = 'Update Partnership Information | Revoke a legal entity for your organisation';
@@ -42,6 +43,7 @@ class ParPartnershipFlowsLegalEntityRevokeForm extends ParBaseForm {
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
    */
+  #[\Override]
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, ParDataPartnershipLegalEntity $par_data_partnership_le = NULL): AccessResult {
 
     // Limit access to partnership pages.
@@ -66,6 +68,7 @@ class ParPartnershipFlowsLegalEntityRevokeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPartnershipLegalEntity $par_data_partnership_le = NULL) {
 
     $par_data_legal_entity = $par_data_partnership_le->getLegalEntity();
@@ -130,6 +133,7 @@ class ParPartnershipFlowsLegalEntityRevokeForm extends ParBaseForm {
   /**
    * Validate the form to make sure the correct values have been entered.
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
@@ -146,6 +150,7 @@ class ParPartnershipFlowsLegalEntityRevokeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
@@ -153,7 +158,7 @@ class ParPartnershipFlowsLegalEntityRevokeForm extends ParBaseForm {
     $partnership_legal_entity = $this->getFlowDataHandler()->getParameter('par_data_partnership_le');
 
     if ($partnership_legal_entity->isRevocable()) {
-      $revocation_reason = trim($form_state->getValue('revocation_reason'));
+      $revocation_reason = trim((string) $form_state->getValue('revocation_reason'));
       $partnership_legal_entity->revoke(TRUE, $revocation_reason);
     }
   }

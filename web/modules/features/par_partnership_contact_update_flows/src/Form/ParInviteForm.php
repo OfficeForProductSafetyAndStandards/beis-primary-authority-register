@@ -35,6 +35,7 @@ class ParInviteForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     // Set the user account that is being updated as a parameter for plugins to access
     $choose_account_cid = $this->getFlowNegotiator()->getFormKey('choose_account');
@@ -82,6 +83,7 @@ class ParInviteForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     $choose_account_cid = $this->getFlowNegotiator()->getFormKey('choose_account');
     $account_selection = $this->getFlowDataHandler()->getDefaultValues('account', NULL, $choose_account_cid);
