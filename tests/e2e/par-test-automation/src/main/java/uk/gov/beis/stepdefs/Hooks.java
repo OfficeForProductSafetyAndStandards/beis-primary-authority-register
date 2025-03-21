@@ -7,9 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import Configuration.SeleniumDriverConfig;
-import cucumber.api.Scenario;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
+
+import io.cucumber.java.*;
+
 import uk.gov.beis.enums.Browser;
 import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.supportfactory.WebdriverFactory;

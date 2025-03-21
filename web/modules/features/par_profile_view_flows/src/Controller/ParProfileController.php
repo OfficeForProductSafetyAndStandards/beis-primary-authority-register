@@ -136,17 +136,17 @@ class ParProfileController extends ParBaseController {
             </h2>
             <ul class="govuk-tabs__list">
                 <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-                    <a class="govuk-tabs__tab" href="/person/' . $par_data_person->id() . '">
+                    <a class="" href="/person/' . $par_data_person->id() . '">
                         Profile
                     </a>
                 </li>
                 <li class="govuk-tabs__list-item">
-                    <a class="govuk-tabs__tab" href="/person/' . $par_data_person->id() . '/contacts">
+                    <a class="" href="/person/' . $par_data_person->id() . '/contacts">
                         Contacts
                     </a>
                 </li>
                 <li class="govuk-tabs__list-item">
-                    <a class="govuk-tabs__tab" href="/person/' . $par_data_person->id() . '/authorities-organisations">
+                    <a class="" href="/person/' . $par_data_person->id() . '/authorities-organisations">
                         Authorities and Organisations
                     </a>
                 </li>
@@ -189,17 +189,17 @@ class ParProfileController extends ParBaseController {
             </h2>
             <ul class="govuk-tabs__list">
                 <li class="govuk-tabs__list-item">
-                    <a class="govuk-tabs__tab" href="/person/' . $par_data_person->id() . '">
+                    <a class="" href="/person/' . $par_data_person->id() . '">
                         Profile
                     </a>
                 </li>
                 <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-                    <a class="govuk-tabs__tab" href="/person/' . $par_data_person->id() . '/contacts">
+                    <a class="" href="/person/' . $par_data_person->id() . '/contacts">
                         Contacts
                     </a>
                 </li>
                 <li class="govuk-tabs__list-item">
-                    <a class="govuk-tabs__tab" href="/person/' . $par_data_person->id() . '/authorities-organisations">
+                    <a class="" href="/person/' . $par_data_person->id() . '/authorities-organisations">
                         Authorities and Organisations
                     </a>
                 </li>
@@ -236,17 +236,17 @@ class ParProfileController extends ParBaseController {
             </h2>
             <ul class="govuk-tabs__list">
                 <li class="govuk-tabs__list-item">
-                    <a class="govuk-tabs__tab" href="/person/' . $par_data_person->id() . '">
+                    <a class="" href="/person/' . $par_data_person->id() . '">
                         Profile
                     </a>
                 </li>
                 <li class="govuk-tabs__list-item">
-                    <a class="govuk-tabs__tab" href="/person/' . $par_data_person->id() . '/contacts">
+                    <a class="" href="/person/' . $par_data_person->id() . '/contacts">
                         Contacts
                     </a>
                 </li>
                 <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-                    <a class="govuk-tabs__tab" href="/person/' . $par_data_person->id() . '/authorities-organisations">
+                    <a class="" href="/person/' . $par_data_person->id() . '/authorities-organisations">
                         Authorities and Organisations
                     </a>
                 </li>

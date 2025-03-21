@@ -21,7 +21,7 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: 'Primary Authority Register | Your authorities'
+      title: 'Your authorities'
       fields:
         id:
           id: id
@@ -575,6 +575,7 @@ display:
           plugin_id: entity_reverse
           required: false
       css_class: par-user-authority-list
+      use_ajax: true
       group_by: true
       header: {  }
       footer: {  }

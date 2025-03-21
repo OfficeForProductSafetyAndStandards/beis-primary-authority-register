@@ -14,9 +14,11 @@
 .form-text {
   background: none;
 }
+
 .app-phase-banner {
   border-bottom: 0;
 }
+
 .app-cookie-banner {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -34,22 +36,24 @@
     color: govuk-colour("light-green");
   }
 }
+
 .govuk-header__logo {
-  width: auto;
-  float: left;
-  padding-right: 0;
   .govuk-header__link {
     white-space: nowrap;
+    svg {
+      fill: #fff;
+    }
+    &:focus {
+      svg {
+        fill: #000;
+      }
+    }
   }
 }
-.govuk-header__product-name {
-  padding-left: 10px;
-}
-#block-mainnavigation {
-  float: left;
-  padding-left: 20px;
-  .govuk-header__navigation {
-    margin-bottom: 0;
+
+#block-par-theme-account-menu {
+  h2 {
+    color: #fff;
   }
 }
 
@@ -59,6 +63,13 @@
     .header-wrapper,
     & {
       background: #006633;
+    }
+
+    a {
+      &:hover,
+      &:focus {
+        color: govuk-colour("white");
+      }
     }
   }
 
@@ -72,22 +83,36 @@
   @include govuk-clearfix;
 }
 
+.govuk-header__content,
+.govuk-header__navigation-item {
+  a {
+    text-decoration: none;
+  }
+}
+
 // Account Menu block.
 .govuk-header__navigation {
   clear: both;
 
-  @include govuk-media-query ($from: desktop) {
-    float: right;
+  &-list {
+    margin-bottom: 10px;
   }
 
-  .govuk-header__navigation-item {
-    @include govuk-media-query($from: desktop) {
-      margin-left: 15px;
-      margin-right: 0;
+  li {
+    padding: 5px 0;
+    a {
+      font-weight: 700;
+      font-size: 1rem;
+      line-height: 1.25;
+
+      &:hover,
+      &:focus {
+        color: govuk-colour("white");
+      }
     }
   }
 
-  .govuk-header__navigation-item--active {
+  &-item--active {
     a {
       &:link,
       &:hover,
@@ -150,3 +175,25 @@
     margin-bottom: 0 !important;
   }
 }
+
+.govuk-button {
+  &:hover,
+  &:focus {
+    color: govuk-colour("white") !important;
+  }
+
+  &.add-action {
+    margin-top: 30px;
+  }
+}
+
+.govuk-cookie-banner {
+  border-bottom: 0;
+  padding-top: 0;
+}
+
+.par-govuk-cookie-banner__message {
+  border-bottom: 10px solid transparent;
+  padding-top: 20px;
+}
+

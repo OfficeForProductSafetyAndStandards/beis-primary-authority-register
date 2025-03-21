@@ -5,10 +5,8 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
 
 public class NumberOfEmployeesPage extends BasePageObject {
 	
@@ -27,17 +25,5 @@ public class NumberOfEmployeesPage extends BasePageObject {
 	
 	public void clickContinueButton() {
 		continueBtn.click();
-	}
-	
-	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
-	}
-	
-	public TradingPage selectNoEmployees(String number) {
-		driver.findElement(By.xpath(noEmployees.replace("?", number))).click();
-		
-		continueBtn.click();
-		return PageFactory.initElements(driver, TradingPage.class);
 	}
 }

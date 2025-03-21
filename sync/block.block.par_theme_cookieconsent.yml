@@ -1,0 +1,25 @@
+uuid: 00f720d4-c3f8-4fdf-b2fa-df8ef8a865b6
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_govuk_cookies
+    - system
+  theme:
+    - par_theme
+id: par_theme_cookieconsent
+theme: par_theme
+region: content
+weight: 0
+provider: null
+plugin: cookie_policy
+settings:
+  id: cookie_policy
+  label: 'Cookie Consent'
+  label_display: visible
+  provider: par_govuk_cookies
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: /cookies

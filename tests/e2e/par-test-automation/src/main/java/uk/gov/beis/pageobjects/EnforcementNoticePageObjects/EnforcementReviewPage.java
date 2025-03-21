@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
@@ -36,8 +35,7 @@ public class EnforcementReviewPage extends BasePageObject {
 		return legalEntity.isDisplayed() && enforcementType.isDisplayed() && enforcementTitle.isDisplayed() && enforcementDescription.isDisplayed() && enforcementFile.isDisplayed();
 	}
 
-	public EnforcementCompletionPage saveChanges() {
+	public void clickSaveButton() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, EnforcementCompletionPage.class);
 	}
 }

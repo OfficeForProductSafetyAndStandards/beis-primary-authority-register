@@ -4,8 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class LOG {
+	
 	private Logger LOGGER = LoggerFactory.getLogger(LOG.class);
 	private static LOG instance;
+	
 	public LOG() {
 		
 	}

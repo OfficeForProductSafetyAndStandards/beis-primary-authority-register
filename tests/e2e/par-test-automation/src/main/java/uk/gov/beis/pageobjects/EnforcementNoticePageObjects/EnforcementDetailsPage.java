@@ -6,9 +6,9 @@ import java.util.Map;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-import cucumber.api.DataTable;
+import io.cucumber.datatable.DataTable;
+
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.utility.DataStore;
@@ -45,10 +45,5 @@ public class EnforcementDetailsPage extends BasePageObject {
 	
 	public void clickContinueButton() {
 		continueBtn.click();
-	}
-	
-	public EnforcementActionPage goToEnforcementActionPage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, EnforcementActionPage.class);
 	}
 }

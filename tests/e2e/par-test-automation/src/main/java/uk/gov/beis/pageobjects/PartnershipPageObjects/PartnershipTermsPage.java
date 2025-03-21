@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 
@@ -20,25 +19,23 @@ public class PartnershipTermsPage extends BasePageObject {
 		super();
 	}
 	
-	public PartnershipTermsPage deselectTerms() {
+	public void deselectTerms() {
 		
 		if (confirmCheckbox.isSelected())
 		{
 			confirmCheckbox.click();
 		}
-		
-		continueBtn.click();
-		return PageFactory.initElements(driver, PartnershipTermsPage.class);
 	}
 	
-	public PartnershipDescriptionPage acceptTerms() {
+	public void acceptTerms() {
 		
 		if (!confirmCheckbox.isSelected())
 		{
 			confirmCheckbox.click();
 		}
-		
+	}
+	
+	public void clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, PartnershipDescriptionPage.class);
 	}
 }

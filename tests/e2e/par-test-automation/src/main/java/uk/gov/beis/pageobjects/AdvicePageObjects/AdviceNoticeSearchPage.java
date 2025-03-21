@@ -5,11 +5,9 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.SharedPageObjects.RemovePage;
 import uk.gov.beis.utility.DataStore;
 
 public class AdviceNoticeSearchPage extends BasePageObject {
@@ -30,38 +28,30 @@ public class AdviceNoticeSearchPage extends BasePageObject {
 		super();
 	}
 
-	public AdviceNoticeSearchPage searchForAdvice(String title) {
+	public void searchForAdvice(String title) {
 		adviceSearchBar.clear();
 		adviceSearchBar.sendKeys(title);
 		
 		searchBtn.click();
-		return PageFactory.initElements(driver, AdviceNoticeSearchPage.class);
 	}
 	
-	public UploadAdviceNoticePage selectUploadLink() {
+	public void selectUploadLink() {
 		uploadBtn.click();
-		return PageFactory.initElements(driver, UploadAdviceNoticePage.class);
 	}
 	
-	public AdviceNoticeDetailsPage selectEditAdviceButton() {
+	public void selectEditAdviceButton() {
 		WebElement editLink = driver.findElement(By.partialLinkText("Edit"));
 		editLink.click();
-		
-		return PageFactory.initElements(driver, AdviceNoticeDetailsPage.class);
 	}
 	
-	public AdviceArchivePage selectArchiveAdviceButton() {
+	public void selectArchiveAdviceButton() {
 		WebElement archiveLink = driver.findElement(By.partialLinkText("Archive"));
 		archiveLink.click();
-		
-		return PageFactory.initElements(driver, AdviceArchivePage.class);
 	}
 	
-	public RemovePage selectRemoveAdviceButton() {
+	public void selectRemoveAdviceButton() {
 		WebElement removeLink = driver.findElement(By.partialLinkText("Remove"));
 		removeLink.click();
-		
-		return PageFactory.initElements(driver, RemovePage.class);
 	}
 	
 	public String getAdviceStatus() {

@@ -172,6 +172,13 @@ class ParConfirmationReviewForm extends ParBaseForm {
         '#value' => $this->t('You won\'t be able to change these details after you save them. Please check everything is correct.'),
         '#attributes' => ['class' => ['govuk-form-group']],
       ];
+
+      $form['warning_text'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t('ATTENTION: Please ensure all information has been completed and checked to the best of your ability. If this information is incorrect, the application will be rejected, and a new submission will be required.'),
+        '#prefix' => '<div class="govuk-warning-text"><span class="govuk-warning-text__icon" aria-hidden="true">!</span><strong class="govuk-warning-text__text"><span class="govuk-visually-hidden">Warning</span>',
+        '#suffix' => '</strong></div>',
+      ];
     }
     else {
       $form['help_text'] = [

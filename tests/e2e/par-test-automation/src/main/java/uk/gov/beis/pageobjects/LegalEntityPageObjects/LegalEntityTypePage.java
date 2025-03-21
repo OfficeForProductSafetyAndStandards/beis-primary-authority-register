@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 
@@ -28,9 +27,6 @@ public class LegalEntityTypePage extends BasePageObject {
 	
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
-	
-	@FindBy(id = "edit-save")
-	private WebElement saveBtn;
 	
 	private String legalEntTypeRadio = "//label[contains(normalize-space(),'?')]/preceding-sibling::input";
 	
@@ -72,15 +68,6 @@ public class LegalEntityTypePage extends BasePageObject {
 	
 	public void clickContinueButton() {
 		continueBtn.click();
-	}
-	
-	public void clickSaveButton() {
-		saveBtn.click();
-	}
-	
-	public LegalEntityReviewPage goToLegalEntityReviewPage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, LegalEntityReviewPage.class);
 	}
 	
 	private void enterUnregisteredEntityDetails(String entityType, String entityName) {

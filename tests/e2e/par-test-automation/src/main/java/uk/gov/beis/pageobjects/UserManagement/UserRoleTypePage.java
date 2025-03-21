@@ -6,10 +6,8 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.OtherPageObjects.AccountInvitePage;
 
 public class UserRoleTypePage extends BasePageObject {
 	
@@ -142,13 +140,7 @@ public class UserRoleTypePage extends BasePageObject {
 		}
 	}
 	
-	public UserProfilePage goToUserProfilePage() {
+	public void clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, UserProfilePage.class);
-	}
-	
-	public AccountInvitePage goToUserAccountInvitePage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, AccountInvitePage.class);
 	}
 }

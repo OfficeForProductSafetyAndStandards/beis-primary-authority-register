@@ -82,7 +82,6 @@ package.box
 
 # Exclude local environment settings
 .env
-.env.*
 
 auth.json
 /.csslintrc

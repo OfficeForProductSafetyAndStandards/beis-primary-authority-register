@@ -4,11 +4,8 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.TransferPartnerships.AuthorityTransferSelectionPage;
-import uk.gov.beis.pageobjects.UserDashboardPageObjects.DashboardPage;
 
 public class AuthoritiesSearchPage extends BasePageObject {
 	
@@ -32,13 +29,10 @@ public class AuthoritiesSearchPage extends BasePageObject {
 	
 	public AuthoritiesSearchPage() throws ClassNotFoundException, IOException {
 		super();
-		
-		LOG.info("Authority Dashboard Page is Loaded!");
 	}
 	
-	public DashboardPage goToHelpDeskDashboard() {
+	public void goToHelpDeskDashboard() {
 		helpDeskDashboardBtn.click();
-		return PageFactory.initElements(driver, DashboardPage.class);
 	}
 	
 	public void searchAuthority(String authorityName) {
@@ -49,19 +43,16 @@ public class AuthoritiesSearchPage extends BasePageObject {
 		}
 	}
 	
-	public AuthorityNamePage selectAddAuthority() {
+	public void selectAddAuthority() {
 		addAuthorityBtn.click();
-		return PageFactory.initElements(driver, AuthorityNamePage.class);
 	}
 	
-	public AuthorityConfirmationPage selectManageAuthority() {
+	public void selectManageAuthority() {
 		manageAuthorityLink.click();
-		return PageFactory.initElements(driver, AuthorityConfirmationPage.class);
 	}
 	
-	public AuthorityTransferSelectionPage selectTransferPartnerships() {
+	public void selectTransferPartnerships() {
 		transferPartnershipsLink.click();
-		return PageFactory.initElements(driver, AuthorityTransferSelectionPage.class);
 	}
 	
 
