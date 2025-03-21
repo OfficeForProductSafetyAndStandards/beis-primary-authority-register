@@ -207,6 +207,9 @@
             "drupal/registered_organisations": {
                 "Fix number format for regsistered charities": "./patches/registered_organisations/charities_commission_number_format.patch"
             },
+            "drupal/search_api_opensearch": {
+                "search_api_opensearch_update_9201 fails - https://www.drupal.org/project/search_api_opensearch/issues/3508909": "https://git.drupalcode.org/project/search_api_opensearch/-/merge_requests/86.diff"
+            },
             "drupal/vbo_export": {
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2021-11-23/allow_configurable_scheme-2988257-18.patch"
             },

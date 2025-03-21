@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d654368820472f78bf695d71b5364690",
+    "content-hash": "0ba0b5b293cc7c3d480e4929126fe36b",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -171,16 +171,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.342.10",
+            "version": "3.342.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "93dc5f0852d9e67f237060814b8abc748c0e4be5"
+                "reference": "e0afed3d0e2c89362f6c9b6bf8f278b04a4858b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/93dc5f0852d9e67f237060814b8abc748c0e4be5",
-                "reference": "93dc5f0852d9e67f237060814b8abc748c0e4be5",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/e0afed3d0e2c89362f6c9b6bf8f278b04a4858b6",
+                "reference": "e0afed3d0e2c89362f6c9b6bf8f278b04a4858b6",
                 "shasum": ""
             },
             "require": {
@@ -262,9 +262,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.342.10"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.342.11"
             },
-            "time": "2025-03-20T18:27:12+00:00"
+            "time": "2025-03-21T18:11:10+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
