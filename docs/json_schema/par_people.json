@@ -1,0 +1,159 @@
+{
+  "title": "PAR People Data Schema",
+  "description": "Schema for PAR people data.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "User name identifier."
+    },
+    "archive_reason__value": {
+      "type": "string",
+      "description": "Reason for archiving.",
+      "default": ""
+    },
+    "archived": {
+      "type": "string",
+      "description": "Archived status (On/Off).",
+      "enum": ["On", "Off"]
+    },
+    "user_id": {
+      "type": "string",
+      "description": "User ID.",
+      "default": ""
+    },
+    "changed": {
+      "type": "string",
+      "description": "Timestamp of last change."
+    },
+    "communication_email": {
+      "type": "string",
+      "description": "Communication email.",
+      "default": ""
+    },
+    "communication_mobile": {
+      "type": "string",
+      "description": "Communication mobile number.",
+      "default": ""
+    },
+    "communication_phone": {
+      "type": "string",
+      "description": "Communication phone number.",
+      "default": ""
+    },
+    "communication_notes__value": {
+      "type": "string",
+      "description": "Communication notes.",
+      "default": ""
+    },
+    "created": {
+      "type": "string",
+      "description": "Timestamp of creation."
+    },
+    "deleted": {
+      "type": "string",
+      "description": "Deleted status (On/Off).",
+      "enum": ["On", "Off"]
+    },
+    "deleted_reason__value": {
+      "type": "string",
+      "description": "Reason for deletion.",
+      "default": ""
+    },
+    "email": {
+      "type": "string",
+      "description": "User email."
+    },
+    "first_name": {
+      "type": "string",
+      "description": "User first name."
+    },
+    "id": {
+      "type": "string",
+      "description": "Unique user ID."
+    },
+    "job_title": {
+      "type": "string",
+      "description": "User job title.",
+      "default": ""
+    },
+    "last_name": {
+      "type": "string",
+      "description": "User last name."
+    },
+    "mobile_phone": {
+      "type": "string",
+      "description": "User mobile phone."
+    },
+    "par_label": {
+      "type": "string",
+      "description": "PAR label."
+    },
+    "par_status": {
+      "type": "string",
+      "description": "PAR status.",
+      "default": ""
+    },
+    "par_status_author": {
+      "type": "string",
+      "description": "PAR status author.",
+      "default": ""
+    },
+    "par_status_time": {
+      "type": "string",
+      "description": "PAR status time.",
+      "default": ""
+    },
+    "par_person_email": {
+      "type": "string",
+      "description": "PAR person email."
+    },
+    "revocation_reason__value": {
+      "type": "string",
+      "description": "Reason for revocation.",
+      "default": ""
+    },
+    "revoked": {
+      "type": "string",
+      "description": "Revoked status (On/Off).",
+      "enum": ["On", "Off"]
+    },
+    "type": {
+      "type": "string",
+      "description": "User type.",
+      "default": ""
+    },
+    "field_user_account": {
+      "type": "string",
+      "description": "Field user account."
+    },
+    "uuid": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Universally unique identifier."
+    },
+    "work_phone": {
+      "type": "string",
+      "description": "User work phone."
+    }
+  },
+  "required": [
+    "name",
+    "archived",
+    "user_id",
+    "changed",
+    "created",
+    "deleted",
+    "email",
+    "first_name",
+    "id",
+    "last_name",
+    "mobile_phone",
+    "par_label",
+    "par_person_email",
+    "revoked",
+    "field_user_account",
+    "uuid",
+    "work_phone"
+  ]
+}

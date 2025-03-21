@@ -1,0 +1,63 @@
+{
+  "title": "PAR User Account Schema",
+  "description": "Schema for PAR user account data.",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "User's email address or username."
+    },
+    "created": {
+      "type": "string",
+      "description": "Timestamp of account creation."
+    },
+    "field_gdpr": {
+      "type": "string",
+      "description": "GDPR field value.",
+      "default": ""
+    },
+    "field_last_password_reset": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp of last password reset."
+    },
+    "field_password_expiration": {
+      "type": "string",
+      "description": "Password expiration status.",
+      "enum": ["Non-expired Password"]
+    },
+    "field_pending_expire_sent": {
+      "type": "string",
+      "description": "Pending password expiration notification sent status.",
+      "default": ""
+    },
+    "roles_target_id": {
+      "type": "string",
+      "description": "User's role.",
+      "enum": ["Administrator"]
+    },
+    "changed": {
+      "type": "string",
+      "description": "Timestamp of last account change."
+    },
+    "uid": {
+      "type": "string",
+      "description": "User ID."
+    },
+    "uuid": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Universally unique identifier."
+    }
+  },
+  "required": [
+    "name",
+    "created",
+    "field_last_password_reset",
+    "field_password_expiration",
+    "roles_target_id",
+    "changed",
+    "uid",
+    "uuid"
+  ]
+}
