@@ -12,7 +12,7 @@ references:
           APP_ENV: ci
           SENTRY_ENVIRONMENT: ci
 
-      - image: cimg/postgres:13.4-postgis
+      - image: cimg/postgres:16.8-postgis
         environment:
           PGHOST: localhost
           POSTGRES_USER: par
