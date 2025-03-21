@@ -186,8 +186,8 @@
             "drupal/core": "-p2"
         },
         "patches": {
-            "drupal/registered_organisations": {
-                "Fix number format for regsistered charities": "./patches/registered_organisations/charities_commission_number_format.patch"
+            "drupal/core": {
+                "Identifiers longer than 63 characters are truncated, causing Views to break on Postgres - https://www.drupal.org/project/drupal/issues/571548": "https://www.drupal.org/files/issues/2025-01-16/drupal-postgres_identifiers_10_4-571548-207.patch"
             },
             "drupal/flysystem": {
                 "Add drush commands for getting and putting files - https://www.drupal.org/project/flysystem/issues/3192777": "https://www.drupal.org/files/issues/2023-08-31/3192777-4-added_drush_commands.patch",
@@ -203,6 +203,9 @@
             "drupal/redis": {
                 "Support TLS for Predis - https://www.drupal.org/project/redis/issues/3004561": "https://www.drupal.org/files/issues/2021-11-19/redis-support_tls_on_predis-3004561-37.patch",
                 "Azure/AWS: Take into account CONFIG command may not work - https://www.drupal.org/project/redis/issues/3173988": "https://www.drupal.org/files/issues/2024-09-25/3173988-28.patch"
+            },
+            "drupal/registered_organisations": {
+                "Fix number format for regsistered charities": "./patches/registered_organisations/charities_commission_number_format.patch"
             },
             "drupal/vbo_export": {
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2021-11-23/allow_configurable_scheme-2988257-18.patch"
