@@ -5,10 +5,8 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.SharedPageObjects.DeclarationPage;
 
 public class RemoveEnforcementPage extends BasePageObject {
 	
@@ -35,10 +33,5 @@ public class RemoveEnforcementPage extends BasePageObject {
 	
 	public void clickContinueButton() {
 		continueBtn.click();
-	}
-	
-	public DeclarationPage goToDeclarationPage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, DeclarationPage.class);
 	}
 }

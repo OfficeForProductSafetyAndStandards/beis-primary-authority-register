@@ -2,9 +2,10 @@ framework:
   version: 2.x
   css:
     theme:
+      node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.css: { weight: 0 }
       css/style.css: {}
   js:
-    node_modules/govuk-frontend/govuk/all.js: {weight: 0}
+    node_modules/govuk-frontend/dist/govuk/all.bundle.js: { weight: 0 }
     js/govuk.js: {}
   dependencies:
     - core/jquery

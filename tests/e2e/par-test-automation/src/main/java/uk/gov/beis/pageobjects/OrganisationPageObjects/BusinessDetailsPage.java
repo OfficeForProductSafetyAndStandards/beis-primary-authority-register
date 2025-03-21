@@ -5,11 +5,9 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.BusinessNamePage;
 import uk.gov.beis.utility.DataStore;
 
 public class BusinessDetailsPage extends BasePageObject{
@@ -47,28 +45,23 @@ public class BusinessDetailsPage extends BasePageObject{
 		return orgName.isDisplayed() && orgDescription.isDisplayed() && tradeName.isDisplayed() && scCode.isDisplayed();
 	}
 	
-	public BusinessNamePage editOrganisationName() {
+	public void editOrganisationName() {
 		organisationNameLink.click();
-		return PageFactory.initElements(driver, BusinessNamePage.class);
 	}
 	
-	public AboutTheOrganisationPage editOrganisationDesc() {
+	public void  editOrganisationDesc() {
 		organisationDescLink.click();
-		return PageFactory.initElements(driver, AboutTheOrganisationPage.class);
 	}
 	
-	public TradingPage editTradingName() {
+	public void  editTradingName() {
 		tradingName.click();
-		return PageFactory.initElements(driver, TradingPage.class);
 	}
 	
-	public SICCodePage editSICCode() {
+	public void  editSICCode() {
 		sicCode.click();
-		return PageFactory.initElements(driver, SICCodePage.class);
 	}
 	
-	public OrganisationsSearchPage saveChanges() {
+	public void  saveChanges() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, OrganisationsSearchPage.class);
 	}
 }

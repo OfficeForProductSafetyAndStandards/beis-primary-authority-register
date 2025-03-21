@@ -1325,6 +1325,7 @@ display:
           plugin_id: standard
           required: false
       css_class: par-user-enforcement-list
+      use_ajax: true
       group_by: false
       header:
         par_flow_link:

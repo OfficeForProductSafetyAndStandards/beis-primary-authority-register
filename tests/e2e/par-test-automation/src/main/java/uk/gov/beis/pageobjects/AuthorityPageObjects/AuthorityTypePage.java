@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 
@@ -28,13 +27,11 @@ public class AuthorityTypePage extends BasePageObject {
 		link.click();
 	}
 	
-	public AuthorityAddressDetailsPage clickContinue() {
+	public void clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, AuthorityAddressDetailsPage.class);
 	}
 	
-	public AuthorityAddressDetailsPage clickSave() {
+	public void clickSaveButton() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, AuthorityAddressDetailsPage.class);
 	}
 }

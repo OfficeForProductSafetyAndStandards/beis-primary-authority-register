@@ -5,13 +5,8 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementSearchPage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.AboutTheOrganisationPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.RegulatoryFunctionPage;
-import uk.gov.beis.pageobjects.UserManagement.ContactDetailsPage;
 
 public class DeclarationPage extends BasePageObject {
 
@@ -69,25 +64,8 @@ public class DeclarationPage extends BasePageObject {
 		continueBtn.click();
 	}
 	
-	public ContactDetailsPage goToContactDetailsPage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, ContactDetailsPage.class);
-	}
-	
-	public RegulatoryFunctionPage goToRegulatoryFunctionsPage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, RegulatoryFunctionPage.class);
-	}
-	
-	public AboutTheOrganisationPage goToBusinessDetailsPage() {	
-		continueBtn.click();
-		return PageFactory.initElements(driver, AboutTheOrganisationPage.class);
-	}
-	
-	public EnforcementSearchPage goToEnforcementSearchPage() {
+	public void goToEnforcementSearchPage() {
 		WebElement element = driver.findElement(By.xpath("//input[@value='Remove']"));
-		
 		executeJavaScript("arguments[0].click();", element);
-		return PageFactory.initElements(driver, EnforcementSearchPage.class);
 	}
 }

@@ -4,15 +4,9 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.AuthorityPageObjects.ONSCodePage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipInformationPage;
-import uk.gov.beis.pageobjects.UserManagement.ContactDetailsPage;
 
 public class AddAddressPage extends BasePageObject {
 	
@@ -103,35 +97,5 @@ public class AddAddressPage extends BasePageObject {
 	
 	public void clickSaveButton() {
 		saveBtn.click();
-	}
-	
-	public ContactDetailsPage goToAddContactDetailsPage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, ContactDetailsPage.class);
-	}
-	
-	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
-	}
-	
-	public PartnershipInformationPage goToPartnershipInformationPage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, PartnershipInformationPage.class);
-	}
-	
-	public PartnershipInformationPage saveGoToPartnershipInformationPage() {
-		saveBtn.click();
-		return PageFactory.initElements(driver, PartnershipInformationPage.class);
-	}
-	
-	public MemberOrganisationSummaryPage goToMemberOrganisationSummaryPage() {
-		saveBtn.click();
-		return PageFactory.initElements(driver, MemberOrganisationSummaryPage.class);
-	}
-	
-	public ONSCodePage goToONSCodePage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, ONSCodePage.class);
 	}
 }

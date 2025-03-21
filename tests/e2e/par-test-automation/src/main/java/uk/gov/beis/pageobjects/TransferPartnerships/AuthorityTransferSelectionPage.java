@@ -6,7 +6,6 @@ import java.time.Duration;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -24,7 +23,7 @@ public class AuthorityTransferSelectionPage extends BasePageObject {
 		super();
 	}
 	
-	public PartnershipMigrationSelectionPage searchAuthority(String authorityName) {
+	public void searchAuthority(String authorityName) {
 		authorityTextfield.clear();
 		authorityTextfield.sendKeys(authorityName);
 		
@@ -37,9 +36,9 @@ public class AuthorityTransferSelectionPage extends BasePageObject {
 		if(widget.isDisplayed()) {
 			widget.click();
 		}
-		
+	}
+	
+	public void clickContinueButton() {
 		continueBtn.click();
-		
-		return PageFactory.initElements(driver, PartnershipMigrationSelectionPage.class);
 	}
 }

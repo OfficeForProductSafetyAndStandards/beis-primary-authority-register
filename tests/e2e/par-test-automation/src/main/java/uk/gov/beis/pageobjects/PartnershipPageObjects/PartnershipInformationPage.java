@@ -5,31 +5,13 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.AdvicePageObjects.AdviceNoticeSearchPage;
-import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementNotificationPage;
-import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanSearchPage;
-import uk.gov.beis.pageobjects.LegalEntityPageObjects.ConfirmThisAmendmentPage;
-import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityTypePage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberListPage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.SICCodePage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.TradingPage;
-import uk.gov.beis.pageobjects.OtherPageObjects.EnforcementOfficerContactDetailsPage;
-import uk.gov.beis.pageobjects.SharedPageObjects.AddAddressPage;
-import uk.gov.beis.pageobjects.SharedPageObjects.ChooseAnInspectionPlanPage;
-import uk.gov.beis.pageobjects.SharedPageObjects.ReinstatePage;
-import uk.gov.beis.pageobjects.SharedPageObjects.RemovePage;
-import uk.gov.beis.pageobjects.SharedPageObjects.RevokePage;
-import uk.gov.beis.pageobjects.UserManagement.ContactDetailsPage;
 import uk.gov.beis.utility.DataStore;
 
 public class PartnershipInformationPage extends BasePageObject {
-
-	//private boolean twopartjourney = false;
 
 	@FindBy(linkText = "edit about the partnership")
 	private WebElement editPartnershipLink;
@@ -52,7 +34,8 @@ public class PartnershipInformationPage extends BasePageObject {
 	@FindBy(linkText = "change the list type")
 	private WebElement changeMembersListTypeLink;
 	
-	@FindBy(linkText = "Amend the legal entities")
+	//@FindBy(xpath = "//a[contains(normalize-space(), 'Amend the legal entities')]")
+	@FindBy(linkText = "Amend the legal entities") // Amend the legal entities
 	private WebElement amendLegalEntitiesLink;
 	
 	@FindBy(linkText = "Confirm the amendments")
@@ -145,182 +128,146 @@ public class PartnershipInformationPage extends BasePageObject {
 		super();
 	}
 	
-	public EnforcementNotificationPage createEnforcement() {
+	public void createEnforcement() {
 		craeteEnforcementBtn.click();
-		return PageFactory.initElements(driver, EnforcementNotificationPage.class);
 	}
 
-	public PartnershipInformationPage confirmDetailsAsAuthority() {
+	public void confirmDetailsAsAuthority() {
 		WebElement checkbox = driver.findElement(By.id("edit-terms-authority-agreed"));
 		
 		if (!checkbox.isSelected())
+		{
 			checkbox.click();
-		
-		return PageFactory.initElements(driver, PartnershipInformationPage.class);
+		}	
 	}
 	
-	public PartnershipInformationPage confirmDetails() {
+	public void confirmDetails() {
 		WebElement checkbox = ScenarioContext.secondJourneyPart ? driver.findElement(By.id("edit-terms-organisation-agreed")) : driver.findElement(By.id("edit-terms-authority-agreed"));
 		
 		if (!checkbox.isSelected())
+		{
 			checkbox.click();
-		
-		return PageFactory.initElements(driver, PartnershipInformationPage.class);
+		}
 	}
 
-	public PartnershipCompletionPage saveChanges() {
+	public void saveChanges() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, PartnershipCompletionPage.class);
 	}
 
-	public InspectionPlanSearchPage selectSeeAllInspectionPlans() {
+	public void selectSeeAllInspectionPlans() {
 		seeAllInspectionPlans.click();
-		return PageFactory.initElements(driver, InspectionPlanSearchPage.class);
 	}
 
-	public AdviceNoticeSearchPage selectSeeAllAdviceNotices() {
+	public void selectSeeAllAdviceNotices() {
 		seeAllAdvice.click();
-		return PageFactory.initElements(driver, AdviceNoticeSearchPage.class);
 	}
   
-	public EnforcementOfficerContactDetailsPage sendGeneralEnquiry() {
+	public void sendGeneralEnquiry() {
 		generalEnquiryLink.click();
-		return PageFactory.initElements(driver, EnforcementOfficerContactDetailsPage.class);
 	}
 
-	public EnforcementOfficerContactDetailsPage selectSendInspectionFeedbk() {
+	public void selectSendInspectionFeedbk() {
 		sendInspectionFeedbackBtn.click();
-		return PageFactory.initElements(driver, EnforcementOfficerContactDetailsPage.class);
 	}
 	
-	public ChooseAnInspectionPlanPage clickSendInspectionFeedbk() {
+	public void clickSendInspectionFeedbk() {
 		reqToDeviateFromInspectionPlan.click();
-		return PageFactory.initElements(driver, ChooseAnInspectionPlanPage.class);
 	}
 
-	public EnforcementOfficerContactDetailsPage selectDeviateInspectionPlan() {
+	public void selectDeviateInspectionPlan() {
 		reqToDeviateFromInspectionPlan.click();
-		return PageFactory.initElements(driver, EnforcementOfficerContactDetailsPage.class);
 	}
 	
-	public ChooseAnInspectionPlanPage clickDeviateInspectionPlan() {
+	public void clickDeviateInspectionPlan() {
 		reqToDeviateFromInspectionPlan.click();
-		return PageFactory.initElements(driver, ChooseAnInspectionPlanPage.class);
 	}
 
 	// Update Partnership Details
-	public PartnershipDescriptionPage editAboutPartnership() {
+	public void editAboutPartnership() {
 		editPartnershipLink.click();
-		return PageFactory.initElements(driver, PartnershipDescriptionPage.class);
 	}
 	
-	public RegulatoryFunctionPage editRegulatoryFunctions() {
+	public void editRegulatoryFunctions() {
 		editRegulatoryFunctionsLink.click();
-		return PageFactory.initElements(driver, RegulatoryFunctionPage.class);
 	}
 	
-	public AddAddressPage editOrganisationAddress() {
+	public void editOrganisationAddress() {
 		editOrganisationAddressLink.click();
-		return PageFactory.initElements(driver, AddAddressPage.class);
 	}
 	
-	public PartnershipDescriptionPage editAboutTheOrganisation() {
+	public void editAboutTheOrganisation() {
 		editAboutOrganisationLink.click();
-		return PageFactory.initElements(driver, PartnershipDescriptionPage.class);
 	}
 	
-	public SICCodePage editSICCode() {
+	public void editSICCode() {
 		editSICCodeLink.click();
-		return PageFactory.initElements(driver, SICCodePage.class);
 	}
 	
-	public MemberListPage selectShowMembersListLink() {
+	public void selectShowMembersListLink() {
 		showMembersListLink.click();
-		return PageFactory.initElements(driver, MemberListPage.class);
 	}
 	
-	public MembersListTypePage selectChangeMembersListTypeLink() {
+	public void selectChangeMembersListTypeLink() {
 		changeMembersListTypeLink.click();
-		return PageFactory.initElements(driver, MembersListTypePage.class);
 	}
 	
-	public LegalEntityTypePage selectAmendLegalEntitiesLink() {
+	public void selectAmendLegalEntitiesLink() {
 		amendLegalEntitiesLink.click();
-		
-		return PageFactory.initElements(driver, LegalEntityTypePage.class);
 	}
 	
-	public ConfirmThisAmendmentPage selectConfirmLegalEntitiesLink() {
+	public void selectConfirmLegalEntitiesLink() {
 		confirmLegalEntitiesLink.click();
-		
-		return PageFactory.initElements(driver, ConfirmThisAmendmentPage.class);
 	}
 	
-	public ConfirmThisAmendmentPage selectNominateLegalEntitiesLink() {
+	public void selectNominateLegalEntitiesLink() {
 		nominateLegalEntitiesLink.click();
-		
-		return PageFactory.initElements(driver, ConfirmThisAmendmentPage.class);
 	}
 	
-	public RevokePage selectRevokeLegalEntitiesLink() {
+	public void selectRevokeLegalEntitiesLink() {
 		WebElement legalEntityName = driver.findElement(By.xpath(legalEntityNameLocator.replace("?", DataStore.getSavedValue(UsableValues.ENTITY_NAME))));
 		
 		WebElement revokeLink = legalEntityName.findElement(By.xpath(legalEntityActionLinksLocator.replace("?", "Revoke")));
 		revokeLink.click();
-		
-		return PageFactory.initElements(driver, RevokePage.class);
 	}
 	
-	public ReinstatePage selectReinstateLegalEntitiesLink() {
+	public void selectReinstateLegalEntitiesLink() {
 		WebElement legalEntityName = driver.findElement(By.xpath(legalEntityNameLocator.replace("?", DataStore.getSavedValue(UsableValues.ENTITY_NAME))));
 		
 		WebElement revokeLink = legalEntityName.findElement(By.xpath(legalEntityActionLinksLocator.replace("?", "Reinstate")));
 		revokeLink.click();
-		
-		return PageFactory.initElements(driver, ReinstatePage.class);
 	}
 	
-	public RemovePage selectRemoveLegalEntitiesLink() {
+	public void selectRemoveLegalEntitiesLink() {
 		WebElement legalEntityName = driver.findElement(By.xpath(legalEntityNameLocator.replace("?", DataStore.getSavedValue(UsableValues.ENTITY_NAME))));
 		
 		WebElement revokeLink = legalEntityName.findElement(By.xpath(legalEntityActionLinksLocator.replace("?", "Remove")));
 		revokeLink.click();
-		
-		return PageFactory.initElements(driver, RemovePage.class);
 	}
 	
-	public TradingPage editTradingName() {
+	public void editTradingName() {
 		editTradingNameLink.click();
-		return PageFactory.initElements(driver, TradingPage.class);
 	}
 	
-	public TradingPage addAnotherTradingName() {
+	public void addAnotherTradingName() {
 		addAnotherTradingNameLink.click();
-		return PageFactory.initElements(driver, TradingPage.class);
 	}
 	
-	public ContactDetailsPage addAnotherAuthorityContactButton() {
+	public void addAnotherAuthorityContactButton() {
 		addAuthorityContactLink.click();
-		return PageFactory.initElements(driver, ContactDetailsPage.class);
 	}
 	
-	public ContactDetailsPage addAnotherOrganisationContactButton() {
+	public void addAnotherOrganisationContactButton() {
 		addOrganisationContactLink.click();
-		return PageFactory.initElements(driver, ContactDetailsPage.class);
 	}
 	
-	public ContactDetailsPage editContactsDetailsButton() {
+	public void editContactsDetailsButton() {
 		WebElement editLink = driver.findElement(By.xpath(editContactLink.replace("?", "edit " + getContactsName().toLowerCase())));
 		editLink.click();
-		
-		return PageFactory.initElements(driver, ContactDetailsPage.class);
 	}
 	
-	public ContactDetailsPage removeContactsDetailsButton() {
+	public void removeContactsDetailsButton() {
 		WebElement removeLink = driver.findElement(By.xpath(removeContactLink.replace("?", "remove " + getContactsName().toLowerCase())));
 		removeLink.click();
-		
-		return PageFactory.initElements(driver, ContactDetailsPage.class);
 	}
 	
 	// Check Partnership Details
@@ -424,14 +371,12 @@ public class PartnershipInformationPage extends BasePageObject {
 		return driver.findElement(By.xpath(result)).isDisplayed();
 	}
 	
-	public PartnershipSearchPage clickDone() {
+	public void clickDoneButton() {
 		doneBtn.click();
-		return PageFactory.initElements(driver, PartnershipSearchPage.class);
 	}
 
-	public PartnershipAdvancedSearchPage clickSave() {
+	public void clickSaveButton() {
 		saveButton.click();
-		return PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
 	}
 	
 	private String getContactsName() {

@@ -7,6 +7,7 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Site\Settings;
+use Drupal\Core\Routing\RouteObjectInterface;
 
 /**
  * Implements hook_preprocess().
@@ -38,9 +39,21 @@ function par_theme_preprocess_html(array &$variables) {
     $secondary_title = array_shift($title_fragments);
     array_push($title_fragments, $secondary_title);
   }
+
   if (empty($title_fragments)) {
-    unset($variables['head_title']['title']);
+
+    $route_name = \Drupal::routeMatch()->getRouteName();
+    if (strpos($route_name, 'view') === 0) {
+      $request = \Drupal::service('request_stack')->getCurrentRequest();
+      $route = $request->attributes->get(RouteObjectInterface::ROUTE_OBJECT);
+      if ($route instanceof Route) {
+        $variables['head_title']['title'] = \Drupal::service('title_resolver')->getTitle($request, $route);
+      }
+    } else {
+      unset($variables['head_title']['title']);
+    }
   }
+
   else {
     $variables['head_title']['title'] = implode(' | ', $title_fragments);
   }
@@ -231,4 +244,19 @@ function par_theme_page_attachments_alter(array &$attachments) {
  */
 function par_theme_theme_suggestions_views_view_alter(array &$suggestions, array $variables) {
   $suggestions[] = 'views_view__' . $variables['view']->id();
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function par_theme_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['#attributes']['novalidate'] = 'novalidate';
+}
+
+/**
+ * Implements hook_css_alter()
+ */
+function par_theme_css_alter(&$css, \Drupal\Core\Asset\AttachedAssetsInterface $assets, \Drupal\Core\Language\LanguageInterface $language) {
+  unset($css['themes/contrib/govuk_theme/css/govuk.css']);
+  unset($css['themes/contrib/govuk_theme/css/style.css']);
 }

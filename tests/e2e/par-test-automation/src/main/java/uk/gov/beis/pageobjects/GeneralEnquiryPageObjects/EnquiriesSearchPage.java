@@ -3,7 +3,6 @@ package uk.gov.beis.pageobjects.GeneralEnquiryPageObjects;
 import java.io.IOException;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
@@ -17,8 +16,7 @@ public class EnquiriesSearchPage extends BasePageObject {
 		super();
 	}
 
-	public BasePageObject selectEnquiry() {
+	public void selectEnquiry() {
 		driver.findElement(By.xpath(enquiry.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_NAME)))).click();
-		return PageFactory.initElements(driver, BasePageObject.class);
 	}
 }

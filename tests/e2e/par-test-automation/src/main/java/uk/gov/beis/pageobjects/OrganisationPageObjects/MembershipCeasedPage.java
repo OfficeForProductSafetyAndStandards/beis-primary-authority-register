@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 
@@ -17,8 +16,7 @@ public class MembershipCeasedPage extends BasePageObject {
 		super();
 	}
 	
-	public MemberListPage goToMembersListPage() {
+	public void clickCeaseButton() {
 		ceaseBtn.click();
-		return PageFactory.initElements(driver, MemberListPage.class);
 	}
 }

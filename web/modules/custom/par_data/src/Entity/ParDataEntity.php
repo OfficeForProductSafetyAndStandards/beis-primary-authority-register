@@ -285,23 +285,31 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         }
       }
       // Set a message to indicate that deletion failed.
-      $message = $this->t("Deletion of %entity failed because there are some entities which depend on it:".PHP_EOL."@dependencies", [
+      $message = $this->t("Deletion of %entity failed because there are some entities which depend on it:". "<br>" ."@dependencies", [
         '%entity' => $this->label(),
-        '@dependencies' => implode(PHP_EOL, $dependencies)
+        '@dependencies' => implode('<br>', $dependencies)
       ]);
       $this->getMessenger()->addWarning($message);
 
       return FALSE;
     }
 
-    // PAR-1744: Set the reason so that loggers can make use of it.
-    $this->get(ParDataEntity::DELETE_REASON_FIELD)->setValue([
-      'value' => $reason,
-      'format' => 'plain_text',
-    ]);
+    if (!$this->hasDependencies()) {
 
-    parent::delete();
-    return TRUE;
+      // PAR-1744: Set the reason so that loggers can make use of it.
+      $this->get(ParDataEntity::DELETE_REASON_FIELD)->setValue([
+        'value' => $reason,
+        'format' => 'plain_text',
+      ]);
+
+      parent::delete();
+      return TRUE;
+    }
+
+    // Default fallback
+    else {
+      return FALSE;
+    }
   }
 
   /**

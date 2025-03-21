@@ -5,11 +5,8 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.CheckPartnershipInformationPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipInformationPage;
 
 public class SICCodePage extends BasePageObject {
 	
@@ -25,31 +22,15 @@ public class SICCodePage extends BasePageObject {
 		super();
 	}
 	
-	public void selectPrimarySICCode(String code) {
+	public void selectSICCode(String code) {
 		driver.findElement(By.xpath(sicCodeLocator.replace("?", code))).click();
 	}
 	
-	public NumberOfEmployeesPage selectSICCode(String code) {
-		driver.findElement(By.xpath(sicCodeLocator.replace("?", code))).click();
-		
+	public void clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, NumberOfEmployeesPage.class);
 	}
 	
-	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
-	}
-	
-	public PartnershipInformationPage editSICCode(String code) {
-		driver.findElement(By.xpath(sicCodeLocator.replace("?", code))).click();
-		
+	public void clickSaveButton() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, PartnershipInformationPage.class);
-	}
-	
-	public BusinessDetailsPage goToBusinessDetailsPage() {
-		saveBtn.click();
-		return PageFactory.initElements(driver, BusinessDetailsPage.class);
 	}
 }

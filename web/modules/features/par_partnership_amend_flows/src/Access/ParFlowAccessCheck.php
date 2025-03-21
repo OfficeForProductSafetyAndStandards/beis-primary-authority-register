@@ -15,8 +15,8 @@ use Drupal\user\Entity\User;
 use Symfony\Component\Routing\Route;
 
 /**
-* Checks access for displaying the amend partnership pages.
-*/
+ * Checks access for displaying the amend partnership pages.
+ */
 class ParFlowAccessCheck implements AccessInterface {
 
   /**

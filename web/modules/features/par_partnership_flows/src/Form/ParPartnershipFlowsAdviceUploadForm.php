@@ -81,7 +81,7 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
       '#attributes' => [
         'class' => ['govuk-form-group'],
       ],
-      '#description' => $this->t('To upload Primary Authority Advice to a Local Authority, email it to <a href="mailto:pa@beis.gov.uk">pa@beis.gov.uk</a> with details of the organisation it applies to and we’ll get back to you shortly.'),
+      '#description' => $this->t('To upload Primary Authority Advice to a Local Authority, email it to <a href="mailto:pa@businessandtrade.gov.uk">pa@businessandtrade.gov.uk</a> with details of the organisation it applies to and we’ll get back to you shortly.'),
     ];
 
     // Multiple file field.

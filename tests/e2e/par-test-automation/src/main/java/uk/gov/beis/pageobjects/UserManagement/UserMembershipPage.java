@@ -6,7 +6,6 @@ import java.time.Duration;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -46,16 +45,6 @@ public class UserMembershipPage extends BasePageObject {
 				widget.click();
 			}
 		}
-		
-		//if(!driver.findElements(By.id("edit-par-data-authority-id")).isEmpty()) {
-			
-			
-		//}
-		//else {
-		//	if(authorityRadio != null) {
-				
-		//	}
-		//}
 	}
 	
 	public void chooseOrganisationMembership(String organisationName) {
@@ -75,13 +64,7 @@ public class UserMembershipPage extends BasePageObject {
 		}
 	}
 	
-	public AddMembershipConfirmationPage clickContinueButton() {
+	public void clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, AddMembershipConfirmationPage.class);
-	}
-	
-	public UserRoleTypePage goToUserRoleTypePage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, UserRoleTypePage.class);
 	}
 }

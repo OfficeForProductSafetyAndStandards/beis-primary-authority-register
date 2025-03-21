@@ -5,15 +5,9 @@ import java.time.LocalDate;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanSearchPage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.MembershipCeasedPage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.TradingPage;
-import uk.gov.beis.pageobjects.TransferPartnerships.ConfirmThisTranferPage;
 import uk.gov.beis.utility.DataStore;
 import uk.gov.beis.utility.DateFormatter;
 
@@ -75,35 +69,8 @@ public class EnterTheDatePage extends BasePageObject {
 	public void selectSaveButton() {
 		saveBtn.click();
 	}
-
-	public InspectionPlanSearchPage goToInspectionPlanSearchPage() {
-		saveBtn.click();
-		return PageFactory.initElements(driver, InspectionPlanSearchPage.class);
-	}
 	
-	public TradingPage clickContinueButtonForMembershipBegan() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, TradingPage.class);
-	}
-	
-	public MemberOrganisationSummaryPage goToMemberOrganisationSummaryPage() {
-		getMembershipDate();
-		
-		saveBtn.click();
-		return PageFactory.initElements(driver, MemberOrganisationSummaryPage.class);
-	}
-	
-	public MembershipCeasedPage goToMembershipCeasedPage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, MembershipCeasedPage.class);
-	}
-	
-	public ConfirmThisTranferPage goToConfirmThisTranferPage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, ConfirmThisTranferPage.class);
-	}
-	
-	private void getMembershipDate() {
+	public void getMembershipDate() {
 		String fullDate = dayField.getAttribute("value") + " " + convertMonthDate(monthField.getAttribute("value")) + " " + yearField.getAttribute("value");
 		
 		if(fullDate.startsWith("0")) {

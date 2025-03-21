@@ -4,18 +4,6 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-
-import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthoritiesSearchPage;
-import uk.gov.beis.pageobjects.DeviationRequestPageObjects.DeviationSearchPage;
-import uk.gov.beis.pageobjects.EnforcementNoticePageObjects.EnforcementSearchPage;
-import uk.gov.beis.pageobjects.GeneralEnquiryPageObjects.EnquiriesSearchPage;
-import uk.gov.beis.pageobjects.InspectionPlanFeedbackPageObjects.InspectionFeedbackSearchPage;
-import uk.gov.beis.pageobjects.NewsLetterSubscriptionPageObjects.NewsLetterSubscriptionPage;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.OrganisationsSearchPage;
-import uk.gov.beis.pageobjects.OtherPageObjects.PARReportingPage;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.PartnershipAdvancedSearchPage;
-import uk.gov.beis.pageobjects.UserManagement.ManagePeoplePage;
 
 public class HelpDeskDashboardPage extends BaseDashboardPage {
 	
@@ -56,53 +44,43 @@ public class HelpDeskDashboardPage extends BaseDashboardPage {
 		super();
 	}
 	
-	public PARReportingPage selectViewAllStatistics() {
+	public void selectViewAllStatistics() {
 		viewStatisticsLink.click();
-		return PageFactory.initElements(driver, PARReportingPage.class);
 	}
 	
-	public PartnershipAdvancedSearchPage selectSearchPartnerships() {
+	public void selectSearchPartnerships() {
 		searchPartnershipBtn.click();
-		return PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
 	}
 	
-	public AuthoritiesSearchPage selectManageAuthorities() {
+	public void selectManageAuthorities() {
 		mangeAuthoritiesBtn.click();
-		return PageFactory.initElements(driver, AuthoritiesSearchPage.class);
 	}
 	
-	public OrganisationsSearchPage selectManageOrganisations() {
+	public void selectManageOrganisations() {
 		mangeOrganisationsBtn.click();
-		return PageFactory.initElements(driver, OrganisationsSearchPage.class);
 	}
 	
-	public ManagePeoplePage selectManagePeople() {
+	public void selectManagePeople() {
 		managePeopleBtn.click();
-		return PageFactory.initElements(driver, ManagePeoplePage.class);
 	}
 	
-	public NewsLetterSubscriptionPage selectManageSubscriptions() {
+	public void selectManageSubscriptions() {
 		manageSubscriptionsBtn.click();
-		return PageFactory.initElements(driver, NewsLetterSubscriptionPage.class);
 	}
 	
-	public EnforcementSearchPage selectManageEnforcementNotices() {
+	public void selectManageEnforcementNotices() {
 		manageEnforcementNoticesBtn.click();
-		return PageFactory.initElements(driver, EnforcementSearchPage.class);
 	}
 	
-	public DeviationSearchPage selectManageDeviationRequests() {
+	public void selectManageDeviationRequests() {
 		manageDeviationRequestLink.click();
-		return PageFactory.initElements(driver, DeviationSearchPage.class);
 	}
 	
-	public InspectionFeedbackSearchPage selectManageInspectionFeedback() {
+	public void selectManageInspectionFeedback() {
 		manageInspectionFeedbackLink.click();
-		return PageFactory.initElements(driver, InspectionFeedbackSearchPage.class);
 	}
 	
-	public EnquiriesSearchPage selectManageGeneralEnquiry() {
+	public void selectManageGeneralEnquiry() {
 		manageGeneralEnquiryLink.click();
-		return PageFactory.initElements(driver, EnquiriesSearchPage.class);
 	}
 }

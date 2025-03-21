@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 
@@ -17,7 +16,7 @@ public class ReplyEnquiryPage extends BasePageObject {
 	private WebElement chooseFile;
 	
 	@FindBy(id = "edit-save")
-	private WebElement continueBtn;
+	private WebElement saveBtn;
 	
 	public ReplyEnquiryPage() throws ClassNotFoundException, IOException {
 		super();
@@ -32,8 +31,7 @@ public class ReplyEnquiryPage extends BasePageObject {
 		uploadDocument(chooseFile, filename);
 	}
 	
-	public EnquiryReviewPage clickSave() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, EnquiryReviewPage.class);
+	public void clickSaveButton() {
+		saveBtn.click();
 	}
 }
