@@ -190,7 +190,7 @@
                 "Fix number format for regsistered charities": "./patches/registered_organisations/charities_commission_number_format.patch"
             },
             "drupal/flysystem": {
-                "Add Drush commands for sending and receiving files": "https://www.drupal.org/files/issues/2023-08-31/3192777-4-added_drush_commands.patch",
+                "Add drush commands for getting and putting files - https://www.drupal.org/project/flysystem/issues/3192777": "https://www.drupal.org/files/issues/2023-08-31/3192777-4-added_drush_commands.patch",
                 "Support new lazy asset collection optimizers": "https://git.drupalcode.org/project/flysystem/-/merge_requests/26.diff",
                 "Remove $state in CollectionOptimizerLazy asset handlers": "https://git.drupalcode.org/project/flysystem/-/merge_requests/46.diff"
             },
