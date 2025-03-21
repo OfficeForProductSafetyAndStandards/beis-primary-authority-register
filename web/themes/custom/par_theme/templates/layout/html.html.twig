@@ -31,7 +31,6 @@
   <head>
     <head-placeholder token="{{ placeholder_token }}">
     <meta charset="utf-8" />
-
     <link rel="shortcut icon" href="{{ govuk_directory }}/assets/images/favicon.ico" type="image/x-icon" />
     <link rel="mask-icon" href="{{ govuk_directory }}/assets/images/govuk-mask-icon.svg" color="#0b0c0c">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ govuk_directory }}/assets/images/govuk-apple-touch-icon-180x180.png">
@@ -46,7 +45,7 @@
 
     <meta property="og:image" content="{{ govuk_directory }}/assets/images/govuk-opengraph-image.png">
   </head>
-<body {{ attributes.addClass('govuk-template__body') }}>
+<body {{ attributes.addClass('govuk-template__body govuk-frontend-supported') }}>
     <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
     {{ page_top }}
     {{ page }}

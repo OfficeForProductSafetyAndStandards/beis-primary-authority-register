@@ -5,11 +5,9 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.EnterTheDatePage;
 import uk.gov.beis.utility.DataStore;
 
 public class MemberListPage extends BasePageObject {
@@ -38,14 +36,12 @@ public class MemberListPage extends BasePageObject {
 		super();
 	}
 
-	public AddOrganisationNamePage selectAddAMemberLink() {
+	public void selectAddAMemberLink() {
 		addAMemberLink.click();
-		return PageFactory.initElements(driver, AddOrganisationNamePage.class);
 	}
 	
-	public UploadListOfMembersPage selectUploadMembersListLink() {
+	public void selectUploadMembersListLink() {
 		uploadMembersListLink.click();
-		return PageFactory.initElements(driver, UploadListOfMembersPage.class);
 	}
 	
 	public void searchForAMember(String memberName) {
@@ -55,20 +51,15 @@ public class MemberListPage extends BasePageObject {
 		applyBtn.click();
 	}
 	
-	public MemberOrganisationSummaryPage selectMembersName() {
+	public void selectMembersName() {
 		driver.findElement(By.xpath(memberNameLocator.replace("?", DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME)))).click();
-		
-		return PageFactory.initElements(driver, MemberOrganisationSummaryPage.class);
 	}
 	
-	public EnterTheDatePage selectCeaseMembership() {
+	public void selectCeaseMembership() {
 		driver.findElement(By.xpath(ceaseMemberLocator)).click();
-		
-		return PageFactory.initElements(driver, EnterTheDatePage.class);
 	}
 	
 	public boolean checkMemberCreated() {
-		
 		return driver.findElement(By.xpath(memberNameLocator.replace("?", DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME)))).isDisplayed();
 	}
 	
@@ -81,13 +72,11 @@ public class MemberListPage extends BasePageObject {
 	}
 	
 	public boolean checkMembersListUploaded() {
-		
 		return driver.findElement(By.xpath(memberNameLocator.replace("?", DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME)))).isDisplayed();
 	}
 	
-	public TradingPage selectMemberSize(String size) {
+	public void selectMemberSize(String size) {
 		driver.findElement(By.xpath(memberSize.replace("?", size))).click();
 		continueBtn.click();
-		return PageFactory.initElements(driver, TradingPage.class);
 	}
 }

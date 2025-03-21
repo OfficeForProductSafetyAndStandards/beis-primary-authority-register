@@ -3,14 +3,13 @@
 namespace Drupal\par_data\Drush\Commands;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Database\Connection;
 use Drupal\par_data\ParDataManagerInterface;
-use Drupal\registered_organisations\OrganisationManagerInterface;
 use Drush\Attributes as CLI;
 use Drush\Commands\DrushCommands;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * A Drush commandfile.
+ * A Drush command file.
  */
 final class ParDataCommands extends DrushCommands {
 
@@ -20,29 +19,96 @@ final class ParDataCommands extends DrushCommands {
   public function __construct(
     private readonly ParDataManagerInterface $parDataManager,
     private readonly EntityTypeManagerInterface $entityTypeManager,
-    private readonly OrganisationManagerInterface $organisationManager,
+    private readonly Connection $databaseConnection,
   ) {
     parent::__construct();
   }
 
   /**
-   * {@inheritdoc}
+   * Sanitise user data.
    */
-  public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('par_data.manager'),
-      $container->get('entity_type.manager'),
-      $container->get('registered_organisations.organisation_manager'),
-    );
+  #[CLI\Command(name: 'par-data:sanitise-users', aliases: ['spp'])]
+  #[CLI\Usage(name: 'par-data:sanitise-users', description: 'Sanitise user data')]
+  public function sanitiseUserData() {
+    // Drupal user.
+    $this->output->writeln(dt('Sanitise Drupal Users the PAR way...'));
+    $drupal_users = $this->databaseConnection->query("SELECT uid, name, mail FROM users_field_data WHERE uid > 1 AND mail NOT LIKE ''")->fetchAll();
+
+    if (!empty($drupal_users)) {
+      foreach ($drupal_users as $drupal_user) {
+        $random_name = $this->randomNumber();
+        $hash_email = md5($drupal_user->mail) . '@localhost.localdomain';
+
+        $query = sprintf('UPDATE users_field_data SET init = \'%s\', mail = \'%s\', name = \'%s\' WHERE uid = %s',
+          $hash_email,
+          $hash_email,
+          $random_name,
+          $drupal_user->uid,
+        );
+        $this->databaseConnection->query($query)->execute();
+      }
+    }
+
+    // PAR Data Person.
+    $this->output->writeln(dt('Sanitise PAR Data Person records...'));
+    $par_person_data = $this->databaseConnection->query("SELECT id, salutation, work_phone, mobile_phone, email, first_name, last_name FROM par_people_field_data")->fetchAll();
+
+    if (!empty($par_person_data)) {
+      foreach ($par_person_data as $person_data) {
+        $hash_email = md5($person_data->email) . '@localhost.localdomain';
+
+        $query = sprintf('UPDATE par_people_field_data SET salutation=\'%s\', work_phone=\'%s\', mobile_phone=\'%s\', email=\'%s\', first_name=\'%s\', last_name=\'%s\' WHERE id=%d',
+          $this->randomNumber(),
+          $this->randomNumber(),
+          $this->randomNumber(),
+          $hash_email,
+          $this->randomNumber(),
+          $this->randomNumber(),
+          $person_data->id,
+        );
+        $this->databaseConnection->query($query)->execute();
+      }
+    }
+
+    // PAR Data Person revisions.
+    $this->output->writeln(dt('Sanitise PAR Data Person revision records...'));
+    $par_person_revision_data = $this->databaseConnection->query("SELECT id, salutation, work_phone, mobile_phone, email, first_name, last_name FROM par_people_field_revision")->fetchAll();
+
+    if (!empty($par_person_revision_data)) {
+      foreach ($par_person_revision_data as $person_data_revision) {
+        $hash_email = md5($person_data_revision->email) . '@localhost.localdomain';
+
+        $query = sprintf('UPDATE par_people_field_revision SET salutation=\'%s\', work_phone=\'%s\', mobile_phone=\'%s\', email=\'%s\', first_name=\'%s\', last_name=\'%s\' WHERE id=%d',
+          $this->randomNumber(),
+          $this->randomNumber(),
+          $this->randomNumber(),
+          $hash_email,
+          $this->randomNumber(),
+          $this->randomNumber(),
+          $person_data_revision->id,
+        );
+        $this->databaseConnection->query($query)->execute();
+      }
+    }
+  }
+
+  /**
+   * Returns a 12 digit random number.
+   *
+   * @return int
+   *   Random number.
+   */
+  public function randomNumber() {
+    return rand(100000000000, 999999999999);
   }
 
   /**
    * Warm the PAR Data caches.
    */
-  #[CLI\Command(name: 'par_data:cache-warm', aliases: ['pcw'])]
+  #[CLI\Command(name: 'par-data:cache-warm', aliases: ['pcw'])]
   #[CLI\Argument(name: 'type', description: 'The type of data to be warmed.')]
-  #[CLI\Usage(name: 'par_data:cache-warm par_data_authority', description: 'Usage description')]
-  public function cache_warm($type) {
+  #[CLI\Usage(name: 'par-data:cache-warm par_data_authority', description: 'Usage description')]
+  public function cacheWarm($type) {
     $count = 0;
 
     // Can manually choose to warm other caches not listed as defaults.
@@ -77,11 +143,11 @@ final class ParDataCommands extends DrushCommands {
    * @throws \Drupal\search_api\ConsoleException
    *   If a batch process could not be created.
    */
-   #[CLI\Command(name: 'par_data:index-health', aliases: ['pih'])]
-   #[CLI\Argument(name: 'index', description: 'The type of data to be warmed.')]
-   #[CLI\Option(name: 'index-health', description: 'Whether to check the index health.')]
-   #[CLI\Usage(name: 'par_data:index-health partnerships', description: 'Usage description')]
-  public function index_health($index = NULL, array $options = ['index-health' => NULL]) {
+  #[CLI\Command(name: 'par-data:index-health', aliases: ['pih'])]
+  #[CLI\Argument(name: 'index', description: 'The type of data to be warmed.')]
+  #[CLI\Option(name: 'index-health', description: 'Whether to check the index health.')]
+  #[CLI\Usage(name: 'par-data:index-health partnerships', description: 'Usage description')]
+  public function indexHealth($index = NULL, array $options = ['index-health' => NULL]) {
     $include_index_health = $options['index-health'];
 
     $index_storage = $this->entityTypeManager->getStorage('search_api_index');
@@ -126,10 +192,10 @@ final class ParDataCommands extends DrushCommands {
   /**
    * Update registered entities.
    */
-   #[CLI\Command(name: 'par_data:update-registered-organisations', aliases: ['puro'])]
-   #[CLI\Argument(name: 'register', description: 'The register to update or NULL to update entities not assigned to a register.')]
-   #[CLI\Usage(name: 'par_data:update-registered-organisations companies_house', description: 'Usage description')]
-  public function update_registered_organisations(?string $register = NULL) {
+  #[CLI\Command(name: 'par-data:update-registered-organisations', aliases: ['puro'])]
+  #[CLI\Argument(name: 'register', description: 'The register to update or NULL to update entities not assigned to a register.')]
+  #[CLI\Usage(name: 'par-data:update-registered-organisations companies_house', description: 'Usage description')]
+  public function updateRegisteredOrganisations(?string $register = NULL) {
     $scheduler = \Drupal::service('plugin.manager.par_scheduler');
 
     try {

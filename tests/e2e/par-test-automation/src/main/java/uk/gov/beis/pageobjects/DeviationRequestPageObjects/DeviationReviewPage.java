@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
@@ -33,7 +32,7 @@ public class DeviationReviewPage extends BasePageObject {
 	}
 	
 	public boolean checkDeviationResponse() {
-		WebElement response = driver.findElement(By.xpath(responseLocator.replace("?", DataStore.getSavedValue(UsableValues.DEVIATIONFEEDBACK_RESPONSE1))));
+		WebElement response = driver.findElement(By.xpath(responseLocator.replace("?", DataStore.getSavedValue(UsableValues.MESSAGE_RESPONSE))));
 		return (response.isDisplayed());
 	}
 	
@@ -47,13 +46,11 @@ public class DeviationReviewPage extends BasePageObject {
 		return (status.isDisplayed());
 	}
 	
-	public ReplyDeviationRequestPage submitResponse() {
+	public void clickSubmitResponse() {
 		submitResponse.click();
-		return PageFactory.initElements(driver, ReplyDeviationRequestPage.class);
 	}
 	
-	public DeviationCompletionPage saveChanges() {
+	public void clickSaveChanges() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, DeviationCompletionPage.class);
 	}
 }

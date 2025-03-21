@@ -4,10 +4,8 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.PartnershipPageObjects.RegulatoryFunctionPage;
 
 public class ONSCodePage extends BasePageObject {
 
@@ -29,13 +27,11 @@ public class ONSCodePage extends BasePageObject {
 		onsCode.sendKeys(name);
 	}
 	
-	public RegulatoryFunctionPage clickContinue() {
+	public void clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, RegulatoryFunctionPage.class);
 	}
 	
-	public RegulatoryFunctionPage clickSave() {
+	public void clickSaveButton() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, RegulatoryFunctionPage.class);
 	}
 }

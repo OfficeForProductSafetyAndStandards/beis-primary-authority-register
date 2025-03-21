@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
@@ -40,18 +39,16 @@ public class EnquiryReviewPage extends BasePageObject {
 	}
 
 	public boolean checkEnquiryResponse() {
-		WebElement reply = driver.findElement(By.xpath(responseLocator.replace("?", DataStore.getSavedValue(UsableValues.ENQUIRY_REPLY))));
+		WebElement reply = driver.findElement(By.xpath(responseLocator.replace("?", DataStore.getSavedValue(UsableValues.MESSAGE_RESPONSE))));
 		WebElement file = driver.findElement(By.xpath(fileLocator.replace("?", "link")));
 		return reply.isDisplayed() && file.isDisplayed();
 	}
 	
-	public ReplyEnquiryPage submitResponse() {
+	public void clickSubmitResponse() {
 		submitResponse.click();
-		return PageFactory.initElements(driver, ReplyEnquiryPage.class);
 	}
 	
-	public EnquiryCompletionPage saveChanges() {
+	public void clickSaveChanges() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, EnquiryCompletionPage.class);
 	}
 }

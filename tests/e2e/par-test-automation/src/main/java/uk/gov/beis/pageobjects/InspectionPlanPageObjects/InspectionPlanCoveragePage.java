@@ -4,11 +4,9 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.MemberOrganisationSummaryPage;
 import uk.gov.beis.utility.DataStore;
 
 public class InspectionPlanCoveragePage extends BasePageObject {
@@ -47,13 +45,11 @@ public class InspectionPlanCoveragePage extends BasePageObject {
 		DataStore.saveValue(UsableValues.COVERED_BY_INSPECTION_PLAN, noRadialLabel.getText());
 	}
 	
-	public MemberOrganisationSummaryPage selectContinueForMember() {
+	public void selectContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, MemberOrganisationSummaryPage.class);
 	}
 	
-	public MemberOrganisationSummaryPage selectSaveForMember() {
+	public void selectSaveButon() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, MemberOrganisationSummaryPage.class);
 	}
 }

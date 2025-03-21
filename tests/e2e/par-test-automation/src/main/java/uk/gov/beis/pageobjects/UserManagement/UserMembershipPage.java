@@ -6,17 +6,12 @@ import java.time.Duration;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 
 public class UserMembershipPage extends BasePageObject {
-	
-	@FindBy(id = "edit-par-data-authority-id")
-	private WebElement authorityTextField;
-	
 	@FindBy(id = "edit-par-data-organisation-id")
 	private WebElement organisationTextField;
 	
@@ -30,7 +25,13 @@ public class UserMembershipPage extends BasePageObject {
 	}
 	
 	public void chooseAuthorityMembership(String authorityName) {
-		if(authorityTextField != null) {
+		
+		if(!driver.findElements(By.xpath(authorityRadioLocator.replace("?", authorityName))).isEmpty()) {
+			WebElement authorityRadio = driver.findElement(By.xpath(authorityRadioLocator.replace("?", authorityName)));
+			authorityRadio.click();
+		}
+		else {
+			WebElement authorityTextField = driver.findElement(By.id("edit-par-data-authority-id"));
 			authorityTextField.clear();
 			authorityTextField.sendKeys(authorityName);
 			
@@ -42,13 +43,6 @@ public class UserMembershipPage extends BasePageObject {
 			
 			if(widget.isDisplayed()) {
 				widget.click();
-			}
-		}
-		else {
-			WebElement authorityRadio = driver.findElement(By.xpath(authorityRadioLocator.replace("?", authorityName)));
-			
-			if(authorityRadio != null) {
-				authorityRadio.click();
 			}
 		}
 	}
@@ -70,8 +64,7 @@ public class UserMembershipPage extends BasePageObject {
 		}
 	}
 	
-	public AddMembershipConfirmationPage clickContinueButton() {
+	public void clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, AddMembershipConfirmationPage.class);
 	}
 }

@@ -1138,6 +1138,7 @@ display:
           plugin_id: standard
           required: false
       css_class: user-management-list
+      use_ajax: true
       group_by: true
       header:
         par_flow_link:

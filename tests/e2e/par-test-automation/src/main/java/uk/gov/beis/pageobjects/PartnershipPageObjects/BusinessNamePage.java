@@ -4,11 +4,8 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-import uk.gov.beis.pageobjects.AddAddressPage;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.OrganisationPageObjects.BusinessDetailsPage;
 
 public class BusinessNamePage extends BasePageObject {
 	
@@ -30,18 +27,11 @@ public class BusinessNamePage extends BasePageObject {
 		businessName.sendKeys(name);
 	}
 	
-	public AddAddressPage goToAddressPage() {
+	public void clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, AddAddressPage.class);
 	}
 	
-	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
-	}
-	
-	public BusinessDetailsPage goToBusinessConfirmationPage() {
+	public void clickSaveButton() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, BusinessDetailsPage.class);
 	}
 }

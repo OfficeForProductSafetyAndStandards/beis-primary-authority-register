@@ -289,6 +289,7 @@ $settings['config_sync_directory'] = '../sync';
  *   $settings['hash_salt'] = file_get_contents('/home/example/salt.txt');
  * @endcode
  */
+
 $settings['hash_salt'] = getenv('PAR_HASH_SALT');
 
 /**
@@ -1154,8 +1155,10 @@ if (file_exists("{$app_root}/{$site_path}/settings.local.php")) {
  *
  * Load specific service file for each app environment.
  */
-if ($config['config_split.config_split.dev_config']['status'] || $config['config_split.config_split.test_config']['status']) {
-  $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.local.non-production.yml';
+if ($app_env != 'staging') {
+  if ($config['config_split.config_split.dev_config']['status'] || $config['config_split.config_split.test_config']['status']) {
+    $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.local.non-production.yml';
+  }
 }
 
 # Allow php to run with increased memory from the CLI.

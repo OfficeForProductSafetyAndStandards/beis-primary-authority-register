@@ -4,10 +4,8 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityAddressDetailsPage;
 
 public class AddOrganisationNamePage extends BasePageObject {
 
@@ -24,19 +22,20 @@ public class AddOrganisationNamePage extends BasePageObject {
 		super();
 	}
 	
-	public AuthorityAddressDetailsPage enterMemberOrganisationName(String name) {
+	public void enterMemberName(String name) {
 		organisationName.clear();
 		organisationName.sendKeys(name);
-		
-		continueBtn.click();
-		return PageFactory.initElements(driver, AuthorityAddressDetailsPage.class);
 	}
 	
-	public MemberOrganisationSummaryPage editMemberOrganisationName(String name) {
+	public void clearOrganisationNameField() {
 		organisationName.clear();
-		organisationName.sendKeys(name);
-		
+	}
+	
+	public void clickContinueButton() {
+		continueBtn.click();
+	}
+	
+	public void clickSaveButton() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, MemberOrganisationSummaryPage.class);
 	}
 }

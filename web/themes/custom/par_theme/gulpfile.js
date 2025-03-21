@@ -25,6 +25,5 @@ gulp.task('watch', function() {
   gulp.watch(themeDir + '/sass/**/*.scss', gulp.series('sass'));
 });
 
-
 gulp.task('build', gulp.series('sass', 'assets'));
 gulp.task('default', gulp.series('sass', 'assets'));

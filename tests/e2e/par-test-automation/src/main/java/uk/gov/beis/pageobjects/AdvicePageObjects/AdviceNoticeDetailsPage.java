@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 
@@ -53,8 +52,19 @@ public class AdviceNoticeDetailsPage extends BasePageObject {
 		descriptionBox.sendKeys(description);
 	}
 	
-	public AdviceNoticeSearchPage clickSave() {
+	public void clearAllFields() {
+		title.clear();
+		
+		WebElement regulatoryFunctions = driver.findElement(By.xpath("//input[@type='checkbox']"));
+		
+		if(regulatoryFunctions.isSelected()) {
+			regulatoryFunctions.click();
+		}
+		
+		descriptionBox.clear();
+	}
+	
+	public void selectSaveButton() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, AdviceNoticeSearchPage.class);
 	}
 }

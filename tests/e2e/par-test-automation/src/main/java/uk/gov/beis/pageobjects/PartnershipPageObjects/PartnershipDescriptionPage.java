@@ -2,10 +2,8 @@ package uk.gov.beis.pageobjects.PartnershipPageObjects;
 
 import java.io.IOException;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 
@@ -27,7 +25,7 @@ public class PartnershipDescriptionPage extends BasePageObject {
 		super();
 	}
 	
-	public void enterDescription(String description) { // May need a class specifically for updating
+	public void enterDescription(String description) {
 		descriptionBox.clear();
 		descriptionBox.sendKeys(description);
 	}
@@ -37,32 +35,11 @@ public class PartnershipDescriptionPage extends BasePageObject {
 		businessDescriptionBox.sendKeys(description);
 	}
 	
-	public BusinessNamePage enterPartnershipDescription(String description) throws Throwable {
-		descriptionBox.clear();
-		descriptionBox.sendKeys(description);
-		
-		try {
-			driver.findElement(By.id("edit-next")).click();
-		} catch (Exception e) {
-			driver.findElement(By.id("edit-save")).click();
-		}
-
-		return PageFactory.initElements(driver, BusinessNamePage.class);
-	}
-	
-	public BusinessNamePage gotToBusinessNamePage() throws Throwable {
+	public void clickContinueButton() {
 		continueBtn.click();
-
-		return PageFactory.initElements(driver, BusinessNamePage.class);
 	}
 	
-	public CheckPartnershipInformationPage goToCheckPartnershipInformationPage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, CheckPartnershipInformationPage.class);
-	}
-	
-	public PartnershipInformationPage clickSave() {
+	public void clickSaveButton() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 }

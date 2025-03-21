@@ -5,16 +5,21 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.BlockPage;
-import uk.gov.beis.pageobjects.ReinstatePage;
-import uk.gov.beis.pageobjects.RemovePage;
 import uk.gov.beis.utility.DataStore;
 
 public class UserProfilePage extends BasePageObject {
+	
+	@FindBy(xpath = "//a[contains(normalize-space(), 'Profile')]")
+	private WebElement profileTab;
+	
+	@FindBy(xpath = "//a[contains(normalize-space(), 'Contacts')]")
+	private WebElement contactsTab;
+	
+	@FindBy(xpath = "//a[contains(normalize-space(), 'Authorities and Organisations')]")
+	private WebElement membershipsTab;
 	
 	@FindBy(xpath = "//div[@class='govuk-grid-row govuk-form-group']//div[1]/p")
 	private WebElement userAccountEmail;
@@ -22,6 +27,9 @@ public class UserProfilePage extends BasePageObject {
 	@FindBy(xpath = "//div/a[contains(normalize-space(), 'Invite the user to create an account')]")
 	private WebElement accountInvitationLink;
 
+	@FindBy(xpath = "//div/a[contains(normalize-space(), 'Re-send the invitation')]")
+	private WebElement reSendInvitationLink;
+	
 	@FindBy(xpath = "//div[@class='govuk-grid-row govuk-form-group']//div[2]/p")
 	private WebElement userAccountType;
 	
@@ -69,6 +77,18 @@ public class UserProfilePage extends BasePageObject {
 		super();
 	}
 	
+	public void clickProfileTabButton() {
+		profileTab.click();
+	}
+	
+	public void clickContactsTabButton() {
+		contactsTab.click();
+	}
+	
+	public void clickMembershipsTabButton() {
+		membershipsTab.click();
+	}
+	
 	public Boolean checkHeaderForName() {
 		return driver.findElement(By.xpath(profileHeader.replace("?", getExpectedPersonsName()))).isDisplayed();
 	}
@@ -79,6 +99,10 @@ public class UserProfilePage extends BasePageObject {
 
 	public Boolean checkForUserAccountInvitationLink() {
 		return accountInvitationLink.isDisplayed();
+	}
+	
+	public Boolean checkForReSendUserAccountInvitationLink() {
+		return reSendInvitationLink.isDisplayed();
 	}
 
 	public Boolean checkUserAccountEmail() {
@@ -173,39 +197,36 @@ public class UserProfilePage extends BasePageObject {
 		return locationsDisplayed;
 	}
 	
-	public UserRoleTypePage clickManageRolesLink() {
+	public void clickInviteUserCreateAccountLink() {
+		accountInvitationLink.click();
+	}
+	
+	public void clickManageRolesLink() {
 		managerolesLink.click();
-		return PageFactory.initElements(driver, UserRoleTypePage.class);
 	}
 	
-	public BlockPage clickBlockUserAccountLink() {
+	public void clickBlockUserAccountLink() {
 		blockUserAccountLink.click();
-		return PageFactory.initElements(driver, BlockPage.class);
 	}
 	
-	public ReinstatePage clickReactivateUserAccountLink() {
+	public void clickReactivateUserAccountLink() {
 		reactivateUserAccountLink.click();
-		return PageFactory.initElements(driver, ReinstatePage.class);
 	}
 	
-	public ChoosePersonToAddPage clickAddMembershipLink() {
+	public void clickAddMembershipLink() {
 		addMembershipLink.click();
-		return PageFactory.initElements(driver, ChoosePersonToAddPage.class);
 	}
 	
-	public RemovePage clickRemoveMembershipLink() {
+	public void clickRemoveMembershipLink() {
 		driver.findElement(By.xpath(removeMembershipLocator.replace("?", DataStore.getSavedValue(UsableValues.AUTHORITY_NAME)))).click();
-		return PageFactory.initElements(driver, RemovePage.class);
 	}
 	
-	public ContactDetailsPage clickUpdateUserButton() {
+	public void clickUpdateUserButton() {
 		updateUserBtn.click();
-		return PageFactory.initElements(driver, ContactDetailsPage.class);
 	}
 	
-	public ManagePeoplePage clickDoneButton() {
+	public void clickDoneButton() {
 		doneBtn.click();
-		return PageFactory.initElements(driver, ManagePeoplePage.class);
 	}
 	
 	private String getExpectedPersonsName() {

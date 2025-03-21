@@ -5,9 +5,7 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-import uk.gov.beis.helper.ScenarioContext;
 import uk.gov.beis.pageobjects.BasePageObject;
 
 public class LegalEntityTypePage extends BasePageObject {
@@ -25,38 +23,26 @@ public class LegalEntityTypePage extends BasePageObject {
 	private WebElement registrationNumberTextbox;
 	
 	@FindBy(id = "edit-par-component-legal-entity-0-unregistered-legal-entity-name")
-	private WebElement legalEnityNameTextbox;
+	private WebElement legalEntityNameTextbox;
 	
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
 	
-	String legalEntType = "//label[contains(text(),'?')]/preceding-sibling::input";
+	private String legalEntTypeRadio = "//label[contains(normalize-space(),'?')]/preceding-sibling::input";
 	
 	public LegalEntityTypePage() throws ClassNotFoundException, IOException {
 		super();
 	}
 	
-	public LegalEntityReviewPage selectEntityType(String name, String type, String reg) {
-		if (!type.equalsIgnoreCase("unregistered")) {
-			ScenarioContext.registered = true;
-			driver.findElement(By.xpath(legalEntType.replace("?", type))).click();
-			driver.findElement(By.id("edit-par-component-legal-entity-0-registered-legal-entity-number")).sendKeys(reg);
-		} else {
-			ScenarioContext.registered = false;
-			driver.findElement(By.xpath(legalEntType.replace("?", type))).click();
-			driver.findElement(By.xpath("//label[contains(text(),'Other')]")).click();
-			driver.findElement(By.xpath("//input[@class='form-group form-text form-control govuk-input']")).sendKeys(name);
-		}
-		
-		continueBtn.click();
-		
-		return PageFactory.initElements(driver, LegalEntityReviewPage.class);
+	public void selectLegalEntityType(String entityType) {
+		driver.findElement(By.xpath(legalEntTypeRadio.replace("?", entityType))).click();
 	}
 	
 	public void selectRegisteredOrganisation(String registrationNumber) {
 		registeredOrganisationRadial.click();
 		
 		if(registeredOrganisationRadial.isSelected()) {
+			registrationNumberTextbox.clear();
 			registrationNumberTextbox.sendKeys(registrationNumber);
 		}
 	}
@@ -65,24 +51,29 @@ public class LegalEntityTypePage extends BasePageObject {
 		charityRadial.click();
 		
 		if(charityRadial.isSelected()) {
+			registrationNumberTextbox.clear();
 			registrationNumberTextbox.sendKeys(registrationNumber);
 		}
 	}
 	
-	public void selectUnregisteredEntity(String entityType, String legalEntityName) {
+	public void selectUnregisteredEntity(String entityType, String entityName) {
 		unregisteredEntityRadial.click();
 		
 		if(unregisteredEntityRadial.isSelected()) {
-			
-			driver.findElement(By.xpath(legalEntType.replace("?", entityType))).click();
-			
-			legalEnityNameTextbox.sendKeys(legalEntityName);
+			if(entityType != "" || entityName != "") {
+				enterUnregisteredEntityDetails(entityType, entityName);
+			}
 		}
 	}
 	
-	public LegalEntityReviewPage clickContinueButton() {
+	public void clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, LegalEntityReviewPage.class);
 	}
 	
+	private void enterUnregisteredEntityDetails(String entityType, String entityName) {
+		driver.findElement(By.xpath(legalEntTypeRadio.replace("?", entityType))).click();
+		
+		legalEntityNameTextbox.clear();
+		legalEntityNameTextbox.sendKeys(entityName);
+	}
 }

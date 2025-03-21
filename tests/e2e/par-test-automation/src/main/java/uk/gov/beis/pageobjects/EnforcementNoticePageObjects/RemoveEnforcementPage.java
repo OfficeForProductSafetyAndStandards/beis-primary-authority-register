@@ -5,10 +5,8 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.DeclarationPage;
 
 public class RemoveEnforcementPage extends BasePageObject {
 	
@@ -24,17 +22,16 @@ public class RemoveEnforcementPage extends BasePageObject {
 		super();
 	}
 	
-	public void selectReasonForRemoval(String reason) {
+	public void selectRemovalReason(String reason) {
 		driver.findElement(By.xpath(removalReasonLocator.replace("?", reason))).click();
 	}
 	
-	public void enterReasonForRemoval(String reason) {
+	public void enterRemovalDescription(String reason) {
 		descriptionBox.clear();
 		descriptionBox.sendKeys(reason);
 	}
 	
-	public DeclarationPage clickContinue() {
+	public void clickContinueButton() {
 		continueBtn.click();
-		return PageFactory.initElements(driver, DeclarationPage.class);
 	}
 }

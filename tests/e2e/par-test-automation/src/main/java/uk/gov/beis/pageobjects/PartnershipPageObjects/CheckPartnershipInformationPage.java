@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
@@ -108,22 +107,39 @@ public class CheckPartnershipInformationPage extends BasePageObject {
 		return tradeName.isDisplayed();
 	}
 	
-	public PartnershipCompletionPage confirmApplication() {
-		if(!organisationConfirmCheckbox.isSelected()) {
-			organisationConfirmCheckbox.click();
-		}
-		
-		saveBtn.click();
-		return PageFactory.initElements(driver, PartnershipCompletionPage.class);
-	}
-	
-	public PartnershipCompletionPage completeApplication() {
+	// Buttons
+	public void acceptTermsAndConditions() {
 		if(!authorityConfirmCheckbox.isSelected()) {
 			authorityConfirmCheckbox.click();
 		}
-		
+	}
+	
+	public void deselectConfirmationCheckbox() {
+		if(authorityConfirmCheckbox.isSelected()) {
+			authorityConfirmCheckbox.click();
+		}
+	}
+	
+	public void deselectOrganisationConfirmationCheckbox() {
+		if(organisationConfirmCheckbox.isSelected()) {
+			organisationConfirmCheckbox.click();
+		}
+	}
+	
+	public void confirmApplication() {
+		if(!organisationConfirmCheckbox.isSelected()) {
+			organisationConfirmCheckbox.click();
+		}
+	}
+	
+	public void completeApplication() {
+		if(!authorityConfirmCheckbox.isSelected()) {
+			authorityConfirmCheckbox.click();
+		}
+	}
+	
+	public void clickSaveButton() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, PartnershipCompletionPage.class);
 	}
 	
 	private String getFullAddress() {

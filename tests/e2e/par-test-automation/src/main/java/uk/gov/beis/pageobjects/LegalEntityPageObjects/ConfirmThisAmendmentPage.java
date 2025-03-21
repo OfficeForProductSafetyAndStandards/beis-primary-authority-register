@@ -2,9 +2,9 @@ package uk.gov.beis.pageobjects.LegalEntityPageObjects;
 
 import java.io.IOException;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 
@@ -20,13 +20,24 @@ public class ConfirmThisAmendmentPage extends BasePageObject {
 		super();
 	}
 	
-	public AmendmentCompletedPage confirmLegalEntityAmendments() {
+	public void deselectConfirmationCheckbox() {
+		if(confirmationCheckbox.isSelected()) {
+			confirmationCheckbox.click();
+		}
+	}
+	
+	public void selectConfirmationCheckbox() {
 		if(!confirmationCheckbox.isSelected()) {
 			confirmationCheckbox.click();
 		}
-		
+	}
+	
+	public void selectSubmitAmendmentButton() {
 		submitAmendmentBtn.click();
-		
-		return PageFactory.initElements(driver, AmendmentCompletedPage.class);
+	}
+	
+	public void goToAmendmentCompletedPage() {
+		WebElement element = driver.findElement(By.xpath("//input[@value='Confirm amendment']"));
+		executeJavaScript("arguments[0].click();", element);
 	}
 }

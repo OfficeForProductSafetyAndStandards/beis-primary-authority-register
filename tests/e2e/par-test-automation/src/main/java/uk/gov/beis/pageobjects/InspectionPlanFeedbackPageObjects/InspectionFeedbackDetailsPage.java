@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
 
@@ -31,10 +30,13 @@ public class InspectionFeedbackDetailsPage extends BasePageObject{
 	public void chooseFile(String filename) {
 		uploadDocument(chooseFile, filename);
 	}
-
-	public InspectionFeedbackConfirmationPage clickContinue() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, InspectionFeedbackConfirmationPage.class);
+	
+	public void clearAllFields() {
+		descriptionBox.clear();
+		chooseFile.clear();
 	}
-
+	
+	public void clickContinueButton() {
+		continueBtn.click();
+	}
 }

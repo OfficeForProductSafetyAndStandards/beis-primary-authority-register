@@ -6,11 +6,9 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.AuthorityPageObjects.AuthorityConfirmationPage;
 import uk.gov.beis.utility.DataStore;
 
 public class RegulatoryFunctionPage extends BasePageObject {
@@ -21,7 +19,7 @@ public class RegulatoryFunctionPage extends BasePageObject {
 	@FindBy(id = "edit-partnership-cover-bespoke")
 	private WebElement bespokeRadial;
 	
-	@FindBy(xpath = "//input[@class='form-checkbox form-control govuk-input govuk-checkboxes__input']")
+	@FindBy(xpath = "//input[@type='checkbox']")
 	private WebElement bespokeCheckbox;
 
 	@FindBy(id = "edit-next")
@@ -40,6 +38,16 @@ public class RegulatoryFunctionPage extends BasePageObject {
 		normalOrSequencedRadial.click();
 	}
 	
+	public void deselectBespokeFunctions() {
+		bespokeRadial.click();
+		
+		if(bespokeRadial.isSelected()) {
+			if(bespokeCheckbox.isSelected()) {
+				bespokeCheckbox.click();
+			}
+		}
+	}
+	
 	public void selectBespokeFunctions() {
 		bespokeRadial.click();
 		
@@ -50,12 +58,7 @@ public class RegulatoryFunctionPage extends BasePageObject {
 		}
 	}
 	
-	public PartnershipApprovalPage goToPartnershipApprovedPage() {
-		continueBtn.click();
-		return PageFactory.initElements(driver, PartnershipApprovalPage.class);
-	}
-	
-	public AuthorityConfirmationPage selectRegFunction(String reg) {
+	public void selectRegFunction(String reg) {
 		List<WebElement> boxes = driver.findElements(By.xpath("//div/label/preceding-sibling::input"));
 		
 		// clear up boxes first
@@ -66,28 +69,9 @@ public class RegulatoryFunctionPage extends BasePageObject {
 		}
 		
 		driver.findElement(By.xpath(regFunction.replace("?", reg))).click();
-		
-		continueBtn.click();
-		return PageFactory.initElements(driver, AuthorityConfirmationPage.class);
 	}
 	
-	public AuthorityConfirmationPage editRegFunction(String reg) {
-		List<WebElement> boxes = driver.findElements(By.xpath("//div/label/preceding-sibling::input"));
-		
-		// clear up boxes first
-		for (WebElement bx : boxes) {
-			if (bx.isSelected()){
-				bx.click();
-			}
-		}
-		
-		driver.findElement(By.xpath(regFunction.replace("?", reg))).click();
-		
-		saveBtn.click();
-		return PageFactory.initElements(driver, AuthorityConfirmationPage.class);
-	}
-	
-	public PartnershipInformationPage updateRegFunction() {
+	public void updateRegFunction() {
 		if(normalOrSequencedRadial.isSelected()) {
 			bespokeRadial.click();
 			
@@ -101,13 +85,13 @@ public class RegulatoryFunctionPage extends BasePageObject {
 		
 		//DataStore.saveValue(UsableValues.PARTNERSHIP_REGFUNC, "Cookie control"); // Would be better to use Bespoke and Normal or Sequenced as the value.
 		DataStore.saveValue(UsableValues.PARTNERSHIP_REGFUNC, "Alphabet learning");
-		
-		saveBtn.click();
-		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
-	public PartnershipInformationPage clickSave() {
+	public void selectContinueButton() {
+		continueBtn.click();
+	}
+	
+	public void selectSaveButton() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 }

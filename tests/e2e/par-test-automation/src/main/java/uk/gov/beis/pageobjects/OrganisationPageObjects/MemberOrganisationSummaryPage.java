@@ -5,15 +5,9 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.AddAddressPage;
-import uk.gov.beis.pageobjects.EnterTheDatePage;
-import uk.gov.beis.pageobjects.InspectionPlanPageObjects.InspectionPlanCoveragePage;
-import uk.gov.beis.pageobjects.LegalEntityPageObjects.LegalEntityTypePage;
-import uk.gov.beis.pageobjects.UserManagement.ContactDetailsPage;
 import uk.gov.beis.utility.DataStore;
 
 public class MemberOrganisationSummaryPage extends BasePageObject {
@@ -60,39 +54,37 @@ public class MemberOrganisationSummaryPage extends BasePageObject {
 		super();
 	}
 	
-	public AddOrganisationNamePage selectEditOrganisationName() {
+	public void selectEditOrganisationName() {
 		editOrganisationNameLink.click();
-		return PageFactory.initElements(driver, AddOrganisationNamePage.class);
 	}
 	
-	public AddAddressPage selectEditAddress() {
+	public void selectEditAddress() {
 		editAddressLink.click();
-		return PageFactory.initElements(driver, AddAddressPage.class);
 	}
 	
-	public EnterTheDatePage selectEditMembershipStartDate() {
+	public void selectEditMembershipStartDate() {
 		editMembershipStartDateLink.click();
-		return PageFactory.initElements(driver, EnterTheDatePage.class);
 	}
 	
-	public ContactDetailsPage selectEditPerson() {
+	public void selectEditPerson() {
 		editPersonLink.click();
-		return PageFactory.initElements(driver, ContactDetailsPage.class);
 	}
 	
-	public LegalEntityTypePage selectAddAnotherLegalEntity() {
+	public void selectAddAnotherLegalEntity() {
 		addAnotherLegalEntityLink.click();
-		return PageFactory.initElements(driver, LegalEntityTypePage.class);
 	}
 	
-	public TradingPage selectEditTradingName() {
+	public void selectEditTradingName() {
 		editTradingNameLink.click();
-		return PageFactory.initElements(driver, TradingPage.class);
 	}
 	
-	public InspectionPlanCoveragePage selectEditCoveredByInspectionPlan() {
+	public void selectEditCoveredByInspectionPlan() {
 		editCoveredByInspectionPlanLink.click();
-		return PageFactory.initElements(driver, InspectionPlanCoveragePage.class);
+	}
+	
+	public Boolean checkMemberOrganisationSummaryPage() {
+		WebElement organisationName = driver.findElement(By.xpath(organisationNameLocator.replace("?", DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME))));
+		return organisationName.isDisplayed();
 	}
 	
 	public Boolean checkMemberDetails() {
@@ -111,14 +103,12 @@ public class MemberOrganisationSummaryPage extends BasePageObject {
 				&& contactsMobileNumber.isDisplayed() && contactsEmailAddress.isDisplayed() && legalEntity.isDisplayed() && tradingName.isDisplayed() && coveredByInspection.isDisplayed();
 	}
 	
-	public MemberOrganisationAddedConfirmationPage selectSave() {
+	public void clickSaveButton() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, MemberOrganisationAddedConfirmationPage.class);
 	}
 	
-	public MemberListPage selectDone() {
+	public void clickDoneButton() {
 		doneBtn.click();
-		return PageFactory.initElements(driver, MemberListPage.class);
 	}
 	
 	private String getContactsName() {

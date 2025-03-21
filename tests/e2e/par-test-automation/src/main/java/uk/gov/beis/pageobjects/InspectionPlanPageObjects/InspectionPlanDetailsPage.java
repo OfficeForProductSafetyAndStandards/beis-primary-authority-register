@@ -4,10 +4,8 @@ import java.io.IOException;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.EnterTheDatePage;
 
 public class InspectionPlanDetailsPage extends BasePageObject {
 
@@ -33,9 +31,13 @@ public class InspectionPlanDetailsPage extends BasePageObject {
 		descriptionBox.clear();
 		descriptionBox.sendKeys(description);
 	}
-
-	public EnterTheDatePage clickSave() {
+	
+	public void clearAllFields() {
+		title.clear();
+		descriptionBox.clear();
+	}
+	
+	public void selectSaveButton() {
 		saveBtn.click();
-		return PageFactory.initElements(driver, EnterTheDatePage.class);
 	}
 }

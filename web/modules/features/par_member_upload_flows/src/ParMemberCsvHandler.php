@@ -429,83 +429,83 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
       $key = $this->getMappingByHeading($column);
       switch ($key) {
-          case 'partnership_id':
-            $par_data_partnership = ParDataPartnership::load($value);
-            if ($par_data_partnership) {
-              $data[$column] = $par_data_partnership;
-            }
-            break;
+        case 'partnership_id':
+          $par_data_partnership = ParDataPartnership::load($value);
+          if ($par_data_partnership) {
+            $data[$column] = $par_data_partnership;
+          }
+          break;
 
-          case 'nation':
-            $country_codes = $this->getCountryRepository()->getList();
-            $country_key = array_search($value, $country_codes);
+        case 'nation':
+          $country_codes = $this->getCountryRepository()->getList();
+          $country_key = array_search($value, $country_codes);
 
-            /** @var ParDataPremisesType $par_data_premises_type */
-            $par_data_premises_type = $this->getParDataManager()->getParBundleEntity('par_data_premises');
+          /** @var ParDataPremisesType $par_data_premises_type */
+          $par_data_premises_type = $this->getParDataManager()->getParBundleEntity('par_data_premises');
 
-            // If the nation is a country of the UK.
-            if ($system_value = $par_data_premises_type->getAllowedValueBylabel('nation', $value, TRUE)) {
-              $data[$column] = $system_value;
-              $data[$this->getMapping('country_code')] = 'GB';
-            }
-            // If the nation is an international country.
-            elseif ($country_key !== FALSE) {
-              $data[$this->getMapping('country_code')] = $country_key;
-            }
-            break;
+          // If the nation is a country of the UK.
+          if ($system_value = $par_data_premises_type->getAllowedValueBylabel('nation', $value, TRUE)) {
+            $data[$column] = $system_value;
+            $data[$this->getMapping('country_code')] = 'GB';
+          }
+          // If the nation is an international country.
+          elseif ($country_key !== FALSE) {
+            $data[$this->getMapping('country_code')] = $country_key;
+          }
+          break;
 
-          case 'email':
-            $data[$column] = strtolower($value);
-            break;
+        case 'email':
+          $data[$column] = strtolower($value);
+          break;
 
-          case 'membership_start':
-            try {
-              $date = DrupalDateTime::createFromFormat(self::DATE_FORMAT, $value, NULL, ['validate_format' => FALSE]);
-              $data[$column] = $date->format(self::DATETIME_FORMAT);
-            }
-            catch (Exception) {
+        case 'membership_start':
+          try {
+            $date = DrupalDateTime::createFromFormat(self::DATE_FORMAT, $value, NULL, ['validate_format' => FALSE]);
+            $data[$column] = $date->format(self::DATETIME_FORMAT);
+          }
+          catch (Exception) {
 
-            }
+          }
 
-            break;
+          break;
 
-          case 'membership_end':
-            try {
-              // Create the date, setting the time to the last possible time in the day.
-              $cease_date = DrupalDateTime::createFromFormat(self::DATE_FORMAT . " H:i:s", $value . " 23:59:59", NULL, ['validate_format' => FALSE]);
-              $data[$column] = $cease_date->format(self::DATETIME_FORMAT);
-            }
-            catch (Exception) {
+        case 'membership_end':
+          try {
+            // Create the date, setting the time to the last possible time in the day.
+            $cease_date = DrupalDateTime::createFromFormat(self::DATE_FORMAT . " H:i:s", $value . " 23:59:59", NULL, ['validate_format' => FALSE]);
+            $data[$column] = $cease_date->format(self::DATETIME_FORMAT);
+          }
+          catch (Exception) {
 
-            }
+          }
 
-            $current_date = new DrupalDateTime();
+          $current_date = new DrupalDateTime();
 
-            // Only cease the membership if the expiry date is in the past.
-            if (isset($cease_date) && $cease_date < $current_date) {
-              $data[$this->getMapping('ceased')] = TRUE;
-            }
+          // Only cease the membership if the expiry date is in the past.
+          if (isset($cease_date) && $cease_date < $current_date) {
+            $data[$this->getMapping('ceased')] = TRUE;
+          }
 
-            break;
+          break;
 
-          case 'covered':
-            $data[$column] = !(strtolower($value) === 'no' || strtolower($value) === 'n');
-            break;
+        case 'covered':
+          $data[$column] = !(strtolower($value) === 'no' || strtolower($value) === 'n');
+          break;
 
-          case 'legal_entity_type_first':
-          case 'legal_entity_type_second':
-          case 'legal_entity_type_third':
-            /** @var ParDataLegalEntityType $par_data_legal_entity_type */
-            $par_data_legal_entity_type = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
+        case 'legal_entity_type_first':
+        case 'legal_entity_type_second':
+        case 'legal_entity_type_third':
+          /** @var ParDataLegalEntityType $par_data_legal_entity_type */
+          $par_data_legal_entity_type = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
 
-            // If user entered value matches an allowed .
-            if ($system_value = $par_data_legal_entity_type->getAllowedValueBylabel('legal_entity_type', $value, TRUE)) {
-              $data[$column] = $system_value;
-            }
-            break;
+          // If user entered value matches an allowed .
+          if ($system_value = $par_data_legal_entity_type->getAllowedValueBylabel('legal_entity_type', $value, TRUE)) {
+            $data[$column] = $system_value;
+          }
+          break;
 
-          default:
-            $data[$column] = $value;
+        default:
+          $data[$column] = $value;
       }
     }
 
@@ -523,11 +523,11 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
    */
   public function normalize(array $row): array {
     // We need to get the bundle information to transform bundles into labels.
-    /** @var ParDataCoordinatedBusinessType $par_data_coordinated_business_type */
-    /** @var ParDataOrganisationType $par_data_organisation_type */
-    /** @var ParDataPremisesType $par_data_premises_type */
-    /** @var ParDataPersonType $par_data_person_type */
-    /** @var ParDataLegalEntityType $par_data_legal_entity_type */
+    /** @var \Drupal\par_data\Entity\ParDataCoordinatedBusinessType $par_data_coordinated_business_type */
+    /** @var \Drupal\par_data\Entity\ParDataOrganisationType $par_data_organisation_type */
+    /** @var \Drupal\par_data\Entity\ParDataPremisesType $par_data_premises_type */
+    /** @var \Drupal\par_data\Entity\ParDataPersonType $par_data_person_type */
+    /** @var \Drupal\par_data\Entity\ParDataLegalEntityType $par_data_legal_entity_type */
     $par_data_coordinated_business_type = $this->getParDataManager()->getParBundleEntity('par_data_coordinated_business');
     $par_data_organisation_type = $this->getParDataManager()->getParBundleEntity('par_data_organisation');
     $par_data_premises_type = $this->getParDataManager()->getParBundleEntity('par_data_premises');
@@ -547,7 +547,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
           ]
         ],
       ];
-      /** @var ParDataCoordinatedBusiness[] $matching_members */
+      /** @var \Drupal\par_data\Entity\ParDataCoordinatedBusiness[] $matching_members */
       $matching_members = $this->getParDataManager()
         ->getEntitiesByQuery('par_data_coordinated_business', $conditions);
 
@@ -565,8 +565,8 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
           $legal_entity = $organisation ? $organisation->getLegalEntity(TRUE) : NULL;
 
           if ($legal_entity
-              && $this->getValue($data, 'legal_entity_name_first')
-              && $legal_entity->get('registered_name')->getString() !== $this->getValue($data, 'legal_entity_name_first')) {
+            && $this->getValue($data, 'legal_entity_name_first')
+            && $legal_entity->get('registered_name')->getString() !== $this->getValue($data, 'legal_entity_name_first')) {
             continue;
           }
 
@@ -589,10 +589,10 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       ];
       // Secondary legal entities are optional.
       if ($this->getValue($data, 'legal_entity_name_second')) {
-        $normalized[''][] = ParDataLegalEntity::create();
+        $normalized['par_data_legal_entity'][1] = ParDataLegalEntity::create();
       }
       if ($this->getValue($data, 'legal_entity_name_third')) {
-        $normalized[''][] = ParDataLegalEntity::create();
+        $normalized['par_data_legal_entity'][2] = ParDataLegalEntity::create();
       }
     }
 
@@ -649,13 +649,16 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     }
     // Set the third legal entity.
     if ($this->getValue($data, 'legal_entity_name_third')) {
-      if (!isset($normalized['par_data_legal_entity'][21])) {
+      if (!isset($normalized['par_data_legal_entity'][2])) {
         $normalized['par_data_legal_entity'][2] = ParDataLegalEntity::create();
       }
       $normalized['par_data_legal_entity'][2]->set('registered_name', $this->getValue($data, 'legal_entity_name_third'));
       $normalized['par_data_legal_entity'][2]->set('registered_number', $this->getValue($data, 'legal_entity_number_third'));
       $normalized['par_data_legal_entity'][2]->set('legal_entity_type', $this->getValue($data, 'legal_entity_type_third'));
     }
+
+    // Set the trading names.
+    $normalized['par_data_organisation']->set('trading_name', $this->getValue($data, 'organisation_name'));
 
     return $normalized;
   }
@@ -671,20 +674,20 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     $entities = $this->extract($member);
 
     // We need to get the bundle information to transform bundles into labels.
-    /** @var ParDataCoordinatedBusinessType $par_data_coordinated_business_type */
-    /** @var ParDataOrganisationType $par_data_organisation_type */
-    /** @var ParDataPremisesType $par_data_premises_type */
-    /** @var ParDataPersonType $par_data_person_type */
-    /** @var ParDataLegalEntityType $par_data_legal_entity_type */
+    /** @var \Drupal\par_data\Entity\ParDataCoordinatedBusinessType $par_data_coordinated_business_type */
+    /** @var \Drupal\par_data\Entity\ParDataOrganisationType $par_data_organisation_type */
+    /** @var \Drupal\par_data\Entity\ParDataPremisesType $par_data_premises_type */
+    /** @var \Drupal\par_data\Entity\ParDataPersonType $par_data_person_type */
+    /** @var \Drupal\par_data\Entity\ParDataLegalEntityType $par_data_legal_entity_type */
     foreach ($entities as $entity_type => $entity) {
       ${$entity_type . "_type"} = $this->getParDataManager()->getParBundleEntity($entity_type);
     }
 
-    /** @var ParDataCoordinatedBusiness $par_data_coordinated_business */
-    /** @var ParDataOrganisation $par_data_organisation */
-    /** @var ParDataPremises $par_data_premises */
-    /** @var ParDataPerson $par_data_person */
-    /** @var ParDataLegalEntity[] $par_data_legal_entity */
+    /** @var \Drupal\par_data\Entity\ParDataCoordinatedBusiness $par_data_coordinated_business */
+    /** @var \Drupal\par_data\Entity\ParDataOrganisation $par_data_organisation */
+    /** @var \Drupal\par_data\Entity\ParDataPremises $par_data_premises */
+    /** @var \Drupal\par_data\Entity\ParDataPerson $par_data_person */
+    /** @var \Drupal\par_data\Entity\ParDataLegalEntity[] $par_data_legal_entity */
     extract($entities);
 
     $address = $par_data_premises?->get('address')->first();
@@ -981,19 +984,27 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       $member = $this->normalize($row);
 
       if ($member) {
-        /** @var ParDataCoordinatedBusiness $par_data_coordinated_business */
-        /** @var ParDataOrganisation $par_data_organisation */
-        /** @var ParDataPremises $par_data_premises */
-        /** @var ParDataPerson $par_data_person */
-        /** @var ParDataLegalEntity[] $par_data_legal_entity */
-        extract($member);
+        /** @var \Drupal\par_data\Entity\ParDataCoordinatedBusiness $par_data_coordinated_business */
+        $par_data_coordinated_business = $member['par_data_coordinated_business'];
+
+        /** @var \Drupal\par_data\Entity\ParDataOrganisation $par_data_organisation */
+        $par_data_organisation = $member['par_data_organisation'];
+
+        /** @var \Drupal\par_data\Entity\ParDataPremises $par_data_premises */
+        $par_data_premises = $member['par_data_premises'];
+
+        /** @var \Drupal\par_data\Entity\ParDataPerson $par_data_person */
+        $par_data_person = $member['par_data_person'];
+
+        /** @var \Drupal\par_data\Entity\ParDataLegalEntity[] $par_data_legal_entities */
+        $par_data_legal_entities = $member['par_data_legal_entity'];
 
         // Try to save the address.
         try {
           $par_data_premises->save();
         }
         catch (EntityStorageException $exception) {
-            $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
+          $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
         }
 
         // Try to save the person.
@@ -1055,7 +1066,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
    * @throws \Drupal\Core\Entity\EntityStorageException
    */
   public function update(ParDataPartnership $par_data_partnership, $members): ?int {
-    $new_members = array_filter($members, function($v) {
+    $new_members = array_filter($members, function ($v) {
       return ($v instanceof ParDataCoordinatedBusiness);
     });
 
@@ -1086,8 +1097,8 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
   public function clean($old, $new, $par_data_partnership): void {
     $diff = array_udiff($old, $new, function ($a, $b) {
-        return $a->id() - $b->id();
-      }
+      return $a->id() - $b->id();
+    }
     );
 
     // Re-load the partnership to get any updates perforced during batch processes.
@@ -1130,7 +1141,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     }
     else {
       $element = [
-        '#markup' => '<p class="error">There has been an error generating the member list, please contact pa@beis.gov.uk for assistance</p>',
+        '#markup' => '<p class="error">There has been an error generating the member list, please contact pa@businessandtrade.gov.uk for assistance</p>',
       ];
       $renderer = Drupal::service('renderer');
       $id = $form_state->getTriggeringElement()['#attributes']['id'];

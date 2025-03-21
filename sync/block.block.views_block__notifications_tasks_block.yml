@@ -5,7 +5,6 @@ dependencies:
   config:
     - views.view.notifications
   module:
-    - govuk_cookies
     - system
     - user
     - views
@@ -25,10 +24,6 @@ settings:
   views_label: ''
   items_per_page: none
 visibility:
-  govuk_cookie:
-    id: govuk_cookie
-    enable: 0
-    negate: false
   request_path:
     id: request_path
     negate: false

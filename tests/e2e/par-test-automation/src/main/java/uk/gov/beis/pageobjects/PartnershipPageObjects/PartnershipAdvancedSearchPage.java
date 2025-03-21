@@ -5,14 +5,9 @@ import java.io.IOException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import uk.gov.beis.enums.UsableValues;
 import uk.gov.beis.pageobjects.BasePageObject;
-import uk.gov.beis.pageobjects.DeclarationPage;
-import uk.gov.beis.pageobjects.DeletePage;
-import uk.gov.beis.pageobjects.ReinstatePage;
-import uk.gov.beis.pageobjects.RevokePage;
 import uk.gov.beis.utility.DataStore;
 
 public class PartnershipAdvancedSearchPage extends BasePageObject {
@@ -27,36 +22,30 @@ public class PartnershipAdvancedSearchPage extends BasePageObject {
 		super();
 	}
 	
-	public PartnershipAdvancedSearchPage searchPartnerships() {
+	public void searchPartnerships() {
 		searchInput.clear();
 		searchInput.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
 		searchBtn.click();
-		return PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
 	}
 
-	public PartnershipInformationPage selectPartnershipLink() {
+	public void selectPartnershipLink() {
 		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td[1]/a[1]")).click();
-		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
-	public DeclarationPage selectApproveBusinessNameLink() {
+	public void selectApproveBusinessNameLink() {
 		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td/a[contains(text(),'Approve')]")).click();
-		return PageFactory.initElements(driver, DeclarationPage.class);
 	}
 	
-	public DeletePage selectDeletePartnershipLink() {
+	public void selectDeletePartnershipLink() {
 		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td/a[contains(text(),'Delete')]")).click();
-		return PageFactory.initElements(driver, DeletePage.class);
 	}
 	
-	public RevokePage selectRevokeBusinessNameLink() {
+	public void selectRevokeBusinessNameLink() {
 		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td/a[contains(text(),'Revoke')]")).click();
-		return PageFactory.initElements(driver, RevokePage.class);
 	}
 	
-	public ReinstatePage selectRestoreBusinessNameLink() {
+	public void selectRestoreBusinessNameLink() {
 		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td/a[contains(text(),'Restore')]")).click();
-		return PageFactory.initElements(driver, ReinstatePage.class);
 	}
 	
 	public boolean checkPartnershipDetails(String status, String action) {
@@ -66,24 +55,27 @@ public class PartnershipAdvancedSearchPage extends BasePageObject {
 		return (statusElement.isDisplayed() && actionElement.isDisplayed());
 	}
 	
+	public boolean checkPartnershipStatus(String status) {
+		WebElement statusElement = driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]/parent::td/parent::tr/td[3][normalize-space()='"+ status +"']"));
+		
+		return statusElement.isDisplayed();
+	}
+	
 	public boolean checkPartnershipExists() {
 		return driver.findElements(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]")).isEmpty();
 	}
 	
-	public PartnershipAdvancedSearchPage searchPartnershipsPrimaryAuthority() {
+	public void searchPartnershipsPrimaryAuthority() {
 		searchInput.clear();
 		searchInput.sendKeys(DataStore.getSavedValue(UsableValues.AUTHORITY_NAME));
 		searchBtn.click();
-		return PageFactory.initElements(driver, PartnershipAdvancedSearchPage.class);
 	}
 	
-	public PartnershipInformationPage selectPrimaryAuthorityLink() {
+	public void selectPrimaryAuthorityLink() {
 		driver.findElement(By.xpath("//td/a[contains(normalize-space(),'" + DataStore.getSavedValue(UsableValues.AUTHORITY_NAME) + "')]")).click();
-		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 	
-	public PartnershipInformationPage selectOrganisationLink() {
+	public void selectOrganisationLink() {
 		driver.findElement(By.xpath("//td/a[contains(normalize-space(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]")).click();
-		return PageFactory.initElements(driver, PartnershipInformationPage.class);
 	}
 }

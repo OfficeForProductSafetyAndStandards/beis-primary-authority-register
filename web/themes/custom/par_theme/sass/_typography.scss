@@ -41,9 +41,14 @@ p {
   @extend .govuk-body;
 }
 
+a:link {
+  @extend .govuk-link;
+}
+
 div,
 time,
 details {
   @include govuk-typography-common;
   font-size: 19px;
 }
+

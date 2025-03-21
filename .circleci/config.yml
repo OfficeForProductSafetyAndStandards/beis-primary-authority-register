@@ -68,6 +68,7 @@ references:
     run:
       name: "Install drupal scaffold files"
       command: |
+        composer install
         composer drupal:scaffold
 
   configure_webroot: &configure_webroot
@@ -86,15 +87,9 @@ references:
       name: "Import & set up the database"
       command: |
         cd web
-        ../vendor/bin/drush @par.dev sql:cli < ../backups/${SEED_DATABASE}.sql
+        ../vendor/bin/drush @par.dev sql:cli < ../backups/${SANITISED_DATABASE}.sql
         pg_restore --username= USERNAME --host=HOST --port= --clean --if-exists --no-owner --no-privileges --no-password
         ../drupal-update.sh
-
-  configure_secrets: &configure_secrets
-    run:
-      name: "Configure secrets"
-      command: |
-        ./devops/vault/vault-export.sh ci
 
   prepare_application: &prepare_application
     run:
@@ -121,8 +116,7 @@ references:
       name: "Make asset bundle"
       command: |
         cd /tmp/workspace
-        echo "{ \"build\" : \"${CIRCLE_BUILD_NUM}\", \"tag\":\"${CIRCLE_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt
-        echo "SENTRY_RELEASE=$CIRCLE_TAG" >> .env
+        echo "{ "build" : "${CIRCLE_BUILD_NUM}", "tag":"${CIRCLE_TAG}", "time":"$(date -u)"}" >> web/build_version.txt
         tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
 
   remove_assets: &remove_assets
@@ -134,7 +128,7 @@ references:
         rm -fr /tests
 
   workspace_root: &workspace_root
-    /tmp/workspace
+                    /tmp/workspace
 
   attach_workspace: &attach_workspace
     attach_workspace:
@@ -150,16 +144,6 @@ jobs:
           post:
             - git fetch --tags
       - run:
-          name: "Export environment variables"
-          command: |
-            echo "S3_REGION=$S3_REGION" >> .env
-            echo "S3_ACCESS_KEY=$S3_ACCESS_KEY" >> .env
-            echo "S3_SECRET_KEY=$S3_SECRET_KEY" >> .env
-            echo "S3_BUCKET_ARTIFACTS=$S3_BUCKET_ARTIFACTS" >> .env
-            echo "S3_BUCKET_PRIVATE=$S3_BUCKET_PRIVATE" >> .env
-            echo "S3_BUCKET_PUBLIC=$S3_BUCKET_PUBLIC" >> .env
-            echo "APP_ENV=$APP_ENV" >> .env
-      - run:
           name: "Database preparation"
           command: |
             mkdir -p backups
@@ -170,7 +154,7 @@ jobs:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SEED_DATABASE}-latest.tar.gz"
           to: backups/${SEED_DATABASE}-latest.tar.gz
       - run:
-          name: "Unpacking seed database"
+          name: "Unpack seed database"
           command: cd backups && tar --no-same-owner -zxvf ${SEED_DATABASE}-latest.tar.gz
       - aws-s3/copy:
           arguments: |
@@ -186,6 +170,7 @@ jobs:
             - .
 
   compile_code:
+    circleci_ip_ranges: true
     <<: *defaults
     steps:
       - *clean_working_directory
@@ -216,7 +201,6 @@ jobs:
             - ./web/themes/contrib
             - ./web/themes/custom
             - ./drush/contrib
-      - *configure_secrets
       - run:
           name: "Create workspace"
           command: |
@@ -279,6 +263,7 @@ jobs:
           destination: build
 
   test_load:
+    circleci_ip_ranges: true
     <<: *defaults
     steps:
       - *clean_working_directory
@@ -289,6 +274,7 @@ jobs:
       - *configure_webroot
       - *build_assets
       - *remove_assets
+
       - run:
           name: "Examine asset bundle."
           command: |
@@ -320,7 +306,7 @@ jobs:
                 -Jurl=beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital \
                 -l ./tests/reports/jmeter/jmeter-log.jtl
             /opt/apache-jmeter-5.5/bin/JMeterPluginsCMD.sh --generate-csv ./tests/reports/jmeter/aggregate-report.csv \
-                --input-jtl ./tests/reports/jmeter/jmeter-log.jtl  \
+                --input-jtl ./tests/reports/jmeter/jmeter-log.jtl \
                 --plugin-type AggregateReport
       - run:
           name: "Destroy the load testing environment."
@@ -334,7 +320,37 @@ jobs:
           path: /var/www/html/tests/reports
           destination: build
 
+  deploy_migration:
+    circleci_ip_ranges: true
+    <<: *defaults
+    steps:
+      - *clean_working_directory
+      - *attach_workspace
+      - *restore_code
+      - *restore_dependencies
+      - *restore_scaffold
+      - *configure_webroot
+      - *build_assets
+      - *remove_assets
+      - run:
+          name: "Examine asset bundle."
+          command: |
+            ls -lah /tmp/workspace
+      - *aws_setup
+      - aws-s3/copy:
+          from: /tmp/${CIRCLE_TAG}.tar.gz
+          to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
+          arguments: |
+            --cache-control "max-age=0"
+      - run:
+          name: "Deploy to migration environment"
+          command: |
+            DEPLOY_ENV="migration"
+            printf "$DEPLOY_ENV\n"
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
+
   deploy_stage:
+    circleci_ip_ranges: true
     <<: *defaults
     steps:
       - *clean_working_directory
@@ -360,9 +376,10 @@ jobs:
           command: |
             DEPLOY_ENV="staging"
             printf "$DEPLOY_ENV\n"
-            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SEED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
 
   deploy_prod:
+    circleci_ip_ranges: true
     <<: *defaults
     steps:
       - *clean_working_directory
@@ -387,7 +404,7 @@ jobs:
           command: |
             DEPLOY_ENV="production"
             printf "$DEPLOY_ENV\n"
-            ./devops/cf/push.local.sh -T $CIRCLE_TAG -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD -x -d /tmp/workspace -i 4 $DEPLOY_ENV
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -u $DEV_GOVUK_CF_USER -p $DEV_GOVUK_CF_PWD -d /tmp/workspace -i 4 $DEPLOY_ENV
 
   deploy_test:
     <<: *defaults
@@ -413,7 +430,7 @@ jobs:
           command: |
             DEPLOY_ENV=($(echo $CIRCLE_TAG | awk -F '-' '{print $1}'))
             printf "Deploying to test environment: https://beis-par-$DEPLOY_ENV.cloudapps.digital\n"
-            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SEED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
 
   archive_database:
     <<: *defaults
@@ -423,7 +440,7 @@ jobs:
       - run:
           name: "Backup production database"
           command: |
-            ./scripts/db-remote-backup.sh production -d "/tmp/backups" -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD
+            ./scripts/db-remote-backup.sh production -d "/tmp/backups" -u $DEV_GOVUK_CF_USER -p $DEV_GOVUK_CF_PWD
       - *aws_setup
       - run: # https://discuss.circleci.com/t/aws-s3-cp-errors-on-exclude-argument/50086
           name: "Backup database to S3"
@@ -455,51 +472,15 @@ jobs:
           environment:
             APP_ENV: ci-sanitise
       - run:
-          name: "Setup application"
-          command: ./drupal-update.sh
-          environment:
-            APP_ENV: ci-sanitise
-      - run:
-          name: "Run cron"
-          command: |
-            cd web
-            ../vendor/bin/drush cron
-          environment:
-            APP_ENV: ci-sanitise
-      - *check_application
-      - run:
-          name: "Un-install temporary data @temp"
-          command: |
-            cd web
-            ../vendor/bin/drush pm-uninstall par_data_test -y
-          environment:
-            APP_ENV: ci-sanitise
-      - run:
-          name: "Un-install dev only modules"
-          command: |
-            cd web
-            ../vendor/bin/drush pm-uninstall webprofiler -y
-            ../vendor/bin/drush pm-uninstall maillog -y
-            ../vendor/bin/drush pm-uninstall dblog -y
-          environment:
-            APP_ENV: ci-sanitise
-      - run:
           name: "Sanitise database"
           command: |
             cd web
-            ../vendor/bin/drush @par.paas sql:sanitize -y
+            ../vendor/bin/drush @par.paas sql:sanitize -y && ../vendor/bin/drush spp
           environment:
             APP_ENV: ci-sanitise
       - run:
           name: "Backup sanitised database"
           command: ./scripts/db-backup.sh production -s -d "/tmp/backups" -a '@par.dev'
-          environment:
-            APP_ENV: ci-sanitise
-      - run:
-          name: "Remove all user data"
-          command: |
-            cd web
-            ../vendor/bin/drush @par.dev devel-generate:users --kill 0
           environment:
             APP_ENV: ci-sanitise
       - run:
@@ -538,6 +519,23 @@ workflows:
           filters:
             tags:
               only: /^[a-zA-Z0-9]+.*/
+            branches:
+              ignore: /.*/
+      - hold_migration:
+          type: approval
+          requires:
+            - test_full
+          filters:
+            tags:
+              only: /^m.*/
+            branches:
+              ignore: /.*/
+      - deploy_migration:
+          requires:
+            - hold_migration
+          filters:
+            tags:
+              only: /^m.*/
             branches:
               ignore: /.*/
       - hold_stage:

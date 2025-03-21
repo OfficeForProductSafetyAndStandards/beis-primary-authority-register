@@ -2,6 +2,7 @@
 
 namespace Drupal\par_partnership_flows\Form;
 
+use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
@@ -59,30 +60,38 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
     /* @var ParDataPartnership $partnership */
     $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
-    // Creating the legal entity and validate it doesn't already exist.
-    $legal_entity = ParDataLegalEntity::create([
-      'registry' => $this->getFlowDataHandler()->getTempDataValue('registry'),
-      'registered_name' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_name'),
-      'legal_entity_type' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_type'),
-      'registered_number' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_number'),
-    ]);
+    // Get the entered registered number.
+    $registered_number = $this->getFlowDataHandler()->getTempDataValue('legal_entity_number');
+    if (strlen($registered_number) <= 8) {
+      // Creating the legal entity and validate it doesn't already exist.
+      $legal_entity = ParDataLegalEntity::create([
+        'registry' => $this->getFlowDataHandler()->getTempDataValue('registry'),
+        'registered_name' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_name'),
+        'legal_entity_type' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_type'),
+        'registered_number' => $registered_number,
+      ]);
 
-    // If this is an existing legal entity check that it is not already active on the partnership.
-    $partnership_legal_entities = $partnership->getPartnershipLegalEntities(TRUE);
-    if (!$legal_entity->isNew() && !empty($partnership_legal_entities)) {
-      // Set start and end dates for the period of the new PLE. If the partnership is
-      // not yet active the from_date is NULL, once it is active the from_date is today's date.
-      $start_date = $partnership->isActive() ? new DrupalDateTime('now') : NULL;
-      $end_date = NULL;
+      // If this is an existing legal entity check that it is not already active on the partnership.
+      $partnership_legal_entities = $partnership->getPartnershipLegalEntities(TRUE);
+      if (!$legal_entity->isNew() && !empty($partnership_legal_entities)) {
+        // Set start and end dates for the period of the new PLE. If the partnership is
+        // not yet active the from_date is NULL, once it is active the from_date is today's date.
+        $start_date = $partnership->isActive() ? new DrupalDateTime('now') : NULL;
+        $end_date = NULL;
 
-      foreach ($partnership_legal_entities as $partnership_legal_entity) {
-        if ($partnership_legal_entity->getLegalEntity()->id() === $legal_entity->id()
+        foreach ($partnership_legal_entities as $partnership_legal_entity) {
+          if ($partnership_legal_entity->getLegalEntity()->id() === $legal_entity->id()
             && $partnership_legal_entity->isActiveDuringPeriod($start_date, $end_date)) {
-          $id = $this->getElementId(['registered_number'], $form);
-          $form_state->setErrorByName($this->getElementName('registered_number'), $this->wrapErrorMessage('This legal entity is already an active participant in the partnership.', $id));
-          break;
+            $id = $this->getElementId(['registered_number'], $form);
+            $form_state->setErrorByName($this->getElementName('registered_number'), $this->wrapErrorMessage('This legal entity is already an active participant in the partnership.', $id));
+            break;
+          }
         }
       }
+    }
+    else {
+      $id = $this->getElementName(['legal_entity_number'], $form);
+      $form_state->setErrorByName($this->getElementName('legal_entity_number'), $this->wrapErrorMessage('The legal entity number can be no longer than 8 digits.', $id));
     }
   }
 
@@ -116,15 +125,37 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       }
     }
     else {
-      // Legal entity information may be altered by the registered organisation
-      // provider when saving the data.
-      $legal_entity = ParDataLegalEntity::create([
-        'registry' => $this->getFlowDataHandler()->getTempDataValue('registry'),
-        'registered_name' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_name'),
-        'legal_entity_type' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_type'),
-        'registered_number' => $this->getFlowDataHandler()->getTempDataValue('legal_entity_number'),
-      ]);
-      $legal_entity->save();
+      if ($form_state->getValue('registry') == 'ch_as_different_type') {
+        $legal_entity = ParDataLegalEntity::create([
+          'registry' => $this->getFlowDataHandler()->getTempDataValue('registry'),
+          'registered_name' => NestedArray::getValue($form_state->getValues(), [
+            'ch_as_different_type',
+            'legal_entity_name',
+          ]),
+          'legal_entity_type' => 'special_org',
+          'registered_number' => NestedArray::getValue(
+            $form_state->getValues(), [
+            'ch_as_different_type',
+            'legal_entity_number',
+          ]),
+        ]);
+        $legal_entity->save();
+      }
+      else {
+        // Legal entity information may be altered by the registered
+        // organisation provider when saving the data.
+        $legal_entity = ParDataLegalEntity::create([
+          'registry' => $this->getFlowDataHandler()
+            ->getTempDataValue('registry'),
+          'registered_name' => $this->getFlowDataHandler()
+            ->getTempDataValue('legal_entity_name'),
+          'legal_entity_type' => $this->getFlowDataHandler()
+            ->getTempDataValue('legal_entity_type'),
+          'registered_number' => $this->getFlowDataHandler()
+            ->getTempDataValue('legal_entity_number'),
+        ]);
+        $legal_entity->save();
+      }
 
       // Now add the legal entity to the partnership.
       /* @var ParDataPartnership $par_data_partnership */

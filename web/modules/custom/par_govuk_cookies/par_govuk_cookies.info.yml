@@ -1,0 +1,5 @@
+name: PAR GovUK Cookies
+type: module
+description: Adds cookie control.
+core_version_requirement: ^9 || ^10
+package: PAR
