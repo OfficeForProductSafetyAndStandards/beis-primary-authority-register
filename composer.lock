@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3320e5ecb74c02ddb52d90fc4bc55ba4",
+    "content-hash": "fa888f8a619cf217c7d47f59bb3d7da9",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -171,16 +171,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.342.9",
+            "version": "3.342.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "e6c89c32bfb4e4444b05edd05ef9852ae952dc45"
+                "reference": "93dc5f0852d9e67f237060814b8abc748c0e4be5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/e6c89c32bfb4e4444b05edd05ef9852ae952dc45",
-                "reference": "e6c89c32bfb4e4444b05edd05ef9852ae952dc45",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/93dc5f0852d9e67f237060814b8abc748c0e4be5",
+                "reference": "93dc5f0852d9e67f237060814b8abc748c0e4be5",
                 "shasum": ""
             },
             "require": {
@@ -262,9 +262,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.342.9"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.342.10"
             },
-            "time": "2025-03-19T18:50:34+00:00"
+            "time": "2025-03-20T18:27:12+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
@@ -3969,29 +3969,29 @@
         },
         {
             "name": "drupal/http_response_headers",
-            "version": "2.0.0-rc5",
+            "version": "3.0.9",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/http_response_headers.git",
-                "reference": "8.x-2.0-rc5"
+                "reference": "3.0.9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/http_response_headers-8.x-2.0-rc5.zip",
-                "reference": "8.x-2.0-rc5",
-                "shasum": "5ea317da8dbb8ea38273970033e3fe8363bf6a67"
+                "url": "https://ftp.drupal.org/files/projects/http_response_headers-3.0.9.zip",
+                "reference": "3.0.9",
+                "shasum": "d04f03d0f65ba451f3a828eefd324be2ff7c09d9"
             },
             "require": {
-                "drupal/core": "^9.3 || ^10 || ^11"
+                "drupal/core": "^9.5 || ^10 || ^11"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-2.0-rc5",
-                    "datestamp": "1711232797",
+                    "version": "3.0.9",
+                    "datestamp": "1722936897",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "RC releases are not covered by Drupal security advisories."
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },
@@ -7068,16 +7068,16 @@
         },
         {
             "name": "egulias/email-validator",
-            "version": "4.0.3",
+            "version": "4.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/egulias/EmailValidator.git",
-                "reference": "b115554301161fa21467629f1e1391c1936de517"
+                "reference": "d42c8731f0624ad6bdc8d3e5e9a4524f68801cfa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/b115554301161fa21467629f1e1391c1936de517",
-                "reference": "b115554301161fa21467629f1e1391c1936de517",
+                "url": "https://api.github.com/repos/egulias/EmailValidator/zipball/d42c8731f0624ad6bdc8d3e5e9a4524f68801cfa",
+                "reference": "d42c8731f0624ad6bdc8d3e5e9a4524f68801cfa",
                 "shasum": ""
             },
             "require": {
@@ -7123,7 +7123,7 @@
             ],
             "support": {
                 "issues": "https://github.com/egulias/EmailValidator/issues",
-                "source": "https://github.com/egulias/EmailValidator/tree/4.0.3"
+                "source": "https://github.com/egulias/EmailValidator/tree/4.0.4"
             },
             "funding": [
                 {
@@ -7131,7 +7131,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-12-27T00:36:43+00:00"
+            "time": "2025-03-06T22:45:56+00:00"
         },
         {
             "name": "ezimuel/guzzlestreams",
