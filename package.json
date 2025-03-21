@@ -25,7 +25,7 @@
     "install-govuk-theme": "cd web/themes/contrib/govuk_theme && npm install && node_modules/.bin/gulp build",
     "install-par-theme": "cd web/themes/custom/par_theme && npm install && node_modules/.bin/gulp build",
     "update-govuk-theme": "cd web/themes/contrib/govuk_theme && npm update && node_modules/.bin/gulp build",
-    "update-par-theme": "cd web/themes/contrib/par_theme && npm update && node_modules/.bin/gulp build",
+    "update-par-theme": "cd web/themes/custom/par_theme && npm update && node_modules/.bin/gulp build",
     "update-frontend": "npm update && npm run update-govuk-theme && npm run install-par-theme",
     "frontend": "npm i && npm run install-govuk-theme && npm run install-par-theme"
   }
