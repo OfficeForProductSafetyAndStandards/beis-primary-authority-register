@@ -2,15 +2,15 @@
 
 namespace Drupal\par_manage_subscription_list_flows\Routing;
 
-use Drupal\par_manage_subscription_list_flows\Form\ParSubscriptionManageForm;
-use Drupal\par_manage_subscription_list_flows\Form\ParSubscriptionReviewForm;
 use Drupal\Component\Utility\Html;
-use Drupal\par_subscriptions\ParSubscriptionManagerInterface;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouteCollection;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\par_manage_subscription_list_flows\Form\ParSubscriptionManageForm;
+use Drupal\par_manage_subscription_list_flows\Form\ParSubscriptionReviewForm;
+use Drupal\par_subscriptions\ParSubscriptionManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Routing\Route;
+use Symfony\Component\Routing\RouteCollection;
 
 /**
  * Defines dynamic routes.
@@ -22,9 +22,9 @@ class ParSubscriptionManagementRoutes implements ContainerInjectionInterface {
   /**
    * Constructs a ParDataPermissions instance.
    */
-  public function __construct(ParSubscriptionManagerInterface $par_subscriptions_manager) {
-    $this->subscriptionManager = $par_subscriptions_manager;
-  }
+  public function __construct(
+    protected ParSubscriptionManagerInterface $subscriptionManager,
+  ) {}
 
   /**
    * {@inheritdoc}
@@ -38,28 +38,19 @@ class ParSubscriptionManagementRoutes implements ContainerInjectionInterface {
    * Dynamic getter for the messenger service.
    *
    * @return \Drupal\par_subscriptions\ParSubscriptionManagerInterface
+   *   The PAR Subscription Manager service.
    */
   private function getSubscriptionManager() {
     return $this->subscriptionManager ?? \Drupal::service('par_subscriptions.manager');
   }
 
   /**
-   * {@inheritdoc}
-   *
-   * new Route()...
-   * @param string       $path         The path pattern to match
-   * @param array        $defaults     An array of default parameter values
-   * @param array        $requirements An array of requirements for parameters (regexes)
-   * @param array        $options      An array of options
-   * @param string       $host         The host pattern to match
-   * @param string|array $schemes      A required URI scheme or an array of restricted schemes
-   * @param string|array $methods      A required HTTP method or an array of restricted methods
-   * @param string       $condition    A condition that should evaluate to true for the route to match
+   * New Route()...
    */
   public function routes() {
     $route_collection = new RouteCollection();
 
-    foreach($this->getSubscriptionManager()->getLists() as $list) {
+    foreach ($this->getSubscriptionManager()->getLists() as $list) {
       $list_slug = Html::getClass($list);
 
       // Manage a list in bulk.
