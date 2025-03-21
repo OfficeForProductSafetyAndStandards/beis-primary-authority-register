@@ -109,7 +109,7 @@
         "drupal/views_bulk_operations": "^4.2",
         "drupal/views_contextual_filters_or": "~1.5.0",
         "drupal/views_data_export": "^1.5",
-        "drupal/xmlsitemap": "~1.5.0",
+        "drupal/xmlsitemap": "~2.0",
         "drush/drush": "^13.0",
         "predis/predis": "~2.2.2",
         "rapidwebltd/php-uk-bank-holidays": "~5.0.0",
