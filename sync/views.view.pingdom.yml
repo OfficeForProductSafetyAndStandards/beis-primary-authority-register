@@ -234,7 +234,7 @@ display:
         type: serializer
         options:
           formats:
-            json: json
+            xml: xml
       row:
         type: data_field
         options:
@@ -243,7 +243,7 @@ display:
               alias: ''
               raw_output: false
       display_extenders: {  }
-      path: pingdom/ping
+      path: pingdom/ping.xml
     cache_metadata:
       max-age: -1
       contexts:
