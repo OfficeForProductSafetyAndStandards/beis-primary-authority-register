@@ -58,7 +58,7 @@
         "drupal/email_registration": "^2.0@RC",
         "drupal/features": "~3.14.0",
         "drupal/flood_control": "^3.0",
-        "drupal/flysystem": "2.1.0-rc6",
+        "drupal/flysystem": "2.2.0-beta2",
         "drupal/flysystem_s3": "~2.1.0",
         "drupal/google_tag": "^2.0",
         "drupal/govuk_notify": "^3.1",
@@ -190,9 +190,7 @@
                 "Identifiers longer than 63 characters are truncated, causing Views to break on Postgres - https://www.drupal.org/project/drupal/issues/571548": "https://www.drupal.org/files/issues/2025-01-16/drupal-postgres_identifiers_10_4-571548-207.patch"
             },
             "drupal/flysystem": {
-                "Add drush commands for getting and putting files - https://www.drupal.org/project/flysystem/issues/3192777": "https://www.drupal.org/files/issues/2023-08-31/3192777-4-added_drush_commands.patch",
-                "Support new lazy asset collection optimizers": "https://git.drupalcode.org/project/flysystem/-/merge_requests/26.diff",
-                "Remove $state in CollectionOptimizerLazy asset handlers": "https://git.drupalcode.org/project/flysystem/-/merge_requests/46.diff"
+                "Add drush commands for getting and putting files - https://www.drupal.org/project/flysystem/issues/3192777": "https://www.drupal.org/files/issues/2023-08-31/3192777-4-added_drush_commands.patch"
             },
             "drupal/govuk_notify": {
                 "Message body formatting array to string": "https://www.drupal.org/files/issues/2021-08-11/3227617-2-govuk-notify-message-body-formatting.diff"
