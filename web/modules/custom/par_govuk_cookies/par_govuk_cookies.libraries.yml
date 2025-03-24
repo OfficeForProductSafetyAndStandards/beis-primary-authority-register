@@ -3,4 +3,3 @@ par_govuk_cookies:
     js/par_govuk_cookies.js: {}
   dependencies:
     - core/drupal
-    - js_cookie/js-cookie
