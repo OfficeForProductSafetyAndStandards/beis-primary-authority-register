@@ -25,6 +25,7 @@ class ParMessageDetail extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $messages = $this->getFlowDataHandler()->getParameter('comments');
 
@@ -68,6 +69,7 @@ class ParMessageDetail extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // Return path for all redirect links.
     $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
@@ -97,7 +99,7 @@ class ParMessageDetail extends ParFormPluginBase {
           ]),
         ];
       }
-      catch (ParFlowException $e) {
+      catch (ParFlowException) {
 
       }
     }
@@ -133,6 +135,7 @@ class ParMessageDetail extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
@@ -140,6 +143,7 @@ class ParMessageDetail extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }

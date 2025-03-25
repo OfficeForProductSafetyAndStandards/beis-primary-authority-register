@@ -23,6 +23,7 @@ class ParContactForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     $cid_person_select = $this->getFlowNegotiator()->getFormKey('par_choose_person');
     $person = $this->getFlowDataHandler()->getDefaultValues('user_person', '', $cid_person_select);
@@ -36,21 +37,14 @@ class ParContactForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    switch ($this->getFlowDataHandler()->getParameter('type')) {
-      case 'authority':
-        $contacts = $par_data_partnership->getAuthorityPeople();
-        break;
-
-      case 'organisation':
-        $contacts = $par_data_partnership->getOrganisationPeople();
-        break;
-
-      default:
-        $contacts = [];
-
-    }
+    $contacts = match ($this->getFlowDataHandler()->getParameter('type')) {
+        'authority' => $par_data_partnership->getAuthorityPeople(),
+        'organisation' => $par_data_partnership->getOrganisationPeople(),
+        default => [],
+    };
 
     foreach ($contacts as $contact) {
       if (!empty($form_state->getValue('email'))

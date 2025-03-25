@@ -20,6 +20,7 @@ class ViewMessages extends FilterPluginBase {
 
   use UncacheableDependencyTrait;
 
+  #[\Override]
   public function query() {
     $entity_type_manager = \Drupal::entityTypeManager();
     /** @var \Drupal\Core\Entity\EntityFieldManagerInterface $entity_field_manager */
@@ -69,9 +70,7 @@ class ViewMessages extends FilterPluginBase {
     $message_templates = $entity_type_manager
       ->getStorage('message_template')
       ->getQuery()->accessCheck()->execute();
-    $message_templates = array_filter($message_templates, function($template) use ($account) {
-      return $account->hasPermission("receive {$template} notification");
-    });
+    $message_templates = array_filter($message_templates, fn($template) => $account->hasPermission("receive {$template} notification"));
 
     // Filter out the message templates that don't require subscription.
     $subscription_templates = array_filter($message_templates,
@@ -122,15 +121,11 @@ class ViewMessages extends FilterPluginBase {
       $membership_condition = $this->view->query->getConnection()->condition('OR');
 
       if (!empty($user_authorities)) {
-        $user_authority_ids = array_values(array_map(function($authorities) {
-          return (int) $authorities->id();
-        }, $user_authorities));
+        $user_authority_ids = array_values(array_map(fn($authorities) => (int) $authorities->id(), $user_authorities));
         $membership_condition->condition($field_aliases['field_target_authority'], $user_authority_ids, 'IN');
       }
       if (!empty($user_organisations)) {
-        $user_organisation_ids = array_values(array_map(function($organisations) {
-          return (int) $organisations->id();
-        }, $user_organisations));
+        $user_organisation_ids = array_values(array_map(fn($organisations) => (int) $organisations->id(), $user_organisations));
         $membership_condition->condition($field_aliases['field_target_organisation'], $user_organisation_ids, 'IN');
       }
 

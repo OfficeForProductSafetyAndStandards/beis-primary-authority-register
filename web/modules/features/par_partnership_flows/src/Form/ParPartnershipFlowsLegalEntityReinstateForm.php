@@ -26,6 +26,7 @@ class ParPartnershipFlowsLegalEntityReInstateForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
 
     $this->pageTitle = 'Update Partnership Information | Reinstate a legal entity for your organisation';
@@ -41,6 +42,7 @@ class ParPartnershipFlowsLegalEntityReInstateForm extends ParBaseForm {
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
    */
+  #[\Override]
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, ParDataPartnershipLegalEntity $par_data_partnership_le = NULL): AccessResult {
 
     // Limit access to partnership pages.
@@ -65,6 +67,7 @@ class ParPartnershipFlowsLegalEntityReInstateForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPartnershipLegalEntity $par_data_partnership_le = NULL) {
 
     $par_data_legal_entity = $par_data_partnership_le->getLegalEntity();
@@ -126,6 +129,7 @@ class ParPartnershipFlowsLegalEntityReInstateForm extends ParBaseForm {
   /**
    * Validate the form to make sure the correct values have been entered.
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
@@ -142,6 +146,7 @@ class ParPartnershipFlowsLegalEntityReInstateForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

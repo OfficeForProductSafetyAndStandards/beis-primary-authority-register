@@ -40,6 +40,7 @@ class ParUnsubscribeForm extends FormBase  {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('par_subscriptions.manager'),
@@ -59,6 +60,7 @@ class ParUnsubscribeForm extends FormBase  {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getFormId() {
     return 'subscription_list_unsubscribe';
   }
@@ -75,6 +77,7 @@ class ParUnsubscribeForm extends FormBase  {
    *
    * {@inheritDoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, $list = NULL, $subscription_code = NULL) {
     $subscription = $this->getSubscriptionManager()->getSubscription($subscription_code);
     if ($subscription instanceof ParSubscriptionInterface) {
@@ -127,6 +130,7 @@ class ParUnsubscribeForm extends FormBase  {
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
@@ -152,6 +156,7 @@ class ParUnsubscribeForm extends FormBase  {
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Register flood protection.
     $fid = implode(':', [$this->getRequest()->getClientIP(), $this->currentUser()->id()]);

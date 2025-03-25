@@ -40,6 +40,7 @@ class ParMessageAccessControlHandler extends EntityAccessControlHandler implemen
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function createInstance(ContainerInterface $container, EntityTypeInterface $entity_type) {
     return new static(
       $entity_type,
@@ -119,6 +120,7 @@ class ParMessageAccessControlHandler extends EntityAccessControlHandler implemen
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {
     /** @var \Drupal\message\MessageInterface $entity */
     if ($operation != 'view') {
@@ -184,14 +186,10 @@ class ParMessageAccessControlHandler extends EntityAccessControlHandler implemen
 
     // Get all the roles that have permission to receive this notification type.
     /** @var RoleInterface[] $notification_roles */
-    $notification_roles = array_filter($all_roles, function ($role) use ($permission) {
-      return ($role->hasPermission($permission));
-    });
+    $notification_roles = array_filter($all_roles, fn($role) => $role->hasPermission($permission));
 
     // Get the intersection between the user's roles and the notifications roles.
-    return array_uintersect($notification_roles, $user_roles, function ($a, $b) {
-      return $a->id() <=> $b->id();
-    });
+    return array_uintersect($notification_roles, $user_roles, fn($a, $b) => $a->id() <=> $b->id());
   }
 
 }

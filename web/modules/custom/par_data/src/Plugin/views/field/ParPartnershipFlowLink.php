@@ -36,6 +36,7 @@ class ParPartnershipFlowLink extends FieldPluginBase {
   /**
    * @{inheritdoc}
    */
+  #[\Override]
   public function query() {
     // Leave empty to avoid a query on this field.
   }
@@ -43,6 +44,7 @@ class ParPartnershipFlowLink extends FieldPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function defineOptions() {
     $options = parent::defineOptions();
 
@@ -55,6 +57,7 @@ class ParPartnershipFlowLink extends FieldPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);
 
@@ -76,6 +79,7 @@ class ParPartnershipFlowLink extends FieldPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function render(ResultRow $values) {
     $entity = $values->_entity;
 

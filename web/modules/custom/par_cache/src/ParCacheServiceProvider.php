@@ -11,6 +11,7 @@ class ParCacheServiceProvider extends ServiceProviderBase {
   /**
   * {@inheritdoc}
   */
+  #[\Override]
   public function register(ContainerBuilder $container) {
     $container->addCompilerPass(new ParCacheCompilerPass());
   }

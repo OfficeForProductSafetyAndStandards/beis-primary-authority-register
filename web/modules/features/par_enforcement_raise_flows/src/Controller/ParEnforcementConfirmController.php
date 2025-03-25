@@ -21,6 +21,7 @@ class ParEnforcementConfirmController extends ParBaseController {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function build($build = [], ParDataPartnership $par_data_partnership = NULL) {
 
     // Display the help contact fo this partnership.

@@ -25,6 +25,7 @@ class ParEnforcementRemovalConfirmForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
     $this->getFlowDataHandler()->setFormPermValue('enforcement_name', $par_data_enforcement_notice->label());
@@ -39,6 +40,7 @@ class ParEnforcementRemovalConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     $enforcement_name = $this->getFlowDataHandler()->getFormPermValue('enforcement_name');
     $action_labels = $this->getFlowDataHandler()->getFormPermValue('actions_names');
@@ -73,6 +75,7 @@ class ParEnforcementRemovalConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

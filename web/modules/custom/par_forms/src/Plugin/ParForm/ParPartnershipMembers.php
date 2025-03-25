@@ -35,6 +35,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
@@ -75,6 +76,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // This form should only be displayed for coordinated partnerships.
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
@@ -120,7 +122,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
     if ($this->getFlowDataHandler()->getFormPermValue("member_display_format") === self::MEMBER_FORMAT_VIEW) {
       try {
         $member_link = $this->getLinkByRoute('view.members_list.member_list_coordinator', [], [], TRUE);
-      } catch (ParFlowException $e) {
+      } catch (ParFlowException) {
 
       }
       if (isset($member_link) && $member_link instanceof Link) {
@@ -204,7 +206,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
         $member_upload_flow = ParFlow::load('member_upload');
         $upload_member_link = $member_upload_flow ?
           $member_upload_flow->getStartLink(1, 'upload a member list (csv)') : NULL;
-      } catch (ParFlowException $e) {
+      } catch (ParFlowException) {
 
       }
       if (isset($upload_member_link) && $upload_member_link instanceof Link) {
@@ -264,7 +266,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
       $list_update_flow = ParFlow::load('member_list_update');
       $list_update_link = $list_update_flow ?
         $list_update_flow->getStartLink(1, $link_title) : NULL;
-    } catch (ParFlowException $e) {
+    } catch (ParFlowException) {
 
     }
     if (isset($list_update_link) && $list_update_link instanceof Link) {
@@ -282,6 +284,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
@@ -289,6 +292,7 @@ class ParPartnershipMembers extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }

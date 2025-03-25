@@ -23,6 +23,7 @@ class ParContactDedupeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     parent::loadData();
   }

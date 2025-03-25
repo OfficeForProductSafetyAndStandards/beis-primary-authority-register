@@ -36,6 +36,7 @@ class ParPartnershipFlowsArchiveConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     return 'Are you sure you want to archive this advice?';
   }
@@ -51,6 +52,7 @@ class ParPartnershipFlowsArchiveConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
     $par_data_advice_title = $par_data_advice->getAdviceTitle();
@@ -92,6 +94,7 @@ class ParPartnershipFlowsArchiveConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
@@ -100,6 +103,7 @@ class ParPartnershipFlowsArchiveConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

@@ -42,6 +42,7 @@ class ParAccountLink extends MenuLinkDefault {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
       $configuration,
@@ -55,6 +56,7 @@ class ParAccountLink extends MenuLinkDefault {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getTitle() {
     if ($this->currentUser->isAuthenticated()) {
       return "Dashboard ({$this->currentUser->getEmail()})";
@@ -66,6 +68,7 @@ class ParAccountLink extends MenuLinkDefault {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getRouteName() {
     if ($this->currentUser->hasPermission('access helpdesk')) {
       return 'par_help_desks_flows.helpdesk_dashboard';
@@ -80,6 +83,7 @@ class ParAccountLink extends MenuLinkDefault {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getCacheContexts() {
     return ['user.roles:authenticated'];
   }

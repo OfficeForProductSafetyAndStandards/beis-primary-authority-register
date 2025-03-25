@@ -30,6 +30,7 @@ class ParMemberDetailsForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     $par_data_coordinated_business = $this->getFlowDataHandler()->getParameter('par_data_coordinated_business');
     if ($par_data_coordinated_business) {
@@ -41,6 +42,7 @@ class ParMemberDetailsForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $form['partnership_id'] = [
       '#type' => 'hidden',

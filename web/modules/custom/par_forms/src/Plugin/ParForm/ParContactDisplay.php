@@ -53,6 +53,7 @@ class ParContactDisplay extends ParFormPluginBase {
   /**
    * Alter the number of items being displayed.
    */
+  #[\Override]
   public function countItems($data = NULL): int {
     if ($contacts = $this->getContacts()) {
       return count($contacts);
@@ -65,6 +66,7 @@ class ParContactDisplay extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $contacts = $this->getContacts();
 
@@ -91,6 +93,7 @@ class ParContactDisplay extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     if ($index === 1) {
       $form['message_intro'] = [
@@ -120,7 +123,7 @@ class ParContactDisplay extends ParFormPluginBase {
         $actions = t('@link', [
           '@link' => $link ? $link->toString() : '',
         ]);
-      } catch (ParFlowException $e) {
+      } catch (ParFlowException) {
 
       }
 
@@ -137,7 +140,7 @@ class ParContactDisplay extends ParFormPluginBase {
         'actions' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => isset($actions) ? $actions : 'Update contact details',
+          '#value' => $actions ?? 'Update contact details',
           '#attributes' => ['class' => ['govuk-grid-column-one-third']],
         ],
         'email' => [
@@ -193,6 +196,7 @@ class ParContactDisplay extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
@@ -200,6 +204,7 @@ class ParContactDisplay extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }

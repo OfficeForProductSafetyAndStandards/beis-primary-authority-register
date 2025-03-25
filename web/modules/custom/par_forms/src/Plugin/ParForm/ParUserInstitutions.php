@@ -39,6 +39,7 @@ class ParUserInstitutions extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $user = $this->getFlowDataHandler()->getParameter('user');
     $cache_tags = [];
@@ -62,6 +63,7 @@ class ParUserInstitutions extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $cache_tags = $this->getFlowDataHandler()->getDefaultValues('cache_tags', []);
 
@@ -135,7 +137,7 @@ class ParUserInstitutions extends ParFormPluginBase {
           ];
         }
       }
-      catch (ParFlowException $e) {
+      catch (ParFlowException) {
 
       }
     }
@@ -155,7 +157,7 @@ class ParUserInstitutions extends ParFormPluginBase {
         ];
       }
     }
-    catch (ParFlowException $e) {
+    catch (ParFlowException) {
 
     }
 
@@ -165,6 +167,7 @@ class ParUserInstitutions extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
@@ -172,6 +175,7 @@ class ParUserInstitutions extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }

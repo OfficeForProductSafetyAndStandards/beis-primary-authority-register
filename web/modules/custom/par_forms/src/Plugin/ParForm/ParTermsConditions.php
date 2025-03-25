@@ -33,6 +33,7 @@ class ParTermsConditions extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $available_formats = [self::AUTHORITY_TERMS, self::ORGANISATION_TERMS];
     $checkbox = isset($this->getConfiguration()['terms']) && array_search($this->getConfiguration()['terms'], $available_formats) !== FALSE
@@ -45,6 +46,7 @@ class ParTermsConditions extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
 
     switch ($this->getFlowDataHandler()->getDefaultValues("terms")) {
@@ -100,6 +102,7 @@ class ParTermsConditions extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
@@ -107,6 +110,7 @@ class ParTermsConditions extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }

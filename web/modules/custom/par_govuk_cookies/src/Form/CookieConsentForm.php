@@ -33,6 +33,7 @@ class CookieConsentForm extends FormBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('flood'),
@@ -45,6 +46,7 @@ class CookieConsentForm extends FormBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getFormId() {
     return 'cookie_consent_policy';
   }
@@ -66,6 +68,7 @@ class CookieConsentForm extends FormBase {
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, $list = NULL, $subscription_status = NULL) {
     $request = $this->requestStack->getCurrentRequest();
     $cookie_name = $this->getCookieName();
@@ -98,7 +101,7 @@ class CookieConsentForm extends FormBase {
           '#type' => 'checkbox',
           '#title' => "Essential cookies",
           '#options' => 'true',
-          '#attributes' => array('checked' => 'checked'),
+          '#attributes' => ['checked' => 'checked'],
           '#disabled' => TRUE,
           '#wrapper_attributes' => [
             'class' => [
@@ -128,6 +131,7 @@ class CookieConsentForm extends FormBase {
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
@@ -146,6 +150,7 @@ class CookieConsentForm extends FormBase {
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Register flood protection.
     $fid = implode(':', [$this->getRequest()->getClientIP(), $this->currentUser()->id()]);
@@ -169,17 +174,7 @@ class CookieConsentForm extends FormBase {
       new RedirectResponse($this->getRequest()->getUri());
 
     // Set the new cookie policy.
-    $response->headers->setCookie(new Cookie(
-      $this->getCookieName(),
-      Json::encode($cookie_policy),
-      \Drupal::time()->getRequestTime() + 31536000,
-      '/',
-      "",
-      false,
-      false,
-      true,
-      'strict',
-    ));
+    $response->headers->setCookie(Cookie::create($this->getCookieName(), Json::encode($cookie_policy), \Drupal::time()->getRequestTime() + 31536000, '/', "", false, false, true, 'strict'));
 
     $this->messenger()->addMessage($this->t('Your cookie preferences have been updated.'));
     $form_state->setResponse($response);

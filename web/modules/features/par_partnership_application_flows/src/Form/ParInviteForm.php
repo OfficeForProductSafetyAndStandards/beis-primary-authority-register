@@ -26,6 +26,7 @@ class ParInviteForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     // The invitation type must be set first.
     $this->getFlowDataHandler()->setFormPermValue('invitation_type', $this->invite_type);

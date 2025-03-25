@@ -3,6 +3,7 @@
 namespace Drupal\par_reporting;
 
 
+use Drupal\par_reporting\Annotation\ParStatistic;
 use Drupal\Component\Plugin\Exception\PluginException;
 use Drupal\Component\Plugin\Factory\DefaultFactory;
 use Drupal\Core\Cache\CacheBackendInterface;
@@ -53,6 +54,7 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
    *
    * @see \Drupal\Core\Security\DoTrustedCallbackTrait::doTrustedCallback()
    */
+  #[\Override]
   public static function trustedCallbacks() {
     return ['render'];
   }
@@ -101,8 +103,8 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
       'Plugin/ParStatistic',
       $namespaces,
       $module_handler,
-      'Drupal\par_reporting\ParStatisticInterface',
-      'Drupal\par_reporting\Annotation\ParStatistic'
+      ParStatisticInterface::class,
+      ParStatistic::class
     );
 
     $this->alterInfo('par_statistic_info');
@@ -113,6 +115,7 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function processDefinition(&$definition, $plugin_id) {
     parent::processDefinition($definition, $plugin_id);
 
@@ -127,6 +130,7 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
    *
    * @return \Drupal\par_reporting\ParStatisticInterface
    */
+  #[\Override]
   public function createInstance($plugin_id, array $configuration = []) {
     if (!isset($this->stats[$plugin_id])) {
       $this->stats[$plugin_id] = parent::createInstance($plugin_id, $configuration);
@@ -138,6 +142,7 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
   /**
    * Get only the enabled rules.
    */
+  #[\Override]
   public function getDefinitions($only_active = FALSE) {
     $definitions = [];
     foreach (parent::getDefinitions() as $id => $definition) {
@@ -152,6 +157,7 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function render(string $id): ?array {
     try {
       $definition = $this->getDefinition($id);
@@ -169,6 +175,7 @@ class ParReportingManager extends DefaultPluginManager implements ParReportingMa
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function get(string $id): int {
     $cid = "par_reporting:stat:$id";
     $cache = $this->getCacheBin()->get($cid);

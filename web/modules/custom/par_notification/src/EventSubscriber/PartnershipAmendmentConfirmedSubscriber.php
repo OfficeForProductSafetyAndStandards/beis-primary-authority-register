@@ -2,15 +2,10 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
-use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Entity\EntityEvent;
-use Drupal\Core\Entity\EntityEvents;
-use Drupal\message\Entity\Message;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
-use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParEventSubscriberBase;
 
 class PartnershipAmendmentConfirmedSubscriber extends ParEventSubscriberBase {
@@ -27,9 +22,13 @@ class PartnershipAmendmentConfirmedSubscriber extends ParEventSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  #[\Override]
+  static function getSubscribedEvents(): array {
+    $events = [];
     // Confirmation event should fire after a partnership has been confirmed.
-    $events[ParDataEvent::customAction('par_data_partnership', 'amendment_confirmed')][] = ['onEvent', -101];
+    if (class_exists(ParDataEvent::class)) {
+      $events[ParDataEvent::customAction('par_data_partnership', 'amendment_confirmed')][] = ['onEvent', -101];
+    }
 
     return $events;
   }
@@ -46,9 +45,7 @@ class PartnershipAmendmentConfirmedSubscriber extends ParEventSubscriberBase {
 
     $partnership_legal_entities = $entity->getPartnershipLegalEntities();
     // Get only the partnership legal entities that are awaiting nomination.
-    $partnership_legal_entities = array_filter($partnership_legal_entities, function ($partnership_legal_entity) {
-      return $partnership_legal_entity->getRawStatus() === 'confirmed_business';
-    });
+    $partnership_legal_entities = array_filter($partnership_legal_entities, fn($partnership_legal_entity) => $partnership_legal_entity->getRawStatus() === 'confirmed_business');
 
     // Only send the notification if there are legal entities awaiting confirmation.
     if ($entity instanceof ParDataPartnership &&

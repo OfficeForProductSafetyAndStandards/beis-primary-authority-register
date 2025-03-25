@@ -28,8 +28,9 @@ class ParRequired extends Constraint {
    * @return string
    *   The full class name for the constraint validator.
    */
-  public function validatedBy() {
-    return get_class($this) . 'Validator';
+  #[\Override]
+  public function validatedBy(): string {
+    return static::class . 'Validator';
   }
 
 }

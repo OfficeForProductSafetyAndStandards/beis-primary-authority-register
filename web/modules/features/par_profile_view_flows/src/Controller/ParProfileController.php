@@ -34,12 +34,13 @@ class ParProfileController extends ParBaseController {
   /**
    * Title callback default.
    */
+  #[\Override]
   public function titleCallback() {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
     $name = $par_data_person?->getFullName();
 
     if (!empty($name)) {
-      $this->pageTitle = ucfirst($name);
+      $this->pageTitle = ucfirst((string) $name);
     }
     else {
       $this->pageTitle = 'Profile';
@@ -51,6 +52,7 @@ class ParProfileController extends ParBaseController {
   /**
    * Load data.
    */
+  #[\Override]
   public function loadData() {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
     $user = $par_data_person?->lookupUserAccount();

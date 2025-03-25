@@ -68,30 +68,24 @@ class ParRoleManager implements ParRoleManagerInterface {
   ];
 
   /**
-   * The EntityTypeManager service.
-   *
-   * @var EntityTypeManagerInterface
-   */
-  protected EntityTypeManagerInterface $entityTypeManager;
-
-  /**
-   * The current user.
-   *
-   * @var AccountProxyInterface
-   */
-  protected AccountProxyInterface $currentUser;
-
-  /**
    * Constructs a ParRoleManager instance.
    *
-   * @param EntityTypeManagerInterface $entity_type_manager
+   * @param EntityTypeManagerInterface $entityTypeManager
    *   The entity type manager.
-   * @param AccountProxyInterface $current_user
+   * @param AccountProxyInterface $currentUser
    *   The current user
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, AccountProxyInterface $current_user) {
-    $this->entityTypeManager = $entity_type_manager;
-    $this->currentUser = $current_user;
+  public function __construct(
+      /**
+       * The EntityTypeManager service.
+       */
+      protected EntityTypeManagerInterface $entityTypeManager,
+      /**
+       * The current user.
+       */
+      protected AccountProxyInterface $currentUser
+  )
+  {
   }
 
   /**
@@ -123,9 +117,7 @@ class ParRoleManager implements ParRoleManagerInterface {
 
     // If the user has the bypass membership permission they can assign all roles.
     if (!$this->getCurrentUser()->hasPermission('bypass par_data membership')) {
-      $roles = array_filter($roles, function($role) use ($current_user) {
-        return $current_user->hasPermission("assign {$role} role");
-      });
+      $roles = array_filter($roles, fn($role) => $current_user->hasPermission("assign {$role} role"));
     }
 
     return $roles;
@@ -138,6 +130,7 @@ class ParRoleManager implements ParRoleManagerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getRoles(UserInterface $account): array {
     return $account->getRoles();
   }
@@ -145,6 +138,7 @@ class ParRoleManager implements ParRoleManagerInterface {
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function displayRoles(UserInterface $account): array {
     $roles = Role::loadMultiple($account->getRoles(TRUE));
     $labels = [];
@@ -159,6 +153,7 @@ class ParRoleManager implements ParRoleManagerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getPeople(UserInterface $account): array {
     // Cache this function per request.
     $function_id = __FUNCTION__ . $account->get('mail')->getString();
@@ -189,6 +184,7 @@ class ParRoleManager implements ParRoleManagerInterface {
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function getAccount(ParDataPersonInterface $person): ?UserInterface {
     return $person->lookupUserAccount();
   }
@@ -196,6 +192,7 @@ class ParRoleManager implements ParRoleManagerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getInstitutions(UserInterface $account, $institution_type = NULL): Generator {
     foreach ($this->getPeople($account) as $person) {
       foreach ($person->getInstitutions() as $institution) {
@@ -217,6 +214,7 @@ class ParRoleManager implements ParRoleManagerInterface {
    *
    * @return bool
    */
+  #[\Override]
   public function hasInstitutions(UserInterface $account, $institution_type = NULL): bool {
     $institutions = $this->getInstitutions($account, $institution_type);
     return (bool) $institutions->current();
@@ -225,6 +223,7 @@ class ParRoleManager implements ParRoleManagerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function autoAssignRoles(UserInterface $account): UserInterface {
     // Clone the institution roles for manipulation.
     $roles = self::INSTITUTION_ROLES;
@@ -271,6 +270,7 @@ class ParRoleManager implements ParRoleManagerInterface {
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function blockable($account, $warning = FALSE): bool {
     // Ensure the account is cloned to not affect the actual user account object.
     $user = clone $account;
@@ -299,6 +299,7 @@ class ParRoleManager implements ParRoleManagerInterface {
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function addRole(UserInterface $account, string $role): UserInterface {
     if ($this->validateAccount($account)) {
       // Check that the role can be assigned to this user.
@@ -332,6 +333,7 @@ class ParRoleManager implements ParRoleManagerInterface {
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function removeRole(UserInterface $account, string $role): UserInterface {
     // Check that the role can be removed.
     if ($this->validateAccount($account)) {
@@ -349,6 +351,7 @@ class ParRoleManager implements ParRoleManagerInterface {
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function canManageRole(string $role): bool {
     // Confirm that the current user has permission to assign the role.
     $permission = sprintf('assign %s role', $role);
@@ -358,6 +361,7 @@ class ParRoleManager implements ParRoleManagerInterface {
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function addMember(ParDataMembershipInterface $institution, ParDataPersonInterface $member): ParDataMembershipInterface {
     // Check whether the member can be added.
     if (!$institution->hasPerson($member)) {
@@ -376,6 +380,7 @@ class ParRoleManager implements ParRoleManagerInterface {
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function removeMember(ParDataMembershipInterface $institution, ParDataPersonInterface $member): ParDataMembershipInterface {
     // Check whether the member can be removed.
     if ($institution->hasPerson($member)) {
@@ -389,6 +394,7 @@ class ParRoleManager implements ParRoleManagerInterface {
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function removeUserMembership(ParDataMembershipInterface $institution, UserInterface $account): ParDataMembershipInterface {
     foreach ($this->getPeople($account) as $person) {
       // Confirm they are a member before removing.
@@ -594,9 +600,7 @@ class ParRoleManager implements ParRoleManagerInterface {
    *   All user accounts that are colleagues.
    */
   protected function getColleagues(ParDataMembershipInterface $institution, UserInterface $account): array {
-    return array_filter($institution->getMembers(), function($member) use ($account) {
-      return $member->id() !== $account->id();
-    });
+    return array_filter($institution->getMembers(), fn($member) => $member->id() !== $account->id());
   }
 
   /**
@@ -652,7 +656,7 @@ class ParRoleManager implements ParRoleManagerInterface {
     }
 
     // Do not run validation checks for test accounts through the cli.
-    if (PHP_SAPI === 'cli' && preg_match('/@example.com$/', $account->getEmail()) === 1) {
+    if (PHP_SAPI === 'cli' && preg_match('/@example.com$/', (string) $account->getEmail()) === 1) {
       return FALSE;
     }
 

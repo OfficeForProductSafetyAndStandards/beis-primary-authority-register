@@ -29,6 +29,7 @@ class ParLinkContact extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $cid_contact_details = $this->getFlowNegotiator()->getFormKey('contact_details');
     $contact_email = $this->getFlowDataHandler()->getDefaultValues('email', NULL, $cid_contact_details);
@@ -74,6 +75,7 @@ class ParLinkContact extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $user_accounts = $this->getFlowDataHandler()->getDefaultValues('user_accounts', []);
 
@@ -105,6 +107,7 @@ class ParLinkContact extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
@@ -112,6 +115,7 @@ class ParLinkContact extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }

@@ -16,6 +16,7 @@ class ParUpdateLinkForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     $par_data_partnership = $this->getFlowDataHandler()
       ->getParameter('par_data_partnership');

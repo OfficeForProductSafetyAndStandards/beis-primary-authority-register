@@ -35,6 +35,7 @@ class ParCeaseAction extends ActionBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function execute($entity = NULL) {
     if ($entity instanceof ParDataEntityInterface) {
       // We need to make sure this is always run as the annonymous user,
@@ -59,6 +60,7 @@ class ParCeaseAction extends ActionBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
     // @TODO Implement entity/action checks
     $result = AccessResult::allowed();

@@ -86,6 +86,7 @@ class ParDashboardComponents implements TrustedCallbackInterface {
    *
    * @see \Drupal\Core\Security\DoTrustedCallbackTrait::doTrustedCallback()
    */
+  #[\Override]
   public static function trustedCallbacks() {
     return [
       'viewOutstandingTasksComponent',
@@ -202,7 +203,7 @@ class ParDashboardComponents implements TrustedCallbackInterface {
       $search_partnerships = $this->getLinkByRoute('view.partnership_search.search_partnerships');
       $search_link = $search_partnerships->setText('Search for a partnership')->toString();
     }
-    catch (ParFlowException $e) {
+    catch (ParFlowException) {
 
     }
 
@@ -306,7 +307,7 @@ class ParDashboardComponents implements TrustedCallbackInterface {
       $params = ['user' => $this->getCurrentUser()->id()];
       $manage_profile_flow = ParFlow::load('profile_update');
       $manage_profile_link = $manage_profile_flow?->getStartLink(1, 'Manage your profile details', $params);
-    } catch (ParFlowException $e) {
+    } catch (ParFlowException) {
 
     }
 

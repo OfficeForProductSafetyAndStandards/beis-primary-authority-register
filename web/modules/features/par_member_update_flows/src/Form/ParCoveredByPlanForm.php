@@ -21,6 +21,7 @@ class ParCoveredByPlanForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     $par_data_coordinated_business = $this->getFlowDataHandler()
       ->getParameter('par_data_coordinated_business');
@@ -28,6 +29,7 @@ class ParCoveredByPlanForm extends ParBaseForm {
     parent::loadData();
   }
 
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

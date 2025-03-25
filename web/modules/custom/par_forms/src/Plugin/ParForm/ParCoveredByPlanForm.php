@@ -27,6 +27,7 @@ class ParCoveredByPlanForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     if ($coordinated_member = $this->getFlowDataHandler()->getParameter('par_data_coordinated_business')) {
       $covered_by = $coordinated_member->getBoolean('covered_by_inspection') ? 1 : 0;
@@ -39,6 +40,7 @@ class ParCoveredByPlanForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $coordinated_member_bundle = $this->getParDataManager()->getParBundleEntity('par_data_coordinated_business');
 

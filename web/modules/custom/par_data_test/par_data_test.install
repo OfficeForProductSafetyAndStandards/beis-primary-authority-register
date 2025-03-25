@@ -3,7 +3,7 @@
  * @file
  * Installation hooks for par_data_test module.
  */
-
+use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\Core\Serialization\Yaml;
 
 /**
@@ -20,17 +20,13 @@ function par_data_test_uninstall() {
   $module_folder = \Drupal::moduleHandler()
       ->getModule('par_data_test')
       ->getPath() . '/content';
-  $entity_folders = array_filter(scandir($module_folder), function($item) {
-    return $item[0] !== '.';
-  });
+  $entity_folders = array_filter(scandir($module_folder), fn($item) => $item[0] !== '.');
 
   // Locate all test data uuids.
   $uuids = [];
   $uname = [];
   foreach ($entity_folders as $directory) {
-    $entity_uuids = array_filter(scandir($module_folder . '/' . $directory), function($item) {
-      return $item[0] !== '.';
-    });
+    $entity_uuids = array_filter(scandir($module_folder . '/' . $directory), fn($item) => $item[0] !== '.');
 
     $uuids[$directory] = [];
     $uname[$directory] = [];
@@ -78,7 +74,7 @@ function par_data_test_uninstall() {
     }
 
     foreach ($entities as $e) {
-      if ($e instanceof \Drupal\par_data\Entity\ParDataEntityInterface) {
+      if ($e instanceof ParDataEntityInterface) {
         // We need to bypass all checks and permanently remove this item.
         $e->annihilate();
       }
@@ -97,7 +93,7 @@ function par_data_test_uninstall() {
     }
 
     foreach ($entities as $e) {
-      if ($e instanceof \Drupal\par_data\Entity\ParDataEntityInterface) {
+      if ($e instanceof ParDataEntityInterface) {
         // We need to bypass all checks and permanently remove this item.
         $e->annihilate();
       }

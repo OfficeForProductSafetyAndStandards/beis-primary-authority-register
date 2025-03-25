@@ -31,6 +31,7 @@ class ParContactForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
       $account = $par_data_person->getUserAccount();
@@ -43,6 +44,7 @@ class ParContactForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

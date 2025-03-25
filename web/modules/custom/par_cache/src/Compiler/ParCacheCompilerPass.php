@@ -10,6 +10,7 @@ class ParCacheCompilerPass implements CompilerPassInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function process(ContainerBuilder $container) {
     $cache_lifecycle_bins = [];
     foreach ($container->findTaggedServiceIds('cache.bin') as $id => $attributes) {

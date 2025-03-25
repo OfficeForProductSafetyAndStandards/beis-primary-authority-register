@@ -50,6 +50,7 @@ class ParEmailObfuscationFormatter extends FormatterBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
 
@@ -78,6 +79,7 @@ class ParEmailObfuscationFormatter extends FormatterBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function defaultSettings() {
     return [
         'display_original_value' => FALSE,
@@ -87,6 +89,7 @@ class ParEmailObfuscationFormatter extends FormatterBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $element['display_original_value'] = [
       '#title' => t('Display original value if there is no match'),

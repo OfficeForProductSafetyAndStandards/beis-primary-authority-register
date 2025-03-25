@@ -28,6 +28,7 @@ class ParEmployeeNumberForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     if ($par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation')) {
       $this->getFlowDataHandler()->setFormPermValue('employees_band', $par_data_organisation->get('employees_band')->getString());
@@ -39,6 +40,7 @@ class ParEmployeeNumberForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $organisation_bundle = $this->getParDataManager()->getParBundleEntity('par_data_organisation');
 

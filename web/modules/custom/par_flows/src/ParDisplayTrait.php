@@ -53,7 +53,7 @@ trait ParDisplayTrait {
     $rendered_field = $this->getRenderer()->render($field);
     return [
       '#type' => 'markup',
-      '#markup' => $rendered_field ? $rendered_field : '<p>(none)</p>',
+      '#markup' => $rendered_field ?: '<p>(none)</p>',
     ];
   }
 

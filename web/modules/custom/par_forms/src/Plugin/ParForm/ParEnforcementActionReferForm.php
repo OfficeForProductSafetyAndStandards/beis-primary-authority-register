@@ -22,6 +22,7 @@ class ParEnforcementActionReferForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
     $par_data_enforcement_actions = $this->getFlowDataHandler()->getParameter('par_data_enforcement_actions');
@@ -57,6 +58,7 @@ class ParEnforcementActionReferForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // If there are no referred actions then skip this form.
     if (!$this->getDefaultValuesByKey('notice_is_referrable', $index, FALSE)) {
@@ -85,6 +87,7 @@ class ParEnforcementActionReferForm extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
@@ -92,6 +95,7 @@ class ParEnforcementActionReferForm extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }

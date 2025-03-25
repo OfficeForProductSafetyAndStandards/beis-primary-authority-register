@@ -37,6 +37,7 @@ class ParTradingNameForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
     $trading_name_delta = $this->getFlowDataHandler()->getParameter('trading_name_delta');
@@ -66,6 +67,7 @@ class ParTradingNameForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     if ($index === 1) {
       // If this plugin is being added as a single item then we can explain more will be added later.

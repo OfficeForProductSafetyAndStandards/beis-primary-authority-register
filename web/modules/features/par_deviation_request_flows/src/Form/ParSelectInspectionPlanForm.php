@@ -23,6 +23,7 @@ class ParSelectInspectionPlanForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Get the inspection plan data set by the select_inspection form plugin.
     $inspection_plans = $this->getFlowDataHandler()->getFormPermValue('inspection_plan_options');

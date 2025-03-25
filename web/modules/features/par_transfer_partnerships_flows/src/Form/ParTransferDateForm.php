@@ -18,6 +18,7 @@ class ParTransferDateForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_inspection_plan = $this->getFlowDataHandler()->getParameter('par_data_inspection_plan');
@@ -28,6 +29,7 @@ class ParTransferDateForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL) {
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($par_data_authority);
@@ -38,6 +40,7 @@ class ParTransferDateForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
@@ -48,7 +51,7 @@ class ParTransferDateForm extends ParBaseForm {
     $date_value = $this->getFlowDataHandler()->getTempDataValue('date');
     $date = $date_value ? DrupalDateTime::createFromFormat('Y-m-d', $date_value, ['validate_format' => FALSE]) : NULL;
     if ($date > $now) {
-      $id_key = $this->getElementKey('date', 1, TRUE);
+      $id_key = $this->getElementKey('date');
       $message = $this->t("The date cannot be in the future.")->render();
       $form_state->setErrorByName('date', $this->wrapErrorMessage($message, $this->getElementId($id_key, $form)));
     }
@@ -57,6 +60,7 @@ class ParTransferDateForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

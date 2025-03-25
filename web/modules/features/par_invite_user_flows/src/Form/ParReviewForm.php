@@ -53,6 +53,7 @@ class ParReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     // Set the data values on the entities
     $entities = $this->createEntities();
@@ -122,6 +123,7 @@ class ParReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $form['personal'] = [
       '#type' => 'fieldset',
@@ -232,7 +234,7 @@ class ParReviewForm extends ParBaseForm {
           '#markup' => '<p><i>' . $subject . '</i></p>',
         ],
         [
-          '#markup' => '<p>' . nl2br($message) . '</p>',
+          '#markup' => '<p>' . nl2br((string) $message) . '</p>',
         ]
       ];
     }
@@ -320,6 +322,7 @@ class ParReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

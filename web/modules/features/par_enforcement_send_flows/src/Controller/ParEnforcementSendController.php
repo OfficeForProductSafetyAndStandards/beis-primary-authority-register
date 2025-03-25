@@ -24,6 +24,7 @@ class ParEnforcementSendController extends ParBaseController {
   /**
    * Title callback default.
    */
+  #[\Override]
   public function titleCallback() {
     if ($par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice')) {
       $enforcing_authority = $par_data_enforcement_notice->getEnforcingAuthority(TRUE);
@@ -34,6 +35,7 @@ class ParEnforcementSendController extends ParBaseController {
     return parent::titleCallback();
   }
 
+  #[\Override]
   public function loadData() {
     $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
 
@@ -58,6 +60,7 @@ class ParEnforcementSendController extends ParBaseController {
     parent::loadData();
   }
 
+  #[\Override]
   public function build($build = []) {
     // Change the action to done.
     $this->getFlowNegotiator()->getFlow()->setActions(['done']);

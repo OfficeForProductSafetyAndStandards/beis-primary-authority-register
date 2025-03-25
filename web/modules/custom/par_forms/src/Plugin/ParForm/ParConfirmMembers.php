@@ -29,6 +29,7 @@ class ParConfirmMembers extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
@@ -43,6 +44,7 @@ class ParConfirmMembers extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // This form should only be displayed for coordinated partnerships that need updating.
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
@@ -55,7 +57,7 @@ class ParConfirmMembers extends ParFormPluginBase {
       // Confirmation link
       try {
         $member_url = $this->getFlowNegotiator()->getFlow('member_list_update')->start(4);
-      } catch (ParFlowException $e) {
+      } catch (ParFlowException) {
 
       }
       if (isset($member_url) && $member_url instanceof Url) {
@@ -104,6 +106,7 @@ class ParConfirmMembers extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
@@ -111,6 +114,7 @@ class ParConfirmMembers extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }

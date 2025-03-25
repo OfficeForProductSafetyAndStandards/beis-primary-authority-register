@@ -28,13 +28,7 @@ use Drupal\Core\Entity\EntityFieldManagerInterface;
  */
 class ParMemberFormatter extends FormatterBase {
 
-  /**
-   * The entity field manager.
-   *
-   * @var EntityFieldManagerInterface
-   */
-  protected EntityFieldManagerInterface $entityFieldManager;
-
+  #[\Override]
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
       $plugin_id,
@@ -66,18 +60,20 @@ class ParMemberFormatter extends FormatterBase {
    *   The view mode.
    * @param array $third_party_settings
    *   Any third party settings.
-   * @param EntityFieldManagerInterface $entity_field_manager
+   * @param EntityFieldManagerInterface $entityFieldManager
    *   Any third party settings.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, EntityFieldManagerInterface $entity_field_manager) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, /**
+   * The entity field manager.
+   */
+  protected EntityFieldManagerInterface $entityFieldManager) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
-
-    $this->entityFieldManager = $entity_field_manager;
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
 
@@ -98,6 +94,7 @@ class ParMemberFormatter extends FormatterBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function defaultSettings() {
     return [
       'display_field' => NULL,
@@ -107,6 +104,7 @@ class ParMemberFormatter extends FormatterBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $entity_type_id = $this->fieldDefinition->getTargetEntityTypeId();
     $bundle = $this->fieldDefinition->getTargetBundle();

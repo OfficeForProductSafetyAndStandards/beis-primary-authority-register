@@ -33,6 +33,7 @@ class ParPartnershipContacts extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
@@ -59,6 +60,7 @@ class ParPartnershipContacts extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     if ($this->getFlowDataHandler()->getFormPermValue("show_title", $this)) {
       $form['title'] = [
@@ -96,7 +98,7 @@ class ParPartnershipContacts extends ParFormPluginBase {
       $params = ['type' => $contact_format];
       $contact_add_flow = ParFlow::load('partnership_contact_add');
       $add_contact_link = $contact_add_flow?->getStartLink(1, "add another {$contact_format} contact", $params);
-    } catch (ParFlowException $e) {
+    } catch (ParFlowException) {
 
     }
 
@@ -145,8 +147,8 @@ class ParPartnershipContacts extends ParFormPluginBase {
       try {
         $params = ['type' => $contact_format, 'par_data_person' => $entity->id()];
         $contact_remove_flow = ParFlow::load('partnership_contact_remove');
-        $remove_contact_link = $contact_remove_flow?->getStartLink(1, 'remove ' . strtolower($entity->label()) . ' from this partnership', $params);
-      } catch (ParFlowException $e) {
+        $remove_contact_link = $contact_remove_flow?->getStartLink(1, 'remove ' . strtolower((string) $entity->label()) . ' from this partnership', $params);
+      } catch (ParFlowException) {
 
       }
 
@@ -176,6 +178,7 @@ class ParPartnershipContacts extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
@@ -183,6 +186,7 @@ class ParPartnershipContacts extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }

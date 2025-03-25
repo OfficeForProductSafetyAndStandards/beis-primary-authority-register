@@ -30,7 +30,7 @@ interface ParFlowDataHandlerInterface {
    * @return mixed|null
    *   The value for this key.
    */
-  public function getDefaultValues($key, $default = '', $cid = NULL);
+  public function getDefaultValues($key, mixed $default = '', $cid = NULL);
 
   /**
    * Get a value from the temp data store for a form element.
@@ -55,7 +55,7 @@ interface ParFlowDataHandlerInterface {
    * @param string $cid
    *   The cache id to get data for, will use the current form if not set.
    */
-  public function setTempDataValue($key, $value, $cid = NULL);
+  public function setTempDataValue($key, mixed $value, $cid = NULL);
 
   /**
    * Retrieve the temporary data for a form.
@@ -120,7 +120,7 @@ interface ParFlowDataHandlerInterface {
    * @param string $cid
    *   The cache id to get data for, will use the current form if not set.
    */
-  public function setMetaDataValue($key, $value, $cid = NULL);
+  public function setMetaDataValue($key, mixed $value, $cid = NULL);
 
   /**
    * Retrieve the meta data for a flow.
@@ -211,5 +211,5 @@ interface ParFlowDataHandlerInterface {
    * @param ParFormPluginInterface $plugin
    *   If passed the plugin namespace will be prepended to the key.
    */
-  public function setFormPermValue($key, $value, ParFormPluginInterface $plugin = NULL);
+  public function setFormPermValue($key, mixed $value, ParFormPluginInterface $plugin = NULL);
 }

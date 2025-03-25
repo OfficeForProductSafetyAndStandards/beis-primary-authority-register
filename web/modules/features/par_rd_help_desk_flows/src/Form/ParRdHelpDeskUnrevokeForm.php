@@ -14,6 +14,7 @@ class ParRdHelpDeskUnrevokeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     return "Help Desk | Partnership restored";
   }
@@ -21,6 +22,7 @@ class ParRdHelpDeskUnrevokeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $form['partnership_info'] = [
       '#type' => 'container',
@@ -49,6 +51,7 @@ class ParRdHelpDeskUnrevokeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
   }

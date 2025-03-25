@@ -22,6 +22,7 @@ class ParOrganisationReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     // Set the data values on the entities
     $entities = $this->createEntities();
@@ -84,6 +85,7 @@ class ParOrganisationReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataOrganisation $par_data_organisation = NULL) {
     // Change the action to save.
     $this->getFlowNegotiator()->getFlow()->setActions(['save', 'cancel']);
@@ -94,6 +96,7 @@ class ParOrganisationReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

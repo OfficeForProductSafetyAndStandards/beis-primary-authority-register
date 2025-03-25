@@ -23,6 +23,7 @@ class ParMemberCeaseConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataCoordinatedBusiness $par_data_coordinated_business = NULL) {
     $form['membership_info'] = [
       '#type' => 'markup',
@@ -53,6 +54,7 @@ class ParMemberCeaseConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
@@ -64,7 +66,7 @@ class ParMemberCeaseConfirmForm extends ParBaseForm {
       $date_value = $this->getFlowDataHandler()->getTempDataValue('date_membership_ceased', $cid);
 
       // The format submitted by this form is expected to be in the format 2019-01-29.
-      $date_fragments = explode('-', $date_value);
+      $date_fragments = explode('-', (string) $date_value);
       $format = strlen($date_fragments[0]) === 2 ? "y-m-d" : "Y-m-d";
       $cease_date = DrupalDateTime::createFromFormat($format, $date_value, NULL, ['validate_format' => FALSE]);
 

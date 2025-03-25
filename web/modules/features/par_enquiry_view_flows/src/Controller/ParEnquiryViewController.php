@@ -26,6 +26,7 @@ class ParEnquiryViewController extends ParBaseController {
    */
   protected $pageTitle = 'View enquiry';
 
+  #[\Override]
   public function loadData() {
     $par_data_general_enquiry = $this->getFlowDataHandler()->getParameter('par_data_general_enquiry');
 
@@ -53,6 +54,7 @@ class ParEnquiryViewController extends ParBaseController {
     parent::loadData();
   }
 
+  #[\Override]
   public function build($build = []) {
     $par_data_general_enquiry = $this->getFlowDataHandler()->getParameter('par_data_general_enquiry');
     if ($par_data_general_enquiry) {

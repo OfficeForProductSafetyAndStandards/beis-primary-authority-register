@@ -43,6 +43,7 @@ class ParAddInstitutionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     $account = $this->getFlowDataHandler()->getParameter('user');
     $this->getFlowDataHandler()->setFormPermValue('user_mail', $account?->getEmail());
@@ -89,6 +90,7 @@ class ParAddInstitutionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form['institution'] = [
       '#type' => 'container',
@@ -113,6 +115,7 @@ class ParAddInstitutionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

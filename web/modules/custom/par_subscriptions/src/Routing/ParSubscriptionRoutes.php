@@ -2,6 +2,9 @@
 
 namespace Drupal\par_subscriptions\Routing;
 
+use Drupal\par_subscriptions\Form\ParSubscribeForm;
+use Drupal\par_subscriptions\Form\ParVerifyForm;
+use Drupal\par_subscriptions\Form\ParUnsubscribeForm;
 use Drupal\Component\Utility\Html;
 use Drupal\par_subscriptions\ParSubscriptionManagerInterface;
 use Symfony\Component\Routing\Route;
@@ -27,6 +30,7 @@ class ParSubscriptionRoutes implements ContainerInjectionInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container) {
     return new static($container->get('par_subscriptions.manager'));
   }
@@ -63,7 +67,7 @@ class ParSubscriptionRoutes implements ContainerInjectionInterface {
       $route = new Route(
         "/subscription-list/$list_slug/subscribe/{subscription_status}",
         [
-          '_form' => 'Drupal\par_subscriptions\Form\ParSubscribeForm',
+          '_form' => ParSubscribeForm::class,
           '_title_callback' => 'Drupal\par_subscriptions\Form\ParSubscribeForm::titleCallback',
           'list' => $list,
           'subscription_status' => NULL,
@@ -78,7 +82,7 @@ class ParSubscriptionRoutes implements ContainerInjectionInterface {
       $route = new Route(
         "/subscription-list/$list_slug/verify/{subscription_code}",
         [
-          '_form' => 'Drupal\par_subscriptions\Form\ParVerifyForm',
+          '_form' => ParVerifyForm::class,
           '_title_callback' => 'Drupal\par_subscriptions\Form\ParVerifyForm::titleCallback',
           'list' => $list,
         ],
@@ -92,7 +96,7 @@ class ParSubscriptionRoutes implements ContainerInjectionInterface {
       $route = new Route(
         "/subscription-list/$list_slug/unsubscribe/{subscription_code}",
         [
-          '_form' => 'Drupal\par_subscriptions\Form\ParUnsubscribeForm',
+          '_form' => ParUnsubscribeForm::class,
           '_title_callback' => 'Drupal\par_subscriptions\Form\ParUnsubscribeForm::titleCallback',
           'list' => $list,
           'subscription_code' => NULL,

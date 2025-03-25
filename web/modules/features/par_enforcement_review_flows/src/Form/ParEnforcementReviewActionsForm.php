@@ -26,6 +26,7 @@ class ParEnforcementReviewActionsForm extends ParBaseForm {
    */
   protected $pageTitle = "Respond to notice of enforcement actions | Review";
 
+  #[\Override]
   public function loadData() {
     // Set the data values on the entities
     $entities = $this->createEntities();
@@ -92,6 +93,7 @@ class ParEnforcementReviewActionsForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
@@ -101,6 +103,7 @@ class ParEnforcementReviewActionsForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

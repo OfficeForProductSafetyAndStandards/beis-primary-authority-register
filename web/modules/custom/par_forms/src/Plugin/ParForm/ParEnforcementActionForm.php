@@ -35,6 +35,7 @@ class ParEnforcementActionForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $reg_function_names = $par_data_partnership ? $par_data_partnership->getPartnershipRegulatoryFunctionNames() : [];
@@ -100,6 +101,7 @@ class ParEnforcementActionForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $regulatory_functions_element = $this->getElement($form, ['regulatory_function'], $index);
     $regulatory_functions = $regulatory_functions_element ? $form_state->getValue($regulatory_functions_element['#parents']) : NULL;

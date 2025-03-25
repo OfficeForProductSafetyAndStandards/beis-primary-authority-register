@@ -19,7 +19,8 @@ class ParProgressDestinationSubscriber extends ParFlowSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  #[\Override]
+  static function getSubscribedEvents(): array {
     $events[ParFlowEvents::FLOW_SUBMIT][] = ['onEvent', 300];
     return $events;
   }

@@ -25,6 +25,7 @@ class ParChecklistForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     if ($par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership')) {
       if ($primary_contact = $par_data_partnership->getAuthorityPeople(TRUE)) {
@@ -40,6 +41,7 @@ class ParChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Organisation members can skip this form.
     if ($this->getFlowDataHandler()->getDefaultValues('organisation_member', FALSE)) {

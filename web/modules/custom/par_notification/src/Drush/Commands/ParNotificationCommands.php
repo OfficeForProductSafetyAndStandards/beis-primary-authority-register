@@ -73,7 +73,7 @@ final class ParNotificationCommands extends DrushCommands {
       try {
         $primary_data = $this->messageHandler->getPrimaryData($message);
       }
-      catch (ParNotificationException $e) {
+      catch (ParNotificationException) {
         // Delete messages which are missing primary data.
         $message->delete();
         $count['deleted']++;
@@ -113,12 +113,8 @@ final class ParNotificationCommands extends DrushCommands {
 
       // Get the related entities.
       $related_entities = $this->subscriptionManager->getSubscribedEntities($message);
-      $authorities = array_filter($related_entities, function ($related_entity) {
-        return ('par_data_authority' === $related_entity->getEntityTypeId());
-      });
-      $organisations = array_filter($related_entities, function ($related_entity) {
-        return ('par_data_organisation' === $related_entity->getEntityTypeId());
-      });
+      $authorities = array_filter($related_entities, fn($related_entity) => 'par_data_authority' === $related_entity->getEntityTypeId());
+      $organisations = array_filter($related_entities, fn($related_entity) => 'par_data_organisation' === $related_entity->getEntityTypeId());
 
       // Add the subscribed entities.
       if (!empty($authorities) && $message->hasField('field_target_authority')) {

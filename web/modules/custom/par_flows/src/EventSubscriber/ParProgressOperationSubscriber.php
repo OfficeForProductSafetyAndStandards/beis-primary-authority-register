@@ -19,7 +19,9 @@ class ParProgressOperationSubscriber extends ParFlowSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  #[\Override]
+  static function getSubscribedEvents(): array {
+    $events = [];
     foreach (ParFlowEvents::getAlLEvents() as $event) {
       $events[$event][] = ['onEvent', 200];
     }
@@ -42,7 +44,7 @@ class ParProgressOperationSubscriber extends ParFlowSubscriberBase {
 
         $event->setUrl($url);
       }
-      catch (ParFlowException $e) {
+      catch (ParFlowException) {
 
       }
     }

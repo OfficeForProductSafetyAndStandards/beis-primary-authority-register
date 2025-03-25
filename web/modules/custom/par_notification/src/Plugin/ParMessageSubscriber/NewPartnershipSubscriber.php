@@ -28,6 +28,7 @@ class NewPartnershipSubscriber extends ParMessageSubscriberBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getRecipients(MessageInterface $message): array {
     $recipients = parent::getRecipients($message);
 
@@ -35,7 +36,7 @@ class NewPartnershipSubscriber extends ParMessageSubscriberBase {
       /** @var ParDataPartnership[] $partnerships */
       $partnerships = $this->getMessageHandler()->getPrimaryData($message);
     }
-    catch (ParNotificationException $e) {
+    catch (ParNotificationException) {
       return $recipients;
     }
 
@@ -58,6 +59,7 @@ class NewPartnershipSubscriber extends ParMessageSubscriberBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getSubscribedEntities(MessageInterface $message, array $subscriptions = []): array {
     $subscriptions = parent::getSubscribedEntities($message);
 
@@ -65,7 +67,7 @@ class NewPartnershipSubscriber extends ParMessageSubscriberBase {
       /** @var ParDataPartnership[] $partnerships */
       $partnerships = $this->getMessageHandler()->getPrimaryData($message);
     }
-    catch (ParNotificationException $e) {
+    catch (ParNotificationException) {
       return $subscriptions;
     }
 

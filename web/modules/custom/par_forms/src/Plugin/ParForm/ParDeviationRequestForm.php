@@ -31,6 +31,7 @@ class ParDeviationRequestForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     if ($par_data_deviation_request = $this->getFlowDataHandler()->getParameter('par_data_deviation_request')) {
       $this->getFlowDataHandler()->setFormPermValue('notes', $par_data_deviation_request->getPlain('notes'));
@@ -42,6 +43,7 @@ class ParDeviationRequestForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
 
     $par_data_deviation_request_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('par_data_deviation_request', 'document');

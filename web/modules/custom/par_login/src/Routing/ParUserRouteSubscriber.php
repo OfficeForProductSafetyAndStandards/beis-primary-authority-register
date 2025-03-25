@@ -13,6 +13,7 @@ class ParUserRouteSubscriber extends RouteSubscriberBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function alterRoutes(RouteCollection $collection) {
     // Require higher privileges to view the user profile page.
     if ($route = $collection->get('entity.user.canonical')) {

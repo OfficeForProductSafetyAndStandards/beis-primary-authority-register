@@ -35,6 +35,7 @@ class ParNotificationFor extends FieldPluginBase {
   /**
    * @{inheritdoc}
    */
+  #[\Override]
   public function query() {
     // Leave empty to avoid a query on this field.
   }
@@ -46,6 +47,7 @@ class ParNotificationFor extends FieldPluginBase {
    *
    * @return string
    */
+  #[\Override]
   public function render(ResultRow $values) {
     $message = $this->getEntity($values);
 
@@ -60,14 +62,14 @@ class ParNotificationFor extends FieldPluginBase {
       try {
         $primary_field = $notification_type->getPrimaryField();
       }
-      catch (\TypeError $e) {
+      catch (\TypeError) {
         continue;
       }
       if ($message->hasField($primary_field)
         && !$message->get($primary_field)->isEmpty()) {
         $primary_entities = $message->get($primary_field)->referencedEntities();
         array_walk($primary_entities, function (&$value) {
-          $value = ucfirst($value->label());
+          $value = ucfirst((string) $value->label());
         });
         return implode(",", $primary_entities);
       }

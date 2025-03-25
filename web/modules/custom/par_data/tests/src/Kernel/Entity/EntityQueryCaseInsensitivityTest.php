@@ -88,6 +88,7 @@ class EntityQueryCaseInsensitivityTest extends ParDataTestBase {
    *       └── Registered name `willowbrook nursing services ltd`
    *       └── Registered number `EG123456`
    */
+  #[\Override]
   protected function setUp(): void {
     parent::setUp();
 

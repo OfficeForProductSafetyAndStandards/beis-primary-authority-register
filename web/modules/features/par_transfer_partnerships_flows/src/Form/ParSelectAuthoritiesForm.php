@@ -16,6 +16,7 @@ class ParSelectAuthoritiesForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
 
     parent::loadData();
@@ -24,6 +25,7 @@ class ParSelectAuthoritiesForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL) {
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($par_data_authority);
@@ -34,6 +36,7 @@ class ParSelectAuthoritiesForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL) {
     parent::validateForm($form, $form_state);
 
@@ -53,7 +56,7 @@ class ParSelectAuthoritiesForm extends ParBaseForm {
       sort($new_functions);
 
       if ($old_functions !== $new_functions) {
-        $id_key = $this->getElementKey('authority', 1, TRUE);
+        $id_key = $this->getElementKey('authority');
         $message = $this->t("The regulatory functions do not match those offered by @old_authority.", ['@old_authority' => $from->label()])->render();
         $form_state->setErrorByName('authority', $this->wrapErrorMessage($message, $this->getElementId($id_key, $form)));
       }
@@ -63,6 +66,7 @@ class ParSelectAuthoritiesForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
   }

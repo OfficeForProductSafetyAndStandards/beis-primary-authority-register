@@ -73,6 +73,7 @@ class ParDataAuthority extends ParDataEntity implements ParDataMembershipInterfa
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getMembers(): array {
     /** @var ParDataPersonInterface[] $people */
     $people = $this->getPerson();
@@ -91,6 +92,7 @@ class ParDataAuthority extends ParDataEntity implements ParDataMembershipInterfa
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function getPerson(bool $primary = FALSE): mixed {
     $people = $this->get('field_person')->referencedEntities();
     $person = !empty($people) ? current($people) : NULL;
@@ -101,6 +103,7 @@ class ParDataAuthority extends ParDataEntity implements ParDataMembershipInterfa
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function addPerson(ParDataPersonInterface $person): void {
     if (!$this->hasPerson($person)) {
       $this->get('field_person')->appendItem($person->id());
@@ -110,6 +113,7 @@ class ParDataAuthority extends ParDataEntity implements ParDataMembershipInterfa
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function removePerson(ParDataPersonInterface $person): void {
     foreach ($this->getPerson() as $index => $existing_person) {
       if ($existing_person->id() === $person->id()) {
@@ -121,11 +125,10 @@ class ParDataAuthority extends ParDataEntity implements ParDataMembershipInterfa
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function hasPerson(ParDataPersonInterface $person): bool {
     $existing_people = $this->getPerson();
-    $exists = array_filter($existing_people, function ($existing_person) use ($person) {
-      return $existing_person->id() === $person->id();
-    });
+    $exists = array_filter($existing_people, fn($existing_person) => $existing_person->id() === $person->id());
 
     return !empty($exists);
   }
@@ -173,6 +176,7 @@ class ParDataAuthority extends ParDataEntity implements ParDataMembershipInterfa
     return $authority_bundle->getAllowedFieldlabel('authority_type', $this->get('authority_type')->getString());
   }
 
+  #[\Override]
   public function getName() {
     return $this->get('authority_name')->getString();
   }
@@ -180,6 +184,7 @@ class ParDataAuthority extends ParDataEntity implements ParDataMembershipInterfa
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 

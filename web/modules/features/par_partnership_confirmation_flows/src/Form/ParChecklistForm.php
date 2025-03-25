@@ -18,6 +18,7 @@ class ParChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     // Set page title.
     $this->pageTitle = "Declaration for completion by proxy";
@@ -28,6 +29,7 @@ class ParChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     // Load application type from previous step.
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
@@ -45,6 +47,7 @@ class ParChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Organisation members can skip this form.
     if ($this->getFlowDataHandler()->getDefaultValues('organisation_member', FALSE)) {
@@ -75,6 +78,7 @@ class ParChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 

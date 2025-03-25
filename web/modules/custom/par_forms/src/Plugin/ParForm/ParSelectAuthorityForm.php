@@ -22,6 +22,7 @@ class ParSelectAuthorityForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $authority_options = [];
 
@@ -40,6 +41,7 @@ class ParSelectAuthorityForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // Get all the allowed authorities.
     $authorities = $this->getFlowDataHandler()->getFormPermValue('authorities');
@@ -105,6 +107,7 @@ class ParSelectAuthorityForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $required = $this->getFlowDataHandler()->getDefaultValues('authority_required', TRUE);
 

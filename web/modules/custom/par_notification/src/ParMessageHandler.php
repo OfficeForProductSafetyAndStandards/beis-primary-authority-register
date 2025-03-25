@@ -26,60 +26,42 @@ class ParMessageHandler implements ParMessageHandlerInterface {
   const DELIVERY_METHOD = 'plain_email';
 
   /**
-   * The entity type manager.
-   *
-   * @var EntityTypeManagerInterface
-   */
-  protected EntityTypeManagerInterface $entityTypeManager;
-
-  /**
-   * The subscription manager.
-   *
-   * @var ParSubscriptionManagerInterface
-   */
-  protected ParSubscriptionManagerInterface $subscriptionManager;
-
-  /**
-   * The notification link manager.
-   *
-   * @var ParLinkManagerInterface
-   */
-  protected ParLinkManagerInterface $linkManager;
-
-  /**
-   * The message notifier.
-   *
-   * @var MessageNotifier
-   */
-  protected MessageNotifier $messageNotifier;
-
-  /**
-   * The current user.
-   *
-   * @var AccountInterface
-   */
-  protected AccountInterface $currentUser;
-
-  /**
    * Constructs a ParMessageHandler instance.
    *
-   * @param EntityTypeManagerInterface $entity_type_manager
+   * @param EntityTypeManagerInterface $entityTypeManager
    *  The entity type manager.
-   * @param ParSubscriptionManagerInterface $subscription_manager
+   * @param ParSubscriptionManagerInterface $subscriptionManager
    *  The subscription manager.
-   * @param ParLinkManagerInterface $link_manager
+   * @param ParLinkManagerInterface $linkManager
    *  The notification link manager.
-   * @param MessageNotifier $message_notifier
+   * @param MessageNotifier $messageNotifier
    *  The message notifier.
-   * @param AccountInterface $user
+   * @param AccountInterface $currentUser
    *  The current user.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, ParSubscriptionManagerInterface $subscription_manager, ParLinkManagerInterface $link_manager, MessageNotifier $message_notifier, AccountInterface $user) {
-    $this->entityTypeManager = $entity_type_manager;
-    $this->subscriptionManager = $subscription_manager;
-    $this->linkManager = $link_manager;
-    $this->messageNotifier = $message_notifier;
-    $this->currentUser = $user;
+  public function __construct(
+      /**
+       * The entity type manager.
+       */
+      protected EntityTypeManagerInterface $entityTypeManager,
+      /**
+       * The subscription manager.
+       */
+      protected ParSubscriptionManagerInterface $subscriptionManager,
+      /**
+       * The notification link manager.
+       */
+      protected ParLinkManagerInterface $linkManager,
+      /**
+       * The message notifier.
+       */
+      protected MessageNotifier $messageNotifier,
+      /**
+       * The current user.
+       */
+      protected AccountInterface $currentUser
+  )
+  {
   }
 
   /**
@@ -161,6 +143,7 @@ class ParMessageHandler implements ParMessageHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function createMessage(string $template_id) {
     // Check that a template could be found.
     /** @var MessageTemplateInterface $message_template */
@@ -188,6 +171,7 @@ class ParMessageHandler implements ParMessageHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function sendMessage(MessageInterface $message) {
     // Get all the primary tasks for this notification.
     $tasks = $this->getLinkManager()->retrieveTasks($message->getTemplate());
@@ -302,14 +286,13 @@ class ParMessageHandler implements ParMessageHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getPrimaryData(MessageInterface $message): array {
     $field = $this->getPrimaryField($message->getTemplate());
     if ($field && $message->hasField($field)) {
       $primary_data = $message->get($field)->referencedEntities();
 
-      $primary_data = array_filter($primary_data, function ($data) {
-        return $data instanceof EntityInterface;
-      });
+      $primary_data = array_filter($primary_data, fn($data) => $data instanceof EntityInterface);
     }
 
     // If there is a primary field, but it has no data, throw an exception.
@@ -366,12 +349,13 @@ class ParMessageHandler implements ParMessageHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getThreadId(MessageInterface $message): string {
     $group = $this->getMessageGroup($message->getTemplate());
     try {
       $primary_data = $this->getPrimaryData($message);
     }
-    catch (ParNotificationException $e) {
+    catch (ParNotificationException) {
 
     }
 

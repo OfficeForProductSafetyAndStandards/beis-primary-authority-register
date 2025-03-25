@@ -32,6 +32,7 @@ class ParConfirmListDetailsForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     // Set the data values on the entities
     $entities = $this->createEntities();
@@ -65,6 +66,7 @@ class ParConfirmListDetailsForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     $member_number = $this->getFlowDataHandler()->getDefaultValues('member_number', 0);
     $member_display = $this->getFlowDataHandler()->getDefaultValues('member_display');
@@ -165,6 +167,7 @@ class ParConfirmListDetailsForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     if (!$form_state->getValue('confirm')) {
       $id = $this->getElementId(['confirm'], $form);
@@ -220,6 +223,7 @@ class ParConfirmListDetailsForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

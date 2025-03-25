@@ -40,6 +40,7 @@ class ParMemberListLink extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
@@ -54,6 +55,7 @@ class ParMemberListLink extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // This form should only be displayed for coordinated partnerships.
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
@@ -75,6 +77,7 @@ class ParMemberListLink extends ParFormPluginBase {
   /**
    * Validate date field.
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $member_link_key = $this->getElementKey('member_link');
 
@@ -84,12 +87,12 @@ class ParMemberListLink extends ParFormPluginBase {
       // Also check that this URL can be accessed.
       $request = $this->getHttpClient()->request('GET', $url->toString());
     }
-    catch (\InvalidArgumentException $e) {
+    catch (\InvalidArgumentException) {
       $id_key = $this->getElementKey('member_link', $index, TRUE);
       $message = $this->wrapErrorMessage('Please enter a fully qualified URL for the member list.', $this->getElementId($id_key, $form));
       $form_state->setErrorByName($this->getElementName($member_link_key), $message);
     }
-    catch (GuzzleException $e) {
+    catch (GuzzleException) {
       $id_key = $this->getElementKey('member_link', $index, TRUE);
       $message = $this->wrapErrorMessage('The URL is not accessible.', $this->getElementId($id_key, $form));
       $form_state->setErrorByName($this->getElementName($member_link_key), $message);
@@ -101,6 +104,7 @@ class ParMemberListLink extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
@@ -108,6 +112,7 @@ class ParMemberListLink extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }

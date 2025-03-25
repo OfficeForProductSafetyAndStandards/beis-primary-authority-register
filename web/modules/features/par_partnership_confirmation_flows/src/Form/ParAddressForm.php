@@ -22,6 +22,7 @@ class ParAddressForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $organisation = $partnership ? $partnership->getOrganisation(TRUE) : NULL;

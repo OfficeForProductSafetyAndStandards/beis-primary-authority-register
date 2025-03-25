@@ -29,6 +29,7 @@ class ParMemberListType extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
@@ -47,6 +48,7 @@ class ParMemberListType extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // This form should only be displayed for coordinated partnerships.
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
@@ -57,7 +59,7 @@ class ParMemberListType extends ParFormPluginBase {
 
     // Add descriptions to the option labels.
     $list_options = $this->getFlowDataHandler()->getFormPermValue("list_type_options");
-    array_walk($list_options, [$this, 'getOptionLabel']);
+    array_walk($list_options, $this->getOptionLabel(...));
 
     $form['type'] = [
       '#type' => 'radios',
@@ -124,6 +126,7 @@ class ParMemberListType extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
@@ -131,6 +134,7 @@ class ParMemberListType extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }

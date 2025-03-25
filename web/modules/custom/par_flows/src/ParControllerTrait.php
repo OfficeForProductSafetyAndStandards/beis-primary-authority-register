@@ -127,17 +127,14 @@ trait ParControllerTrait {
         $plugin_name = ParFlow::getComponentName($key, $settings);
 
         // Store the plugin ID and namespace in the settings.
-        $settings[ParFormPluginInterface::NAME_PROPERTY] = $settings[ParFormPluginInterface::NAME_PROPERTY] ?? $plugin_name;
-        $settings[ParFormPluginInterface::NAMESPACE_PROPERTY] = $settings[ParFormPluginInterface::NAMESPACE_PROPERTY] ?? $key;
+        $settings[ParFormPluginInterface::NAME_PROPERTY] ??= $plugin_name;
+        $settings[ParFormPluginInterface::NAMESPACE_PROPERTY] ??= $key;
 
         if ($plugin = $this->getFormBuilder()->createInstance($plugin_name, $settings)) {
           $this->components[] = $plugin;
         }
       }
-      catch (PluginException $e) {
-        $this->getLogger($this->getLoggerChannel())->error($e);
-      }
-      catch (\TypeError $e) {
+      catch (PluginException|\TypeError $e) {
         $this->getLogger($this->getLoggerChannel())->error($e);
       }
     }
@@ -268,7 +265,7 @@ trait ParControllerTrait {
     try {
       $url = $this->getPathValidator()->getUrlIfValid($entry_point);
     }
-    catch (\InvalidArgumentException $e) {
+    catch (\InvalidArgumentException) {
 
     }
 

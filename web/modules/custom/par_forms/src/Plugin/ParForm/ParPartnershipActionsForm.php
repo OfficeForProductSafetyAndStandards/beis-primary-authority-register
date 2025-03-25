@@ -20,6 +20,7 @@ class ParPartnershipActionsForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 

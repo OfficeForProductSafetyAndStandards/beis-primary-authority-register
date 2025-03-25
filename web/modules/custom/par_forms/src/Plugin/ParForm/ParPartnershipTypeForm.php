@@ -30,6 +30,7 @@ class ParPartnershipTypeForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $partnership_bundle = $this->getParDataManager()->getParBundleEntity('par_data_partnership');
     $application_types = [];
@@ -56,6 +57,7 @@ class ParPartnershipTypeForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
 
     $form['application_type'] = [
@@ -66,7 +68,7 @@ class ParPartnershipTypeForm extends ParFormPluginBase {
       '#options' => $this->getFlowDataHandler()->getDefaultValues('application_types', []),
       '#options_descriptions' => $this->getFlowDataHandler()->getDefaultValues('application_type_descriptions', []),
       '#after_build' => [
-        [get_class($this), 'optionsDescriptions'],
+        [static::class, 'optionsDescriptions'],
       ],
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('application_type'),
       '#attributes' => ['class' => ['govuk-form-group']],
@@ -79,6 +81,7 @@ class ParPartnershipTypeForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $person_id_key = $this->getElementKey('application_type');
     $value = $form_state->getValue($person_id_key);

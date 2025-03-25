@@ -10,24 +10,17 @@ class ParCsvViolation {
   /**
    * @var int
    */
-  protected int|null $line;
+  protected int|null $line = null;
 
   /**
    * @var string
    */
-  protected string|null $column;
+  protected string|null $column = null;
 
   /**
    * @var string
    */
   protected string $message;
-
-  /**
-   * Whether or not this violation should trigger an error.
-   *
-   * @var string
-   */
-  protected bool $fatal = TRUE;
 
   /**
    * Constructor.
@@ -36,12 +29,13 @@ class ParCsvViolation {
    * @param string $column The column of the violation
    * @param string $message The error message
    */
-  public function __construct(int|null $line, string|null $column, string $message = '', bool $fatal = TRUE) {
+  public function __construct(int|null $line, string|null $column, string $message = '', /**
+   * Whether or not this violation should trigger an error.
+   */
+  protected bool $fatal = TRUE) {
     $this->setLine($line)
       ->setColumn($column)
       ->setMessage($message);
-
-    $this->fatal = $fatal;
   }
 
   /**

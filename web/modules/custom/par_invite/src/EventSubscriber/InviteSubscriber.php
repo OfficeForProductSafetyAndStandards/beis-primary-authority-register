@@ -17,7 +17,8 @@ class InviteSubscriber implements EventSubscriberInterface {
 
   use StringTranslationTrait;
 
-  static function getSubscribedEvents() {
+  #[\Override]
+  static function getSubscribedEvents(): array {
     $events['invite_accept'][] = ['onAccept'];
     return $events;
   }

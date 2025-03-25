@@ -21,6 +21,7 @@ class ParMigrateCoordinatedPartnershipDateField extends ActionBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function execute($entity = NULL) {
     if ($entity instanceof ParDataEntityInterface) {
       if (!empty($entity->get('membership_date')->value)) {
@@ -40,6 +41,7 @@ class ParMigrateCoordinatedPartnershipDateField extends ActionBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
     // @TODO Implement entity/action checks
     $result = AccessResult::allowed();

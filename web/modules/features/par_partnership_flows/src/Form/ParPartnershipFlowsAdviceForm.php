@@ -42,6 +42,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     $par_data_advice = $this->getFlowDataHandler()->getParameter('par_data_advice');
 
@@ -93,6 +94,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $par_data_advice);
     $advice_bundle = $this->getParDataManager()->getParBundleEntity('par_data_advice');
@@ -190,6 +192,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

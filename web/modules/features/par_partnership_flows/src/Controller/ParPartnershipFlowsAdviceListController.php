@@ -79,7 +79,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
             ]),
         ];
       }
-      catch (ParFlowException $e) {
+      catch (ParFlowException) {
 
       }
     }

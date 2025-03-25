@@ -4,7 +4,7 @@
  * @file
  * Contains par_notification.module.
  */
-
+use Drupal\par_notification\Access\ParMessageAccessControlHandler;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\link\LinkItemInterface;
 use Drupal\message\MessageInterface;
@@ -66,12 +66,8 @@ function par_notification_entity_presave(EntityInterface $message) {
 
   // Get the related entities.
   $related_entities = $subscription_manager->getSubscribedEntities($message);
-  $authorities = array_filter($related_entities, function ($related_entity) {
-    return ('par_data_authority' === $related_entity->getEntityTypeId());
-  });
-  $organisations = array_filter($related_entities, function ($related_entity) {
-    return ('par_data_organisation' === $related_entity->getEntityTypeId());
-  });
+  $authorities = array_filter($related_entities, fn($related_entity) => 'par_data_authority' === $related_entity->getEntityTypeId());
+  $organisations = array_filter($related_entities, fn($related_entity) => 'par_data_organisation' === $related_entity->getEntityTypeId());
 
   // Add the subscribed entities.
   if ($message->hasField('field_target_authority') &&
@@ -120,7 +116,7 @@ function par_notification_entity_type_alter(array &$entity_types) {
   // Add an access control handler for message entities.
   if (isset($entity_types['message'])) {
     $entity_types['message']
-      ->setHandlerClass('access', 'Drupal\par_notification\Access\ParMessageAccessControlHandler');
+      ->setHandlerClass('access', ParMessageAccessControlHandler::class);
   }
 }
 

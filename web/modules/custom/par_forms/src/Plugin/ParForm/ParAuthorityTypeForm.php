@@ -27,6 +27,7 @@ class ParAuthorityTypeForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_authority = $this->getFlowDataHandler()->getParameter('par_data_authority');
     if ($par_data_authority) {
@@ -48,6 +49,7 @@ class ParAuthorityTypeForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $form['authority_type'] = [
       '#type' => 'radios',

@@ -23,6 +23,7 @@ class ParDataDelete implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function reactTo(AuditLogEventInterface $event) {
     if (!$event->getEntity() instanceof ParDataEntityInterface
       || $event->getEventType() != self::ACTION) {
@@ -57,6 +58,7 @@ EOT;
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getEntityType() {
     return "par_data_entity";
   }

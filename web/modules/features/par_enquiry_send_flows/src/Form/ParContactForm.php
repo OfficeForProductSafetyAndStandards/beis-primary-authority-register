@@ -23,6 +23,7 @@ class ParContactForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     $cid = $this->getFlowNegotiator()->getFormKey('par_authority_selection');
     $authority_id = $this->getFlowDataHandler()->getDefaultValues('par_data_authority_id', NULL, $cid);
@@ -43,6 +44,7 @@ class ParContactForm extends ParBaseForm {
   /**
    *
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

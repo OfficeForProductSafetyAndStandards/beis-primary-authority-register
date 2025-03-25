@@ -26,6 +26,7 @@ class ParDeviationViewController extends ParBaseController {
    */
   protected $pageTitle = 'Deviation from inspection plan';
 
+  #[\Override]
   public function loadData() {
     $par_data_deviation_request = $this->getFlowDataHandler()->getParameter('par_data_deviation_request');
 
@@ -53,6 +54,7 @@ class ParDeviationViewController extends ParBaseController {
     parent::loadData();
   }
 
+  #[\Override]
   public function build($build = []) {
     $par_data_deviation_request = $this->getFlowDataHandler()->getParameter('par_data_deviation_request');
     if ($par_data_deviation_request) {

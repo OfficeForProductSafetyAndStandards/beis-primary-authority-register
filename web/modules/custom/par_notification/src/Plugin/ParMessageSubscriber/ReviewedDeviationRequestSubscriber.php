@@ -30,6 +30,7 @@ class ReviewedDeviationRequestSubscriber extends ParMessageSubscriberBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getRecipients(MessageInterface $message): array {
     $recipients = parent::getRecipients($message);
 
@@ -37,7 +38,7 @@ class ReviewedDeviationRequestSubscriber extends ParMessageSubscriberBase {
       /** @var ParDataEnquiryInterface[] $deviation_requests */
       $deviation_requests = $this->getMessageHandler()->getPrimaryData($message);
     }
-    catch (ParNotificationException|ParDataException $e) {
+    catch (ParNotificationException|ParDataException) {
       return $recipients;
     }
 
@@ -51,7 +52,7 @@ class ReviewedDeviationRequestSubscriber extends ParMessageSubscriberBase {
             $creator->getFirstName(),
             $creator
           );
-        } catch (ParDataException $e) {
+        } catch (ParDataException) {
 
         }
       }
@@ -63,6 +64,7 @@ class ReviewedDeviationRequestSubscriber extends ParMessageSubscriberBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getSubscribedEntities(MessageInterface $message): array {
     $subscriptions = parent::getSubscribedEntities($message);
 
@@ -70,7 +72,7 @@ class ReviewedDeviationRequestSubscriber extends ParMessageSubscriberBase {
       /** @var ParDataEnquiryInterface $deviation_requests [] */
       $deviation_requests = $this->getMessageHandler()->getPrimaryData($message);
     }
-    catch (ParNotificationException $e) {
+    catch (ParNotificationException) {
       return $subscriptions;
     }
 
@@ -80,7 +82,7 @@ class ReviewedDeviationRequestSubscriber extends ParMessageSubscriberBase {
         try {
           $sender = [$deviation_request->sender()];
         }
-        catch (ParDataException $e) {
+        catch (ParDataException) {
           $sender = [];
         }
         $subscriptions = array_merge(

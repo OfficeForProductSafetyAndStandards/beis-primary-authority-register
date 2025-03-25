@@ -17,6 +17,7 @@ use Drupal\par_reporting\ParStatisticBase;
  */
 class TotalUniqueBusinesses extends ParStatisticBase {
 
+  #[\Override]
   public function getStat(): int {
     $query = $this->getParDataManager()->getEntityQuery('par_data_partnership')
       ->condition('partnership_status', 'confirmed_rd');
