@@ -2,6 +2,7 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
+use Drupal\par_data\Event\ParDataEvent;
 use Drupal\core_event_dispatcher\Event\Entity\EntityInsertEvent;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
 use Drupal\par_notification\ParEventSubscriberBase;
@@ -20,8 +21,10 @@ class NewEnforcementSubscriber extends ParEventSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
-    if (class_exists('Drupal\par_data\Event\ParDataEvent')) {
+  #[\Override]
+  static function getSubscribedEvents(): array {
+    $events = [];
+    if (class_exists(ParDataEvent::class)) {
       $events[EntityInsertEvent::class][] = ['onEvent', 800];
     }
 

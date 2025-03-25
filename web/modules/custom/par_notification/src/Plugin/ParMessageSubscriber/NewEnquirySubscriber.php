@@ -30,6 +30,7 @@ class NewEnquirySubscriber extends ParMessageSubscriberBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getRecipients(MessageInterface $message): array {
     $recipients = parent::getRecipients($message);
 
@@ -49,7 +50,7 @@ class NewEnquirySubscriber extends ParMessageSubscriberBase {
         }
       }
     }
-    catch (ParNotificationException|ParDataException $e) {
+    catch (ParNotificationException|ParDataException) {
       return $recipients;
     }
 
@@ -74,6 +75,7 @@ class NewEnquirySubscriber extends ParMessageSubscriberBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getSubscribedEntities(MessageInterface $message): array {
     $subscriptions = parent::getSubscribedEntities($message);
 
@@ -98,7 +100,7 @@ class NewEnquirySubscriber extends ParMessageSubscriberBase {
         try {
           $receiver = $enquiry_entity->receiver();
         }
-        catch (ParDataException $e) {
+        catch (ParDataException) {
           $receiver = [];
         }
         $subscriptions = array_merge(

@@ -30,30 +30,22 @@ class ParSortStatus extends SortPluginBase {
   /**
    * Options definition.
    */
+  #[\Override]
   protected function defineOptions() {
     $options = parent::defineOptions();
-    $options['allowed_values'] = array('default' => 0);
-    $options['null_heavy'] = array('default' => 0);
+    $options['allowed_values'] = ['default' => 0];
+    $options['null_heavy'] = ['default' => 0];
     return $options;
   }
 
   /**
    * Options form.
    */
+  #[\Override]
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);
-    $form['allowed_values'] = array(
-      '#type' => 'radios',
-      '#title' => t('Sort by status'),
-      '#options' => array(t('No'), t('Yes')),
-      '#default_value' => $this->options['allowed_values'],
-    );
-    $form['null_heavy'] = array(
-      '#type' => 'radios',
-      '#title' => t('Treat null values as heavier than the allowed values'),
-      '#options' => array(t('No'), t('Yes')),
-      '#default_value' => $this->options['null_heavy'],
-    );
+    $form['allowed_values'] = ['#type' => 'radios', '#title' => t('Sort by status'), '#options' => [t('No'), t('Yes')], '#default_value' => $this->options['allowed_values']];
+    $form['null_heavy'] = ['#type' => 'radios', '#title' => t('Treat null values as heavier than the allowed values'), '#options' => [t('No'), t('Yes')], '#default_value' => $this->options['null_heavy']];
   }
 
   /**
@@ -63,6 +55,7 @@ class ParSortStatus extends SortPluginBase {
    *
    * @see http://dev.mysql.com/doc/refman/5.5/en/string-functions.html#function_field
    */
+  #[\Override]
   public function query() {
     $this->ensureMyTable();
     // Skip if disabled.

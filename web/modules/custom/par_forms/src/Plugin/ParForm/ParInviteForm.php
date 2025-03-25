@@ -21,13 +21,14 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 class ParInviteForm extends ParFormPluginBase {
 
   /**
-   * Invitation messages
+   * Invitation messages.
    */
   public function getMessage($invitation_type) {
     $sender_name = $this->getFlowDataHandler()->getDefaultValues('inviter_name', FALSE);
     $recipient_name = $this->getFlowDataHandler()->getDefaultValues('recipient_name', FALSE);
 
     switch ($invitation_type) {
+      case 'here for coding style reason only':
       default:
         $subject = 'Invitation to join the Primary Authority Register';
         $body = <<<HEREDOC
@@ -52,6 +53,7 @@ HEREDOC;
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $invitation_type = $this->getFlowDataHandler()->getDefaultValues('invitation_type', FALSE);
 
@@ -73,7 +75,7 @@ HEREDOC;
       $this->getFlowDataHandler()->setFormPermValue("recipient_name", $par_data_person->getFullName());
     }
 
-    // Set the default value for the sender
+    // Set the default value for the sender.
     if ($account = $this->getFlowNegotiator()->getCurrentUser()) {
       $this->getFlowDataHandler()->setTempDataValue("from", $account->getEmail());
       $this->getFlowDataHandler()->setTempDataValue("inviter", $account->id());
@@ -91,7 +93,7 @@ HEREDOC;
       }
       $authority_person = $par_data_authority ? $this->getParDataManager()->getUserPerson($account, $par_data_authority) : NULL;
       $organisation_person = $par_data_organisation ? $this->getParDataManager()->getUserPerson($account, $par_data_organisation) : NULL;
-      if($account->hasPermission('invite helpdesk members')) {
+      if ($account->hasPermission('invite helpdesk members')) {
         $sender_name = 'BEIS RD Department';
       }
       elseif ($authority_person) {
@@ -117,14 +119,15 @@ HEREDOC;
     }
 
     // Determine which roles can be invited.
+    $par_roles = [];
     $roles = Role::loadMultiple();
-    foreach ($roles as $role) {
+    foreach ($roles as $user_role) {
       if (empty($user_role->get('_core'))) {
         $par_roles[$user_role->id()] = $user_role->label();
       }
     }
     if (!empty($par_roles)) {
-      $roles = array_filter($par_roles, function ($role_id) use($invitation_type) {
+      $roles = array_filter($par_roles, function ($role_id) use ($invitation_type) {
         if ($invitation_type === 'invite_authority_member') {
           return in_array($role_id, ['par_authority_manager', 'par_authority', 'par_enforcement']);
         }
@@ -144,6 +147,7 @@ HEREDOC;
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // There must be an invitation type specified.
     if (!$this->getFlowDataHandler()->getDefaultValues('invitation_type', FALSE)) {
@@ -181,7 +185,7 @@ HEREDOC;
     // Set the sender values and display the email.
     $form['sender'] = [
       '#type' => 'container',
-      '#markup' => "<h2 class='govuk-heading-m'>" . $this->t('Sender\'s email address') . "</h2><p>{$this->getFlowDataHandler()->getDefaultValues('from')}</p>",
+      '#markup' => "<h2 class='govuk-heading-m'>" . $this->t("Sender's email address") . "</h2><p>{$this->getFlowDataHandler()->getDefaultValues('from')}</p>",
       'from' => [
         '#type' => 'hidden',
         '#value' => $this->getFlowDataHandler()->getDefaultValues('from'),
@@ -195,7 +199,7 @@ HEREDOC;
     // Set the recipient values and display the email.
     $form['recipient'] = [
       '#type' => 'container',
-      '#markup' => "<h2 class='govuk-heading-m'>" . $this->t('Recipient\'s email address') . "</h2><p>{$this->getFlowDataHandler()->getDefaultValues('to')}</p>",
+      '#markup' => "<h2 class='govuk-heading-m'>" . $this->t("Recipient's email address") . "</h2><p>{$this->getFlowDataHandler()->getDefaultValues('to')}</p>",
       'to' => [
         '#type' => 'hidden',
         '#value' => $this->getFlowDataHandler()->getDefaultValues('to'),
@@ -264,6 +268,7 @@ HEREDOC;
   /**
    * Validate date field.
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $role_key = $this->getElementKey('target_role');
     if (!$form_state->getValue($role_key)) {
@@ -286,7 +291,7 @@ HEREDOC;
       $form_state->setErrorByName($this->getElementName($email_body_key), $message);
     }
 
-    if (!strpos($form_state->getValue($email_body_key), '[invite:invite-accept-link]')) {
+    if (!strpos((string) $form_state->getValue($email_body_key), '[invite:invite-accept-link]')) {
       $id_key = $this->getElementKey(['email', 'body'], $index, TRUE);
       $message = $this->wrapErrorMessage("Please make sure you have the invite link '[invite:invite-accept-link]' somewhere in your message.", $this->getElementId($id_key, $form));
       $form_state->setErrorByName($this->getElementName($email_body_key), $message);
@@ -294,4 +299,5 @@ HEREDOC;
 
     parent::validate($form, $form_state, $index, $action);
   }
+
 }

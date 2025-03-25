@@ -50,7 +50,7 @@ final class ParCacheCommands extends DrushCommands {
         $this->logger()->error(dt('@bin bin is not using par cache backend.', ['@bin' => $bin]));
       }
     }
-    catch (\Exception $e) {
+    catch (\Exception) {
       $this->logger()->error(dt('@bin not a valid cache bin.', ['@bin' => $bin]));
     }
   }

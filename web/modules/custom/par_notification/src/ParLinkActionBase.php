@@ -101,6 +101,7 @@ abstract class ParLinkActionBase extends PluginBase implements ParLinkActionInte
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function setUser(AccountInterface $user) {
     $this->user = $user;
   }
@@ -108,6 +109,7 @@ abstract class ParLinkActionBase extends PluginBase implements ParLinkActionInte
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function receive(MessageInterface $message): ?RedirectResponse {
     $destination = $this->getUrl($message);
 
@@ -120,6 +122,7 @@ abstract class ParLinkActionBase extends PluginBase implements ParLinkActionInte
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getLink(MessageInterface $message): ?Link {
     $destination = $this->getUrl($message);
 
@@ -150,6 +153,7 @@ abstract class ParLinkActionBase extends PluginBase implements ParLinkActionInte
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function setReturnQuery($query) {
     $this->returnQuery = $query;
   }

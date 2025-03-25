@@ -57,6 +57,7 @@ class ParPartnershipActionsTest extends ParDataTestBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function setUp(): void {
     parent::setup();
 

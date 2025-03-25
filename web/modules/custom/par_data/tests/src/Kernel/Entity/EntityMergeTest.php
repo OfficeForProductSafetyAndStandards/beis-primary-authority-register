@@ -105,6 +105,7 @@ class EntityMergeTest extends ParDataTestBase {
    *       ├── Org Contact 11
    *       └── Org Contact 12
    */
+  #[\Override]
   protected function setUp(): void {
     parent::setUp();
 

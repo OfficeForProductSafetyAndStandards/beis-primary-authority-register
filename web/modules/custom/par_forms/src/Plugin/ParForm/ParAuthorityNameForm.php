@@ -29,6 +29,7 @@ class ParAuthorityNameForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     if ($par_data_authority = $this->getFlowDataHandler()->getParameter('par_data_authority')) {
       $this->getFlowDataHandler()->setFormPermValue('name', $par_data_authority->get('authority_name')->getString());
@@ -40,6 +41,7 @@ class ParAuthorityNameForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
 
     $form['name'] = [

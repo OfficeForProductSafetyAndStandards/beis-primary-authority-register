@@ -5,7 +5,7 @@ namespace Drupal\par_data\Event;
 use Drupal\core_event_dispatcher\Event\Entity\EntityUpdateEvent;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 
-if (class_exists('Drupal\core_event_dispatcher\Event\Entity\EntityUpdateEvent')) {
+if (class_exists(EntityUpdateEvent::class)) {
   /**
    * The event fired for crud operations on PAR Data entities.
    */

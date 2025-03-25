@@ -1,4 +1,4 @@
-name: PAR Ereror Handling
+name: PAR Error Handling
 type: module
 description: Adds friendly handling of fatal messages.
 core_version_requirement: ^9 || ^10 || ^11

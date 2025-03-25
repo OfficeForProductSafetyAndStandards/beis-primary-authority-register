@@ -19,6 +19,7 @@ class ParAddressLookupForm extends ParAddressForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $plugin_class = (new \ReflectionClass($this))->getName();
 

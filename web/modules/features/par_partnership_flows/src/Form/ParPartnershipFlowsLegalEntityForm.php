@@ -29,6 +29,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
 
     $this->pageTitle = 'Update Partnership Information | Add a legal entity for your organisation';
@@ -39,6 +40,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     $partnership_legal_entity = $this->getFlowDataHandler()->getParameter('par_data_partnership_le');
 
@@ -53,6 +55,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
   /**
    * Validate the form to make sure the correct values have been entered.
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
@@ -62,7 +65,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
 
     // Get the entered registered number.
     $registered_number = $this->getFlowDataHandler()->getTempDataValue('legal_entity_number');
-    if (strlen($registered_number) <= 8) {
+    if (strlen((string) $registered_number) <= 8) {
       // Creating the legal entity and validate it doesn't already exist.
       $legal_entity = ParDataLegalEntity::create([
         'registry' => $this->getFlowDataHandler()->getTempDataValue('registry'),
@@ -90,7 +93,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
       }
     }
     else {
-      $id = $this->getElementName(['legal_entity_number'], $form);
+      $id = $this->getElementName(['legal_entity_number']);
       $form_state->setErrorByName($this->getElementName('legal_entity_number'), $this->wrapErrorMessage('The legal entity number can be no longer than 8 digits.', $id));
     }
   }
@@ -98,6 +101,7 @@ class ParPartnershipFlowsLegalEntityForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

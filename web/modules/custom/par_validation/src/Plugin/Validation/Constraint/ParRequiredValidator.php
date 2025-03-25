@@ -16,6 +16,7 @@ class ParRequiredValidator extends ConstraintValidator {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validate($items, Constraint $constraint) {
     // Check to make sure there are field values.
     if ($items->isEmpty() && !$this->skipValidate()) {

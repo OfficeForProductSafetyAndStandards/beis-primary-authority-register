@@ -25,7 +25,7 @@ use Drupal\par_data\Plugin\Field\FieldType\ParLabelField;
  *
  * @ingroup par_data
  */
-class ParDataEntity extends Trance implements ParDataEntityInterface {
+class ParDataEntity extends Trance implements ParDataEntityInterface, \Stringable {
 
   use LoggerChannelTrait;
   use StringTranslationTrait;
@@ -45,9 +45,10 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * Render the string version of this entity.
    */
-  public function __toString(){
+  #[\Override]
+  public function __toString(): string{
     return $this->t("@type: @label (@id)", [
-      '@type' => mb_strtoupper($this->getTypeEntity()->label()),
+      '@type' => mb_strtoupper((string) $this->getTypeEntity()->label()),
       '@label' => $this->label(),
       '@id' => $this->id(),
     ])->render();
@@ -111,6 +112,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * Get the type entity.
    */
+  #[\Override]
   public function getTypeEntity() {
     return $this->type->entity;
   }
@@ -118,6 +120,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getViewBuilder() {
     return \Drupal::entityTypeManager()->getViewBuilder($this->getEntityTypeId());
   }
@@ -125,6 +128,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function label() {
     //PAR-988 prevent the page crashing when NULL is returned by getTypeEntity() on the current entity.
     if (is_object($this->getTypeEntity())) {
@@ -192,6 +196,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function isRevoked() {
     return $this->getTypeEntity()->isRevokable() && $this->getBoolean(self::REVOKE_FIELD);
   }
@@ -199,6 +204,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function isArchived() {
     return $this->getTypeEntity()->isArchivable() && $this->getBoolean(self::ARCHIVE_FIELD);
   }
@@ -206,6 +212,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function isDeletable() {
     // Only some PAR entities can be deleted.
     return $this->getTypeEntity()->isDeletable() &&
@@ -241,6 +248,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function hasDependencies() {
     // Identify if there are any other entities which depend
     // on this one, which may impact whether this can be deleted.
@@ -250,6 +258,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function delete($reason = '', $deletable = FALSE) {
     // Do not allow removal if the entity is not a deletable entity type
     if (!$this->isDeletable() && !$deletable) {
@@ -305,6 +314,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function destroy($reason = '') {
     return $this->delete($reason, TRUE);
   }
@@ -328,6 +338,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function revoke($save = TRUE, $reason = '') {
     if ($this->isNew()) {
       $save = FALSE;
@@ -353,6 +364,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function unrevoke($save = TRUE) {
     return $this->restore($save);
   }
@@ -360,6 +372,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function archive($save = TRUE, $reason = '') {
     if ($this->isNew()) {
       $save = FALSE;
@@ -386,6 +399,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function restore($save = TRUE) {
     // Stop recursive loops for new entities.
     if ($this->isNew()) {
@@ -417,6 +431,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function inProgress() {
     // By default there are no conditions by which an entity is frozen.
     return FALSE;
@@ -425,6 +440,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function isActive() {
     return !$this->isRevoked() && !$this->isArchived();
   }
@@ -432,6 +448,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function hasStatus(): bool {
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
 
@@ -441,6 +458,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getRawStatus() {
     if ($this->isRevoked()) {
       return self::REVOKE_FIELD;
@@ -461,6 +479,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getParStatus() {
     $raw_status = $this->getRawStatus();
 
@@ -479,6 +498,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function setParStatus($value, $ignore_transition_check = FALSE) {
     // Determine whether we can change the value based on the current status.
     if (!$this->canTransition($value) && !$ignore_transition_check) {
@@ -722,9 +742,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     // As a general rule, any entities that reference this entity
     // should stop this entity being deleted.
     $relationships = $this->getRelationships(NULL, 'dependents', $reset);
-    $relationships = array_filter($relationships, function ($relationship) {
-      return ($relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_REVERSE);
-    });
+    $relationships = array_filter($relationships, fn($relationship) => $relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_REVERSE);
 
     return $relationships;
   }
@@ -746,8 +764,8 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     // Enable in memory caching for repeated entity lookups.
     $unique_function_id = __FUNCTION__ . ':'
       . $this->uuid() . ':'
-      . (isset($target) ? $target : 'null') . ':'
-      . (isset($action) ? $action : 'null');
+      . ($target ?? 'null') . ':'
+      . ($action ?? 'null');
     $relationships = &drupal_static($unique_function_id);
     if (!$reset && isset($relationships)) {
       return $relationships;
@@ -812,16 +830,12 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     // Return only permitted relationships for a given action
     if ($target) {
-      $relationships = array_filter($relationships, function ($relationship) use ($target) {
-        return $this->filterRelationshipsByTarget($relationship, $target);
-      });
+      $relationships = array_filter($relationships, fn($relationship) => $this->filterRelationshipsByTarget($relationship, $target));
     }
 
     // Return only permitted relationships for a given action
     if ($action) {
-      $relationships = array_filter($relationships, function ($relationship) use ($action) {
-        return $this->filterRelationshipsByAction($relationship, $action);
-      });
+      $relationships = array_filter($relationships, fn($relationship) => $this->filterRelationshipsByAction($relationship, $action));
     }
 
     return $relationships;
@@ -1038,6 +1052,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getCompletionPercentage($include_deltas = FALSE) {
     $total = 0;
     $completed = 0;
@@ -1063,6 +1078,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function setNewRevision($value = TRUE, $message = NULL) {
     parent::setNewRevision($value);
 
@@ -1100,6 +1116,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getPlain($field) {
     if (!$this->hasField($field) || $this->get($field)->isEmpty()) {
       return;
@@ -1117,10 +1134,11 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
-    $fields['name'] = $fields['name']->setDefaultValueCallback(__CLASS__ . '::setDefaultTitle')
+    $fields['name'] = $fields['name']->setDefaultValueCallback(self::class . '::setDefaultTitle')
       ->setSettings([
         'max_length' => 255,
         'text_processing' => 0,

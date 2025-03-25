@@ -4,7 +4,9 @@
  * @file
  * Contains par_roles.module.
  */
-
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\par_data\Entity\ParDataPerson;
@@ -44,7 +46,7 @@ function par_roles_user_presave($account) {
 
 function par_roles_user_insert($account) {
   // Do not run this check for test accounts.
-  if (preg_match('/@example.com$/', $account->getEmail()) === 1) {
+  if (preg_match('/@example.com$/', (string) $account->getEmail()) === 1) {
     return;
   }
 
@@ -54,7 +56,7 @@ function par_roles_user_insert($account) {
 
 function par_roles_user_update($account) {
   // Do not run this check for test accounts.
-  if (preg_match('/@example.com$/', $account->getEmail()) === 1) {
+  if (preg_match('/@example.com$/', (string) $account->getEmail()) === 1) {
     return;
   }
 
@@ -72,7 +74,7 @@ function par_roles_user_update($account) {
  *
  * {@inheritDoc}
  */
-function par_roles_entity_field_access($operation, \Drupal\Core\Field\FieldDefinitionInterface $field_definition, \Drupal\Core\Session\AccountInterface $account, \Drupal\Core\Field\FieldItemListInterface $items = NULL) {
+function par_roles_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, FieldItemListInterface $items = NULL) {
   if ($operation === 'view' && $field_definition->getTargetEntityTypeId() === 'user') {
     return AccessResult::allowedIfHasPermission($account, 'view user fields');
   }

@@ -27,12 +27,12 @@ trait ParFlowAccessTrait {
     try {
       // Get a new flow negotiator that points the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException $e) {
+    } catch (ParFlowException) {
 
     }
 
     if ($par_data_person) {
-      $user = $user ?? $par_data_person->getUserAccount();
+      $user ??= $par_data_person->getUserAccount();
     }
 
     if (!$user) {

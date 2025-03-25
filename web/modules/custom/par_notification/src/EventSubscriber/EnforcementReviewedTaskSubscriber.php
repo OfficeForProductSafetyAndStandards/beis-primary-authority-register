@@ -20,9 +20,11 @@ class EnforcementReviewedTaskSubscriber extends ParEventSubscriberBase  {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  #[\Override]
+  static function getSubscribedEvents(): array {
+    $events = [];
     // Reviewed enforcement notice.
-    if (class_exists('Drupal\par_data\Event\ParDataEvent')) {
+    if (class_exists(ParDataEvent::class)) {
       $events[ParDataEvent::statusChange('par_data_enforcement_notice', 'reviewed')][] = ['onEnforcementNoticeReviewed', 200];
     }
 

@@ -1,0 +1,2 @@
+vendor/bin/phpcs --standard=vendor/phpcompatibility/php-compatibility/PHPCompatibility/ruleset.xml --ignore=*.js,*.css --runtime-set testVersion 8.3 web/themes/custom web/modules/custom web/modules/features;
+vendor/bin/phpcs --standard=vendor/phpcompatibility/php-compatibility/PHPCompatibility/ruleset.xml --ignore=*.js,*.css --runtime-set testVersion 8.4 web/themes/custom web/modules/custom web/modules/features;

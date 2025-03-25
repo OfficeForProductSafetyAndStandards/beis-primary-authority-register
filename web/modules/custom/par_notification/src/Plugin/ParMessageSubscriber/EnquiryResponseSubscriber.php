@@ -31,6 +31,7 @@ class EnquiryResponseSubscriber extends ParMessageSubscriberBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getRecipients(MessageInterface $message): array {
     $par_data_manager = \Drupal::service('par_data.manager');
     $recipients = parent::getRecipients($message);
@@ -83,7 +84,7 @@ class EnquiryResponseSubscriber extends ParMessageSubscriberBase {
             );
           }
         }
-        catch (ParDataException $e) {
+        catch (ParDataException) {
 
         }
       }
@@ -95,6 +96,7 @@ class EnquiryResponseSubscriber extends ParMessageSubscriberBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getSubscribedEntities(MessageInterface $message): array {
     $subscriptions = parent::getSubscribedEntities($message);
 
@@ -124,7 +126,7 @@ class EnquiryResponseSubscriber extends ParMessageSubscriberBase {
         try {
           $receiver = $enquiry_entity->receiver();
         }
-        catch (ParDataException $e) {
+        catch (ParDataException) {
           $receiver = [];
         }
         $subscriptions = array_merge(

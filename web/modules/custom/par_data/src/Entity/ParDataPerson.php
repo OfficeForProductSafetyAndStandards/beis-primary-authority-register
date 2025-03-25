@@ -83,17 +83,14 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
   /**
    * {@inheritdoc}
    */
-  public function filterRelationshipsByAction($relationship, $action) {
-    switch ($action) {
-      case 'manage':
-        // Only follow relationships to authorities and organisations.
-        // This is the very core of how membership is granted within PAR.
-        return (bool) ($relationship->getEntity()->getEntityTypeId() === 'par_data_organisation'
-          || $relationship->getEntity()->getEntityTypeId() === 'par_data_authority');
-
-    }
-
-    return parent::filterRelationshipsByAction($relationship, $action);
+  #[\Override]
+  public function filterRelationshipsByAction($relationship, $action)
+  {
+      return match ($action) {
+          'manage' => (bool) ($relationship->getEntity()->getEntityTypeId() === 'par_data_organisation'
+            || $relationship->getEntity()->getEntityTypeId() === 'par_data_authority'),
+          default => parent::filterRelationshipsByAction($relationship, $action),
+      };
   }
 
   /**
@@ -112,6 +109,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function lookupUserAccount(): ?UserInterface {
     $entities = \Drupal::entityTypeManager()
       ->getStorage('user')
@@ -146,6 +144,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
    *
    * @see ParDataManager::getUserPeople()
    */
+  #[\Override]
   public function getUserAccount(): ?UserInterface {
     return $this->lookupUserAccount() ??
       $this->hasUserAccount() ? $this->retrieveUserAccount() : NULL;
@@ -154,6 +153,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function setUserAccount(mixed $account) {
     $this->set('field_user_account', $account);
   }
@@ -161,6 +161,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getSimilarPeople(bool $link_up = TRUE): array {
     $account = $this->getUserAccount();
 
@@ -202,12 +203,13 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
       return FALSE;
     });
 
-    return isset($people) ? $people : [];
+    return $people ?? [];
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function linkAccounts(UserInterface $account = NULL): ?UserInterface {
     $saved = FALSE;
     if (!$account) {
@@ -269,35 +271,27 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
 
     // Filter out all institutions that don't match the type, if supplied.
     if ($type) {
-      $memberships = array_filter($memberships, function ($membership) use ($type) {
-        return $type === $membership->getEntityTypeId();
-      });
+      $memberships = array_filter($memberships, fn($membership) => $type === $membership->getEntityTypeId());
     }
 
     // Get this person's current memberships.
     $current_memberships = iterator_to_array($this->getInstitutions($type));
 
     // Get the memberships to remove, the current memberships that are not being updated.
-    $remove_memberships = array_diff_uassoc($current_memberships, $memberships, function ($a, $b) {
-      return $a instanceof ParDataMembershipInterface && $b instanceof ParDataMembershipInterface &&
-      $a->uuid() === $b->uuid() ? 0 : -1;
-    });
+    $remove_memberships = array_diff_uassoc($current_memberships, $memberships, fn($a, $b) => $a instanceof ParDataMembershipInterface && $b instanceof ParDataMembershipInterface &&
+    $a->uuid() === $b->uuid() ? 0 : -1);
 
     // Users without the 'bypass par_data membership' permission can only manage their own institutions.
     if (!$current_user->hasPermission('bypass par_data membership')) {
       $current_user_memberships = iterator_to_array($this->getParRoleManager()->getInstitutions($current_user));
 
       // Filter memberships.
-      $memberships = array_intersect_uassoc($current_user_memberships, $memberships, function ($a, $b) {
-        return $a instanceof ParDataMembershipInterface && $b instanceof ParDataMembershipInterface &&
-        $a->uuid() === $b->uuid() ? 0 : -1;
-      });
+      $memberships = array_intersect_uassoc($current_user_memberships, $memberships, fn($a, $b) => $a instanceof ParDataMembershipInterface && $b instanceof ParDataMembershipInterface &&
+      $a->uuid() === $b->uuid() ? 0 : -1);
 
       // Filter remove memberships.
-      $remove_memberships = array_intersect_uassoc($current_user_memberships, $remove_memberships, function ($a, $b) {
-        return $a instanceof ParDataMembershipInterface && $b instanceof ParDataMembershipInterface &&
-        $a->uuid() === $b->uuid() ? 0 : -1;
-      });
+      $remove_memberships = array_intersect_uassoc($current_user_memberships, $remove_memberships, fn($a, $b) => $a instanceof ParDataMembershipInterface && $b instanceof ParDataMembershipInterface &&
+      $a->uuid() === $b->uuid() ? 0 : -1);
     }
 
     // Add.
@@ -368,7 +362,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
     $unset_ids = [];
 
     // Ensure $authorities is defined before using it
-    $authorities = $authorities ?? []; // Initialize to an empty array if not set
+    $authorities ??= []; // Initialize to an empty array if not set
 
     $user = User::load(\Drupal::currentUser()->id());
     $relationships = $this->getRelationships('par_data_authority');
@@ -535,6 +529,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function getFullName(): string {
     return implode(" ", [
       $this->get('salutation')->getString(),
@@ -592,6 +587,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getEmail(): ?string {
     return $this->get('email')->getString();
   }
@@ -656,25 +652,22 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
       $preference_message = "preferred";
     }
 
-    return isset($preference_message) ? $preference_message : null;
+    return $preference_message ?? null;
   }
 
   /**
    * @return iterable<EntityInterface>
    */
+   #[\Override]
    public function getInstitutions(string $type = NULL): iterable {
     $relationships = $this->getRelationships(NULL, NULL, TRUE);
 
     // Get all the relationships that reference this person.
-    $relationships = array_filter($relationships, function ($relationship) {
-      return ParDataRelationship::DIRECTION_REVERSE === $relationship->getRelationshipDirection() &&
-        ($relationship->getEntity() instanceof ParDataMembershipInterface);
-    });
+    $relationships = array_filter($relationships, fn($relationship) => ParDataRelationship::DIRECTION_REVERSE === $relationship->getRelationshipDirection() &&
+      ($relationship->getEntity() instanceof ParDataMembershipInterface));
 
     if ($type) {
-      $relationships = array_filter($relationships, function ($relationship) use ($type) {
-        return ($type === $relationship->getEntity()->getEntityTypeId());
-      });
+      $relationships = array_filter($relationships, fn($relationship) => $type === $relationship->getEntity()->getEntityTypeId());
     }
 
     foreach ($relationships as $relationship) {
@@ -692,9 +685,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
     $relationships = $this->getRelationships(NULL, NULL, TRUE);
 
     // Get all the relationships that reference this person.
-    $relationships = array_filter($relationships, function ($relationship) {
-      return (ParDataRelationship::DIRECTION_REVERSE === $relationship->getRelationshipDirection());
-    });
+    $relationships = array_filter($relationships, fn($relationship) => ParDataRelationship::DIRECTION_REVERSE === $relationship->getRelationshipDirection());
 
     foreach ($relationships as $relationship) {
       $label = '';
@@ -750,6 +741,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 

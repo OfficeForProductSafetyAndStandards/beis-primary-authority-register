@@ -13,7 +13,7 @@ use Drupal\par_data_test_entity\Plugin\TestSchedulerManager;
  */
 class ParSchedulerTestBase extends EntityKernelTestBase {
 
-  static $modules = ['user', 'language', 'content_translation', 'comment', 'trance', 'par_validation', 'par_data', 'par_data_config', 'par_data_test_entity', 'par_actions', 'datetime', 'link'];
+  protected static $modules = ['user', 'language', 'content_translation', 'comment', 'trance', 'par_validation', 'par_data', 'par_data_config', 'par_data_test_entity', 'par_actions', 'datetime', 'link'];
 
   /**
    * @var AccountInterface $account
@@ -35,6 +35,7 @@ class ParSchedulerTestBase extends EntityKernelTestBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function setUp(): void {
     // Must change the bytea_output to the format "escape" before running tests.
     // @see https://www.drupal.org/node/2810049

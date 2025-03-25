@@ -15,7 +15,8 @@ class UserDefaultSubscriber implements EventSubscriberInterface {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  #[\Override]
+  static function getSubscribedEvents(): array {
     $events[EntityInsertEvent::class][] = ['onEvent', 10];
     return $events;
   }

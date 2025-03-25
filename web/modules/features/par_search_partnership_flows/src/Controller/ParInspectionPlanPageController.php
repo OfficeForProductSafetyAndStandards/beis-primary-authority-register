@@ -23,6 +23,7 @@ class ParInspectionPlanPageController extends ParBaseController {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
 
     $par_data_partnership_inspection_plan = $this->getFlowDataHandler()->getParameter('par_data_inspection_plan');
@@ -35,6 +36,7 @@ class ParInspectionPlanPageController extends ParBaseController {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function build($build = [], ParDataPartnership $par_data_partnership = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL) {
 
     if ($par_data_inspection_plan->isRevoked()) {

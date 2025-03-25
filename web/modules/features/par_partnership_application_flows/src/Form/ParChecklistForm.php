@@ -16,6 +16,7 @@ class ParChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     // Load application type from previous step.
     $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_application_type');
@@ -30,6 +31,7 @@ class ParChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
 
     // Load application type from previous step.
@@ -106,6 +108,7 @@ class ParChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 

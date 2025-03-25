@@ -12,7 +12,7 @@ references:
           APP_ENV: ci
           SENTRY_ENVIRONMENT: ci
 
-      - image: cimg/postgres:13.4-postgis
+      - image: cimg/postgres:16.8-postgis
         environment:
           PGHOST: localhost
           POSTGRES_USER: par
@@ -243,7 +243,7 @@ jobs:
       - run:
           name: "Run unit tests"
           command: |
-            ./vendor/bin/paratest --processes=16 --no-coverage
+            ./vendor/bin/phpunit --no-coverage
       # Save artifacts
       - store_artifacts:
           path: /var/www/html/tests/reports
@@ -319,6 +319,35 @@ jobs:
       - store_artifacts:
           path: /var/www/html/tests/reports
           destination: build
+
+  deploy_migration:
+    circleci_ip_ranges: true
+    <<: *defaults
+    steps:
+      - *clean_working_directory
+      - *attach_workspace
+      - *restore_code
+      - *restore_dependencies
+      - *restore_scaffold
+      - *configure_webroot
+      - *build_assets
+      - *remove_assets
+      - run:
+          name: "Examine asset bundle."
+          command: |
+            ls -lah /tmp/workspace
+      - *aws_setup
+      - aws-s3/copy:
+          from: /tmp/${CIRCLE_TAG}.tar.gz
+          to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
+          arguments: |
+            --cache-control "max-age=0"
+      - run:
+          name: "Deploy to migration environment"
+          command: |
+            DEPLOY_ENV="migration"
+            printf "$DEPLOY_ENV\n"
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
 
   deploy_stage:
     circleci_ip_ranges: true
@@ -490,6 +519,23 @@ workflows:
           filters:
             tags:
               only: /^[a-zA-Z0-9]+.*/
+            branches:
+              ignore: /.*/
+      - hold_migration:
+          type: approval
+          requires:
+            - test_full
+          filters:
+            tags:
+              only: /^m.*/
+            branches:
+              ignore: /.*/
+      - deploy_migration:
+          requires:
+            - hold_migration
+          filters:
+            tags:
+              only: /^m.*/
             branches:
               ignore: /.*/
       - hold_stage:

@@ -37,6 +37,7 @@ class CookieBannerBlock extends BlockBase implements ContainerFactoryPluginInter
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
       $configuration,
@@ -68,6 +69,7 @@ class CookieBannerBlock extends BlockBase implements ContainerFactoryPluginInter
    * @return array
    *   An associative array with the default configuration.
    */
+  #[\Override]
   protected function baseConfigurationDefaults() {
     return ['label_display' => FALSE] + parent::baseConfigurationDefaults();
   }
@@ -75,6 +77,7 @@ class CookieBannerBlock extends BlockBase implements ContainerFactoryPluginInter
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function build() {
     $build = [
       '#cache' => [
