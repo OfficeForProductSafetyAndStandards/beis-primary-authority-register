@@ -34,6 +34,7 @@ class ParSelectInstitutionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     parent::loadData();
 

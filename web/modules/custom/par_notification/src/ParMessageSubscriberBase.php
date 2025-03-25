@@ -80,6 +80,7 @@ abstract class ParMessageSubscriberBase extends PluginBase implements ParMessage
    *
    * {@inheritdoc}
    */
+  #[\Override]
   public function getRecipients(MessageInterface $message): array {
     return [];
   }
@@ -87,6 +88,7 @@ abstract class ParMessageSubscriberBase extends PluginBase implements ParMessage
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getSubscribedEntities(MessageInterface $message): array {
     return [];
   }

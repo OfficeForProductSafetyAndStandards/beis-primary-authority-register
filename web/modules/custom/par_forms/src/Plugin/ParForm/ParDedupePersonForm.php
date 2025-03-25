@@ -31,7 +31,7 @@ class ParDedupePersonForm extends ParFormPluginBase {
    * @return mixed
    *   A user account if selected, otherwise null.
    */
-  static function getDedupedPerson($value) {
+  static function getDedupedPerson(mixed $value) {
     foreach ([self::ADD_NEW] as $opt) {
       if ($value === $opt) {
         return NULL;
@@ -46,6 +46,7 @@ class ParDedupePersonForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
 
@@ -89,6 +90,7 @@ class ParDedupePersonForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // Get all the allowed authorities.
     $contact_records = $this->getFlowDataHandler()->getFormPermValue('contact_records');
@@ -134,6 +136,7 @@ class ParDedupePersonForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $person_id_key = $this->getElementKey('contact_record');
     if (empty($form_state->getValue($person_id_key))) {

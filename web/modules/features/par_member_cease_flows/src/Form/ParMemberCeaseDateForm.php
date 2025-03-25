@@ -18,6 +18,7 @@ class ParMemberCeaseDateForm extends ParBaseForm {
   /**
    * Set the page title.
    */
+  #[\Override]
   public function titleCallback(ParDataPartnership $par_data_partnership = NULL, ParDataCoordinatedBusiness $par_data_coordinated_business = NULL) {
     $member = $par_data_coordinated_business->getOrganisation(TRUE);
     $this->pageTitle = "Cease membership for {$member->label()}";

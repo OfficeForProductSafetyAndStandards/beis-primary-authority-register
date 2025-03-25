@@ -21,6 +21,7 @@ use Drupal\par_actions\ParSchedulerRuleBase;
  */
 class ParInspectionPlanExpire extends ParSchedulerRuleBase {
 
+  #[\Override]
   public function query() {
     $query = parent::query();
 

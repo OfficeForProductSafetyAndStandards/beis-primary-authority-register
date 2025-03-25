@@ -35,6 +35,7 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     $par_data_inspection_plan = $this->getFlowDataHandler()->getParameter('par_data_inspection_plan');
 
@@ -72,6 +73,7 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $par_data_inspection_plan);
     $Inspection_plan_bundle = $this->getParDataManager()->getParBundleEntity('par_data_inspection_plan');

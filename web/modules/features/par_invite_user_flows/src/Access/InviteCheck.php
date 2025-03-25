@@ -24,30 +24,24 @@ use Symfony\Component\Routing\Route;
 class InviteCheck implements AccessInterface {
 
   /**
-   * The PAR Role Manager.
-   *
-   * @var ParRoleManagerInterface
-   */
-  private ParRoleManagerInterface $parRoleManager;
-
-  /**
-   * The PAR Flow Negotiator.
-   *
-   * @var \Drupal\par_flows\ParFlowNegotiatorInterface
-   */
-  private ParFlowNegotiatorInterface $flowNegotiator;
-
-  /**
    * CustomAccessCheck constructor.
    *
-   * @param ParRoleManagerInterface $par_role_manager
+   * @param ParRoleManagerInterface $parRoleManager
    *   Role Manager Service
-   * @param ParFlowNegotiatorInterface $flow_negotiator
+   * @param ParFlowNegotiatorInterface $flowNegotiator
    *   Flow Negotiator Service
    */
-  public function __construct(ParRoleManagerInterface $par_role_manager, ParFlowNegotiatorInterface $flow_negotiator) {
-    $this->parRoleManager = $par_role_manager;
-    $this->flowNegotiator = $flow_negotiator;
+  public function __construct(
+      /**
+       * The PAR Role Manager.
+       */
+      private readonly ParRoleManagerInterface $parRoleManager,
+      /**
+       * The PAR Flow Negotiator.
+       */
+      private readonly ParFlowNegotiatorInterface $flowNegotiator
+  )
+  {
   }
 
   /**
@@ -80,7 +74,7 @@ class InviteCheck implements AccessInterface {
     try {
       // Get a new flow negotiator that points to the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException $e) {
+    } catch (ParFlowException) {
 
     }
 

@@ -2,6 +2,7 @@
 
 namespace Drupal\par_actions;
 
+use Drupal\par_actions\Annotation\ParSchedulerRule;
 use Drupal\Component\Plugin\Factory\DefaultFactory;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
@@ -49,8 +50,8 @@ class ParScheduleManager extends DefaultPluginManager {
       'Plugin/ParSchedulerRule',
       $namespaces,
       $module_handler,
-      'Drupal\par_actions\ParSchedulerRuleInterface',
-      'Drupal\par_actions\Annotation\ParSchedulerRule'
+      ParSchedulerRuleInterface::class,
+      ParSchedulerRule::class
     );
 
     $this->alterInfo('par_scheduler_info');
@@ -70,6 +71,7 @@ class ParScheduleManager extends DefaultPluginManager {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function processDefinition(&$definition, $plugin_id) {
     parent::processDefinition($definition, $plugin_id);
 
@@ -88,6 +90,7 @@ class ParScheduleManager extends DefaultPluginManager {
    *
    * @return \Drupal\par_actions\ParSchedulerRuleInterface
    */
+  #[\Override]
   public function createInstance($plugin_id, array $configuration = []) {
     return parent::createInstance($plugin_id, $configuration);
   }
@@ -95,6 +98,7 @@ class ParScheduleManager extends DefaultPluginManager {
   /**
    * Get only the enabled rules.
    */
+  #[\Override]
   public function getDefinitions($only_active = FALSE) {
     $definitions = [];
     foreach (parent::getDefinitions() as $id => $definition) {

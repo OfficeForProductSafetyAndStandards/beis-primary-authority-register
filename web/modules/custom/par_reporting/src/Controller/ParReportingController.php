@@ -44,6 +44,7 @@ class ParReportingController extends ControllerBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('par_data.manager'),

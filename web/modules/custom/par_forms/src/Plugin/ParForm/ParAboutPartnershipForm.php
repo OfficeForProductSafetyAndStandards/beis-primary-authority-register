@@ -30,6 +30,7 @@ class ParAboutPartnershipForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     if ($par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_organisation')) {
       $this->getFlowDataHandler()->setFormPermValue('about_partnership', $par_data_partnership->getPlain('about_partnership'));
@@ -41,6 +42,7 @@ class ParAboutPartnershipForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
 
     $form['about_partnership'] = [

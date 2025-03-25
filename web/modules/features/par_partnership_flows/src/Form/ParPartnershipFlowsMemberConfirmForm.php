@@ -126,6 +126,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
@@ -211,6 +212,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
   }
@@ -218,6 +220,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
@@ -230,7 +233,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
     $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_member_upload');
     $members = $this->getFlowDataHandler()->getTempDataValue("coordinated_members", $cid);
     foreach ($members as $i => $member) {
-      $requires_attention = isset($attentions[$i]) ? $attentions[$i] : NULL;
+      $requires_attention = $attentions[$i] ?? NULL;
 
       // Process the row.
       $this->processRow($route_partnership->id(), $member, $requires_attention);
@@ -302,7 +305,7 @@ class ParPartnershipFlowsMemberConfirmForm extends ParBaseForm {
       $queue = \Drupal::queue('par_partnership_add_members', TRUE);
       $queue->createQueue();
       $queue->createItem($data);
-    } catch (\Exception $e) {
+    } catch (\Exception) {
       // @TODO Log this in a way that errors can be reported to the uploader.
     }
 

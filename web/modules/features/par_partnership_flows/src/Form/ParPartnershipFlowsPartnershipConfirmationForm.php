@@ -25,6 +25,7 @@ class ParPartnershipFlowsPartnershipConfirmationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     if ($par_data_partnership) {
@@ -41,6 +42,7 @@ class ParPartnershipFlowsPartnershipConfirmationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     if ($par_data_partnership) {
       $form['partnership_id'] = [
@@ -95,6 +97,7 @@ class ParPartnershipFlowsPartnershipConfirmationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
@@ -108,6 +111,7 @@ class ParPartnershipFlowsPartnershipConfirmationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
@@ -124,7 +128,7 @@ class ParPartnershipFlowsPartnershipConfirmationForm extends ParBaseForm {
       try {
         $par_data_partnership->setParStatus('confirmed_business');
       }
-      catch (ParDataException $e) {
+      catch (ParDataException) {
         // If the status could not be updated we want to log this but continue.
         $message = $this->t("This status could not be updated to 'Approved by the Organisation' for the %label");
         $replacements = [

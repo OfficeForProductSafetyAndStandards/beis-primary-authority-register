@@ -67,6 +67,8 @@ web/sites/simpletest
 
 # Exclude project files.
 /.idea/
+/.docksal
+/.ddev
 *.DS_Store
 .buildpath
 .project

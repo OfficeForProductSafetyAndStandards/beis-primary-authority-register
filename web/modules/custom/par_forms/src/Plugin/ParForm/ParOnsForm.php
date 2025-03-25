@@ -27,6 +27,7 @@ class ParOnsForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_authority = $this->getFlowDataHandler()->getParameter('par_data_authority');
 
@@ -41,6 +42,7 @@ class ParOnsForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $form['ons_code'] = [
       '#type' => 'textfield',

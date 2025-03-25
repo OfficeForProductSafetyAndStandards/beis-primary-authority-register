@@ -61,6 +61,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     if ($par_data_legal_entity = $this->getFlowDataHandler()->getParameter('par_data_legal_entity')) {
       // Set the registry id.
@@ -101,6 +102,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
    *
    * {@inheritdoc}
    */
+  #[\Override]
   public function filterItem(array $item): array {
     $item = parent::filterItem($item);
 
@@ -137,6 +139,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function getSummaryList(array $form = []): mixed {
     // Get a number formatter to display the row values in words.
     $formatter = new \NumberFormatter('en_UK', \NumberFormatter::SPELLOUT);
@@ -186,7 +189,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
         $values = [
           'registry' => $this->getDefaultValuesByKey(['registry'], $index,  ParDataLegalEntity::DEFAULT_REGISTER),
           'registered_name' => $this->getDefaultValuesByKey(['unregistered', 'legal_entity_name'], $index,  ''),
-          'registered_number' => trim($this->getDefaultValuesByKey(['registered', 'legal_entity_number'], $index,  '')),
+          'registered_number' => trim((string) $this->getDefaultValuesByKey(['registered', 'legal_entity_number'], $index,  '')),
           'legal_entity_type' => $this->getDefaultValuesByKey(['unregistered', 'legal_entity_type'], $index,  ''),
         ];
       }
@@ -234,6 +237,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $registry_options = [
       'companies_house' => 'A registered organisation',
@@ -288,7 +292,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       '#options_descriptions' => $registry_options_descriptions,
       '#default_value' => $this->getDefaultValuesByKey('registry', $index, ),
       '#after_build' => [
-        [get_class($this), 'optionsDescriptions'],
+        [static::class, 'optionsDescriptions'],
       ],
       '#attributes' => [
         'class' => ['govuk-form-group'],
@@ -353,7 +357,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
       '#options' => $unregistered_type_options,
       '#options_descriptions' => $unregistered_type_options_descriptions,
       '#after_build' => [
-        [get_class($this), 'optionsDescriptions'],
+        [static::class, 'optionsDescriptions'],
       ],
       '#states' => [
         'checked' => [
@@ -415,6 +419,7 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
   /**
    * Validate date field.
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $registry_element = $this->getElement($form, ['registry'], $index);
     $register_id = $registry_element ? $form_state->getValue($registry_element['#parents']) : NULL;
@@ -485,15 +490,15 @@ class ParLegalEntityForm extends ParFormPluginBase implements ParSummaryListInte
             $this->setError($form, $form_state, $number_element, $message);
           }
         }
-        catch (DataException $e) {
+        catch (DataException) {
           // If the legal entity number does not exist in the registry.
           $message = 'The legal entity number you entered could not be found.';
           $this->setError($form, $form_state, $number_element, $message);
         }
-        catch (TemporaryException $ignore) {
+        catch (TemporaryException) {
           // Users are not responsible for temporary or rate limiting errors.
         }
-        catch (PluginNotFoundException $ignore) {
+        catch (PluginNotFoundException) {
           // Ignore system errors.
         }
       }

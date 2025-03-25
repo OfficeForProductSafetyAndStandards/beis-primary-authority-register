@@ -30,10 +30,10 @@ trait ParRedirectTrait {
         ->compile()
         ->getPathVariables();
     }
-    catch (RouteNotFoundException $e) {
+    catch (RouteNotFoundException) {
       throw new ParFlowException(t('This flow cannot find the route @route', ['@route' => $route]));
     }
-    catch (MissingMandatoryParametersException $e) {
+    catch (MissingMandatoryParametersException) {
       throw new ParFlowException(t('The parameters are missing for the route @route', ['@route' => $route]));
     }
 

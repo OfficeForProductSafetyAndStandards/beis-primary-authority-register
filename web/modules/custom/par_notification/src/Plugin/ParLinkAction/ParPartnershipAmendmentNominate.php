@@ -36,6 +36,7 @@ class ParPartnershipAmendmentNominate extends ParLinkActionBase implements ParTa
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function isComplete(MessageInterface $message): bool {
     // Check if this is a valid task.
     if (!$message->hasField($this->getPrimaryField())
@@ -50,9 +51,7 @@ class ParPartnershipAmendmentNominate extends ParLinkActionBase implements ParTa
     foreach ($partnerships as $partnership) {
       $partnership_legal_entities = $partnership->getPartnershipLegalEntities();
       // Get only the partnership legal entities that are awaiting confirmation.
-      $partnership_legal_entities = array_filter($partnership_legal_entities, function ($partnership_legal_entity) {
-        return $partnership_legal_entity->getRawStatus() === 'confirmed_business';
-      });
+      $partnership_legal_entities = array_filter($partnership_legal_entities, fn($partnership_legal_entity) => $partnership_legal_entity->getRawStatus() === 'confirmed_business');
 
       if (!empty($partnership_legal_entities)) {
         return FALSE;

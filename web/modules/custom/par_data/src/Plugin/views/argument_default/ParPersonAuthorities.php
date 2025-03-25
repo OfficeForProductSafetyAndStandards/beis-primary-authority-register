@@ -37,6 +37,7 @@ class ParPersonAuthorities extends ArgumentDefaultPluginBase implements Cacheabl
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
       $configuration,
@@ -48,6 +49,7 @@ class ParPersonAuthorities extends ArgumentDefaultPluginBase implements Cacheabl
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getArgument() {
     // Load current user and check if user has bypass permission.
     $account = User::load(\Drupal::currentUser()->id());
@@ -70,6 +72,7 @@ class ParPersonAuthorities extends ArgumentDefaultPluginBase implements Cacheabl
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getCacheMaxAge() {
     return 0;
   }
@@ -77,6 +80,7 @@ class ParPersonAuthorities extends ArgumentDefaultPluginBase implements Cacheabl
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getCacheContexts() {
     return ['user'];
   }

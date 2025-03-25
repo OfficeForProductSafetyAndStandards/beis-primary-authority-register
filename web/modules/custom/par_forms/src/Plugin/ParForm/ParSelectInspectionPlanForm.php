@@ -21,6 +21,7 @@ class ParSelectInspectionPlanForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     if ($par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership')) {
       $inspection_plans = $par_data_partnership->getInspectionPlan();
@@ -36,6 +37,7 @@ class ParSelectInspectionPlanForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $inspection_plans = $this->getFlowDataHandler()->getFormPermValue('inspection_plan_options');
 
@@ -81,6 +83,7 @@ class ParSelectInspectionPlanForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $inspection_plan_key = $this->getElementKey('inspection_plan_id');
     $inspection_plan_values = array_filter($form_state->getValue($inspection_plan_key) ?? []);

@@ -33,6 +33,7 @@ class ParMemberDownload extends ControllerBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('page_cache_kill_switch'),
@@ -48,7 +49,7 @@ class ParMemberDownload extends ControllerBase {
 
     $name = strtolower('member_list_for_' . $par_data_partnership->label());
     $name = preg_replace('/[^a-z0-9_]+/', '_', $name);
-    $document_name = preg_replace('/_+/', '_', $name);
+    $document_name = preg_replace('/_+/', '_', (string) $name);
 
     if ($file = $this->getCsvHandler()->download($par_data_partnership)) {
       // Make this file response un-cacheable.

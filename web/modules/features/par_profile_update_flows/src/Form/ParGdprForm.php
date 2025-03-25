@@ -60,6 +60,7 @@ class ParGdprForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Disabling cancelling out of this form.
     $this->getFlowNegotiator()->getFlow()->disableAction('cancel');
@@ -69,6 +70,7 @@ class ParGdprForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

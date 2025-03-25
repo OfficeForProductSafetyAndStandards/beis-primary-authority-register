@@ -26,10 +26,11 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     // Load application type from previous step.
     $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_application_type');
-    $applicationType = ucfirst($this->getFlowDataHandler()->getDefaultValues('application_type', '', $cid));
+    $applicationType = ucfirst((string) $this->getFlowDataHandler()->getDefaultValues('application_type', '', $cid));
 
     // Set page title.
     $this->pageTitle = "{$applicationType} partnership application";
@@ -40,6 +41,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     $this->retrieveEditableValues();
 
@@ -182,6 +184,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 

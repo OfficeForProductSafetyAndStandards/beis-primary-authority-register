@@ -22,6 +22,7 @@ class ParContactForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_person = $partnership ? $partnership->getOrganisationPeople(TRUE) : NULL;

@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
+    - block_classes
     - par_govuk_cookies
   theme:
     - par_theme

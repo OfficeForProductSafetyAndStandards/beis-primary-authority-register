@@ -19,6 +19,7 @@ class CookieSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('config.factory')
@@ -28,6 +29,7 @@ class CookieSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getFormId() {
     return 'par_govuk_cookies_settings';
   }
@@ -35,6 +37,7 @@ class CookieSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function getEditableConfigNames() {
     return ['par_govuk_cookies.settings'];
   }
@@ -42,6 +45,7 @@ class CookieSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('par_govuk_cookies.settings');
 
@@ -77,6 +81,7 @@ class CookieSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
   }
@@ -84,6 +89,7 @@ class CookieSettingsForm extends ConfigFormBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $config = $this->config('par_govuk_cookies.settings');
     $config->set('name', $form_state->getValue('name'))

@@ -25,6 +25,7 @@ class ParReviewForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_inspection_plan = $this->getFlowDataHandler()->getParameter('par_data_inspection_plan');
@@ -35,6 +36,7 @@ class ParReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL) {
     // Set the data values on the entities
     $entities = $this->createEntities();
@@ -57,16 +59,12 @@ class ParReviewForm extends ParBaseForm {
     foreach ($partnerships as $partnership) {
       // Only return inactive enforcements.
       $enforcement_notices = $partnership->getEnforcements();
-      $enforcement_notices = array_filter($enforcement_notices, function ($enforcement) {
-        return $enforcement->inProgress();
-      });
+      $enforcement_notices = array_filter($enforcement_notices, fn($enforcement) => $enforcement->inProgress());
       $pending_enforcements = array_merge($pending_enforcements, $enforcement_notices);
 
       // Only return inactive deviation requests.
       $deviation_requests = $partnership->getDeviationRequests();
-      $deviation_requests = array_filter($deviation_requests, function ($deviation) {
-        return $deviation->inProgress();
-      });
+      $deviation_requests = array_filter($deviation_requests, fn($deviation) => $deviation->inProgress());
       $pending_deviation_requests = array_merge($pending_deviation_requests, $deviation_requests);
     }
 
@@ -241,6 +239,7 @@ class ParReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
@@ -268,14 +267,14 @@ class ParReviewForm extends ParBaseForm {
       sort($new_functions);
 
       if ($old_functions !== $new_functions) {
-        $id_key = $this->getElementKey('authority', 1, TRUE);
+        $id_key = $this->getElementKey('authority');
         $message = $this->t("The regulatory functions do not match those offered by @old_authority.", ['@old_authority' => $old_authority->label()])->render();
         $form_state->setErrorByName('authorities', $this->wrapErrorMessage($message, $this->getElementId($id_key, $form)));
       }
     }
     // Validate that there are two valid authorities to transfer between.
     else {
-      $id_key = $this->getElementKey('authority', 1, TRUE);
+      $id_key = $this->getElementKey('authority');
       $form_state->setErrorByName('authorities', $this->wrapErrorMessage('This transfer cannot be made at this time.', $this->getElementId($id_key, $form)));
     }
 
@@ -288,6 +287,7 @@ class ParReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

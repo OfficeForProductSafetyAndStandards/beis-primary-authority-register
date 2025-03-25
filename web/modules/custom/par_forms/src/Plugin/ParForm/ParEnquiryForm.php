@@ -28,6 +28,7 @@ class ParEnquiryForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     if ($par_data_general_enquiry = $this->getFlowDataHandler()->getParameter('par_data_general_enquiry')) {
       $this->getFlowDataHandler()->setFormPermValue('notes', $par_data_general_enquiry->getPlain('notes'));
@@ -39,6 +40,7 @@ class ParEnquiryForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
 
     $par_data_general_enquiry_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('par_data_general_enquiry', 'document');

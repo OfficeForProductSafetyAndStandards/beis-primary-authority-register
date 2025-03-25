@@ -23,6 +23,7 @@ class ParContactForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     $account = $this->getFlowDataHandler()->getParameter('user');
 

@@ -39,6 +39,7 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     return 'Are you sure you want to revoke this inspection plan?';
   }
@@ -54,6 +55,7 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
@@ -103,6 +105,7 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
@@ -116,6 +119,7 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

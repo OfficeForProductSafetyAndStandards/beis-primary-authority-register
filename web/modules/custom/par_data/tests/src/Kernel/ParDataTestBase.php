@@ -119,6 +119,7 @@ class ParDataTestBase extends EntityKernelTestBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function setUp(): void {
     // Must change the bytea_output to the format "escape" before running tests.
     // @see https://www.drupal.org/node/2810049
@@ -710,7 +711,7 @@ class ParDataTestBase extends EntityKernelTestBase {
 
   public function getCoordinatedBusinessValues(?array $values = []): array {
     // We need to create an Organisation Member first.
-    $organisation_1 = ParDataOrganisation::create(['organisation_name' => 'Member ' . rand(0, 1)] + $this->getOrganisationValues());
+    $organisation_1 = ParDataOrganisation::create(['organisation_name' => 'Member ' . random_int(0, 1)] + $this->getOrganisationValues());
     $organisation_1->save();
 
     $values += [
@@ -855,7 +856,7 @@ class ParDataTestBase extends EntityKernelTestBase {
         'about_partnership' => $this->randomString(1000),
         'approved_date' => '2017-06-01',
         'member_display' => 'external',
-        'member_number' => rand(0,9999),
+        'member_number' => random_int(0,9999),
         'member_link' => 'http://example.com',
         'reject_comment' => $this->randomString(1000),
         'revocation_source' => 'RD Executive',

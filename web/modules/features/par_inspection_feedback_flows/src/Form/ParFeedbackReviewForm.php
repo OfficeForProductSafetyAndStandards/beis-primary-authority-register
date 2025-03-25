@@ -25,6 +25,7 @@ class ParFeedbackReviewForm extends ParBaseForm {
    */
   protected $pageTitle = "Review submission";
 
+  #[\Override]
   public function loadData() {
     // Set the data values on the entities
     $entities = $this->createEntities();
@@ -78,6 +79,7 @@ class ParFeedbackReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataCoordinatedBusiness $par_data_coordinated_business = NULL) {
 
     return parent::buildForm($form, $form_state);
@@ -86,6 +88,7 @@ class ParFeedbackReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

@@ -2,15 +2,9 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
-use Drupal\Core\Entity\EntityEvent;
-use Drupal\Core\Entity\EntityEvents;
-use Drupal\message\Entity\Message;
-use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Event\ParDataEvent;
-use Drupal\par_data\Event\ParDataEventInterface;
-use Drupal\par_notification\ParNotificationException;
+use Drupal\core_event_dispatcher\Event\Entity\EntityPredeleteEvent;
+use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_notification\ParEventSubscriberBase;
 
 class PartnershipDeletedSubscriber extends ParEventSubscriberBase {
@@ -27,29 +21,35 @@ class PartnershipDeletedSubscriber extends ParEventSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  #[\Override]
+  static function getSubscribedEvents(): array {
+    $events = [];
     // Notify on partnership removal.
-    $events[EntityEvents::predelete('par_data_partnership')][] = ['onEvent', -100];
+    if (class_exists(ParDataEvent::class)) {
+      $events[EntityPreDeleteEvent::class][] = ['onEvent', -100];
+    }
 
     return $events;
   }
 
   /**
-   * @param EntityEvent $event
+   * @param EntityPreDeleteEvent $event
    */
-  public function onEvent(EntityEvent $event) {
-    $this->setEvent($event);
+  public function onEvent(EntityPreDeleteEvent $event) {
+    if ($event->getEntity() instanceof ParDataPartnership) {
+      $this->setEvent($event);
 
-    /** @var ParDataPartnership $entity */
-    $entity = $event->getEntity();
+      /** @var ParDataPartnership $entity */
+      $entity = $event->getEntity();
 
-    // Only send messages for partnerships.
-    if ($entity instanceof ParDataPartnership) {
-      // Send the message.
-      $arguments = [
-        '@partnership_label' => $entity->label(),
-      ];
-      $this->sendMessage($arguments);
+      // Only send messages for partnerships.
+      if ($entity instanceof ParDataPartnership) {
+        // Send the message.
+        $arguments = [
+          '@partnership_label' => $entity->label(),
+        ];
+        $this->sendMessage($arguments);
+      }
     }
   }
 }

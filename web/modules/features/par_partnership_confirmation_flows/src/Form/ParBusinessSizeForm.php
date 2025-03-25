@@ -22,6 +22,7 @@ class ParBusinessSizeForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = $partnership ? $partnership->getOrganisation(TRUE) : NULL;

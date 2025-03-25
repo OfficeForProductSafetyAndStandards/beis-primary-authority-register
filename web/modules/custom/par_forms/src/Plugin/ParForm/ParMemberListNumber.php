@@ -30,6 +30,7 @@ class ParMemberListNumber extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
@@ -43,6 +44,7 @@ class ParMemberListNumber extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // This form should only be displayed for coordinated partnerships.
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
@@ -64,6 +66,7 @@ class ParMemberListNumber extends ParFormPluginBase {
   /**
    * Validate date field.
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $number_member_key = $this->getElementKey('number_members');
 
@@ -80,6 +83,7 @@ class ParMemberListNumber extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
@@ -87,6 +91,7 @@ class ParMemberListNumber extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }

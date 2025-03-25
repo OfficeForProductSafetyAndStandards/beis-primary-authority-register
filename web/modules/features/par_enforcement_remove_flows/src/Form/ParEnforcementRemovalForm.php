@@ -23,6 +23,7 @@ class ParEnforcementRemovalForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
 
@@ -52,6 +53,7 @@ class ParEnforcementRemovalForm extends ParBaseForm {
   /**
    * Manipulate the reason for removal into string format.
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $reason_selection = $this->getFlowDataHandler()->getTempDataValue('reason_selection');
 

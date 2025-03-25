@@ -21,30 +21,24 @@ use Symfony\Component\Routing\Route;
 class LegalEntityAddCheck implements AccessInterface {
 
   /**
-   * The PAR Data Manager.
-   *
-   * @var \Drupal\par_data\ParDataManagerInterface
-   */
-  private ParDataManagerInterface $parDataManager;
-
-  /**
-   * The PAR Flow Negotiator.
-   *
-   * @var \Drupal\par_flows\ParFlowNegotiatorInterface
-   */
-  private ParFlowNegotiatorInterface $flowNegotiator;
-
-  /**
    * CustomAccessCheck constructor.
    *
-   * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
+   * @param \Drupal\par_data\ParDataManagerInterface $parDataManager
    *   Data Manager Service
-   * @param \Drupal\par_flows\ParFlowNegotiatorInterface $flow_negotiator
+   * @param \Drupal\par_flows\ParFlowNegotiatorInterface $flowNegotiator
    *   Flow Negotiator Service
    */
-  public function __construct(ParDataManagerInterface $par_data_manager, ParFlowNegotiatorInterface $flow_negotiator) {
-    $this->parDataManager = $par_data_manager;
-    $this->flowNegotiator = $flow_negotiator;
+  public function __construct(
+      /**
+       * The PAR Data Manager.
+       */
+      private readonly ParDataManagerInterface $parDataManager,
+      /**
+       * The PAR Flow Negotiator.
+       */
+      private readonly ParFlowNegotiatorInterface $flowNegotiator
+  )
+  {
   }
 
   /**
@@ -77,7 +71,7 @@ class LegalEntityAddCheck implements AccessInterface {
     try {
       // Get a new flow negotiator that points to the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException $e) {
+    } catch (ParFlowException) {
 
     }
 

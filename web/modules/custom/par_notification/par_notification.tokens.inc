@@ -13,10 +13,7 @@ use Drupal\Core\Render\BubbleableMetadata;
 function par_notification_token_info_alter(&$data) {
   if (isset($data['tokens']['message'])) {
     // Add a new message token.
-    $data['tokens']['message']['primary-action'] = array(
-      'name' => t("Primary action"),
-      'description' => t("The primary action link for this message."),
-    );
+    $data['tokens']['message']['primary-action'] = ['name' => t("Primary action"), 'description' => t("The primary action link for this message.")];
   }
 }
 

@@ -21,6 +21,7 @@ use Drupal\par_data\Entity\ParDataPartnership;
  */
 class ParMemberListNeedsUpdate extends ParSchedulerRuleBase {
 
+  #[\Override]
   public function query() {
     $entity_type_definition = \Drupal::entityTypeManager()->getDefinition($this->getEntity());
     $query = parent::query();
@@ -32,7 +33,7 @@ class ParMemberListNeedsUpdate extends ParSchedulerRuleBase {
     $query->condition('partnership_status', 'confirmed_rd');
 
     // This condition relies on a time comparison with a timestamp field.
-    $timestamp = strtotime($this->getTime());
+    $timestamp = strtotime((string) $this->getTime());
     $query->condition(
       $entity_type_definition->getRevisionMetadataKey('revision_created'),
       $timestamp,
@@ -54,6 +55,7 @@ class ParMemberListNeedsUpdate extends ParSchedulerRuleBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getItems() {
     $storage = $this->getParDataManager()->getEntityTypeStorage($this->getEntity());
     $coordinated_partnerships = $this->getParDataManager()->getEntitiesByProperty(

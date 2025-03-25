@@ -19,6 +19,7 @@ class ParPartnershipPageController extends ParBaseController {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     if ($par_data_partnership) {
@@ -34,6 +35,7 @@ class ParPartnershipPageController extends ParBaseController {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function build($build = [], ParDataPartnership $par_data_partnership = NULL) {
     // Make sure changes to the partnership invalidate this page
     if ($par_data_partnership) {

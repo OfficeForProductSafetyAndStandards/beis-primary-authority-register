@@ -350,6 +350,7 @@ display:
               autosubmit: false
               autosubmit_exclude_textfield: false
               autosubmit_textfield_delay: 500
+              autosubmit_textfield_minimum_length: 3
               autosubmit_hide: false
               input_required: false
               allow_secondary: false
@@ -364,6 +365,7 @@ display:
                     filter_rewrite_values: "- Any -|- Any -\r\nNew Enforcement Notification|Notification of enforcement action needs approval\r\nNew deviation request|Deviation request needs approval\r\nNew partnership notification|Partnership application needs to be completed\r\nPartnership Nominate|Partnership application needs nomination"
                   collapsible: false
                   is_secondary: false
+                  hide_label: false
       access:
         type: perm
         options:

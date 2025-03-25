@@ -34,6 +34,7 @@ class CookieConsentBlock extends BlockBase implements ContainerFactoryPluginInte
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
       $configuration,
@@ -46,6 +47,7 @@ class CookieConsentBlock extends BlockBase implements ContainerFactoryPluginInte
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function build() {
     return $this->formBuilder->getForm(CookieConsentForm::class);
   }
@@ -53,6 +55,7 @@ class CookieConsentBlock extends BlockBase implements ContainerFactoryPluginInte
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getCacheMaxAge() {
     return 0;
   }

@@ -31,6 +31,7 @@ class ParConfirmRemoval extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $item_name = $this->getConfiguration()['item'] ?? 'Item';
     $this->getFlowDataHandler()->setFormPermValue("item_name", $item_name);
@@ -41,12 +42,13 @@ class ParConfirmRemoval extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $item = $this->getFlowDataHandler()->getFormPermValue("item_name");
 
     $form['confirm'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Are you sure you want to remove this @item?', ['@item' => strtolower($item)]),
+      '#title' => $this->t('Are you sure you want to remove this @item?', ['@item' => strtolower((string) $item)]),
       '#return_value' => self::REMOVAL_CONFIRM,
       '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-4']],
     ];
@@ -84,6 +86,7 @@ class ParConfirmRemoval extends ParFormPluginBase {
   /**
    * Validate checkbox.
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     if (!$form_state->getValue('confirm') ||
       $form_state->getValue('confirm') != ParConfirmRemoval::REMOVAL_CONFIRM) {

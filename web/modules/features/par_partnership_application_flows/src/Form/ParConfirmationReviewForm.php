@@ -32,6 +32,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Set the data values on the entities
     $entities = $this->createEntities();
@@ -195,6 +196,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
@@ -208,6 +210,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
@@ -242,7 +245,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
     try {
       $par_data_partnership->setParStatus('confirmed_authority');
     }
-    catch (ParDataException $e) {
+    catch (ParDataException) {
       // If the status could not be updated we want to log this but continue.
       $message = $this->t("This status could not be updated to 'Approved by the Authority' for the %label");
       $replacements = [
@@ -396,13 +399,13 @@ class ParConfirmationReviewForm extends ParBaseForm {
     }
 
     return [
-      'par_data_partnership' => isset($par_data_partnership) ? $par_data_partnership : NULL,
-      'par_data_organisation' => isset($par_data_organisation) ? $par_data_organisation : NULL,
-      'par_data_authority' => isset($par_data_authority) ? $par_data_authority : NULL,
-      'primary_authority_contact' => isset($primary_authority_contact) ? $primary_authority_contact : NULL,
-      'organisation_contact' => isset($organisation_contact) ? $organisation_contact : NULL,
-      'par_data_premises' => isset($par_data_premises) ? $par_data_premises : NULL,
-      'invite' => isset($invite) ? $invite : NULL,
+      'par_data_partnership' => $par_data_partnership ?? NULL,
+      'par_data_organisation' => $par_data_organisation ?? NULL,
+      'par_data_authority' => $par_data_authority ?? NULL,
+      'primary_authority_contact' => $primary_authority_contact ?? NULL,
+      'organisation_contact' => $organisation_contact ?? NULL,
+      'par_data_premises' => $par_data_premises ?? NULL,
+      'invite' => $invite ?? NULL,
     ];
   }
 

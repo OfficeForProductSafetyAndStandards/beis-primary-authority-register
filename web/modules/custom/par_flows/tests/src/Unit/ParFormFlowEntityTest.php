@@ -38,44 +38,40 @@ class ParFormFlowEntityTest extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function setUp(): void {
     parent::setUp();
 
-    $values = array(
-      'id' => 'test',
-      'title' => 'Test Form Flow',
-      'description' => 'This is the test form flow, it is very similar to the example.',
-      'steps' => [
-        1 => [
-          'route' => 'par_test_forms.first',
-          'form_id' => 'par_test_first',
-        ],
-        2 => [
-          'route' => 'par_test_forms.second',
-          'form_id' => 'par_test_second',
-          'redirect' => [
-            'save' => 4,
-            'cancel' => 5,
-            'custom_step' => 1,
-          ],
-        ],
-        3 => [
-          'route' => 'par_test_forms.third',
-          'form_id' => 'par_test_third',
-          'redirect' => [
-            'cancel' => 5,
-          ],
-        ],
-        4 => [
-          'route' => 'par_test_forms.fourth',
-          'form_id' => 'par_test_fourth',
-        ],
-        5 => [
-          'route' => 'par_test_forms.confirmation',
+    $values = ['id' => 'test', 'title' => 'Test Form Flow', 'description' => 'This is the test form flow, it is very similar to the example.', 'steps' => [
+      1 => [
+        'route' => 'par_test_forms.first',
+        'form_id' => 'par_test_first',
+      ],
+      2 => [
+        'route' => 'par_test_forms.second',
+        'form_id' => 'par_test_second',
+        'redirect' => [
+          'save' => 4,
+          'cancel' => 5,
+          'custom_step' => 1,
         ],
       ],
-    );
-    $this->testFlow = $this->getMockBuilder('Drupal\par_flows\Entity\ParFlow')
+      3 => [
+        'route' => 'par_test_forms.third',
+        'form_id' => 'par_test_third',
+        'redirect' => [
+          'cancel' => 5,
+        ],
+      ],
+      4 => [
+        'route' => 'par_test_forms.fourth',
+        'form_id' => 'par_test_fourth',
+      ],
+      5 => [
+        'route' => 'par_test_forms.confirmation',
+      ],
+    ]];
+    $this->testFlow = $this->getMockBuilder(ParFlow::class)
       ->onlyMethods(['getCurrentRoute'])
       ->setConstructorArgs([$values, 'par_flow'])
       ->getMock();
@@ -83,7 +79,7 @@ class ParFormFlowEntityTest extends UnitTestCase {
     $this->testFlow
       ->expects($this->any())
       ->method('getCurrentRoute')
-      ->will($this->returnCallback([$this, 'getCurrentRoute']));
+      ->will($this->returnCallback($this->getCurrentRoute(...)));
 
     // Check the entity is loaded with the default methods.
     $this->assertEquals('test', $this->testFlow->id());

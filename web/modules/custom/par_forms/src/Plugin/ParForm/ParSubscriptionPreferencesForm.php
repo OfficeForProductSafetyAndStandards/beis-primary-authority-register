@@ -24,6 +24,7 @@ class ParSubscriptionPreferencesForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $lists = $this->getSubscriptionManager()->getLists();
     $account = $this->getFlowDataHandler()->getParameter('user');
@@ -46,6 +47,7 @@ class ParSubscriptionPreferencesForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // Skip this form if there are no lists.
     $subscription_lists = $this->getFlowDataHandler()->getFormPermValue('subscription_lists');

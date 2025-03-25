@@ -22,6 +22,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     $par_data_premises = $this->getFlowDataHandler()->getParameter('par_data_premises');
 
@@ -36,6 +37,7 @@ class ParPartnershipFlowsAddressForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

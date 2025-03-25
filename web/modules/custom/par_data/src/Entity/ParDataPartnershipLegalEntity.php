@@ -77,6 +77,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function filterRelationshipsByAction($relationship, $action) {
     switch ($action) {
       case 'manage':
@@ -95,6 +96,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    *
    * @return false
    */
+  #[\Override]
   public function hasDependencies() {
     parent::hasDependencies();
     return false;
@@ -122,6 +124,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function setParStatus($value, $ignore_transition_check = FALSE) {
     // Only set the status if allowed.
     if ($this->supportsStatus() || $ignore_transition_check) {
@@ -132,6 +135,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getRawStatus() {
     // The default status should come from the partnership instead.
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
@@ -176,6 +180,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function revoke($save = TRUE, $reason = '') {
     // Do not revoke legal entities that are already revoked.
     if ($this->isRevoked()) {
@@ -197,6 +202,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function unrevoke($save = TRUE) {
     // Only restore legal entities that are revoked.
     if (!$this->isRevoked()) {
@@ -227,6 +233,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    * @return bool
    *   TRUE if the legal entity can be removed.
    */
+  #[\Override]
   public function isDeletable() {
     $partnership = $this->getPartnership();
     // Get the current date.
@@ -246,9 +253,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
     $partnership_legal_entities = $partnership?->getPartnershipLegalEntities($partnership->isActive()) ?? [];
     // Exclude this legal entity from the list.
     $id = $this->id();
-    $partnership_legal_entities = array_filter($partnership_legal_entities, function ($legal_entity) use ($id) {
-      return $legal_entity->id() !== $id;
-    });
+    $partnership_legal_entities = array_filter($partnership_legal_entities, fn($legal_entity) => $legal_entity->id() !== $id);
     $not_last_legal_entity = !empty($partnership_legal_entities);
 
     return parent::isDeletable() &&
@@ -260,6 +265,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function isRevocable() {
     $partnership = $this->getPartnership();
 
@@ -274,9 +280,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
     $partnership_legal_entities = $partnership?->getPartnershipLegalEntities($partnership->isActive()) ?? [];
     // Exclude this legal entity from the list.
     $id = $this->id();
-    $partnership_legal_entities = array_filter($partnership_legal_entities, function ($legal_entity) use ($id) {
-      return $legal_entity->id() !== $id;
-    });
+    $partnership_legal_entities = array_filter($partnership_legal_entities, fn($legal_entity) => $legal_entity->id() !== $id);
     $not_last_legal_entity = !empty($partnership_legal_entities);
 
     // Only some PAR entities can be deleted.
@@ -296,6 +300,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    * @return bool
    *   TRUE if the legal entity can be reinstated.
    */
+  #[\Override]
   public function isRestorable() {
     $partnership = $this->getPartnership();
     // Get the current date.
@@ -309,9 +314,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
     // Rule 2: The same legal entity is not active on the partnership.
     $active_legal_entities = (array) $this->getPartnership()?->getLegalEntity();
     $id = $this->getLegalEntity()->id();
-    $similar_legal_entity = array_filter($active_legal_entities, function ($legal_entity) use ($id) {
-      return $legal_entity->id() === $id;
-    });
+    $similar_legal_entity = array_filter($active_legal_entities, fn($legal_entity) => $legal_entity->id() === $id);
 
     // Rule 3: The legal entity was revoked less than 1 day ago.
     $recently_revoked = $this->getEndDate() > $now->modify('-1 day');
@@ -325,6 +328,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function isActive() {
     return parent::isActive() &&
       $this->getStartDate() &&
@@ -347,6 +351,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function inProgress() {
     return $this->isPending();
   }
@@ -354,6 +359,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function isRevoked() {
     return $this->getPartnership()?->isRevoked() || parent::isRevoked();
   }
@@ -363,6 +369,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    *
    * {@inheritdoc}
    */
+  #[\Override]
   public function getStatusTime($status) {
     switch ($status) {
       case 'confirmed_rd':
@@ -537,6 +544,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 

@@ -27,6 +27,7 @@ class ParSicCodeForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
     $sic_code_delta = $this->getFlowDataHandler()->getParameter('sic_code_delta');
@@ -46,6 +47,7 @@ class ParSicCodeForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $sic_codes = $this->getParDataManager()->getEntitiesByType('par_data_sic_code');
 

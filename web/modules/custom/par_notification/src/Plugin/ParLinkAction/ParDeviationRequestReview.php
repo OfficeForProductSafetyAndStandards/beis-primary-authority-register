@@ -37,6 +37,7 @@ class ParDeviationRequestReview extends ParLinkActionBase implements ParTaskInte
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function isComplete(MessageInterface $message): bool {
     // Check if this is a valid task.
     if (!$message->hasField($this->getPrimaryField())

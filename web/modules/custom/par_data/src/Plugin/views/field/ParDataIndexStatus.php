@@ -33,6 +33,7 @@ class ParDataIndexStatus extends SearchApiStandard {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function render_item($count, $item) {
     $field = $this->getIndex()->getField($this->field);
     // Lookup the field definitions.

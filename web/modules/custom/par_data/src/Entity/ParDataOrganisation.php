@@ -74,6 +74,7 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getMembers(): array {
     /** @var ParDataPersonInterface[] $people */
     $people = $this->getPerson();
@@ -92,6 +93,7 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function getPerson(bool $primary = FALSE): mixed {
     $people = $this->get('field_person')->referencedEntities();
     $person = !empty($people) ? current($people) : NULL;
@@ -102,6 +104,7 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function addPerson(ParDataPersonInterface $person): void {
     if (!$this->hasPerson($person)) {
       $this->get('field_person')->appendItem($person->id());
@@ -111,6 +114,7 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function removePerson(ParDataPersonInterface $person): void {
     foreach ($this->getPerson() as $index => $existing_person) {
       if ($existing_person->id() === $person->id()) {
@@ -122,11 +126,10 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function hasPerson(ParDataPersonInterface $person): bool {
     $existing_people = $this->getPerson();
-    $exists = array_filter($existing_people, function ($existing_person) use ($person) {
-      return $existing_person->id() === $person->id();
-    });
+    $exists = array_filter($existing_people, fn($existing_person) => $existing_person->id() === $person->id());
 
     return !empty($exists);
   }
@@ -159,7 +162,7 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
    */
   public function getPartnershipLegalEntities() {
     $partnership_legal_entities = $this->getLegalEntity();
-    $legal_obj_list = array();
+    $legal_obj_list = [];
 
     foreach ($partnership_legal_entities as $key => $current_legal_entity) {
       $legal_obj_list[$current_legal_entity->get('id')->getString()] =  $current_legal_entity->get('registered_name')->getString();
@@ -305,7 +308,7 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
       $trading_names = $this->get('trading_name')->getString();
     }
 
-    return isset($trading_names) ? $trading_names : '';
+    return $trading_names ?? '';
   }
 
   /**
@@ -340,6 +343,7 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 

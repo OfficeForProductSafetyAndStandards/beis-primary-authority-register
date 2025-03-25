@@ -33,7 +33,7 @@ class NewPartnershipSubscriberTest extends ParNotificationTestBase {
     $this->entityEvent
       ->expects($this->any())
       ->method('getEntity')
-      ->will($this->returnCallback([$this, 'getEntity']));
+      ->will($this->returnCallback($this->getEntity(...)));
     $recipients = $this->new_partnership_subscriber->getRecipients($this->entityEvent);
 
     // There should be three primary contacts on the partnership and 1 contact who has opted in to receive all notifications.
@@ -59,7 +59,7 @@ class NewPartnershipSubscriberTest extends ParNotificationTestBase {
     $this->parDataEvent
       ->expects($this->any())
       ->method('getEntity')
-      ->will($this->returnCallback([$this, 'getEntity']));
+      ->will($this->returnCallback($this->getEntity(...)));
     $recipients = $this->partnership_completed_subscriber->getRecipients($this->parDataEvent);
 
     // There should be three primary contacts on the partnership and 1 contact who has opted in to receive all notifications.
@@ -85,7 +85,7 @@ class NewPartnershipSubscriberTest extends ParNotificationTestBase {
     $this->parDataEvent
       ->expects($this->any())
       ->method('getEntity')
-      ->will($this->returnCallback([$this, 'getEntity']));
+      ->will($this->returnCallback($this->getEntity(...)));
     $recipients = $this->partnership_approved_subscriber->getRecipients($this->parDataEvent);
 
     // There should be six primary contacts on the partnership (three authority and three organisation)
@@ -112,7 +112,7 @@ class NewPartnershipSubscriberTest extends ParNotificationTestBase {
     $this->parDataEvent
       ->expects($this->any())
       ->method('getEntity')
-      ->will($this->returnCallback([$this, 'getEntity']));
+      ->will($this->returnCallback($this->getEntity(...)));
     $recipients = $this->partnership_revoked_subscriber->getRecipients($this->parDataEvent);
 
     // There should be six primary contacts on the partnership (three authority and three organisation)

@@ -17,6 +17,7 @@ class ParInviteRegistrationForm extends FormBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getFormId() {
     return 'par_invite_welcome';
   }
@@ -24,6 +25,7 @@ class ParInviteRegistrationForm extends FormBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state,  $invite = NULL) {
     // The invite needs to be set and valid. If not then we need to go to an error page.
     if (!isset($invite)) {
@@ -77,6 +79,7 @@ class ParInviteRegistrationForm extends FormBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     // Make sure the email matches the one it has been sent to.
@@ -94,6 +97,7 @@ class ParInviteRegistrationForm extends FormBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
 
     // Add the user to drupal.

@@ -39,6 +39,7 @@ class ParMemberUploadForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $csv_handler_class = (new \ReflectionClass($this->getCsvHandler()))->getName();
 
@@ -131,6 +132,7 @@ class ParMemberUploadForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 

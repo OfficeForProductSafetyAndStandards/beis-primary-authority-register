@@ -38,6 +38,7 @@ class ParDeviationRequestReviewForm extends ParDeviationRequestDetail {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     parent::loadData($index);
   }
@@ -45,6 +46,7 @@ class ParDeviationRequestReviewForm extends ParDeviationRequestDetail {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // Inherit the base plugin.
     $form = parent::getElements($form, $index);
@@ -94,7 +96,7 @@ class ParDeviationRequestReviewForm extends ParDeviationRequestDetail {
         ]),
       ];
     }
-    catch (ParFlowException $e) {
+    catch (ParFlowException) {
 
     }
 
@@ -104,6 +106,7 @@ class ParDeviationRequestReviewForm extends ParDeviationRequestDetail {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $status_element = $this->getElement($form, ['primary_authority_status'], $index);
     $status = $status_element ? $form_state->getValue($status_element['#parents']) : NULL;

@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data_test_entity\Plugin;
 
+use Drupal\par_data_test_entity\Plugin\test_plugins\ParExpiryTest;
 use Drupal\Component\Plugin\PluginManagerBase;
 use Drupal\Component\Plugin\Discovery\StaticDiscovery;
 use Drupal\Component\Plugin\Factory\DefaultFactory;
@@ -26,7 +27,7 @@ class TestSchedulerManager extends PluginManagerBase {
       'entity' => 'par_data_test_entity',
       'property' => 'expiry_date',
       'time' => '+3 months',
-      'class' => 'Drupal\par_data_test_entity\Plugin\test_plugins\ParExpiryTest',
+      'class' => ParExpiryTest::class,
     ]);
     // A plugin to test past events.
     $this->discovery->setDefinition('test_before_working', [
@@ -34,7 +35,7 @@ class TestSchedulerManager extends PluginManagerBase {
       'entity' => 'par_data_test_entity',
       'property' => 'expiry_date',
       'time' => '+6 working days',
-      'class' => 'Drupal\par_data_test_entity\Plugin\test_plugins\ParExpiryTest',
+      'class' => ParExpiryTest::class,
     ]);
     // A plugin to test past events.
     $this->discovery->setDefinition('test_before', [
@@ -42,7 +43,7 @@ class TestSchedulerManager extends PluginManagerBase {
       'entity' => 'par_data_test_entity',
       'property' => 'expiry_date',
       'time' => '+6 days',
-      'class' => 'Drupal\par_data_test_entity\Plugin\test_plugins\ParExpiryTest',
+      'class' => ParExpiryTest::class,
     ]);
 
     // A plugin to test all past events including those of the present day.
@@ -51,7 +52,7 @@ class TestSchedulerManager extends PluginManagerBase {
       'entity' => 'par_data_test_entity',
       'property' => 'expiry_date',
       'time' => '0 days',
-      'class' => 'Drupal\par_data_test_entity\Plugin\test_plugins\ParExpiryTest',
+      'class' => ParExpiryTest::class,
     ]);
 
     // A plugin to test all events that should happen after the entity date.
@@ -61,7 +62,7 @@ class TestSchedulerManager extends PluginManagerBase {
       'entity' => 'par_data_test_entity',
       'property' => 'expiry_date',
       'time' => '-6 working days',
-      'class' => 'Drupal\par_data_test_entity\Plugin\test_plugins\ParExpiryTest',
+      'class' => ParExpiryTest::class,
     ]);
     // A plugin to test all events that should happen after the entity date.
     $this->discovery->setDefinition('test_after', [
@@ -69,7 +70,7 @@ class TestSchedulerManager extends PluginManagerBase {
       'entity' => 'par_data_test_entity',
       'property' => 'expiry_date',
       'time' => '-6 days',
-      'class' => 'Drupal\par_data_test_entity\Plugin\test_plugins\ParExpiryTest',
+      'class' => ParExpiryTest::class,
     ]);
     // A plugin to test all distant future events.
     $this->discovery->setDefinition('test_distant_after', [
@@ -77,7 +78,7 @@ class TestSchedulerManager extends PluginManagerBase {
       'entity' => 'par_data_test_entity',
       'property' => 'expiry_date',
       'time' => '-3 weeks',
-      'class' => 'Drupal\par_data_test_entity\Plugin\test_plugins\ParExpiryTest',
+      'class' => ParExpiryTest::class,
     ]);
 
     // In addition to finding all of the plugins available for a type, a plugin

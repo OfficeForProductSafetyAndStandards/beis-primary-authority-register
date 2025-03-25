@@ -32,6 +32,7 @@ class ParUpdateRegisteredLegalEntity extends ActionBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function execute($entity = NULL) {
     if (!$entity instanceof ParDataLegalEntity) {
       return;
@@ -45,6 +46,7 @@ class ParUpdateRegisteredLegalEntity extends ActionBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
     // @TODO Implement entity/action checks
     $result = AccessResult::allowed();

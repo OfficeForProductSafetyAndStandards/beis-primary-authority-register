@@ -24,6 +24,7 @@ class ParSelectRoleForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function defaultConfiguration(): array {
     return ['roles' => ['par_enforcement', 'par_authority', 'par_authority_manager', 'par_organisation', 'par_helpdesk', 'senior_administration_officer']] + parent::defaultConfiguration();
   }
@@ -31,6 +32,7 @@ class ParSelectRoleForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     if ($this->getFlowDataHandler()->getCurrentUser()->isAuthenticated()) {
       $current_user = User::Load($this->getFlowDataHandler()->getCurrentUser()->id());
@@ -100,6 +102,7 @@ class ParSelectRoleForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // Get all the allowed authorities.
     $role_options = $this->getFlowDataHandler()->getFormPermValue('roles_options');

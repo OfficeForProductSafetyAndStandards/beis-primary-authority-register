@@ -25,6 +25,7 @@ class ParContactLocations extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
 
@@ -41,6 +42,7 @@ class ParContactLocations extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     if ($index === 1) {
       $form['message_intro'] = [
@@ -106,6 +108,7 @@ class ParContactLocations extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
@@ -113,6 +116,7 @@ class ParContactLocations extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }

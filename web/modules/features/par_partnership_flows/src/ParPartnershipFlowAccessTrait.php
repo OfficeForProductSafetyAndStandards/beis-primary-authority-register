@@ -33,9 +33,7 @@ trait ParPartnershipFlowAccessTrait {
     switch ($route_match->getRouteName()) {
       case 'par_partnership_flows.organisation_inspection_plan_details':
       case 'par_partnership_flows.authority_inspection_plan_details':
-        $partnership_inspection_plans = array_filter($par_data_partnership->get('field_inspection_plan')->getValue(), function ($plan) use ($par_data_inspection_plan) {
-          return ($par_data_inspection_plan->id() === $plan['target_id']);
-        });
+        $partnership_inspection_plans = array_filter($par_data_partnership->get('field_inspection_plan')->getValue(), fn($plan) => $par_data_inspection_plan->id() === $plan['target_id']);
         // If the inspection plan is not in the partnership then it shouldn't be accessible.
         if (isset($par_data_inspection_plan) && empty($partnership_inspection_plans)) {
           $this->accessResult = AccessResult::forbidden('The inspection plan does not belong to this partnership.');
@@ -46,9 +44,7 @@ trait ParPartnershipFlowAccessTrait {
       case 'par_partnership_flows.organisation_advice_details':
       case 'par_partnership_flows.authority_advice_details':
         // If the advice is not in the partnership then it shouldn't be accessible.
-        $partnership_advice = array_filter($par_data_partnership->get('field_advice')->getValue(), function ($advice) use ($par_data_advice) {
-          return ($par_data_advice->id() === $advice['target_id']);
-        });
+        $partnership_advice = array_filter($par_data_partnership->get('field_advice')->getValue(), fn($advice) => $par_data_advice->id() === $advice['target_id']);
         // If the inspection plan is not in the partnership then it shouldn't be accessible.
         if (isset($par_data_advice) && empty($partnership_advice)) {
           $this->accessResult = AccessResult::forbidden('The advice does not belong to this partnership.');

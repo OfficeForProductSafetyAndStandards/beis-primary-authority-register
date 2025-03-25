@@ -25,6 +25,7 @@ class ParDataMemberNumber extends FieldPluginBase {
   /**
    * @{inheritdoc}
    */
+  #[\Override]
   public function query() {
     // Leave empty to avoid a query on this field.
   }
@@ -32,6 +33,7 @@ class ParDataMemberNumber extends FieldPluginBase {
   /**
    * @{inheritdoc}
    */
+  #[\Override]
   public function render(ResultRow $values) {
     $entity = $this->getEntity($values);
 

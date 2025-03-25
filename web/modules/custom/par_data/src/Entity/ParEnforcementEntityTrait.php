@@ -116,7 +116,7 @@ trait ParEnforcementEntityTrait {
       $pa_contact = $authority->getPerson($single);
     }
 
-    return isset($pa_contact) ? $pa_contact : NULL;
+    return $pa_contact ?? NULL;
   }
 
   /**
@@ -158,7 +158,7 @@ trait ParEnforcementEntityTrait {
       $pa_contact = $authority->getPerson($single);
     }
 
-    return isset($pa_contact) ? $pa_contact : NULL;
+    return $pa_contact ?? NULL;
   }
 
   /**
@@ -181,7 +181,7 @@ trait ParEnforcementEntityTrait {
       $org_contact = $organisation->getPerson($single);
     }
 
-    return isset($org_contact) ? $org_contact : NULL;
+    return $org_contact ?? NULL;
   }
 
   /**

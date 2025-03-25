@@ -46,6 +46,7 @@ class ParReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     // Set the data values on the entities
     $entities = $this->createEntities();
@@ -88,6 +89,7 @@ class ParReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $form['personal'] = [
       '#type' => 'fieldset',
@@ -129,45 +131,32 @@ class ParReviewForm extends ParBaseForm {
       ],
     ];
 
-    switch ($this->getFlowDataHandler()->getDefaultValues("user_status", NULL)) {
-      case 'existing':
-
-        $form['intro'] = [
+    $form['intro'] = match ($this->getFlowDataHandler()->getDefaultValues("user_status", NULL)) {
+        'existing' => [
           '#type' => 'fieldset',
           '#attributes' => ['class' => 'govuk-form-group'],
           '#title' => 'User account',
           [
             '#markup' => "A user account already exists for this person.",
           ],
-        ];
-
-        break;
-
-      case 'invited':
-
-        $form['intro'] = [
+        ],
+        'invited' => [
           '#type' => 'fieldset',
           '#attributes' => ['class' => 'govuk-form-group'],
           '#title' => 'User account',
           [
             '#markup' => "An invitation will be sent to this person to invite them to join the Primary Authority Register.",
           ],
-        ];
-
-        break;
-
-      case 'active_invite':
-      default:
-
-        $form['intro'] = [
+        ],
+        default => [
           '#type' => 'fieldset',
           '#attributes' => ['class' => 'govuk-form-group'],
           '#title' => 'User account',
           [
             '#markup' => "An invitation has already been sent to this person to join the Primary Authority Register.",
           ],
-        ];
-    }
+        ],
+    };
 
     // Change the action to save.
     $this->getFlowNegotiator()->getFlow()->setActions(['save', 'cancel']);
@@ -307,6 +296,7 @@ class ParReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

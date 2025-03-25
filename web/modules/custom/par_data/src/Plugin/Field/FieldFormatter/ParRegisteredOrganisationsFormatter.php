@@ -26,11 +26,6 @@ use Drupal\par_data\Entity\ParDataLegalEntity;
 class ParRegisteredOrganisationsFormatter extends FormatterBase {
 
   /**
-   * The PAR registered organisations manager for retrieving organisation data.
-   */
-  protected OrganisationManagerInterface $organisationManager;
-
-  /**
    * Constructs a PAR List Formatter instance.
    *
    * @param string $plugin_id
@@ -47,18 +42,17 @@ class ParRegisteredOrganisationsFormatter extends FormatterBase {
    *   The view mode.
    * @param array $third_party_settings
    *   Any third party settings.
-   * @param OrganisationManagerInterface $registered_organisations_manager
+   * @param OrganisationManagerInterface $organisationManager
    *   The registered organisation manager.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, OrganisationManagerInterface $registered_organisations_manager) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, protected OrganisationManagerInterface $organisationManager) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
-
-    $this->organisationManager = $registered_organisations_manager;
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
       $plugin_id,
@@ -75,6 +69,7 @@ class ParRegisteredOrganisationsFormatter extends FormatterBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function viewElements(FieldItemListInterface $items, $langcode) {
     /** @var ParDataLegalEntity $entity */
     $entity = $items->getEntity();

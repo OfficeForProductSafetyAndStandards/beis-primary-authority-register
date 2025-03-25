@@ -25,6 +25,7 @@ class ParAdvancedAuthoritySelectForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     // Determine the selection mechanism based
     if ($this->getFlowDataHandler()->getCurrentUser()->hasPermission('bypass par_data membership')) {
@@ -39,6 +40,7 @@ class ParAdvancedAuthoritySelectForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $form['authority'] = [
       '#type' => 'textfield',
@@ -66,6 +68,7 @@ class ParAdvancedAuthoritySelectForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $authority_id_key = $this->getElementKey('authority', $index);
 

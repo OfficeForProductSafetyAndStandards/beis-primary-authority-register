@@ -58,6 +58,7 @@ class GovukCookie extends ConditionPluginBase implements ContainerFactoryPluginI
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
       $container->get('request_stack'),
@@ -85,6 +86,7 @@ class GovukCookie extends ConditionPluginBase implements ContainerFactoryPluginI
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
     $form['enable'] = [
       '#type' => 'checkbox',
@@ -101,6 +103,7 @@ class GovukCookie extends ConditionPluginBase implements ContainerFactoryPluginI
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     $this->configuration['enable'] = $form_state->getValue('enable');
 
@@ -110,6 +113,7 @@ class GovukCookie extends ConditionPluginBase implements ContainerFactoryPluginI
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function defaultConfiguration() {
     return [
         'enable' => FALSE,
@@ -119,6 +123,7 @@ class GovukCookie extends ConditionPluginBase implements ContainerFactoryPluginI
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getCacheContexts() {
     $contexts = parent::getCacheContexts();
     if ($this->configuration['enable']) {
@@ -133,6 +138,7 @@ class GovukCookie extends ConditionPluginBase implements ContainerFactoryPluginI
    * @return bool
    *   TRUE if the condition has been met, FALSE otherwise.
    */
+  #[\Override]
   public function evaluate() {
     // Ignore this condition if not enabled.
     if (!$this->configuration['enable']) {
@@ -147,6 +153,7 @@ class GovukCookie extends ConditionPluginBase implements ContainerFactoryPluginI
   /**
    * Provides a human readable summary of the condition's configuration.
    */
+  #[\Override]
   public function summary() {
     $placeholders = [
       '@cookie_name' => $this->configuration[$this->getCookieName()],

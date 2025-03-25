@@ -24,6 +24,7 @@ class ParSelectPartnershipForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $allow_multiple = $this->getConfiguration()['allow_multiple'] ?? FALSE;
     $this->getFlowDataHandler()->setFormPermValue("allow_multiple", (bool) $allow_multiple, $this);
@@ -34,6 +35,7 @@ class ParSelectPartnershipForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $partnerships = $this->getFlowDataHandler()->getFormPermValue('partnerships');
     $partnership_options = $this->getParDataManager()->getEntitiesAsOptions($partnerships);
@@ -114,6 +116,7 @@ class ParSelectPartnershipForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $partnerships = $this->getFlowDataHandler()
       ->getFormPermValue('partnerships');

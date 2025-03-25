@@ -235,6 +235,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getDescription() {
     return $this->description;
   }
@@ -242,6 +243,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getDefaultTitle() {
     return $this->default_title;
   }
@@ -256,6 +258,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getSaveMethod() {
     return $this->save_method === self::SAVE_STEP ? self::SAVE_STEP : self::SAVE_END;
   }
@@ -263,6 +266,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getFinalRoutes() {
     $routes = [];
     foreach ($this->final_routes as $final_route) {
@@ -273,7 +277,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
           $routes[] = $final_route;
         }
       }
-      catch (RouteNotFoundException $e) {
+      catch (RouteNotFoundException) {
 
       }
     }
@@ -284,6 +288,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getStates() {
     return !empty($this->states) ? $this->states : [];
   }
@@ -291,6 +296,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getSteps() {
     return $this->steps ?: [];
   }
@@ -298,6 +304,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getStep($index) {
     return $this->steps[$index] ?? NULL;
   }
@@ -318,6 +325,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getCurrentStep() {
     // Lookup the current step to more accurately determine the next step.
     $current_step = $this->getStepByRoute($this->getCurrentRoute());
@@ -383,6 +391,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function progress($operation = NULL, $params = []): Url {
     // Run the event dispatcher to determine the order of precedence to determine the next route.
     $event = new ParFlowEvent($this, $this->getCurrentRouteMatch(), $operation, $params);
@@ -401,6 +410,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getCurrentStepComponents() {
     return $this->getStepComponents($this->getCurrentStep());
   }
@@ -408,6 +418,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getCurrentStepFormDataKeys() {
     return $this->getStepFormDataKeys($this->getCurrentStep());
   }
@@ -415,6 +426,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getCurrentStepOperations() {
     return $this->getStepOperations($this->getCurrentStep());
   }
@@ -471,6 +483,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getStepByFormId($form_key) {
     // Look up the form id from the form data config, the form data keys map to form IDs
     // and provide a consistent way for components to refer to similar forms across different journeys.
@@ -494,6 +507,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getStepByRoute($route) {
     foreach ($this->getSteps() as $key => $step) {
       if (isset($step['route']) && $route === $step['route']) {
@@ -518,6 +532,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getStepByOperation($index, $operation) {
     $step = $this->getStep($index);
     $redirects = $step['redirect'] ?? [];
@@ -528,6 +543,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getRouteByStep($index) {
     $step = $this->getStep($index);
     return $step['route'] ?? NULL;
@@ -536,6 +552,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getFormIdByStep($index) {
     $step = $this->getStep($index);
     return $step['form_id'] ?? NULL;
@@ -558,6 +575,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getFlowForms() {
     $forms = [];
 
@@ -575,6 +593,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    *
    * @deprecated Use ParFlow::getStartLink() instead.
    */
+  #[\Override]
   public function getLinkByStep($index, array $route_params = [], array $link_options = [], $check_access = FALSE) {
     $step = $this->getStep($index);
     if (empty($step)) {
@@ -586,7 +605,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
     /** @var Link $link */
     $link = $this->getLinkByRoute($route, $route_params, $link_options, $check_access);
 
-    return $link ? $link : NULL;
+    return $link ?: NULL;
   }
 
   /**
@@ -594,6 +613,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    *
    * @deprecated
    */
+  #[\Override]
   public function getLinkByCurrentOperation($operation, array $route_params = [], array $link_options = [], $check_access = FALSE) {
     return $this->getOperationLink($operation, '', $route_params, $link_options);
   }
@@ -603,6 +623,7 @@ class ParFlow extends ConfigEntityBase implements ParFlowInterface {
    *
    * @deprecated Use ParFlow::getFlowLink() instead.
    */
+  #[\Override]
   public function getNextLink($operation = NULL, array $route_params = [], array $link_options = [], $check_access = FALSE) {
     return $this->getFlowLink($operation, '', $route_params, $link_options);
   }

@@ -19,6 +19,7 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     $trading_name_delta = $this->getFlowDataHandler()->getParameter('field_sic_code_delta');
 
@@ -55,6 +56,7 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $field_sic_code_delta = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $field_sic_code_delta);
     $par_data_organisation = current($par_data_partnership->getOrganisation());
@@ -88,6 +90,7 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

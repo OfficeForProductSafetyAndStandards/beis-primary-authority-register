@@ -25,6 +25,7 @@ class ParEnforcementRemovalConditions extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $form['notifications'] = [
       '#type' => 'html_tag',

@@ -24,6 +24,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
     $par_data_deviation_request = $this->getFlowDataHandler()->getParameter('par_data_deviation_request');
@@ -190,6 +191,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $enforcing_officer_name = $this->getDefaultValuesByKey('enforcing_officer_name', $index, NULL);
     $enforcing_authority = $this->getDefaultValuesByKey('enforcing_authority', $index, NULL);
@@ -291,7 +293,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
             ]),
           ];
         }
-        catch (ParFlowException $e) {
+        catch (ParFlowException) {
 
         }
       }

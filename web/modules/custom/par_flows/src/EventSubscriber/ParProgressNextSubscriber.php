@@ -18,7 +18,8 @@ class ParProgressNextSubscriber extends ParFlowSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  #[\Override]
+  static function getSubscribedEvents(): array {
     $events[ParFlowEvents::FLOW_SUBMIT][] = ['onEvent', 100];
     return $events;
   }

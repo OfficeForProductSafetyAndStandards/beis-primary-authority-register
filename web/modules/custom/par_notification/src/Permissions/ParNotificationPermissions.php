@@ -31,6 +31,7 @@ class ParNotificationPermissions implements ContainerInjectionInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container) {
     return new static($container->get('par_data.manager'));
   }
@@ -47,7 +48,7 @@ class ParNotificationPermissions implements ContainerInjectionInterface {
 
     foreach ($message_templates as $message_template) {
       $id = $message_template->id();
-      $notification = strtolower($message_template->label());
+      $notification = strtolower((string) $message_template->label());
 
       // Receive notifications.
       $permissions += [

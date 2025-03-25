@@ -19,42 +19,26 @@ use Drush\Commands\DrushCommands;
 class ParNotificationCommands extends DrushCommands {
 
   /**
-   * The notification subscription manager service.
-   *
-   * @var \Drupal\par_notification\ParSubscriptionManagerInterface
-   */
-  protected ParSubscriptionManagerInterface $subscriptionManager;
-
-  /**
-   * The message handler service.
-   *
-   * @var \Drupal\par_notification\ParMessageHandlerInterface
-   */
-  protected ParMessageHandlerInterface $messageHandler;
-
-  /**
-   * The message expiry manager service.
-   *
-   * @var \Drupal\message_expire\MessageExpiryManagerInterface
-   */
-  protected MessageExpiryManagerInterface $messageExpiryManager;
-
-  /**
    * ParDataCommands constructor.
    *
-   * @param ParSubscriptionManagerInterface $par_subscription_manager
+   * @param ParSubscriptionManagerInterface $subscriptionManager
    *   The notification subscription manager service.
-   * @param ParMessageHandlerInterface $par_message_handler
+   * @param ParMessageHandlerInterface $messageHandler
    *   The message handler service.
-   * @param MessageExpiryManagerInterface $message_expiry_manager
+   * @param MessageExpiryManagerInterface $messageExpiryManager
    *   The message expiry manager service.
    */
-  public function __construct(ParSubscriptionManagerInterface $par_subscription_manager, ParMessageHandlerInterface $par_message_handler, MessageExpiryManagerInterface $message_expiry_manager) {
+  public function __construct(/**
+   * The notification subscription manager service.
+   */
+  protected ParSubscriptionManagerInterface $subscriptionManager, /**
+   * The message handler service.
+   */
+  protected ParMessageHandlerInterface $messageHandler, /**
+   * The message expiry manager service.
+   */
+  protected MessageExpiryManagerInterface $messageExpiryManager) {
     parent::__construct();
-
-    $this->subscriptionManager = $par_subscription_manager;
-    $this->messageHandler = $par_message_handler;
-    $this->messageExpiryManager = $message_expiry_manager;
   }
 
   public static function create(ContainerInterface $container, DrushContainer $drush): self {
@@ -106,7 +90,7 @@ class ParNotificationCommands extends DrushCommands {
       try {
         $primary_data = $this->messageHandler->getPrimaryData($message);
       }
-      catch (ParNotificationException $e) {
+      catch (ParNotificationException) {
         // Delete messages which are missing primary data.
         $message->delete();
         $count['deleted']++;
@@ -146,12 +130,8 @@ class ParNotificationCommands extends DrushCommands {
 
       // Get the related entities.
       $related_entities = $this->subscriptionManager->getSubscribedEntities($message);
-      $authorities = array_filter($related_entities, function ($related_entity) {
-        return ('par_data_authority' === $related_entity->getEntityTypeId());
-      });
-      $organisations = array_filter($related_entities, function ($related_entity) {
-        return ('par_data_organisation' === $related_entity->getEntityTypeId());
-      });
+      $authorities = array_filter($related_entities, fn($related_entity) => 'par_data_authority' === $related_entity->getEntityTypeId());
+      $organisations = array_filter($related_entities, fn($related_entity) => 'par_data_organisation' === $related_entity->getEntityTypeId());
 
       // Add the subscribed entities.
       if (!empty($authorities) && $message->hasField('field_target_authority')) {

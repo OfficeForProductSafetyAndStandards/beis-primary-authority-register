@@ -32,6 +32,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
@@ -45,6 +46,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $form['partnership_id'] = [
       '#type' => 'hidden',
@@ -218,6 +220,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
@@ -356,6 +359,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
@@ -401,7 +405,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
       try {
         $par_data_partnership->setParStatus('confirmed_business');
       }
-      catch (ParDataException $e) {
+      catch (ParDataException) {
         // If the status could not be updated we want to log this but continue.
         $message = $this->t("This status could not be updated to 'Approved by the Organisation' for the %label");
         $replacements = [

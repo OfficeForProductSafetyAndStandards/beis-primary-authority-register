@@ -23,6 +23,7 @@ class ParLinkContactForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     $cid_person_select = $this->getFlowNegotiator()->getFormKey('par_choose_person');
     $person = $this->getFlowDataHandler()->getDefaultValues('user_person', '', $cid_person_select);

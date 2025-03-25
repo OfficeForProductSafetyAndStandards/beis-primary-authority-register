@@ -24,6 +24,7 @@ class ParPartnershipFlowsInspectionPlanUploadForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     $verb = 'Upload';
     $this->pageTitle = "$verb inspection plan documents";
@@ -54,6 +55,7 @@ class ParPartnershipFlowsInspectionPlanUploadForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $par_data_inspection_plan);
 

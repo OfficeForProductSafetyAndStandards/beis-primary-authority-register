@@ -21,7 +21,7 @@ final class ParFlowEvents {
    *
    * @var string
    */
-  const FLOW_START = 'par_flows.start';
+  const string FLOW_START = 'par_flows.start';
 
   /**
    * Name of the event fired when a form action is fired.
@@ -32,7 +32,7 @@ final class ParFlowEvents {
    *
    * @var string
    */
-  const FLOW_CUSTOM_ACTION = 'par_flows.event_custom_action';
+  const string FLOW_CUSTOM_ACTION = 'par_flows.event_custom_action';
 
   /**
    * Name of the event fired when a journey is canceled.
@@ -46,7 +46,7 @@ final class ParFlowEvents {
    *
    * @var string
    */
-  const FLOW_CANCEL = 'par_flows.event_cancel';
+  const string FLOW_CANCEL = 'par_flows.event_cancel';
 
   /**
    * Name of the event fired when a journey is completed.
@@ -60,7 +60,7 @@ final class ParFlowEvents {
    *
    * @var string
    */
-  const FLOW_DONE = 'par_flows.event_done';
+  const string FLOW_DONE = 'par_flows.event_done';
 
   /**
    * Name of the event fired when the back button is triggered on a journey.
@@ -74,7 +74,7 @@ final class ParFlowEvents {
    *
    * @var string
    */
-  const FLOW_BACK = 'par_flows.event_back';
+  const string FLOW_BACK = 'par_flows.event_back';
 
   /**
    * Name of the event fired when a form is submitted on a journey.
@@ -88,7 +88,7 @@ final class ParFlowEvents {
    *
    * @var string
    */
-  const FLOW_SUBMIT = 'par_flows.event_submit';
+  const string FLOW_SUBMIT = 'par_flows.event_submit';
 
   public static function getAlLEvents() {
     return [
@@ -104,27 +104,12 @@ final class ParFlowEvents {
    */
   public static function getEventByAction($operation) {
     // Return event names for specific operations.
-    switch ($operation) {
-      case 'back':
-        return ParFlowEvents::FLOW_BACK;
-
-        break;
-
-      case 'done':
-        return ParFlowEvents::FLOW_DONE;
-
-        break;
-
-      case 'cancel':
-        return ParFlowEvents::FLOW_CANCEL;
-
-        break;
-
-      default:
-        return ParFlowEvents::FLOW_SUBMIT;
-
-        break;
-    }
+    return match ($operation) {
+        'back' => ParFlowEvents::FLOW_BACK,
+        'done' => ParFlowEvents::FLOW_DONE,
+        'cancel' => ParFlowEvents::FLOW_CANCEL,
+        default => ParFlowEvents::FLOW_SUBMIT,
+    };
   }
 
 }

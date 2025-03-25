@@ -15,6 +15,7 @@ class ParDataDeleteForm extends ContentEntityDeleteForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function getDeletionMessage() {
     /** @var \Drupal\par_data\Entity\ParDataEntityInterface $entity */
     $entity = $this->getEntity();
@@ -38,6 +39,7 @@ class ParDataDeleteForm extends ContentEntityDeleteForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function logDeletionMessage() {
     /** @var \Drupal\par_data\Entity\ParDataEntityInterface $entity */
     $entity = $this->getEntity();

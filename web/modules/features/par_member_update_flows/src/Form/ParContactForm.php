@@ -23,6 +23,7 @@ class ParContactForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_coordinated_business = $this->getFlowDataHandler()->getParameter('par_data_coordinated_business');
@@ -34,6 +35,7 @@ class ParContactForm extends ParBaseForm {
     parent::loadData();
   }
 
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

@@ -17,6 +17,7 @@ class ParSubscriptionsViewsData extends EntityViewsData implements EntityViewsDa
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getViewsData() {
     $data = parent::getViewsData();
 

@@ -73,35 +73,31 @@ class ParDataTestEntity extends ParDataEntity {
   /**
    * Allows all relationships to be skipped.
    */
-  public function lookupReferencesByAction($action = NULL) {
-    switch ($action) {
-      case 'manage':
-        // Regulatory functions are treated as non-membership entities and therefore
-        // their references are irrelevant when performing membership lookups.
-        return FALSE;
-
-    }
-
-    return parent::lookupReferencesByAction($action);
+  #[\Override]
+  public function lookupReferencesByAction($action = NULL)
+  {
+      return match ($action) {
+          'manage' => FALSE,
+          default => parent::lookupReferencesByAction($action),
+      };
   }
 
   /**
    * {@inheritdoc}
    */
-  public function filterRelationshipsByAction($relationship, $action) {
-    switch ($action) {
-      case 'manage':
-        // No relationships should be followed, this is one of the lowest tier entities.
-        return FALSE;
-
-    }
-
-    return parent::filterRelationshipsByAction($relationship, $action);
+  #[\Override]
+  public function filterRelationshipsByAction($relationship, $action)
+  {
+      return match ($action) {
+          'manage' => FALSE,
+          default => parent::filterRelationshipsByAction($relationship, $action),
+      };
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 

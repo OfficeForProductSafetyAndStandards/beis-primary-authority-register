@@ -36,6 +36,7 @@ class ParEnforcementReview extends ParLinkActionBase implements ParTaskInterface
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function isComplete(MessageInterface $message): bool {
     // Check if this is a valid task.
     if (!$message->hasField($this->getPrimaryField())
