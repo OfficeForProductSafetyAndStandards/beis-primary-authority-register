@@ -34,6 +34,7 @@ class ParDataForm extends ContentEntityForm {
    *
    * Prepares the entity. Fills in a few default values.
    */
+  #[\Override]
   protected function prepareEntity() {
     $entity = $this->entity;
 
@@ -47,6 +48,7 @@ class ParDataForm extends ContentEntityForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
 
@@ -86,14 +88,7 @@ class ParDataForm extends ContentEntityForm {
       ];
     }
 
-    $form['revision_log'] += array(
-      '#states' => array(
-        'visible' => array(
-          ':input[name="revision"]' => array('checked' => TRUE),
-        ),
-      ),
-      '#group' => 'revision_information',
-    );
+    $form['revision_log'] += ['#states' => ['visible' => [':input[name="revision"]' => ['checked' => TRUE]]], '#group' => 'revision_information'];
 
     $form['status'] = [
       '#type' => 'checkbox',
@@ -108,6 +103,7 @@ class ParDataForm extends ContentEntityForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
     $this->entity->setRevisionCreationTime($this->getTime()->getRequestTime());
@@ -117,6 +113,7 @@ class ParDataForm extends ContentEntityForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function save(array $form, FormStateInterface $form_state) {
     $entity = $this->entity;
     $entity_type = $entity->getEntityType()->id();
@@ -127,18 +124,14 @@ class ParDataForm extends ContentEntityForm {
     }
     $status = parent::save($form, $form_state);
 
-    switch ($status) {
-      case SAVED_NEW:
-        $this->messenger()->addMessage($this->t('Created the %label content entity.', [
+    match ($status) {
+        SAVED_NEW => $this->messenger()->addMessage($this->t('Created the %label content entity.', [
           '%label' => $entity->label(),
-        ]));
-        break;
-
-      default:
-        $this->messenger()->addMessage($this->t('Saved the %label content entity.', [
+        ])),
+        default => $this->messenger()->addMessage($this->t('Saved the %label content entity.', [
           '%label' => $entity->label(),
-        ]));
-    }
+        ])),
+    };
     $form_state->setRedirect('entity.' . $entity_type . '.edit_form', [
       $entity_type => $entity->id(),
     ]);

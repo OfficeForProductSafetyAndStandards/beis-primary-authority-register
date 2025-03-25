@@ -13,6 +13,7 @@ class ParLogServiceProvider extends ServiceProviderBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function alter(ContainerBuilder $container) {
     // Overrides language_manager class to test domain language negotiation.
     // Adds entity_type.manager service as an additional argument.

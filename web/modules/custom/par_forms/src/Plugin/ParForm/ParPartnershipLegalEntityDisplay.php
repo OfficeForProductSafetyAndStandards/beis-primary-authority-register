@@ -37,6 +37,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     /* @var ParDataPartnership $par_data_partnership */
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
@@ -53,6 +54,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     /* @var ParDataPartnership $partnership */
     $partnership = $this->getDefaultValuesByKey('partnership', $index, []);
@@ -118,7 +120,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
         $actions['amend_nominate'] = $link;
       }
     }
-    catch (ParFlowException $ignored) {
+    catch (ParFlowException) {
 
     }
 
@@ -196,7 +198,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
             $legal_entity->save();
           }
         }
-        catch (RegisterException|TemporaryException|DataException $ignored) {
+        catch (RegisterException|TemporaryException|DataException) {
           // Catch all errors silently.
         }
       }
@@ -339,6 +341,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
@@ -346,6 +349,7 @@ class ParPartnershipLegalEntityDisplay extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }

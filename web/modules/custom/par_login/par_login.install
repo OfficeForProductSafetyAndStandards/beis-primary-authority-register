@@ -3,7 +3,7 @@
  * @file
  * Installation hooks for par_login module.
  */
-
+use Drupal\locale\SourceString;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataEntity;
@@ -26,19 +26,15 @@ function par_login_install() {
     foreach ($translation as $source => $replacement) {
       // Find existing source string.
       $storage = \Drupal::service('locale.storage');
-      $string = $storage->findString(array('source' => $source));
+      $string = $storage->findString(['source' => $source]);
       if (is_null($string)) {
-        $string = new \Drupal\locale\SourceString();
+        $string = new SourceString();
         $string->setString($source);
         $string->setStorage($storage);
         $string->save();
       }
       // Create translation. If one already exists, it will be replaced.
-      $translation = $storage->createTranslation(array(
-        'lid' => $string->lid,
-        'language' => $langcode,
-        'translation' => $replacement,
-      ))->save();
+      $translation = $storage->createTranslation(['lid' => $string->lid, 'language' => $langcode, 'translation' => $replacement])->save();
     }
   }
 }
@@ -61,19 +57,15 @@ function par_login_update_8001() {
     foreach ($translation as $source => $replacement) {
       // Find existing source string.
       $storage = \Drupal::service('locale.storage');
-      $string = $storage->findString(array('source' => $source));
+      $string = $storage->findString(['source' => $source]);
       if (is_null($string)) {
-        $string = new \Drupal\locale\SourceString();
+        $string = new SourceString();
         $string->setString($source);
         $string->setStorage($storage);
         $string->save();
       }
       // Create translation. If one already exists, it will be replaced.
-      $translation = $storage->createTranslation(array(
-        'lid' => $string->lid,
-        'language' => $langcode,
-        'translation' => $replacement,
-      ))->save();
+      $translation = $storage->createTranslation(['lid' => $string->lid, 'language' => $langcode, 'translation' => $replacement])->save();
     }
   }
 }

@@ -40,6 +40,7 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
    *
    * @see \Drupal\Core\Security\DoTrustedCallbackTrait::doTrustedCallback()
    */
+  #[\Override]
   public static function trustedCallbacks() {
     return [
       'getContactLocations',
@@ -51,12 +52,13 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
     $contacts = !empty($contacts) ? array_values($contacts) : [];
 
     // Cardinality is not a zero-based index like the stored fields deltas.
-    return isset($contacts[$index-1]) ? $contacts[$index-1] : NULL;
+    return $contacts[$index-1] ?? NULL;
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     /** @var ParDataPersonInterface $contact */
     $contact = $this->getPerson($index);
@@ -76,6 +78,7 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     if ($index === 1) {
       $form['message_intro'] = [
@@ -105,7 +108,7 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
         $actions = t('@link', [
           '@link' => $link ? $link->toString() : '',
         ]);
-      } catch (ParFlowException $e) {
+      } catch (ParFlowException) {
 
       }
 
@@ -122,7 +125,7 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
         'actions' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => isset($actions) ? $actions : 'Update contact details',
+          '#value' => $actions ?? 'Update contact details',
           '#attributes' => ['class' => ['govuk-grid-column-one-third']],
         ],
         'email' => [
@@ -199,6 +202,7 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
@@ -206,6 +210,7 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     $contacts = $this->getFlowDataHandler()->getParameter('contacts');
 

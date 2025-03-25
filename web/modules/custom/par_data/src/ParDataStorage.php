@@ -50,6 +50,7 @@ class ParDataStorage extends TranceStorage {
    *
    * {@inheritdoc}
    */
+  #[\Override]
   public function delete(array $entities) {
     parent::delete($entities);
   }
@@ -59,8 +60,9 @@ class ParDataStorage extends TranceStorage {
    *
    * {@inheritdoc}
    */
+  #[\Override]
   public function create(array $values = []) {
-    $bundle = isset($values['type']) ? $values['type'] : NULL;
+    $bundle = $values['type'] ?? NULL;
     $bundle_entity = \Drupal::service('par_data.manager')->getParBundleEntity($this->entityTypeId, $bundle);
 
     // Set the type if not already set.
@@ -85,13 +87,14 @@ class ParDataStorage extends TranceStorage {
    *
    * {@inheritdoc}
    */
+  #[\Override]
   public function save(EntityInterface $entity) {
     // Lowercase all email addresses, these are used in some aggregate functions
     // and should not be upper case.
     if ($entity instanceof ParDataPersonInterface && $entity->hasField('email')) {
       foreach ($entity->get('email') as $delta => $field_item) {
         if (isset($field_item->getValue()['value'])) {
-          $email = mb_strtolower($field_item->getValue()['value']);
+          $email = mb_strtolower((string) $field_item->getValue()['value']);
           $field_item->setValue($email);
         }
         $entity->get('email')->set($delta, $field_item);
@@ -150,6 +153,7 @@ class ParDataStorage extends TranceStorage {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function doPostSave(EntityInterface $entity, $update) {
     parent::doPostSave($entity, $update);
 
@@ -160,6 +164,7 @@ class ParDataStorage extends TranceStorage {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadMultiple(array $ids = NULL) {
     $entities = parent::loadMultiple($ids);
 

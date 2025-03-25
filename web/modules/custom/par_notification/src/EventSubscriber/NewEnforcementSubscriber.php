@@ -2,12 +2,9 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
-use Drupal\Core\Entity\EntityEvent;
-use Drupal\Core\Entity\EntityEvents;
-use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_data\Event\ParDataEvent;
+use Drupal\core_event_dispatcher\Event\Entity\EntityInsertEvent;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
-use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Event\ParDataEventInterface;
 use Drupal\par_notification\ParEventSubscriberBase;
 
 class NewEnforcementSubscriber extends ParEventSubscriberBase {
@@ -24,29 +21,35 @@ class NewEnforcementSubscriber extends ParEventSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
-    $events[EntityEvents::insert('par_data_enforcement_notice')][] = ['onEvent', 800];
+  #[\Override]
+  static function getSubscribedEvents(): array {
+    $events = [];
+    if (class_exists(ParDataEvent::class)) {
+      $events[EntityInsertEvent::class][] = ['onEvent', 800];
+    }
 
     return $events;
   }
 
   /**
-   * @param EntityEvent $event
+   * @param EntityInsertEvent $event
    */
-  public function onEvent(EntityEvent $event) {
-    $this->setEvent($event);
+  public function onEvent(EntityInsertEvent $event) {
+    if ($event->getEntity() instanceof ParDataEnforcementNotice) {
+      $this->setEvent($event);
 
-    /** @var ParDataEnforcementNotice $entity */
-    $entity = $event->getEntity();
+      /** @var ParDataEnforcementNotice $entity */
+      $entity = $event->getEntity();
 
-    // Only send messages for active deviation requests.
-    if ($entity instanceof ParDataEnforcementNotice) {
+      // Only send messages for active deviation requests.
+      if ($entity instanceof ParDataEnforcementNotice) {
 
-      // Send the message.
-      $arguments = [
-        '@enforced_organisation' => $entity->getEnforcedEntityName(),
-      ];
-      $this->sendMessage($arguments);
+        // Send the message.
+        $arguments = [
+          '@enforced_organisation' => $entity->getEnforcedEntityName(),
+        ];
+        $this->sendMessage($arguments);
+      }
     }
   }
 

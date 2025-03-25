@@ -27,6 +27,7 @@ class ParRoleForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     // Set the user account that is being updated as a parameter for plugins to access
     $choose_account_cid = $this->getFlowNegotiator()->getFormKey('choose_account');
@@ -58,6 +59,7 @@ class ParRoleForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Skip the invitation process if a user id has already been matched
     // or the user has chosen not to add a user.

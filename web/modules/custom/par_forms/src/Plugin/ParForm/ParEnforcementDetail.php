@@ -23,6 +23,7 @@ class ParEnforcementDetail extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
 
@@ -46,6 +47,7 @@ class ParEnforcementDetail extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // Return path for all redirect links.
     $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
@@ -79,7 +81,7 @@ class ParEnforcementDetail extends ParFormPluginBase {
         ]),
       ];
     }
-    catch (ParFlowException $e) {
+    catch (ParFlowException) {
 
     }
 

@@ -38,6 +38,7 @@ class ParAutocompleteController extends ControllerBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container) {
     return new static($container->get('par_data.manager'));
   }
@@ -81,7 +82,7 @@ class ParAutocompleteController extends ControllerBase {
     try {
       $query = $this->getQuery($target_type);
     }
-    catch (PluginNotFoundException $e) {
+    catch (PluginNotFoundException) {
       return new JsonResponse([], 400);
     }
 

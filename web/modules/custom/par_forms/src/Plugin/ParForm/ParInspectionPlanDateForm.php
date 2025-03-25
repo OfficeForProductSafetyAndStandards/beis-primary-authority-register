@@ -27,6 +27,7 @@ class ParInspectionPlanDateForm extends ParFormPluginBase {
   /**
    * @defaults
    */
+  #[\Override]
   public function getFormDefaults(): array {
     return [
       'start' => ['year' => date('Y'), 'month' => date('m'), 'day' => date('d')],
@@ -37,6 +38,7 @@ class ParInspectionPlanDateForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     if ($par_data_inspection_plan = $this->getFlowDataHandler()->getParameter('par_data_inspection_plan')) {
       // Inspection plan start date.
@@ -64,6 +66,7 @@ class ParInspectionPlanDateForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
 
     // Inspection plan begin date.

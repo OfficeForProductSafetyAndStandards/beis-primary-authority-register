@@ -16,6 +16,7 @@ class ParUpdateListTypeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     $par_data_partnership = $this->getFlowDataHandler()
       ->getParameter('par_data_partnership');
@@ -23,6 +24,7 @@ class ParUpdateListTypeForm extends ParBaseForm {
     parent::loadData();
   }
 
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

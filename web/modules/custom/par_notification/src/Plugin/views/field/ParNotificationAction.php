@@ -35,6 +35,7 @@ class ParNotificationAction extends FieldPluginBase {
   /**
    * @{inheritdoc}
    */
+  #[\Override]
   public function query() {
     // Leave empty to avoid a query on this field.
   }
@@ -46,6 +47,7 @@ class ParNotificationAction extends FieldPluginBase {
    *
    * @return string
    */
+  #[\Override]
   public function render(ResultRow $values) {
     $message = $this->getEntity($values);
 

@@ -79,6 +79,7 @@ class ParDataInspectionFeedback extends ParDataEntity implements ParDataEnquiryI
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function creator(): ParDataPersonInterface {
     if ($this->hasField('field_person') &&
       !$this->get('field_person')->isEmpty()) {
@@ -96,6 +97,7 @@ class ParDataInspectionFeedback extends ParDataEntity implements ParDataEnquiryI
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function sender(): ParDataAuthority {
     if ($this->hasField('field_enforcing_authority')) {
       $enforcing_authorities = $this->get('field_enforcing_authority')->referencedEntities();
@@ -112,6 +114,7 @@ class ParDataInspectionFeedback extends ParDataEntity implements ParDataEnquiryI
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function receiver(): array {
     $partnerships = [];
 
@@ -141,6 +144,7 @@ class ParDataInspectionFeedback extends ParDataEntity implements ParDataEnquiryI
   /**
    * {@inheritDoc}>
    */
+  #[\Override]
   public function getReplies(): array {
     /** @var CommentStorageInterface $comment_storage */
     $comment_storage = \Drupal::entityTypeManager()->getStorage('comment');
@@ -151,20 +155,19 @@ class ParDataInspectionFeedback extends ParDataEntity implements ParDataEnquiryI
   /**
    * {@inheritdoc}
    */
-  public function filterRelationshipsByAction($relationship, $action) {
-    switch ($action) {
-      case 'manage':
-        // No relationships should be followed, this is one of the lowest tier entities.
-        return FALSE;
-
-    }
-
-    return parent::filterRelationshipsByAction($relationship, $action);
+  #[\Override]
+  public function filterRelationshipsByAction($relationship, $action)
+  {
+      return match ($action) {
+          'manage' => FALSE,
+          default => parent::filterRelationshipsByAction($relationship, $action),
+      };
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 

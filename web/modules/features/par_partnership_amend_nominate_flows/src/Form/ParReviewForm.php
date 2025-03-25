@@ -28,14 +28,13 @@ class ParReviewForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     $partnership_legal_entities = $par_data_partnership?->getPartnershipLegalEntities();
     // Get only the partnership legal entities that are awaiting confirmation.
-    $partnership_legal_entities = array_filter($partnership_legal_entities, function ($partnership_legal_entity) {
-      return $partnership_legal_entity->getRawStatus() === 'confirmed_business';
-    });
+    $partnership_legal_entities = array_filter($partnership_legal_entities, fn($partnership_legal_entity) => $partnership_legal_entity->getRawStatus() === 'confirmed_business');
 
     $this->getFlowDataHandler()->setParameter('partnership_legal_entities', $partnership_legal_entities);
 
@@ -45,6 +44,7 @@ class ParReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     // Get the legal entities to update.
     $partnership_legal_entities = $this->getFlowDataHandler()->getParameter('partnership_legal_entities') ?? [];
@@ -115,6 +115,7 @@ class ParReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
@@ -128,6 +129,7 @@ class ParReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

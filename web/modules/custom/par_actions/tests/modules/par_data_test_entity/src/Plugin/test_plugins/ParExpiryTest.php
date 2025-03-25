@@ -15,6 +15,7 @@ class ParExpiryTest extends ParSchedulerRuleBase {
   /**
    * Retrieve the current test time.
    */
+  #[\Override]
   protected function getCurrentTime() {
     return new DrupalDateTime($this->currentTime);
   }

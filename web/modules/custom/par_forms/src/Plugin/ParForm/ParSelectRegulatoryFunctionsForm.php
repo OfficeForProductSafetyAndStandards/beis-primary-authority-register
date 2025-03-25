@@ -27,6 +27,7 @@ class ParSelectRegulatoryFunctionsForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $regulatory_functions = $this->getParDataManager()->getEntitiesByType('par_data_regulatory_function');
     if ($regulatory_functions) {
@@ -49,6 +50,7 @@ class ParSelectRegulatoryFunctionsForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $form['regulatory_functions'] = [
       '#type' => 'checkboxes',

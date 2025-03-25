@@ -185,7 +185,7 @@ Feature: Other Happy Paths
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user creates a new person:
       | Title | WorkNumber | MobileNumber |
-      | Mr    |      01204 |              |
+      | Mr    |      01204 | 12             |
     Then the user can verify the person was created successfully and can send an account invitation
     # Update the User's Contact Details.
     When the user searches for an existing person successfully

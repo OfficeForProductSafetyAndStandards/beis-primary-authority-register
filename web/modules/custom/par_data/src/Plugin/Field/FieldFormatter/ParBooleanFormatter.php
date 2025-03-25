@@ -55,6 +55,7 @@ class ParBooleanFormatter extends FormatterBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
 
@@ -69,7 +70,7 @@ class ParBooleanFormatter extends FormatterBase {
 
       $element[0] = [
         '#type' => 'markup',
-        '#markup' => $value ? $value : 'Unknown value',
+        '#markup' => $value ?: 'Unknown value',
       ];
 
       return $element;
@@ -82,7 +83,7 @@ class ParBooleanFormatter extends FormatterBase {
       // Render each element as markup.
       $element[$delta] = [
         '#type' => 'markup',
-        '#markup' => $value ? $value : 'Unknown value',
+        '#markup' => $value ?: 'Unknown value',
       ];
 
     }
