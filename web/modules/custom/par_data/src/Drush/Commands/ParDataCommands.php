@@ -99,7 +99,7 @@ final class ParDataCommands extends DrushCommands {
    *   Random number.
    */
   public function randomNumber() {
-    return rand(100000000000, 999999999999);
+    return random_int(100000000000, 999999999999);
   }
 
   /**
@@ -206,7 +206,7 @@ final class ParDataCommands extends DrushCommands {
         $plugin->run();
       }
     }
-    catch (PluginNotFoundException $e) {
+    catch (PluginNotFoundException) {
       return "Failed to convert legacy legal entities.";
     }
 

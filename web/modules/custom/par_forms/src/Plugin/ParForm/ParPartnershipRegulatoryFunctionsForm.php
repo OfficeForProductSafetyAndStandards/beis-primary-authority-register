@@ -26,6 +26,7 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     // Decide which entity to use.
     if ($par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership')) {
@@ -53,9 +54,7 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
         $relationships = $organisation->getRelationships('par_data_partnership');
 
         // Ignore the current organisation.
-        $relationships = array_filter($relationships, function ($relationship) use ($par_data_partnership) {
-          return $relationship->getEntity()->id() !== $par_data_partnership->id();
-        });
+        $relationships = array_filter($relationships, fn($relationship) => $relationship->getEntity()->id() !== $par_data_partnership->id());
 
         // Discover the regulatory functions for these partnerships.
         $covered_by_other_partnerships = [];
@@ -74,6 +73,7 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $renderer = \Drupal::service('renderer');
 
@@ -86,7 +86,7 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
         $authority_update_link = $this->getLinkByRoute('par_authority_update_flows.authority_update_review', $params, $link_options)
             ->setText('Update the authority\'s regulatory functions')
             ->toString();
-      } catch (ParFlowException $e) {
+      } catch (ParFlowException) {
 
       }
       $form['no_regulatory_functions'] = [
@@ -194,12 +194,9 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
         'default' => $this->t('Normal or Sequenced'),
         'bespoke' => $this->t('Bespoke'),
       ],
-      '#options_descriptions' => array(
-        'default' => 'Either for normal partnerships, where the organisation only has one partnership, or for sequenced partnerships, where a business wishes to enter into a partnership with more than one local authority and the regulatory functions of those local authorities do not overlap.',
-        'bespoke' => 'Bespoke partnerships should only be selected when a business wishes to enter into a partnership with more than one local authority and the regulatory functions of those local authorities overlap.',
-      ),
+      '#options_descriptions' => ['default' => 'Either for normal partnerships, where the organisation only has one partnership, or for sequenced partnerships, where a business wishes to enter into a partnership with more than one local authority and the regulatory functions of those local authorities do not overlap.', 'bespoke' => 'Bespoke partnerships should only be selected when a business wishes to enter into a partnership with more than one local authority and the regulatory functions of those local authorities overlap.'],
       '#after_build' => [
-        [get_class($this), 'optionsDescriptions'],
+        [static::class, 'optionsDescriptions'],
       ],
       '#default_value' => $default ? 'default' : 'bespoke',
     ];
@@ -259,6 +256,7 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $partnership_cover_key = $this->getElementKey('partnership_cover');
     $regulatory_functions_key = $this->getElementKey('regulatory_functions');

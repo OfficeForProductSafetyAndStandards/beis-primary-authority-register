@@ -24,10 +24,14 @@ class InspectionPlanRevokedSubscriber extends ParEventSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  #[\Override]
+  static function getSubscribedEvents(): array {
+    $events = [];
     // Revocation event should fire after most default events to make sure
     // revocation has not been cancelled.
-    $events[ParDataEvent::statusChange('par_data_inspection_plan', 'revoked')][] = ['onEvent', -100];
+    if (class_exists(ParDataEvent::class)) {
+      $events[ParDataEvent::statusChange('par_data_inspection_plan', 'revoked')][] = ['onEvent', -100];
+    }
 
     return $events;
   }

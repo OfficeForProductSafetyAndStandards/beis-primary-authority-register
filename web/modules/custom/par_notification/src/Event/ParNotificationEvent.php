@@ -22,20 +22,18 @@ class ParNotificationEvent extends Event implements ParNotificationEventInterfac
   const SEND = 'par_notification.send';
 
   /**
-   * The message being acted upon.
-   *
-   * @param MessageInterface $message
-   */
-  protected MessageInterface $message;
-
-  /**
    * The email address that the message is being sent to.
    *
    * @param ParRecipient $recipient
    */
   protected ParRecipient $recipient;
 
-  /**
+  public function __construct(/**
+   * The message being acted upon.
+   *
+   * @param MessageInterface $message
+   */
+  protected MessageInterface $message, string $email, /**
    * The rendered output of the message being sent.
    *
    * There should be an array key for each view_mode, including:
@@ -44,19 +42,12 @@ class ParNotificationEvent extends Event implements ParNotificationEventInterfac
    *
    * @param array $output
    */
-  protected array $output;
-
-  public function __construct(MessageInterface $message, string $email, array $output) {
-    $this->message = $message;
-    $this->output = $output;
-
+  protected array $output) {
     // Get all the recipients for this message.
-    $recipients = $this->getSubscriptionManager()->getRecipients($message);
+    $recipients = $this->getSubscriptionManager()->getRecipients($this->message);
 
     // Filter for just this recipient
-    $recipients = array_filter($recipients, function ($recipient) use ($email) {
-      return $recipient->getEmail() === $email;
-    });
+    $recipients = array_filter($recipients, fn($recipient) => $recipient->getEmail() === $email);
     $this->recipient = current($recipients);
   }
 
@@ -72,6 +63,7 @@ class ParNotificationEvent extends Event implements ParNotificationEventInterfac
   /**
    * @return MessageInterface
    */
+  #[\Override]
   public function getMessage(): MessageInterface {
     return $this->message;
   }
@@ -92,6 +84,7 @@ class ParNotificationEvent extends Event implements ParNotificationEventInterfac
    *
    * @return array
    */
+  #[\Override]
   public function getOutput(): array {
     return $this->output;
   }
@@ -103,6 +96,7 @@ class ParNotificationEvent extends Event implements ParNotificationEventInterfac
    *   - 'mail_subject'
    *   - 'mail_body'
    */
+  #[\Override]
   public function setOutput(array $output) {
     if (isset($output['mail_subject']) && isset($output['mail_body'])) {
       $this->output = $output;

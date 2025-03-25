@@ -14,6 +14,7 @@ class PastDateValidator extends LessThanOrEqualValidator {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validate($value, Constraint $constraint) {
     if (\is_string($value)) {
       // Convert the value to a datetime for comparison.
@@ -23,7 +24,7 @@ class PastDateValidator extends LessThanOrEqualValidator {
           throw new \Exception('The past date validator could not covert the string to a date.');
         }
       }
-      catch (\Exception $e) {
+      catch (\Exception) {
         $this->context->buildViolation($constraint->message)
           ->setCode(PastDate::CONVERSION_ERROR)
           ->addViolation();

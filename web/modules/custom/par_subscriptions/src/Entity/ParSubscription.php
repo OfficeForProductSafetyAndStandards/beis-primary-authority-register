@@ -43,22 +43,27 @@ class ParSubscription extends ContentEntityBase implements ContentEntityInterfac
     return \Drupal::service('event_dispatcher');
   }
 
+  #[\Override]
   public function getListId() {
     return $this->get('list')->getString();
   }
 
+  #[\Override]
   public function getListName() {
     return $this->list->entity->label();
   }
 
+  #[\Override]
   public function getCode() {
     return $this->get('code')->getString();
   }
 
+  #[\Override]
   public function getEmail() {
     return $this->get('email')->getString();
   }
 
+  #[\Override]
   public function displayEmail() {
     $email = $this->getEmail();
     $replaceable = substr($email, 1, strpos($email, '@')-1);
@@ -67,10 +72,12 @@ class ParSubscription extends ContentEntityBase implements ContentEntityInterfac
     return str_replace($replaceable, 'xxxxxx', $email);
   }
 
+  #[\Override]
   public function isVerified() {
     return $this->get('verified')->get(0)->getValue()['value'] === 1;
   }
 
+  #[\Override]
   public function subscribe() {
     $this->save();
 
@@ -80,11 +87,13 @@ class ParSubscription extends ContentEntityBase implements ContentEntityInterfac
     $this->getEventDispatcher()->dispatch($event, $name);
   }
 
+  #[\Override]
   public function verify() {
     $this->set('verified', 1);
     $this->save();
   }
 
+  #[\Override]
   public function unsubscribe() {
     $this->delete();
 
@@ -97,6 +106,7 @@ class ParSubscription extends ContentEntityBase implements ContentEntityInterfac
   /**
    * Determines the schema for the base_table property defined above.
    */
+  #[\Override]
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     // Standard field, used as unique if primary index.
     $fields['id'] = BaseFieldDefinition::create('integer')

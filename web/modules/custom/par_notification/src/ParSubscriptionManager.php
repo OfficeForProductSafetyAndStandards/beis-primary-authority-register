@@ -2,6 +2,7 @@
 
 namespace Drupal\par_notification;
 
+use Drupal\par_notification\Annotation\ParMessageSubscriber;
 use Drupal\Component\Plugin\Factory\DefaultFactory;
 use Drupal\Component\Utility\EmailValidatorInterface;
 use Drupal\Core\Cache\CacheBackendInterface;
@@ -41,13 +42,6 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
   const PAR_LOGGER_CHANNEL = 'par';
 
   /**
-   * The email validator service.
-   *
-   * @var EmailValidatorInterface
-   */
-  protected EmailValidatorInterface $emailValidator;
-
-  /**
    * The account object.
    *
    * @var \Drupal\Core\Session\AccountInterface
@@ -64,25 +58,26 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
    *   Cache backend instance to use.
    * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
    *   The module handler to invoke the alter hook with.
-   * @param EmailValidatorInterface $email_validator
+   * @param EmailValidatorInterface $emailValidator
    *  The email validator service.
    * @param \Drupal\Core\Session\AccountInterface $user
    *   The current user.
    */
-  public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler, EmailValidatorInterface $email_validator, AccountInterface $user) {
+  public function __construct(\Traversable $namespaces, CacheBackendInterface $cache_backend, ModuleHandlerInterface $module_handler, /**
+   * The email validator service.
+   */
+  protected EmailValidatorInterface $emailValidator, AccountInterface $user) {
     parent::__construct(
       'Plugin/ParMessageSubscriber',
       $namespaces,
       $module_handler,
-      'Drupal\par_notification\ParMessageSubscriberInterface',
-      'Drupal\par_notification\Annotation\ParMessageSubscriber'
+      ParMessageSubscriberInterface::class,
+      ParMessageSubscriber::class
     );
 
     $this->alterInfo('par_notification_message_subscriber_info');
     $this->setCacheBackend($cache_backend, 'par_notification_message_subscriber_info_plugins');
     $this->factory = new DefaultFactory($this->getDiscovery());
-
-    $this->emailValidator = $email_validator;
     $this->currentUser = $user;
   }
 
@@ -119,6 +114,7 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function processDefinition(&$definition, $plugin_id) {
     parent::processDefinition($definition, $plugin_id);
 
@@ -145,6 +141,7 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
    * @param bool $only_active
    *   Whether only active plugins should be returned.
    */
+  #[\Override]
   public function getDefinitions(bool $only_active = TRUE): array {
     $definitions = [];
 
@@ -181,6 +178,7 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function getRecipients(MessageInterface $message): array {
     $email_validator = $this->getEmailValidator();
     $current_user = $this->getCurrentUser();
@@ -194,7 +192,7 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
         /** @var ParRecipient[] $plugin_recipients */
         $plugin_recipients = $subscriber->getRecipients($message);
       }
-      catch (ParNotificationException $e) {
+      catch (ParNotificationException) {
         // Do not bubble up subscriber errors.
         continue;
       }
@@ -204,31 +202,27 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
     }
 
     // Validate the email addresses.
-    $recipients = array_filter($recipients, function ($recipient) use ($email_validator) {
-      return $email_validator->isValid($recipient->getEmail());
-    });
+    $recipients = array_filter($recipients, fn($recipient) => $email_validator->isValid($recipient->getEmail()));
 
     // Exclude the current user from receiving notifications of their own actions.
-    $recipients = array_filter($recipients, function ($recipient) use ($current_user) {
-      return !$current_user->getEmail() ||
-        $current_user->getEmail() != $recipient->getEmail();
-    });
+    $recipients = array_filter($recipients, fn($recipient) => !$current_user->getEmail() ||
+      $current_user->getEmail() != $recipient->getEmail());
 
     // Compare the ParRecipient instances using string representation.
     return array_unique($recipients, SORT_STRING);
   }
 
+  #[\Override]
   public function getRecipientEmails(MessageInterface $message): array {
     $recipients = $this->getRecipients($message);
 
-    return array_values(array_map(function($recipient) {
-      return $recipient->getEmail();
-    }, $recipients));
+    return array_values(array_map(fn($recipient) => $recipient->getEmail(), $recipients));
   }
 
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function getSubscribedEntities(MessageInterface $message): array {
     $subscribed_entities = [];
 
@@ -239,7 +233,7 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
       try {
         $plugin_subscribed_entities = $subscriber->getSubscribedEntities($message);
       }
-      catch (ParNotificationException $e) {
+      catch (ParNotificationException) {
         // Do not bubble up subscriber errors.
         continue;
       }
@@ -254,6 +248,7 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function getSubscribedRoles(MessageTemplateInterface $template): array {
     $role_storage = \Drupal::entityTypeManager()->getStorage('user_role');
     $permission = "receive {$template->id()} notification";
@@ -261,9 +256,7 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
     /** @var Role[] $roles */
     $roles = $role_storage->loadMultiple();
 
-    $roles = array_filter($roles, function($role) use ($permission) {
-      return ($role->hasPermission($permission));
-    });
+    $roles = array_filter($roles, fn($role) => $role->hasPermission($permission));
 
     // Throw an error if there are no roles to receive this message.
     if (empty($roles)) {
@@ -295,9 +288,7 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
       NULL;
 
     // Get the intersection between the user's roles and the notifications roles.
-    return array_uintersect($roles, $user_roles, function ($a, $b) {
-      return $a->id() <=> $b->id();
-    });
+    return array_uintersect($roles, $user_roles, fn($a, $b) => $a->id() <=> $b->id());
   }
 
   /**
@@ -320,11 +311,9 @@ class ParSubscriptionManager extends DefaultPluginManager implements ParSubscrip
    */
   public function filterSubscribedEntityRoles(array $roles, bool $include = TRUE): ?array {
     $permission = 'bypass par_data membership';
-    return array_filter($roles, function($role) use ($permission, $include) {
-      return $role->id() !== RoleInterface::ANONYMOUS_ID &&
-        ( $include && !$role->hasPermission($permission) ||
-          !$include && $role->hasPermission($permission) );
-    });
+    return array_filter($roles, fn($role) => $role->id() !== RoleInterface::ANONYMOUS_ID &&
+      ( $include && !$role->hasPermission($permission) ||
+        !$include && $role->hasPermission($permission) ));
   }
 
 }

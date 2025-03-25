@@ -20,6 +20,7 @@ class ParOrganisationSuggestionForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $cid = $this->getFlowNegotiator()->getFormKey('organisation_select');
     $search_query = $this->getFlowDataHandler()->getDefaultValues('name', '', $cid);
@@ -61,6 +62,7 @@ class ParOrganisationSuggestionForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // Go back to the previous page if there's no search term.
     if (!$this->getFlowDataHandler()->getFormPermValue('organisation_select_search_query')) {

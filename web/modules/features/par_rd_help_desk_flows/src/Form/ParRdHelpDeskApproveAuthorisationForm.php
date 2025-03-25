@@ -25,6 +25,7 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     return 'Confirmation | Are you authorised to approve this partnership?';
   }
@@ -32,11 +33,12 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL): AccessResult {
     try {
       // Get a new flow negotiator that points the the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException $e) {
+    } catch (ParFlowException) {
 
     }
 
@@ -70,6 +72,7 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
 
     $par_data_organisation = current($par_data_partnership->getOrganisation());
@@ -116,6 +119,7 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // Validate that the authorisation confirmation has been checked.
     if (empty($form_state->getValue('confirm_authorisation_select'))) {

@@ -75,6 +75,7 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function getLists() {
     $list_entities = ParSubscriptionList::loadMultiple();
     return array_keys($list_entities);

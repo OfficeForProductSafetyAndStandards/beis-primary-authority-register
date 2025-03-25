@@ -22,6 +22,7 @@ class ParLabelField extends FieldItemList {
   /**
   * {@inheritdoc}
   */
+  #[\Override]
   protected function computeValue() {
     return $this->getEntity()->label();
   }

@@ -27,7 +27,8 @@ class VerifySubscriber extends ParEventSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  #[\Override]
+  static function getSubscribedEvents(): array {
     // Confirmation event should fire after a subscription has been saved.
     $events[SubscriptionEvents::subscribe(self::LIST)][] = ['onEvent', -101];
 

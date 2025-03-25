@@ -27,6 +27,7 @@ class ParContactPreferencesForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
       $this->setDefaultValuesByKey("notes", $index, $par_data_person->getPlain('communication_notes'));
@@ -48,6 +49,7 @@ class ParContactPreferencesForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // Get preferred contact methods labels.
     $person_bundle = $this->getParDataManager()->getParBundleEntity('par_data_person');

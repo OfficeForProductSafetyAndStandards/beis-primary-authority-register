@@ -13,20 +13,6 @@ use Symfony\Component\HttpKernel\KernelEvents;
 class ProfilePageRedirectSubscriber implements EventSubscriberInterface {
 
   /**
-   * The current user.
-   *
-   * @var \Drupal\Core\Session\AccountProxyInterface
-   */
-  private $account;
-
-  /**
-   * The logger service.
-   *
-   * @param \Psr\Log\LoggerInterface $logger
-   */
-  private $logger;
-
-  /**
    * @param \Drupal\Core\Session\AccountProxyInterface $account
    *   The current user.
    * @param \Psr\Log\LoggerInterface $logger
@@ -34,15 +20,21 @@ class ProfilePageRedirectSubscriber implements EventSubscriberInterface {
    *
    * @throws \InvalidArgumentException
    */
-  public function __construct(AccountProxyInterface $account, LoggerInterface $logger) {
-    $this->account = $account;
-    $this->logger = $logger;
+  public function __construct(
+      /**
+       * The current user.
+       */
+      private readonly AccountProxyInterface $account,
+      private readonly LoggerInterface $logger
+  )
+  {
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  #[\Override]
+  public static function getSubscribedEvents(): array {
     // This MUST run before RouterListener::onKernelRequest(), to ensure
     // the redirection doesn't recursively resolve.
     $events[KernelEvents::REQUEST][] = ['redirectProfilePage', 34];

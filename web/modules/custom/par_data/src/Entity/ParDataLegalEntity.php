@@ -127,6 +127,7 @@ class ParDataLegalEntity extends ParDataEntity {
    *
    * Ensure that we can not create duplicates of legal entities with the same companies house number.
    */
+  #[\Override]
   public static function create(array $values = []) {
     $entity = parent::create($values);
 
@@ -134,7 +135,7 @@ class ParDataLegalEntity extends ParDataEntity {
     try {
       $entity->updateLegacyEntities();
     }
-    catch (RegisterException|TemporaryException|DataException $ignored) {
+    catch (RegisterException|TemporaryException|DataException) {
       // Catch all errors silently.
     }
 
@@ -145,6 +146,7 @@ class ParDataLegalEntity extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function preSave(EntityStorageInterface $storage) {
     parent::preSave($storage);
 
@@ -152,7 +154,7 @@ class ParDataLegalEntity extends ParDataEntity {
     try {
       $this->updateLegacyEntities();
     }
-    catch (RegisterException|TemporaryException|DataException $ignored) {
+    catch (RegisterException|TemporaryException|DataException) {
       // Catch all errors silently.
     }
 
@@ -225,9 +227,7 @@ class ParDataLegalEntity extends ParDataEntity {
 
     $id = $this->id();
     // Remove this legal entity from the list.
-    $legal_entities = array_filter($legal_entities, function($legal_entity) use ($id) {
-      return $legal_entity->id() !== $id;
-    });
+    $legal_entities = array_filter($legal_entities, fn($legal_entity) => $legal_entity->id() !== $id);
 
     // If there are any duplicates return these instead.
     if (!empty($legal_entities)) {
@@ -279,7 +279,7 @@ class ParDataLegalEntity extends ParDataEntity {
       return ($definition !== NULL);
 
     }
-    catch (PluginNotFoundException $e) {
+    catch (PluginNotFoundException) {
       return FALSE;
     }
   }
@@ -303,7 +303,7 @@ class ParDataLegalEntity extends ParDataEntity {
         return new Organisation($register, $data);
       }
     }
-    catch (MissingDataException|DataException $e) {
+    catch (MissingDataException|DataException) {
       return NULL;
     }
 
@@ -328,7 +328,7 @@ class ParDataLegalEntity extends ParDataEntity {
         $profile = $this->getOrganisationManager()
           ->lookupOrganisation($this->getRegisterId(), (string) $this->getId());
       }
-      catch (\Exception $e) {
+      catch (\Exception) {
 
       }
 
@@ -388,6 +388,7 @@ class ParDataLegalEntity extends ParDataEntity {
    * @return string
    *   The name of the legal entity.
    */
+  #[\Override]
   public function getName(): string {
     return $this->isRegisteredOrganisation() ?
       (string) $this->lookupOrganisationProfile()?->getName() :
@@ -400,6 +401,7 @@ class ParDataLegalEntity extends ParDataEntity {
    * @return string
    *   The type of the legal entity.
    */
+  #[\Override]
   public function getType(bool $processed = TRUE): string {
     if ($this->isRegisteredOrganisation()) {
       return (string) $this->lookupOrganisationProfile()?->getType($processed);
@@ -457,15 +459,13 @@ class ParDataLegalEntity extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
-  public function filterRelationshipsByAction($relationship, $action) {
-    switch ($action) {
-      case 'manage':
-        // No relationships should be followed, this is one of the lowest tier entities.
-        return FALSE;
-
-    }
-
-    return parent::filterRelationshipsByAction($relationship, $action);
+  #[\Override]
+  public function filterRelationshipsByAction($relationship, $action)
+  {
+      return match ($action) {
+          'manage' => FALSE,
+          default => parent::filterRelationshipsByAction($relationship, $action),
+      };
   }
 
   /**
@@ -585,6 +585,7 @@ class ParDataLegalEntity extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 

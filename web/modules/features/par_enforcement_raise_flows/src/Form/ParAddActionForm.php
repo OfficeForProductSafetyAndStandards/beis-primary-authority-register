@@ -27,6 +27,7 @@ class ParAddActionForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
 
     // Load the plugin with a given cardinality, either the value being edited

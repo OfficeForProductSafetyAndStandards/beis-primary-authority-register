@@ -24,6 +24,7 @@ class ParUpdateInstitutionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     $account = $this->getCurrentUser();
     if ($update_account = $this->getFlowDataHandler()->getParameter('user')) {
@@ -35,12 +36,8 @@ class ParUpdateInstitutionForm extends ParBaseForm {
       // Get the directly related authorities and organisations.
       $par_relationship_manager = $this->getParDataManager()->getReducedIterator(1);
       $memberships = $par_relationship_manager->getRelatedEntities($par_data_person);
-      $user_organisations = array_filter($memberships, function ($membership) {
-        return ('par_data_organisation' === $membership->getEntityTypeId());
-      });
-      $user_authorities = array_filter($memberships, function ($membership) {
-        return ('par_data_authority' === $membership->getEntityTypeId());
-      });
+      $user_organisations = array_filter($memberships, fn($membership) => 'par_data_organisation' === $membership->getEntityTypeId());
+      $user_authorities = array_filter($memberships, fn($membership) => 'par_data_authority' === $membership->getEntityTypeId());
 
       // Store the organisation ids.
       $organisation_ids = [];
@@ -81,6 +78,7 @@ class ParUpdateInstitutionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     $cid_link_account = $this->getFlowNegotiator()->getFormKey('par_profile_update_link');
     $user_id = $this->getFlowDataHandler()->getDefaultValues('user_id', NULL, $cid_link_account);
@@ -101,6 +99,7 @@ class ParUpdateInstitutionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 

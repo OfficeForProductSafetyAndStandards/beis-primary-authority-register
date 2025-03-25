@@ -18,6 +18,7 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getViewsData() {
     $data = parent::getViewsData();
 
@@ -33,14 +34,11 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
     }
 
     // Document Completion as a %.
-    $data['par_partnerships_revision']['document_completion'] = array(
+    $data['par_partnerships_revision']['document_completion'] = ['title' => t('Documents Completion Percentage'), 'field' => [
       'title' => t('Documents Completion Percentage'),
-      'field' => [
-        'title' => t('Documents Completion Percentage'),
-        'help' => t('Completion percentage for partnership required documents'),
-        'id' => 'par_partnership_revision_documents_completion_percentage',
-      ],
-    );
+      'help' => t('Completion percentage for partnership required documents'),
+      'id' => 'par_partnership_revision_documents_completion_percentage',
+    ]];
 
     // PAR Status Filter.
     // This will always get the allowed statuses from the first bundle.
