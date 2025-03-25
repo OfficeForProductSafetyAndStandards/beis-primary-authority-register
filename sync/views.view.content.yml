@@ -17,7 +17,7 @@ base_field: nid
 display:
   default:
     id: default
-    display_title: Master
+    display_title: Default
     display_plugin: default
     position: 0
     display_options:
@@ -249,6 +249,7 @@ display:
       pager:
         type: full
         options:
+          pagination_heading_level: h4
           items_per_page: 50
           tags:
             next: 'Next ›'
