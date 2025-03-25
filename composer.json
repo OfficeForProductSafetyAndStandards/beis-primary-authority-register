@@ -77,6 +77,7 @@
         "drupal/jquery_ui_slider": "^2.1",
         "drupal/jquery_ui_tabs": "^2.1",
         "drupal/jquery_ui_touch_punch": "^1.1",
+        "drupal/log_stdout": "dev-1.x#cb9c63ee1e124c8eaa984640d0f3bd94a2c1c8fa",
         "drupal/login_destination": "^2.0@beta",
         "drupal/maillog": "~1.1.0",
         "drupal/mailsystem": "~4.4.0",
@@ -197,6 +198,9 @@
             },
             "drupal/govuk_notify": {
                 "Message body formatting array to string": "https://www.drupal.org/files/issues/2021-08-11/3227617-2-govuk-notify-message-body-formatting.diff"
+            },
+            "drupal/log_stdout": {
+                "PAR-2541 Reformat to ASIM JSON - https://regulatorydelivery.atlassian.net/browse/PAR-2541": "./patches/log_stdout-convert_to_asim_json.patch"
             },
             "drupal/redis": {
                 "Unable to override default scheme with settings": "https://www.drupal.org/files/issues/2021-02-16/redis-support_tls_on_predis-3004561-33.patch",
