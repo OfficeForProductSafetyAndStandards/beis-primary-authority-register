@@ -125,9 +125,8 @@ class ParDataManager implements ParDataManagerInterface {
    * Dynamic getter for the messenger service.
    *
    * @return \Drupal\Core\Messenger\MessengerInterface
-   *   The injected messenger service.
    */
-  public function getMessenger(): MessengerInterface {
+  public function getMessenger() {
     return $this->messenger;
   }
 
@@ -135,9 +134,8 @@ class ParDataManager implements ParDataManagerInterface {
    * Get renderer service.
    *
    * @return \Drupal\Core\Render\RendererInterface
-   *   The injected renderer service.
    */
-  public function getRenderer(): RendererInterface {
+  public function getRenderer() {
     return $this->renderer;
   }
 
@@ -145,7 +143,6 @@ class ParDataManager implements ParDataManagerInterface {
    * Get current user.
    *
    * @return mixed
-   *   The injected current user.
    */
   public function getCurrentUser() {
     return $this->currentUser;
@@ -155,7 +152,6 @@ class ParDataManager implements ParDataManagerInterface {
    * Get the entity field manager.
    *
    * @return \Drupal\Core\Entity\EntityFieldManagerInterface
-   *   The injected Entity Field Manager service.
    */
   public function getEntityFieldManager() {
     return $this->entityFieldManager;
@@ -171,7 +167,7 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
-  * {@inheritdoc}
+  * @inheritdoc}
   */
   #[\Override]
   public function getParEntityTypes(): array {
@@ -229,7 +225,7 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
-   * {@inheritdoc}
+   * {@inhertidoc}
    */
   public function getViewBuilder($entity_type) {
     return $this->entityTypeManager->getViewBuilder($entity_type);
@@ -239,13 +235,13 @@ class ParDataManager implements ParDataManagerInterface {
    * {@inheritdoc}
    */
   #[\Override]
-  public function getFieldDefinition(string $type, string $field, $bundle = NULL): ?FieldDefinitionInterface {
+  public function getFieldDefinition(string $entity_type, string $field, $bundle = NULL): ?FieldDefinitionInterface {
     if (!$bundle) {
-      $bundle_definition = $this->getParBundleEntity($type, $bundle);
+      $bundle_definition = $this->getParBundleEntity($entity_type, $bundle);
       $bundle = $bundle_definition?->id();
     }
 
-    $entity_fields = $this->entityFieldManager->getFieldDefinitions($type, $bundle);
+    $entity_fields = $this->entityFieldManager->getFieldDefinitions($entity_type, $bundle);
     return $entity_fields[$field] ?? NULL;
   }
 
@@ -324,7 +320,7 @@ class ParDataManager implements ParDataManagerInterface {
    *
    * Follows some rules to make sure it doesn't go round in loops.
    *
-   * @param mixed $entity
+   * @param $entity
    *   The entity being looked up.
    * @param array $entities
    *   The entities relationship tree.
@@ -532,7 +528,6 @@ class ParDataManager implements ParDataManagerInterface {
       else {
         return empty($messages);
       }
-      return TRUE;
     });
 
     return $memberships;
@@ -711,16 +706,13 @@ class ParDataManager implements ParDataManagerInterface {
    *
    * @param string $type
    *   The entity type to load the field for.
-   * @param array|null $ids
+   * @param array $ids
    *   An optional array of ids to load.
    *
    * @return \Drupal\Core\Entity\EntityInterface[]
    *   An array of entities found with this value.
-   *
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function getEntitiesByType(string $type, ?array $ids = NULL): array {
+  public function getEntitiesByType($type, array $ids = NULL) {
     $entities = $this->entityTypeManager
       ->getStorage($type)
       ->loadMultiple($ids);
@@ -876,9 +868,9 @@ class ParDataManager implements ParDataManagerInterface {
    *
    * @param \Drupal\Core\Entity\EntityInterface $entity
    *   The entity to search for the given value.
-   * @param string $field
+   * @param $field
    *   The field name to search for the given value.
-   * @param mixed $value
+   * @param $value
    *   The entity id to search for.
    * @param string $property
    *   The field property to search under.
@@ -886,7 +878,7 @@ class ParDataManager implements ParDataManagerInterface {
    * @return array|null
    *   An array of deltas if the value was found, or otherwise null.
    */
-  public function getReferenceValueKeys($entity, string $field, $value, string $property = 'target_id') {
+  public function getReferenceValueKeys($entity, $field, $value, $property = 'target_id') {
     if (!$entity instanceof EntityInterface) {
       return NULL;
     }
@@ -903,24 +895,20 @@ class ParDataManager implements ParDataManagerInterface {
   /**
    * Render an entity.
    *
-   * @param string $entity_type
-   *   The entity type identifier.
-   * @param mixed $entity_id
-   *   The unique entity identifier.
-   * @param string $view_mode
-   *   The view mode.
+   * @param $entiy_type
+   * @param $entity_id
+   * @param $view_mode
    *
    * @return array
    *   A render array.
    */
-  public function renderEntityCallback(string $entity_type, $entity_id, string $view_mode) {
-    $view_builder = $this->getViewBuilder($entity_type);
-    $entities = $this->getEntitiesByType($entity_type, [$entity_id]);
+  public function renderEntityCallback($entiy_type, $entity_id, $view_mode) {
+    $view_builder = $this->getViewBuilder($entiy_type);
+    $entities = $this->getEntitiesByType($entiy_type, [$entity_id]);
 
     foreach ($entities as $entity) {
       return $view_builder->view($entity, $view_mode);
     }
-    return [];
   }
 
   /**
@@ -948,13 +936,13 @@ class ParDataManager implements ParDataManagerInterface {
    *
    * @param \Drupal\user\UserInterface $account
    *   The account.
-   * @param \Drupal\par_data\Entity\ParDataEntityInterface $entity
+   * @param \Drupal\par_data\Entity\ParDataPerson $entity
    *   The authority or organisation entity to get the user for.
    *
    * @return \Drupal\par_data\Entity\ParDataPerson|null
    *   The Found Person or null.
    */
-  public function getUserPerson(UserInterface $account, ParDataEntityInterface $entity) {
+  public function getUserPerson(UserInterface $account, ParDataPerson $entity) {
     $entity_people = $entity->hasField('field_person') ? $entity->retrieveEntityIds('field_person') : [];
     $user_people = $this->getUserPeople($account);
 

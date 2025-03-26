@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "81be03aa06582cb4ddc0b9cf74335d95",
+    "content-hash": "f3146136448d71d108d80ab29b47ab70",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -171,16 +171,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.342.11",
+            "version": "3.342.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "e0afed3d0e2c89362f6c9b6bf8f278b04a4858b6"
+                "reference": "29c2c34ddc7ff02ec865355fc235c78acd095fcf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/e0afed3d0e2c89362f6c9b6bf8f278b04a4858b6",
-                "reference": "e0afed3d0e2c89362f6c9b6bf8f278b04a4858b6",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/29c2c34ddc7ff02ec865355fc235c78acd095fcf",
+                "reference": "29c2c34ddc7ff02ec865355fc235c78acd095fcf",
                 "shasum": ""
             },
             "require": {
@@ -262,9 +262,9 @@
             "support": {
                 "forum": "https://github.com/aws/aws-sdk-php/discussions",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.342.11"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.342.12"
             },
-            "time": "2025-03-21T18:11:10+00:00"
+            "time": "2025-03-24T18:06:44+00:00"
         },
         {
             "name": "bjeavons/zxcvbn-php",
@@ -14931,16 +14931,16 @@
         },
         {
             "name": "composer/class-map-generator",
-            "version": "1.6.0",
+            "version": "1.6.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/class-map-generator.git",
-                "reference": "ffe442c5974c44a9343e37a0abcb1cc37319f5b9"
+                "reference": "134b705ddb0025d397d8318a75825fe3c9d1da34"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/class-map-generator/zipball/ffe442c5974c44a9343e37a0abcb1cc37319f5b9",
-                "reference": "ffe442c5974c44a9343e37a0abcb1cc37319f5b9",
+                "url": "https://api.github.com/repos/composer/class-map-generator/zipball/134b705ddb0025d397d8318a75825fe3c9d1da34",
+                "reference": "134b705ddb0025d397d8318a75825fe3c9d1da34",
                 "shasum": ""
             },
             "require": {
@@ -14984,7 +14984,7 @@
             ],
             "support": {
                 "issues": "https://github.com/composer/class-map-generator/issues",
-                "source": "https://github.com/composer/class-map-generator/tree/1.6.0"
+                "source": "https://github.com/composer/class-map-generator/tree/1.6.1"
             },
             "funding": [
                 {
@@ -15000,7 +15000,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-02-05T10:05:34+00:00"
+            "time": "2025-03-24T13:50:44+00:00"
         },
         {
             "name": "composer/composer",
@@ -21052,6 +21052,6 @@
     "platform": {
         "php": "^8.3.0"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "plugin-api-version": "2.6.0"
 }
