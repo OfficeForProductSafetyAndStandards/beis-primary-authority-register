@@ -3,7 +3,7 @@
 namespace Drupal\par_subscriptions\Event;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\Event\EventBase;
+use Drupal\core_event_dispatcher\Event\Entity\EntityUpdateEvent;
 use Drupal\par_subscriptions\Entity\ParSubscriptionInterface;
 
 /**
@@ -11,39 +11,43 @@ use Drupal\par_subscriptions\Entity\ParSubscriptionInterface;
  *
  * @package Drupal\par_subscriptions\Event
  */
-class SubscriptionEvent extends EventBase implements SubscriptionEventInterface {
+class SubscriptionEvent extends EntityUpdateEvent implements SubscriptionEventInterface {
 
   /**
    * The list name.
    *
    * @var string
    */
-  protected $listName;
+  protected string $listName;
 
   /**
    * Email.
    *
    * @var string
    */
-  protected $email;
+  protected string $email;
 
   /**
    * The subscription entity.
    *
    * @var \Drupal\par_subscriptions\Entity\ParSubscriptionInterface
    */
-  protected $subscription;
+  protected ParSubscriptionInterface $subscription;
 
   /**
    * The entity object.
    *
    * @var \Drupal\Core\Entity\EntityInterface
    */
-  protected $entity;
+  protected readonly EntityInterface $entity;
 
   /**
+   * React to the updating of the PAR subscription information.
+   *
    * @param \Drupal\par_subscriptions\Entity\ParSubscriptionInterface $subscription
+   *   The PAR subscription.
    * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity.
    */
   public function __construct(
     ParSubscriptionInterface $subscription,
@@ -64,31 +68,31 @@ class SubscriptionEvent extends EventBase implements SubscriptionEventInterface 
    *   The entity object.
    */
   #[\Override]
-  public function getEntity() {
+  public function getEntity(): EntityInterface {
     return $this->entity;
   }
 
   /**
-   * @return string
+   * {@inheritdoc}
    */
   #[\Override]
-  public function getEmail(){
+  public function getEmail(): string {
     return $this->email;
   }
 
   /**
-   * @return string
+   * {@inheritdoc}
    */
   #[\Override]
-  public function getListName(){
+  public function getListName(): string {
     return $this->listName;
   }
 
   /**
-   * @return \Drupal\par_subscriptions\Entity\ParSubscriptionInterface
+   * {@inheritdoc}
    */
   #[\Override]
-  public function getSubscription(){
+  public function getSubscription(): ParSubscriptionInterface {
     return $this->subscription;
   }
 
