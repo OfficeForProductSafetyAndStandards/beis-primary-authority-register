@@ -2,9 +2,7 @@
 
 namespace Drupal\Tests\par_data\Kernel\Entity;
 
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPersonType;
 use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 
 /**
@@ -39,16 +37,18 @@ class EntityParPersonTest extends ParDataTestBase {
    * Test to validate a people entity.
    */
   public function testPeopleRequiredFields() {
-    $values = [
-      'first_name' => '',
-      'last_name' => '',
-      'work_phone' => '',
-      'email' => '',
-    ];
+    $values = [];
 
     $entity = ParDataPerson::create($values + $this->getPersonValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
-    $this->assertEquals(count($values), count($violations->getFieldNames()), t('Field values are required for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
+    $this->assertEquals(
+      count($values),
+      count($violations->getFieldNames()),
+      t(
+        'Field values are required for %fields.',
+        ['%fields' => implode(', ', $violations->getFieldNames())]
+      )->render()
+    );
   }
 
   /**
@@ -77,4 +77,5 @@ class EntityParPersonTest extends ParDataTestBase {
     $entity = ParDataPerson::create($this->getPersonValues());
     $this->assertTrue($entity->save() === SAVED_NEW, 'PAR Person entity saved correctly.');
   }
+
 }

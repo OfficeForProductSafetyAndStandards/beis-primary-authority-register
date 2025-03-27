@@ -2,9 +2,7 @@
 
 namespace Drupal\Tests\par_data\Kernel\Entity;
 
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPartnershipType;
 use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 
 /**
@@ -41,12 +39,18 @@ class EntityParPartnershipTest extends ParDataTestBase {
   public function testPartnershipRequiredFields() {
     $values = [
       'partnership_type' => '',
-      'about_partnership' => '',
     ];
 
     $entity = ParDataPartnership::create($values + $this->getCoordinatedPartnershipValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
-    $this->assertEquals(count($values), count($violations->getFieldNames()), t('Field values are required for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
+    $this->assertEquals(
+      count($values),
+      count($violations->getFieldNames()),
+      t(
+        'Field values are required for %fields.',
+        ['%fields' => implode(', ', $violations->getFieldNames())]
+      )->render()
+    );
   }
 
   /**
@@ -72,4 +76,5 @@ class EntityParPartnershipTest extends ParDataTestBase {
     $entity = ParDataPartnership::create($this->getCoordinatedPartnershipValues());
     $this->assertTrue($entity->save() === SAVED_NEW, 'PAR Partnership entity saved correctly.');
   }
+
 }

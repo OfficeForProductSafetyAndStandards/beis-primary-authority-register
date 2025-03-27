@@ -2,11 +2,7 @@
 
 namespace Drupal\Tests\par_data\Kernel\Entity;
 
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataGeneralEnquiry;
-use Drupal\par_data\Entity\ParDataGeneralEnquiryType;
-use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 
 /**
@@ -42,13 +38,19 @@ class EntityParGeneralEnquiryTest extends ParDataTestBase {
    */
   public function testGeneralEnquiryRequiredFields() {
     $values = [
-      'request_date' => '',
-      'notes' => '',
+      'primary_authority_status' => '',
     ];
 
     $entity = ParDataGeneralEnquiry::create($values + $this->getGeneralEnquiryValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
-    $this->assertEquals(count($values), count($violations->getFieldNames()), t('Field values are required for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
+    $this->assertEquals(
+      count($values),
+      count($violations->getFieldNames()),
+      t(
+        'Field values are required for %fields.',
+        ['%fields' => implode(', ', $violations->getFieldNames())]
+      )->render()
+    );
   }
 
   /**
@@ -58,4 +60,5 @@ class EntityParGeneralEnquiryTest extends ParDataTestBase {
     $entity = ParDataGeneralEnquiry::create($this->getGeneralEnquiryValues());
     $this->assertTrue($entity->save() === SAVED_NEW, 'Par General Enquiry entity saved correctly.');
   }
+
 }
