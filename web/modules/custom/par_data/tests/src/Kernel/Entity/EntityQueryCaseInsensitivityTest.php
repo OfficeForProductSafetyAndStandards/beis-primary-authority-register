@@ -2,20 +2,11 @@
 
 namespace Drupal\Tests\par_data\Kernel\Entity;
 
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
-use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataEntity;
+use Drupal\Core\Entity\Query\QueryInterface;
+use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPersonType;
-use Drupal\par_forms\Plugin\ParForm\ParOrganisationSuggestionForm;
-use Drupal\par_member_upload_flows\ParMemberCsvHandler;
-use Drupal\par_partnership_flows\Form\ParPartnershipFlowsContactSuggestionForm;
-use Drupal\par_partnership_flows\Form\ParPartnershipFlowsOrganisationSuggestionForm;
-use Drupal\Tests\par_data\Kernel\ParDataTestBase;
-use Drupal\user\Entity\User;
 
 /**
  * Tests case insensitivity for entity queries.
@@ -29,19 +20,39 @@ use Drupal\user\Entity\User;
  */
 class EntityQueryCaseInsensitivityTest extends ParDataTestBase {
 
-  /** @var \Drupal\par_data\Entity\ParDataOrganisation[] */
+  /**
+   * List of Organisations.
+   *
+   * @var \Drupal\par_data\Entity\ParDataOrganisation[]
+   */
   protected $organisations = [];
 
-  /** @var \Drupal\par_data\Entity\ParDataLegalEntity[] */
+  /**
+   * List of Legal Entities.
+   *
+   * @var \Drupal\par_data\Entity\ParDataLegalEntity[]
+   */
   protected $legalEntities = [];
 
-  /** @var \Drupal\par_data\Entity\ParDataPerson[] */
+  /**
+   * List of people.
+   *
+   * @var \Drupal\par_data\Entity\ParDataPerson[]
+   */
   protected $people = [];
 
-  /** @var \Drupal\user\Entity\User */
+  /**
+   * Primary Account.
+   *
+   * @var \Drupal\user\Entity\User
+   */
   protected $primaryAccount;
 
-  /** @var \Drupal\Core\Entity\EntityStorageInterface[] */
+  /**
+   * Entity storage classes.
+   *
+   * @var \Drupal\Core\Entity\EntityStorageInterface[]
+   */
   protected $storage = [];
 
   /**
@@ -94,9 +105,9 @@ class EntityQueryCaseInsensitivityTest extends ParDataTestBase {
 
     // Create a single user account.
     $this->primaryAccount = $this->createUser([
-        'mail' => "Sally.Field@example.com",
-        'name' => "SallyFieldTest"
-      ],
+      'mail' => "Sally.Field@example.com",
+      'name' => "SallyFieldTest",
+    ],
       $this->permissions);
 
     // Create 3 similar contact records that vary on case.
@@ -106,28 +117,28 @@ class EntityQueryCaseInsensitivityTest extends ParDataTestBase {
         'first_name' => "SallyTest",
         'last_name' => "FieldTest",
         'job_title' => 'Senior Test Engineer',
-        'field_user_account' => [$this->primaryAccount->id()]
+        'field_user_account' => [$this->primaryAccount->id()],
       ],
       'upper' => [
         'email' => "SALLY.FIELD@example.com",
         'first_name' => "SALLYTEST",
         'last_name' => "FIELDTEST",
         'job_title' => 'SENIOR TEST ENGINEER',
-        'field_user_account' => []
+        'field_user_account' => [],
       ],
       'lower' => [
         'email' => "sally.field@example.com",
         'first_name' => "sallytest",
         'last_name' => "fieldtest",
         'job_title' => 'senior test engineer',
-        'field_user_account' => []
+        'field_user_account' => [],
       ],
       'mismatching' => [
         'email' => "sally.field.mismatch@example.com",
         'first_name' => "sallymismatchtest",
         'last_name' => "fieldmismatchtest",
         'job_title' => 'Senior Mismatch Test Engineer',
-        'field_user_account' => []
+        'field_user_account' => [],
       ],
     ];
     foreach ($people_values as $key => $values) {
@@ -160,7 +171,7 @@ class EntityQueryCaseInsensitivityTest extends ParDataTestBase {
         'registered_name' => "WillowBrook Mismatched Nursing Services Ltd",
         'registered_number' => "EG999999",
         'legal_entity_type' => "other",
-      ]
+      ],
     ];
     foreach ($legal_values as $key => $values) {
       $this->legalEntities[$key] = ParDataLegalEntity::create($this->getLegalEntityValues($values));
@@ -205,18 +216,21 @@ class EntityQueryCaseInsensitivityTest extends ParDataTestBase {
     $this->storage['par_data_legal_entity'] = $this->entityTypeManager->getStorage('par_data_legal_entity');
   }
 
-  protected function getQuery($type, $conjunction = 'AND', $access_check = FALSE) {
+  /**
+   * Get the Query object for a given entity type.
+   */
+  protected function getQuery($type, $conjunction = 'AND', $access_check = FALSE): QueryInterface {
     return $this->storage[$type]->getQuery($conjunction)
       ->accessCheck($access_check);
   }
 
   /**
-   * Test a case insensitive query for similar people by email.
+   * Test a case-insensitive query for similar people by email.
    *
    * @group casesensitivity
    *
-   * @see ParDataManager::getUserPeople().
-   * @see ParPartnershipFlowsContactSuggestionForm::buildForm().
+   * @see ParDataManager::getUserPeople()
+   * @see ParPartnershipFlowsContactSuggestionForm::buildForm()
    */
   public function testInsensitiveEmail() {
     $query = $this->getQuery('par_data_person', 'OR');
@@ -227,17 +241,29 @@ class EntityQueryCaseInsensitivityTest extends ParDataTestBase {
     $results = $query->execute();
 
     // Check that all 3 contact records were found.
-    $this->assertCount(3, $results, t('Getting similar contact records by email found @results results.',
-      ['@results' => count($results)]));
+    $this->assertCount(
+      3,
+      $results,
+      t(
+        'Getting similar contact records by email found @results results. (@list)',
+        [
+          '@results' => count($results),
+          '@list' => implode(
+            ', ',
+            array_map(fn($id) => $id . ':' . ParDataPerson::load($id)->getEmail(), $results)
+          ),
+        ]
+      )->render()
+    );
   }
 
   /**
-   * Test a case insensitive query for similar people by name.
+   * Test a case-insensitive query for similar people by name.
    *
    * @group casesensitivity
    *
-   * @see ParDataManager::getUserPeople().
-   * @see ParPartnershipFlowsContactSuggestionForm::buildForm().
+   * @see ParDataManager::getUserPeople()
+   * @see ParPartnershipFlowsContactSuggestionForm::buildForm()
    */
   public function testInsensitiveContactName() {
     $query = $this->getQuery('par_data_person');
@@ -261,9 +287,9 @@ class EntityQueryCaseInsensitivityTest extends ParDataTestBase {
    *
    * @group casesensitivity
    *
-   * @see ParOrganisationSuggestionForm::loadData().
-   * @see ParMemberCsvHandler::normalize().
-   * @see ParPartnershipFlowsOrganisationSuggestionForm::buildForm().
+   * @see ParOrganisationSuggestionForm::loadData()
+   * @see ParMemberCsvHandler::normalize()
+   * @see ParPartnershipFlowsOrganisationSuggestionForm::buildForm()
    */
   public function testInsensitiveOrgName() {
     $query = $this->getQuery('par_data_organisation', 'OR');
@@ -292,9 +318,9 @@ class EntityQueryCaseInsensitivityTest extends ParDataTestBase {
    *
    * @group casesensitivity
    *
-   * @see ParOrganisationSuggestionForm::loadData().
-   * @see ParMemberCsvHandler::normalize().
-   * @see ParPartnershipFlowsOrganisationSuggestionForm::buildForm().
+   * @see ParOrganisationSuggestionForm::loadData()
+   * @see ParMemberCsvHandler::normalize()
+   * @see ParPartnershipFlowsOrganisationSuggestionForm::buildForm()
    */
   public function testInsensitiveExactOrgName() {
     $query = $this->getQuery('par_data_organisation', 'OR');
@@ -302,7 +328,7 @@ class EntityQueryCaseInsensitivityTest extends ParDataTestBase {
     // In some cases simpler conditions are used where matching an exact name is important.
     $organisation_name = "WillowBrook Nursing Services";
     $results = $query->condition('organisation_name', "$organisation_name", '=')
-        ->execute();
+      ->execute();
 
     // Check that all 3 organisations were found.
     $this->assertCount(3, $results, t('Getting exact organisation matches by name found @results results.',
@@ -310,23 +336,23 @@ class EntityQueryCaseInsensitivityTest extends ParDataTestBase {
   }
 
   /**
-   * Test a case insensitive query for similar organisations by partial name.
+   * Test a case-insensitive query for similar organisations by partial name.
    *
    * @group casesensitivity
    *
-   * @see ParOrganisationSuggestionForm::loadData().
-   * @see ParMemberCsvHandler::normalize().
-   * @see ParPartnershipFlowsOrganisationSuggestionForm::buildForm().
+   * @see ParOrganisationSuggestionForm::loadData()
+   * @see ParMemberCsvHandler::normalize()
+   * @see ParPartnershipFlowsOrganisationSuggestionForm::buildForm()
    */
   public function testInsensitivePartialOrgName() {
     $query = $this->getQuery('par_data_organisation', 'OR');
 
-    // The following condition group is used to match whole words (not partial words)
-    //  e.g. searching for "WillowBrook Care":
+    // The following condition group is used to match whole words
+    // (not partial words) e.g. searching for "WillowBrook Care":
     // 'WillowBrook'            true
     // 'Test WillowBrook Care'  true
     // 'TestWillowBrook Care'   false
-    // 'WillowBrook Test Care'  false
+    // 'WillowBrook Test Care'  false.
     $organisation_name = "WillowBrook";
     $group = $query
       ->orConditionGroup()
@@ -343,18 +369,19 @@ class EntityQueryCaseInsensitivityTest extends ParDataTestBase {
   }
 
   /**
-   * Test a case insensitive query for similar organisations by trading name.
+   * Test a case-insensitive query for similar organisations by trading name.
    *
    * @group casesensitivity
    *
-   * @see ParOrganisationSuggestionForm::loadData().
-   * @see ParMemberCsvHandler::normalize().
-   * @see ParPartnershipFlowsOrganisationSuggestionForm::buildForm().
+   * @see ParOrganisationSuggestionForm::loadData()
+   * @see ParMemberCsvHandler::normalize()
+   * @see ParPartnershipFlowsOrganisationSuggestionForm::buildForm()
    */
   public function testInsensitiveOrgTradingName() {
     $query = $this->getQuery('par_data_organisation', 'OR');
 
-    // The following condition group is used to match whole words (not partial words)
+    // The following condition group is used to match whole words
+    // (not partial words)
     $trading_name = "WillowBrook Care";
     $group = $query
       ->orConditionGroup()
@@ -372,18 +399,19 @@ class EntityQueryCaseInsensitivityTest extends ParDataTestBase {
   }
 
   /**
-   * Test a case insensitive query for similar legal entity by name.
+   * Test a case-insensitive query for similar legal entity by name.
    *
    * @group casesensitivity
    *
-   * @see ParOrganisationSuggestionForm::loadData().
-   * @see ParMemberCsvHandler::normalize().
-   * @see ParPartnershipFlowsOrganisationSuggestionForm::buildForm().
+   * @see ParOrganisationSuggestionForm::loadData()
+   * @see ParMemberCsvHandler::normalize()
+   * @see ParPartnershipFlowsOrganisationSuggestionForm::buildForm()
    */
   public function testInsensitiveOrgLegalName() {
     $query = $this->getQuery('par_data_legal_entity', 'OR');
 
-    // The following condition group is used to match whole words (not partial words)
+    // The following condition group is used to match whole words
+    // (not partial words)
     $legal_entity = "WillowBrook Nursing Services Ltd";
     $group = $query
       ->orConditionGroup()
@@ -399,4 +427,5 @@ class EntityQueryCaseInsensitivityTest extends ParDataTestBase {
     $this->assertCount(3, $results, t('Getting similar legal entities by name found @results results.',
       ['@results' => count($results)]));
   }
+
 }

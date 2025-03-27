@@ -40,9 +40,6 @@ class EntityParAuthorityTest extends ParDataTestBase {
     $values = [
       'authority_name' => '',
       'authority_type' => '',
-      'nation' => '',
-      'ons_code' => '',
-      'comments' => '',
     ];
 
     $entity = ParDataAuthority::create($values + $this->getAuthorityValues());
@@ -50,7 +47,10 @@ class EntityParAuthorityTest extends ParDataTestBase {
     $this->assertEquals(
       count($values),
       count($violations->getFieldNames()),
-      t('Field values are required for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())])->render()
+      t(
+        'Field values are required for %fields.',
+        ['%fields' => implode(', ', $violations->getFieldNames())]
+      )->render()
     );
   }
 

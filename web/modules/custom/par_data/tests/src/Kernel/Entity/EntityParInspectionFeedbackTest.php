@@ -2,11 +2,7 @@
 
 namespace Drupal\Tests\par_data\Kernel\Entity;
 
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataInspectionFeedback;
-use Drupal\par_data\Entity\ParDataInspectionFeedbackType;
-use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 
 /**
@@ -42,13 +38,19 @@ class EntityParInspectionFeedbackTest extends ParDataTestBase {
    */
   public function testInspectionFeedbackRequiredFields() {
     $values = [
-      'request_date' => '',
-      'notes' => '',
+      'primary_authority_status' => '',
     ];
 
     $entity = ParDataInspectionFeedback::create($values + $this->getInspectionFeedbackValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
-    $this->assertEquals(count($values), count($violations->getFieldNames()), t('Field values are required for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
+    $this->assertEquals(
+      count($values),
+      count($violations->getFieldNames()),
+      t(
+        'Field values are required for %fields.',
+        ['%fields' => implode(', ', $violations->getFieldNames())]
+      )->render()
+    );
   }
 
   /**
@@ -58,4 +60,5 @@ class EntityParInspectionFeedbackTest extends ParDataTestBase {
     $entity = ParDataInspectionFeedback::create($this->getInspectionFeedbackValues());
     $this->assertTrue($entity->save() === SAVED_NEW, 'Par Inspection Feedback entity saved correctly.');
   }
+
 }
