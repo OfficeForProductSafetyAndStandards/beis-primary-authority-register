@@ -8,7 +8,6 @@ use Drupal\message\MessageInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\message\MessageTemplateInterface;
 use Drupal\message_expire\MessageExpiryManagerInterface;
-use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -30,7 +29,7 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
    *
    * @var \Drupal\par_data\Event\ParDataEventInterface|null
    */
-  protected?ParDataEventInterface $event = NULL;
+  protected ?ParDataEventInterface $event = NULL;
 
   /**
    * The event dispatcher service.
@@ -141,10 +140,12 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
    *
    * @param array $arguments
    *   An array of replacement arguments to be set on the message.
-   * @param \Drupal\par_data\Entity\ParDataEntityInterface $parameters
+   * @param array $parameters
    *   The additional data parameters to be added to the message.
+   *     - key is a field name
+   *     - value is the value to set that field to.
    */
-  public function sendMessage(array $arguments, array $parameters) {
+  public function sendMessage(array $arguments, array $parameters = []) {
     $entity = $this->getEvent()?->getEntity();
 
     // Create the message.
