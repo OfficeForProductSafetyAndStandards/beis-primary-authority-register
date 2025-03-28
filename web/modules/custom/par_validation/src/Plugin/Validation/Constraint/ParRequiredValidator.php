@@ -15,14 +15,14 @@ class ParRequiredValidator extends ConstraintValidator {
    * {@inheritdoc}
    */
   #[\Override]
-  public function validate($items, Constraint $constraint) {
+  public function validate($value, Constraint $constraint): void {
     // Check to make sure there are field values.
-    if ($items->isEmpty() && !$this->skipValidate()) {
-      $this->context->addViolation($constraint->message, ['@value' => $items->getName()]);
+    if ($value->isEmpty() && !$this->skipValidate()) {
+      $this->context->addViolation($constraint->message, ['@value' => $value->getName()]);
     }
 
     // Check to make sure all the field values are not empty.
-    foreach ($items as $item) {
+    foreach ($value as $item) {
       if ($this->skipValidate()) {
         break;
       }
