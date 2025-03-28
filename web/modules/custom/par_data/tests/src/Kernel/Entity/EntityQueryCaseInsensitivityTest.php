@@ -240,9 +240,9 @@ class EntityQueryCaseInsensitivityTest extends ParDataTestBase {
 
     $results = $query->execute();
 
-    // Check that all 3 contact records were found.
+    // The primary account has a person entry and the three test persons.
     $this->assertCount(
-      3,
+      1 + 3,
       $results,
       t(
         'Getting similar contact records by email found @results results. (@list)',
@@ -250,8 +250,7 @@ class EntityQueryCaseInsensitivityTest extends ParDataTestBase {
           '@results' => count($results),
           '@list' => implode(
             ', ',
-            array_map(fn($id) => $id . ':' . ParDataPerson::load($id)->getEmail(), $results)
-          ),
+            array_map(fn($id) => $id . ':' . ParDataPerson::load($id)->getEmail(), $results)),
         ]
       )->render()
     );
