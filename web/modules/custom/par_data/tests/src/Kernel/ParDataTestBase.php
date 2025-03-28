@@ -151,8 +151,16 @@ class ParDataTestBase extends EntityKernelTestBase {
     $type->save();
 
     // Create a new non-admin user.
-    $this->account = $this->createUser($this->permissions);
-    \Drupal::currentUser()->setAccount($this->account);
+    $user = $this->createUser($this->permissions);
+
+    // Create another user so that it is does not have uid == 1.
+    // uid 1 automatically bypasses permission checking.
+    // @see SuperUserAccessPolicy::calculatePermissions()
+    if ("1" === $user->id()) {
+      $user = $this->createUser($this->permissions);
+    }
+    $this->account = $user;
+    $this->drupalSetCurrentUser($this->account);
 
     // Mimic some of the functionality in
     // \Drupal\Tests\file\Kernel\FileManagedUnitTestBase.
