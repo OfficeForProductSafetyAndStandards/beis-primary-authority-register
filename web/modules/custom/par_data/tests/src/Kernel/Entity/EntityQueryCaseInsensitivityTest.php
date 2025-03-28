@@ -240,7 +240,8 @@ class EntityQueryCaseInsensitivityTest extends ParDataTestBase {
 
     $results = $query->execute();
 
-    // The primary account has a person entry and the three test persons.
+    // The primary account has a person entry
+    // and the three persons created for the test.
     $this->assertCount(
       1 + 3,
       $results,

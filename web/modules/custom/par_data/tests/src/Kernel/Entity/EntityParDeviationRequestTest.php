@@ -38,7 +38,15 @@ class EntityParDeviationRequestTest extends ParDataTestBase {
    * Test to validate required fields.
    */
   public function testDeviationRequestRequiredFields() {
-    $values = [];
+    // List of fields that have the addConstraint() applied.
+    $values = [
+      // @see ParDataEntity::baseFieldDefinitions()
+      'archive_reason' => '',
+      // @see ParDataDeviationRequest::baseFieldDefinitions()
+      'request_date' => '',
+      'notes' => '',
+      'document' => '',
+    ];
 
     $entity = ParDataDeviationRequest::create($values + $this->getDeviationRequestValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
@@ -46,8 +54,8 @@ class EntityParDeviationRequestTest extends ParDataTestBase {
       count($values),
       count($violations->getFieldNames()),
       t(
-        'Field values are required for %fields.',
-        ['%fields' => implode(', ', $violations->getFieldNames())]
+        'Violations are reported for fields @fields.',
+        ['@fields' => implode(', ', $violations->getFieldNames())]
       )->render()
     );
   }

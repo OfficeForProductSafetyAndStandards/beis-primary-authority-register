@@ -37,8 +37,14 @@ class EntityParEnforcementNoticeTest extends ParDataTestBase {
    * Test to validate an authority entity.
    */
   public function testEnforcementNoticeRequiredFields() {
+    // List of fields that have the addConstraint() applied.
     $values = [
-      'notice_type' => '',
+      // @see ParDataEntity::baseFieldDefinitions()
+      'archive_reason' => '',
+      // @see ParDataEnforcementNotice::baseFieldDefinitions()
+      'notice_date' => '',
+      'legal_entity_name' => '',
+      'summary' => '',
     ];
 
     $entity = ParDataEnforcementNotice::create($values + $this->getEnforcementNoticeValues());
@@ -47,8 +53,8 @@ class EntityParEnforcementNoticeTest extends ParDataTestBase {
       count($values),
       count($violations->getFieldNames()),
       t(
-        'Field values are required for %fields.',
-        ['%fields' => implode(', ', $violations->getFieldNames())]
+        'Violations are reported for fields @fields.',
+        ['@fields' => implode(', ', $violations->getFieldNames())]
       )->render()
     );
   }

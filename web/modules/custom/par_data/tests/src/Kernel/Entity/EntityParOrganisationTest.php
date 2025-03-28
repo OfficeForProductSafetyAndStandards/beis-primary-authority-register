@@ -37,8 +37,19 @@ class EntityParOrganisationTest extends ParDataTestBase {
    * Test to validate an organisation entity.
    */
   public function testOrganisationRequiredFields() {
+    // List of fields that have the addConstraint() applied.
     $values = [
+      // @see ParDataEntity::baseFieldDefinitions()
+      'archive_reason' => '',
+      // @see ParDataOrganisation::baseFieldDefinitions()
       'organisation_name' => '',
+      'size' => '',
+      'employees_band' => '',
+      'nation' => '',
+      'comments' => '',
+      'trading_name' => '',
+      'coordinator_type' => '',
+      'coordinator_number' => '',
     ];
 
     $entity = ParDataOrganisation::create($values + $this->getOrganisationValues());
@@ -47,8 +58,8 @@ class EntityParOrganisationTest extends ParDataTestBase {
       count($values),
       count($violations->getFieldNames()),
       t(
-        'Field values are required for %fields.',
-        ['%fields' => implode(', ', $violations->getFieldNames())]
+        'Violations are reported for fields @fields.',
+        ['@fields' => implode(', ', $violations->getFieldNames())]
       )->render()
     );
   }
