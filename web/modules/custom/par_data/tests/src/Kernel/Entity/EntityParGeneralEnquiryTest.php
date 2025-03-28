@@ -37,8 +37,14 @@ class EntityParGeneralEnquiryTest extends ParDataTestBase {
    * Test to validate an authority entity.
    */
   public function testGeneralEnquiryRequiredFields() {
+    // List of fields that have the addConstraint() applied.
     $values = [
-      'primary_authority_status' => '',
+      // @see ParDataEntity::baseFieldDefinitions()
+      'archive_reason' => '',
+      // @see ParDataGeneralEnquiry::baseFieldDefinitions()
+      'request_date' => '',
+      'notes' => '',
+      'primary_authority_notes' => '',
     ];
 
     $entity = ParDataGeneralEnquiry::create($values + $this->getGeneralEnquiryValues());
@@ -47,8 +53,8 @@ class EntityParGeneralEnquiryTest extends ParDataTestBase {
       count($values),
       count($violations->getFieldNames()),
       t(
-        'Field values are required for %fields.',
-        ['%fields' => implode(', ', $violations->getFieldNames())]
+        'Violations are reported for fields @fields.',
+        ['@fields' => implode(', ', $violations->getFieldNames())]
       )->render()
     );
   }

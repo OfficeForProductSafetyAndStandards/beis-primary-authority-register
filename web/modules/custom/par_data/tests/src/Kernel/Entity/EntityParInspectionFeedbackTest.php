@@ -37,8 +37,14 @@ class EntityParInspectionFeedbackTest extends ParDataTestBase {
    * Test to validate an authority entity.
    */
   public function testInspectionFeedbackRequiredFields() {
+    // List of fields that have the addConstraint() applied.
     $values = [
-      'primary_authority_status' => '',
+      // @see ParDataEntity::baseFieldDefinitions()
+      'archive_reason' => '',
+      // @see ParDataInspectionFeedback::baseFieldDefinitions()
+      'primary_authority_notes' => '',
+      'notes' => '',
+      'request_date' => '',
     ];
 
     $entity = ParDataInspectionFeedback::create($values + $this->getInspectionFeedbackValues());
@@ -47,8 +53,8 @@ class EntityParInspectionFeedbackTest extends ParDataTestBase {
       count($values),
       count($violations->getFieldNames()),
       t(
-        'Field values are required for %fields.',
-        ['%fields' => implode(', ', $violations->getFieldNames())]
+        'Violations are reported for fields @fields.',
+        ['@fields' => implode(', ', $violations->getFieldNames())]
       )->render()
     );
   }

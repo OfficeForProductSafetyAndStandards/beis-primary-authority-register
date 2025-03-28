@@ -37,7 +37,15 @@ class EntityParPersonTest extends ParDataTestBase {
    * Test to validate a people entity.
    */
   public function testPeopleRequiredFields() {
-    $values = [];
+    $values = [
+      // @see ParDataEntity::baseFieldDefinitions()
+      'archive_reason' => '',
+      // @see ParDataPartnership::baseFieldDefinitions()
+      'first_name' => '',
+      'last_name' => '',
+      'work_phone' => '',
+      'email' => '',
+    ];
 
     $entity = ParDataPerson::create($values + $this->getPersonValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
@@ -45,8 +53,8 @@ class EntityParPersonTest extends ParDataTestBase {
       count($values),
       count($violations->getFieldNames()),
       t(
-        'Field values are required for %fields.',
-        ['%fields' => implode(', ', $violations->getFieldNames())]
+        'Violations are reported for fields @fields.',
+        ['@fields' => implode(', ', $violations->getFieldNames())]
       )->render()
     );
   }

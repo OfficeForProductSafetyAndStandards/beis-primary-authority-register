@@ -37,9 +37,15 @@ class EntityParAuthorityTest extends ParDataTestBase {
    * Test to validate an authority entity.
    */
   public function testAuthorityRequiredFields() {
+    // List of fields that have the addConstraint() applied.
     $values = [
-      'authority_name' => '',
+      // @see ParDataEntity::baseFieldDefinitions()
+      'archive_reason' => '',
+      // @see ParDataAuthority::baseFieldDefinitions()
       'authority_type' => '',
+      'nation' => '',
+      'ons_code' => '',
+      'comments' => '',
     ];
 
     $entity = ParDataAuthority::create($values + $this->getAuthorityValues());
@@ -48,8 +54,8 @@ class EntityParAuthorityTest extends ParDataTestBase {
       count($values),
       count($violations->getFieldNames()),
       t(
-        'Field values are required for %fields.',
-        ['%fields' => implode(', ', $violations->getFieldNames())]
+        'Violations are reported for fields @fields.',
+        ['@fields' => implode(', ', $violations->getFieldNames())]
       )->render()
     );
   }

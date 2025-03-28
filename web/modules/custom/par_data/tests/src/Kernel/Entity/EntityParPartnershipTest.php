@@ -38,17 +38,28 @@ class EntityParPartnershipTest extends ParDataTestBase {
    */
   public function testPartnershipRequiredFields() {
     $values = [
-      'partnership_type' => '',
+      // @see ParDataEntity::baseFieldDefinitions()
+      'archive_reason' => '',
+      // @see ParDataPartnership::baseFieldDefinitions()
+      'about_partnership' => '',
+      'member_display' => '',
+      // Although this field has a constraint and hence in this list,
+      // ParDataStorage::create() sets the value to the first of the field's
+      // allowed values as it has no value. Hence, the 'par_required' constraint
+      // is not really needed.
+      'partnership_status' => '',
     ];
 
     $entity = ParDataPartnership::create($values + $this->getCoordinatedPartnershipValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
     $this->assertEquals(
       count($values),
-      count($violations->getFieldNames()),
+      // See note above about why the 'partnership_status' currently is not in
+      // this list.
+      count($violations->getFieldNames()) + 1,
       t(
-        'Field values are required for %fields.',
-        ['%fields' => implode(', ', $violations->getFieldNames())]
+        'Violations are reported for fields @fields.',
+        ['@fields' => implode(', ', $violations->getFieldNames())]
       )->render()
     );
   }
