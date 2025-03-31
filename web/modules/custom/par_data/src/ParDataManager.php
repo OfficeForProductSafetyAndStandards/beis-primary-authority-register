@@ -235,13 +235,13 @@ class ParDataManager implements ParDataManagerInterface {
    * {@inheritdoc}
    */
   #[\Override]
-  public function getFieldDefinition(string $entity_type, string $field, $bundle = NULL): ?FieldDefinitionInterface {
+  public function getFieldDefinition(string $type, string $field, $bundle = NULL): ?FieldDefinitionInterface {
     if (!$bundle) {
-      $bundle_definition = $this->getParBundleEntity($entity_type, $bundle);
+      $bundle_definition = $this->getParBundleEntity($type, $bundle);
       $bundle = $bundle_definition?->id();
     }
 
-    $entity_fields = $this->entityFieldManager->getFieldDefinitions($entity_type, $bundle);
+    $entity_fields = $this->entityFieldManager->getFieldDefinitions($type, $bundle);
     return $entity_fields[$field] ?? NULL;
   }
 
@@ -528,6 +528,7 @@ class ParDataManager implements ParDataManagerInterface {
       else {
         return empty($messages);
       }
+      return TRUE;
     });
 
     return $memberships;
@@ -909,6 +910,7 @@ class ParDataManager implements ParDataManagerInterface {
     foreach ($entities as $entity) {
       return $view_builder->view($entity, $view_mode);
     }
+    return [];
   }
 
   /**
@@ -936,13 +938,13 @@ class ParDataManager implements ParDataManagerInterface {
    *
    * @param \Drupal\user\UserInterface $account
    *   The account.
-   * @param \Drupal\par_data\Entity\ParDataPerson $entity
+   * @param \Drupal\par_data\Entity\ParDataEntityInterface $entity
    *   The authority or organisation entity to get the user for.
    *
    * @return \Drupal\par_data\Entity\ParDataPerson|null
    *   The Found Person or null.
    */
-  public function getUserPerson(UserInterface $account, ParDataPerson $entity) {
+  public function getUserPerson(UserInterface $account, ParDataEntityInterface $entity) {
     $entity_people = $entity->hasField('field_person') ? $entity->retrieveEntityIds('field_person') : [];
     $user_people = $this->getUserPeople($account);
 
