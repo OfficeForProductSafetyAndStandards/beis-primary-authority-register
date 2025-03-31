@@ -3,7 +3,7 @@
 namespace Drupal\par_subscriptions\Event;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\Event\EventBase;
+use Drupal\core_event_dispatcher\Event\Entity\EntityUpdateEvent;
 use Drupal\par_subscriptions\Entity\ParSubscriptionInterface;
 
 /**
@@ -11,7 +11,7 @@ use Drupal\par_subscriptions\Entity\ParSubscriptionInterface;
  *
  * @package Drupal\par_subscriptions\Event
  */
-class SubscriptionEvent extends EventBase implements SubscriptionEventInterface {
+class SubscriptionEvent extends EntityUpdateEvent implements SubscriptionEventInterface {
 
   /**
    * The list name.
