@@ -325,10 +325,10 @@ display:
             general:
               autosubmit: true
               autosubmit_exclude_textfield: false
-              autosubmit_textfield_minimum_length: 3
               autosubmit_hide: false
               allow_secondary: false
               secondary_label: 'Advanced options'
+              autosubmit_textfield_minimum_length: 3
             list:
               bef_format: default
               more_options:
@@ -875,11 +875,11 @@ display:
       export_method: batch
       export_batch_size: 1000
       export_limit: 50000
-      store_in_public_file_directory: false
+      export_filesystem: s3private
       custom_redirect_path: false
       redirect_to_display: subscription_list
       include_query_params: false
-      export_filesystem: s3private
+      store_in_public_file_directory: false
     cache_metadata:
       max-age: -1
       contexts:
