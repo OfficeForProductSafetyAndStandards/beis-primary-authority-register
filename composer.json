@@ -82,7 +82,7 @@
         "drupal/mailsystem": "^4.5",
         "drupal/masquerade": "~2.0.0",
         "drupal/menu_link_attributes": "^1.5",
-        "drupal/message": "1.8.0",
+        "drupal/message": "^1.5",
         "drupal/message_expire": "~1.0.0",
         "drupal/message_notify": "^1.4",
         "drupal/migrate_plus": "^6.0",
