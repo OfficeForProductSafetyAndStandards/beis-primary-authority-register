@@ -1,52 +1,26 @@
 _core:
-  default_config_hash: _fHi6qLNWxqoPaDQheF1_F9HAJzTc_zlDvg7UXOfFuw
-client_key: ''
+  default_config_hash: EJsMMn516WDvtSeOL9Dx7ulP0PnE5dNVCv6AcXolnKg
+client_key: SENTRY_DSN
 environment: ''
 release: ''
-fatal_error_handler: false
-fatal_error_handler_memory: 2560
 log_levels:
-  1: 0
-  2: 0
-  3: 0
-  4: 0
-  5: 0
+  1: 1
+  2: 2
+  3: 3
+  4: 4
+  5: 5
   6: 0
   7: 0
   8: 0
-drush_error_handler: false
 stack: true
-timeout: 2
-message_limit: 2048
+timeout: 2.0
 trace: false
-javascript_error_handler: false
-public_dsn: ''
-ssl: verify_ssl
-ca_cert: ''
+fatal_error_handler: true
+fatal_error_handler_memory: 2560
+javascript_error_handler: true
+drush_error_handler: false
+public_dsn: SENTRY_DSN_PUBLIC
 ignored_channels: {  }
-ignored_messages: {  }
 send_user_data: false
-rate_limit: 0
+rate_limit: null
 send_request_body: false
-request_tracing: false
-traces_sample_rate: null
-browser_traces_sample_rate: null
-database_tracing: false
-twig_tracing: false
-auto_session_tracking: false
-send_client_reports: false
-drush_tracing: false
-seckit_set_report_uri: false
-send_monitoring_sensor_status_changes: false
-404_tracing: false
-show_report_dialog: false
-error_embed_url: null
-tunnel: false
-modules: false
-cron_monitor_id: null
-profiles_sample_rate: null
-http_compression: true
-send_inp_spans: false
-trace_propagation_targets_backend: {  }
-trace_propagation_targets_frontend: {  }
-interactions_sample_rate: null
