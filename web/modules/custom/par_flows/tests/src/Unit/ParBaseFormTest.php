@@ -1,18 +1,13 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Tests\par_flows\Unit\ParFlowEntityTest
- */
-
 namespace Drupal\Tests\par_flows\Unit;
 
-use Drupal\par_flows\ParFlowNegotiatorInterface;
-use Drupal\par_flows\ParFlowDataHandlerInterface;
-use Drupal\par_data\ParDataManagerInterface;
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Tests\UnitTestCase;
+use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\par_flows\ParFlowDataHandlerInterface;
+use Drupal\par_flows\ParFlowNegotiatorInterface;
 
 /**
  * Test the logical methods of the base form.
@@ -25,8 +20,10 @@ class ParBaseFormTest extends UnitTestCase {
 
   /**
    * The test flow class to run the tests on.
+   *
+   * @var \Drupal\par_flows\Form\ParBaseForm
    */
-  protected $baseForm;
+  protected ParBaseForm $baseForm;
 
   /**
    * {@inheritdoc}
@@ -73,4 +70,5 @@ class ParBaseFormTest extends UnitTestCase {
     $this->assertTrue($this->baseForm->decideBooleanValue('on'), "The boolean value is correctly identified as being 'on'.");
     $this->assertTrue($this->baseForm->decideBooleanValue(TRUE), "The boolean value is correctly identified as being 'on'.");
   }
+
 }
