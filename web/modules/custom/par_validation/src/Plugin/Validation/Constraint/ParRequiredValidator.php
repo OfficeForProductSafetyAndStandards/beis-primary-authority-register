@@ -3,28 +3,26 @@
 namespace Drupal\par_validation\Plugin\Validation\Constraint;
 
 use Drupal\Core\Field\FieldItemInterface;
-use Drupal\field\Entity\FieldStorageConfig;
-use Drupal\user\Entity\Role;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
 /**
-* Validates the ParRequiredConstraint constraint.
-*/
+ * Validates the ParRequiredConstraint constraint.
+ */
 class ParRequiredValidator extends ConstraintValidator {
 
   /**
    * {@inheritdoc}
    */
   #[\Override]
-  public function validate($items, Constraint $constraint) {
+  public function validate($value, Constraint $constraint): void {
     // Check to make sure there are field values.
-    if ($items->isEmpty() && !$this->skipValidate()) {
-      $this->context->addViolation($constraint->message, ['@value' => $items->getName()]);
+    if ($value->isEmpty() && !$this->skipValidate()) {
+      $this->context->addViolation($constraint->message, ['@value' => $value->getName()]);
     }
 
     // Check to make sure all the field values are not empty.
-    foreach ($items as $item) {
+    foreach ($value as $item) {
       if ($this->skipValidate()) {
         break;
       }
@@ -38,7 +36,7 @@ class ParRequiredValidator extends ConstraintValidator {
           $property = $item instanceof FieldItemInterface ? $item->mainPropertyName() : $value;
         }
 
-        if (!isset($item->$property) || false === $item->$property || (empty($item->$property) && '0' != $item->$property)) {
+        if (!isset($item->$property) || FALSE === $item->$property || (empty($item->$property) && '0' != $item->$property)) {
           $this->context->addViolation($message, ['@value' => $item->$property]);
         }
       }

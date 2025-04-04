@@ -2,11 +2,7 @@
 
 namespace Drupal\Tests\par_data\Kernel\Entity;
 
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataAuthorityType;
-use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 
 /**
@@ -41,8 +37,11 @@ class EntityParAuthorityTest extends ParDataTestBase {
    * Test to validate an authority entity.
    */
   public function testAuthorityRequiredFields() {
+    // List of fields that have the addConstraint() applied.
     $values = [
-      'authority_name' => '',
+      // @see ParDataEntity::baseFieldDefinitions()
+      'archive_reason' => '',
+      // @see ParDataAuthority::baseFieldDefinitions()
       'authority_type' => '',
       'nation' => '',
       'ons_code' => '',
@@ -51,7 +50,14 @@ class EntityParAuthorityTest extends ParDataTestBase {
 
     $entity = ParDataAuthority::create($values + $this->getAuthorityValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
-    $this->assertEquals(count($values), count($violations->getFieldNames()), t('Field values are required for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
+    $this->assertEquals(
+      count($values),
+      count($violations->getFieldNames()),
+      t(
+        'Violations are reported for fields @fields.',
+        ['@fields' => implode(', ', $violations->getFieldNames())]
+      )->render()
+    );
   }
 
   /**
@@ -77,4 +83,5 @@ class EntityParAuthorityTest extends ParDataTestBase {
     $entity = ParDataAuthority::create($this->getAuthorityValues());
     $this->assertTrue($entity->save() === SAVED_NEW, 'PAR Authority entity saved correctly.');
   }
+
 }
