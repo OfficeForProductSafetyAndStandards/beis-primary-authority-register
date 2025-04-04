@@ -229,7 +229,7 @@ fi
 # to the exception list.
 ####################################################################################
 function cf_teardown {
-    if [[ $ENV != "production" ]] && [[ $ENV != "staging" ]] && [[ $ENV != "migration" ]]; then
+    if [[ $ENV != "production" ]]; then
 
         ## Remove any postgres backing services, unbind services first
         if cf service $PG_BACKING_SERVICE >/dev/null 2>&1; then
