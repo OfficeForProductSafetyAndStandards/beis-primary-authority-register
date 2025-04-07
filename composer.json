@@ -76,7 +76,6 @@
         "drupal/jquery_ui_slider": "^2.1",
         "drupal/jquery_ui_tabs": "^2.1",
         "drupal/jquery_ui_touch_punch": "^1.1",
-        "drupal/js_cookie": "^1.0",
         "drupal/login_destination": "^2.0@beta",
         "drupal/maillog": "~1.1.0",
         "drupal/mailsystem": "^4.5",
@@ -91,7 +90,7 @@
         "drupal/password_policy": "^4.0",
         "drupal/queue_ui": "3.2.1",
         "drupal/raven": "^5.0",
-        "drupal/redis": "1.9",
+        "drupal/redis": "1.7",
         "drupal/registered_organisations": "1.0.x-dev",
         "drupal/robotstxt": "^1.6",
         "drupal/role_delegation": "1.3.0",
@@ -197,6 +196,10 @@
             },
             "drupal/pagerer": {
                 "Pagerer upgrade issue": "https://git.drupalcode.org/project/pagerer/-/merge_requests/18.diff"
+            },
+            "drupal/redis": {
+                "Unable to override default scheme with settings": "https://www.drupal.org/files/issues/2021-02-16/redis-support_tls_on_predis-3004561-33.patch",
+                "Take into account CONFIG command may not work": "https://www.drupal.org/files/issues/2021-02-16/redis-allow_disabled_config-3173988-4.patch"
             },
             "drupal/registered_organisations": {
                 "Fix number format for regsistered charities": "./patches/registered_organisations/charities_commission_number_format.patch"
