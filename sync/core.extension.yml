@@ -79,7 +79,6 @@ module:
   node: 0
   options: 0
   page_cache: 0
-  page_cache_exclusion: 0
   pagerer: 0
   par_actions: 0
   par_authority_add_flows: 0
