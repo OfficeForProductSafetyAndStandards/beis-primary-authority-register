@@ -198,8 +198,10 @@
                 "Pagerer upgrade issue": "https://git.drupalcode.org/project/pagerer/-/merge_requests/18.diff"
             },
             "drupal/redis": {
-                "Unable to override default scheme with settings": "https://www.drupal.org/files/issues/2021-11-19/redis-support_tls_on_predis-3004561-37.patch",
-                "Take into account CONFIG command may not work": "https://www.drupal.org/files/issues/2024-09-25/3173988-28.patch"
+                "Currently Drush Cr or Cache Clear UI does not flush Redis cache - https://www.drupal.org/project/redis/issues/2765895": "https://www.drupal.org/files/issues/redis-n2765895-16.patch",
+                "Support TLS for Predis - https://www.drupal.org/project/redis/issues/3004561": "https://www.drupal.org/files/issues/2021-11-19/redis-support_tls_on_predis-3004561-37.patch",
+                "Implement initial RedisCluster client integration - https://www.drupal.org/project/redis/issues/2900947": "https://www.drupal.org/files/issues/2024-10-15/2900947-82.patch",
+                "Cache bin handling in multiple Redis DBs - https://www.drupal.org/project/redis/issues/2395255": "https://www.drupal.org/files/issues/2025-03-13/redis-Cache_bin_handling_in_multiple_Redis_DBs-2395255-10.patch"
             },
             "drupal/registered_organisations": {
                 "Fix number format for regsistered charities": "./patches/registered_organisations/charities_commission_number_format.patch"
