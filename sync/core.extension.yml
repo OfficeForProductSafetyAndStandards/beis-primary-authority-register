@@ -26,6 +26,7 @@ module:
   ctools: 0
   datetime: 0
   datetime_range: 0
+  dblog: 0
   default_content: 0
   devel_generate: 0
   dynamic_page_cache: 0
@@ -76,7 +77,6 @@ module:
   node: 0
   options: 0
   page_cache: 0
-  page_cache_exclusion: 0
   pagerer: 0
   par_actions: 0
   par_authority_add_flows: 0
@@ -172,6 +172,8 @@ module:
   trance: 0
   ultimate_cron: 0
   unique_pager: 0
+  update: 0
+  upgrade_status: 0
   user: 0
   vbo_export: 0
   views_bulk_operations: 0
