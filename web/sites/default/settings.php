@@ -910,6 +910,7 @@ if (isset($redis_credentials)) {
   $settings['redis.connection']['port'] = $redis_credentials->port;
   $settings['redis.connection']['password'] = $redis_credentials->password;
   $settings['cache']['default'] = 'cache.backend.redis';
+  $settings['redis.connection']['persistent'] = TRUE;
   $settings['redis_compress_length'] = 100;
 
   // Apply changes to the container configuration to better leverage Redis.
@@ -1171,4 +1172,9 @@ $settings['state_cache'] = TRUE;
 $ddev_settings = dirname(__FILE__) . '/settings.ddev.php';
 if (getenv('IS_DDEV_PROJECT') == 'true' && is_readable($ddev_settings)) {
   require $ddev_settings;
+}
+
+// Include settings required for Redis cache.
+if ((file_exists(__DIR__ . '/settings.ddev.redis.php') && getenv('IS_DDEV_PROJECT') == 'true')) {
+  include __DIR__ . '/settings.ddev.redis.php';
 }

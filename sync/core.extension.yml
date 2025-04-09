@@ -26,7 +26,6 @@ module:
   ctools: 0
   datetime: 0
   datetime_range: 0
-  dblog: 0
   default_content: 0
   devel_generate: 0
   dynamic_page_cache: 0
@@ -38,6 +37,7 @@ module:
   field_ui: 0
   file: 0
   filter: 0
+  flood_control: 0
   flysystem: 0
   flysystem_s3: 0
   google_tag: 0
@@ -172,8 +172,6 @@ module:
   trance: 0
   ultimate_cron: 0
   unique_pager: 0
-  update: 0
-  upgrade_status: 0
   user: 0
   vbo_export: 0
   views_bulk_operations: 0
