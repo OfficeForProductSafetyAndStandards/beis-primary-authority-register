@@ -910,8 +910,10 @@ if (isset($redis_credentials)) {
   $settings['redis.connection']['port'] = $redis_credentials->port;
   $settings['redis.connection']['password'] = $redis_credentials->password;
   $settings['cache']['default'] = 'cache.backend.redis';
+  $settings['cache']['bins']['form'] = 'cache.backend.database';
   $settings['redis.connection']['persistent'] = TRUE;
   $settings['redis_compress_length'] = 100;
+  $settings['redis_compress_level'] = 1;
 
   // Apply changes to the container configuration to better leverage Redis.
   // This includes using Redis for the lock and flood control systems, as well
