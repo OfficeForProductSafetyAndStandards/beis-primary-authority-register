@@ -86,12 +86,14 @@
         "drupal/queue_ui": "~3.1.0",
         "drupal/range": "~1.5.0",
         "drupal/raven": "~5.0.0",
+        "drupal/restrict_ip": "4.0.0-beta1",
         "drupal/redis": "~1.7.0",
         "drupal/registered_organisations": "1.0.x-dev",
         "drupal/robotstxt": "~1.5.0",
         "drupal/role_delegation": "~1.2.0",
         "drupal/search_api": "~1.31.0",
         "drupal/search_api_opensearch": "~2.0.0",
+        "drupal/shield": "1.8.0",
         "drupal/symfony_mailer": "~1.4.0",
         "drupal/token": "~1.13.0",
         "drupal/tracer": "~1.0.0",
@@ -140,9 +142,11 @@
             "drupal/core-composer-scaffold": true,
             "zaporylie/composer-drupal-optimizations": true,
             "drupal/console-extend-plugin": true,
+            "drupal/core-project-message": true,
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "php-http/discovery": true,
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "tbachert/spi": true
         }
     },
     "extra": {
