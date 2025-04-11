@@ -911,6 +911,7 @@ if (isset($redis_credentials)) {
   $settings['redis.connection']['password'] = $redis_credentials->password;
   $settings['cache']['default'] = 'cache.backend.redis';
   $settings['cache']['bins']['form'] = 'cache.backend.database';
+  $settings['cache']['bins']['render'] = 'cache.backend.database';
   $settings['redis.connection']['persistent'] = TRUE;
   $settings['redis_compress_length'] = 100;
   $settings['redis_compress_level'] = 1;
