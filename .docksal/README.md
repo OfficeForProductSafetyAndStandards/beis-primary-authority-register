@@ -27,6 +27,20 @@ using information from the environment configuration files used by ```fin```.
 See [Custom Configuration](https://docs.docksal.io/stack/custom-configuration/)
 for more information about these files.
 
+### Create the database.
+How to create the database used by running phpunit.
+
+``` bash
+fin drush sql:query;
+```
+
+then enter
+
+``` sql
+create database par;
+comment on database par is 'Used by PHPUnit';
+```
+
 ## Cron jobs
 Developers need to be aware of this Docksal issue [Make Docker-set environment variables accessible in cron jobs](https://github.com/docksal/service-cli/issues/188),
 
@@ -48,7 +62,7 @@ In DefinitionErrorExceptionPass.php line 51:
   You have requested a non-existent parameter "cache_lifecycle_bins".
 ```
 
-then it is suggested that you add the following to the docksal-local.yml file
+then it is suggested that you add the following
 ```yaml
 parameters:
   cache_lifecycle_bins:
@@ -56,6 +70,10 @@ parameters:
 ```
 to [services.local.non-production.yml](../web/sites/default/services.local.non-production.yml)
 it probably can be removed at a later date and does not have to be committed.
+
+It has been found that running the script on a completely empty database fails
+at the point to install the site. The line can be commented out and the script
+by adding the comment character '#' to the beginning of the line.
 
 # Opensearch
 

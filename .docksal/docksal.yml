@@ -1,10 +1,9 @@
-version: "3.9"
 services:
   cli:
     environment:
       - SIMPLETEST_BASE_URL=http://web/
       - BROWSERTEST_OUTPUT_BASE_URL=http://${VIRTUAL_HOST}
-      - SIMPLETEST_DB=sqlite://localhost//var/www/data/default/sqlite/test.sqlite
+      - SIMPLETEST_DB=pgsql://user:user@db/par
       - COMPOSER_DEFAULT_VERSION
       - OPENSEARCH_INITIAL_ADMIN_PASSWORD
       - REDIS_SCHEME
@@ -32,9 +31,8 @@ services:
       file: ${HOME}/.docksal/stacks/services.yml
       service: pgsql
 
-  os:
+  opensearch:
     image: ${OPENSEARCH_IMAGE:-opensearchproject/opensearch:1.2.4}
-    restart: always
     hostname: ${OPENSEARCH_HOSTNAME}
     volumes:
       - opensearch-data1:/usr/share/opensearch/data
@@ -56,7 +54,7 @@ services:
         soft: 65536 # maximum number of open files for the OpenSearch user, set to at least 65536 on modern systems
         hard: 65536
 
-  search-dashboard:
+  opensearch-dashboard:
     image: ${OPENSEARCH_DASHBOARDS_IMAGE:-opensearchproject/opensearch-dashboards:1.2.0}
     hostname: opensearch_dashboard
     environment:
@@ -69,16 +67,14 @@ services:
 
   clamav:
     hostname: clamav
-    image: clamav/clamav:latest
+    image: ${CLAMAV_IMAGE:-clamav/clamav:latest}
 
   mail:
     extends:
       file: ${HOME}/.docksal/stacks/services.yml
       service: mail
-    image: mailhog/mailhog
     labels:
       - io.docksal.virtual-host=webmail.${VIRTUAL_HOST}
-    user: root
 
   redis:
     extends:
