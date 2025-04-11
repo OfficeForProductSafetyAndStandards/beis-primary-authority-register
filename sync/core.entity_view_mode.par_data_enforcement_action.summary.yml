@@ -8,5 +8,6 @@ _core:
   default_config_hash: UJeLIQTSFi6840gEYSaCUbp12VBixS77_XpzdgFj-gc
 id: par_data_enforcement_action.summary
 label: Summary
+description: ''
 targetEntityType: par_data_enforcement_action
 cache: true

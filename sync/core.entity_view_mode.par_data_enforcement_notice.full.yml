@@ -8,5 +8,6 @@ _core:
   default_config_hash: LbF5y5FFIaxQUu9IMkI8CY0whaMDmZku6fjoNnfcBTI
 id: par_data_enforcement_notice.full
 label: Full
+description: ''
 targetEntityType: par_data_enforcement_notice
 cache: true

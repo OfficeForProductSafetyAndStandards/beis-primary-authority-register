@@ -8,5 +8,6 @@ _core:
   default_config_hash: 7YQF_r-LGnyphhJoNhISBHtCKySFA3zAKe3CXU0PxbA
 id: par_data_premises.summary
 label: Summary
+description: ''
 targetEntityType: par_data_premises
 cache: true

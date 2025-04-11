@@ -8,5 +8,6 @@ _core:
   default_config_hash: Xf1t8odLWlq0TMg2JCFzBhEYxZNzzCpUDD-bMWhNbP0
 id: par_data_person.summary
 label: Summary
+description: ''
 targetEntityType: par_data_person
 cache: true

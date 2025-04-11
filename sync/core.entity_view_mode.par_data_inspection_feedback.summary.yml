@@ -8,5 +8,6 @@ _core:
   default_config_hash: WnPMcwnnNLJrHwpb1WhaviU_xMEqaIlvpxGFiPDX0xk
 id: par_data_inspection_feedback.summary
 label: Summary
+description: ''
 targetEntityType: par_data_inspection_feedback
 cache: true
