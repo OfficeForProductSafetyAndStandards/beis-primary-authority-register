@@ -6,6 +6,9 @@ id: test_config
 label: 'Test Config'
 description: ''
 weight: 5
+stackable: false
+no_patching: false
+storage: null
 folder: ../sync-test
 module:
   maillog: 0
@@ -13,8 +16,5 @@ module:
   restrict_ip: 0
   shield: 0
 theme: {  }
-blacklist: {  }
-graylist:
-  - system.mail
-graylist_dependents: true
-graylist_skip_equal: true
+complete_list: {  }
+partial_list: {  }
