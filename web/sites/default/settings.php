@@ -807,6 +807,7 @@ $app_env = getenv('APP_ENV');
 $settings['trusted_host_patterns'] = [
   '^beis-par-' . $app_env . '\.cloudapps\.digital',
   $app_env . '-cdn.par-beta.net',
+
 ];
 
 /**
@@ -878,6 +879,20 @@ $settings['config_readonly_whitelist_patterns'] = [
  */
 $settings['par_branded_header_footer'] = TRUE;
 
+if (PHP_SAPI === 'cli') {
+  $services_name = [
+    'VCAP_SERVICES',
+    'DATABASE_CREDENTIALS',
+  ];
+  foreach ($services_name as $service_name) {
+    $service_env = getenv('SECRET_' . $service_name);
+    if ($service_env) {
+      // Need to decode the environment variable.
+      putenv($service_name . '=' . json_decode($service_env));
+    }
+  }
+}
+
 /**
  * Extract the connection credentials from the VCAP_SERVICES environment variable
  * which is configured by the PaaS service manager
@@ -908,7 +923,7 @@ if (isset($db_credentials)) {
 if (isset($redis_credentials)) {
   // Enable Redis services.
   $settings['redis.connection']['interface'] = 'Predis';
-  $settings['redis.connection']['scheme'] = 'tls';
+  $settings['redis.connection']['scheme'] = $redis_credentials->scheme ?? 'tls';
   $settings['redis.connection']['host'] = $redis_credentials->host;
   $settings['redis.connection']['port'] = $redis_credentials->port;
   $settings['redis.connection']['password'] = $redis_credentials->password;
