@@ -1,0 +1,8 @@
+uuid: 15f88c38-ffad-498e-a162-83f4699ea9e0
+langcode: en
+status: true
+dependencies: {  }
+id: json_api
+label: 'JSON API'
+locked: false
+pattern: c

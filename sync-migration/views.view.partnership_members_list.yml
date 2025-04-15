@@ -1,0 +1,806 @@
+uuid: 24800108-aab2-4b38-9ff4-cbd94a4f43f7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_data_partnership.field_authority
+    - field.storage.par_data_partnership.field_organisation
+    - field.storage.par_data_partnership.field_partnership_legal_entity
+    - field.storage.par_data_partnership.field_regulatory_function
+    - user.role.administrator
+    - user.role.json_api_consumer
+  module:
+    - pagerer
+    - par_data
+    - par_member_upload_flows
+    - rest
+    - serialization
+    - user
+    - views_data_export
+id: partnership_members_list
+label: 'Partnership members list'
+module: views
+description: ''
+tag: ''
+base_table: par_partnerships_field_data
+base_field: id
+display:
+  default:
+    id: default
+    display_title: Default
+    display_plugin: default
+    position: 0
+    display_options:
+      title: 'Partnerships Regulatory Functions'
+      fields:
+        id:
+          id: id
+          table: par_partnerships_field_data
+          field: id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: par_data_partnership
+          entity_field: id
+          plugin_id: field
+          label: ID
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: number_integer
+          settings:
+            thousand_separator: ''
+            prefix_suffix: true
+          group_column: value
+          group_columns:
+            entity_id: entity_id
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        field_authority:
+          id: field_authority
+          table: par_data_partnership__field_authority
+          field: field_authority
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: 'Authority Name'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        partnership_type:
+          id: partnership_type
+          table: par_partnerships_field_data
+          field: partnership_type
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: par_data_partnership
+          entity_field: partnership_type
+          plugin_id: field
+          label: 'Partnership Type'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        field_regulatory_function:
+          id: field_regulatory_function
+          table: par_data_partnership__field_regulatory_function
+          field: field_regulatory_function
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: 'Regulatory Function'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        field_organisation:
+          id: field_organisation
+          table: par_data_partnership__field_organisation
+          field: field_organisation
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: Organisation
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        field_partnership_legal_entity:
+          id: field_partnership_legal_entity
+          table: par_data_partnership__field_partnership_legal_entity
+          field: field_partnership_legal_entity
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: 'Partnership Legal Entity'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+      pager:
+        type: pagerer
+        options:
+          offset: 0
+          items_per_page: 50
+          preset: gds_list_pagination
+          id: '0'
+          total_pages: ''
+          expose:
+            items_per_page: 0
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: 0
+            items_per_page_options_all_label: '- All -'
+            offset: 0
+            offset_label: Offset
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      access:
+        type: role
+        options:
+          role:
+            administrator: administrator
+            json_api_consumer: json_api_consumer
+      cache:
+        type: tag
+        options: {  }
+      empty: {  }
+      sorts: {  }
+      arguments: {  }
+      filters:
+        field_regulatory_function_target_id:
+          id: field_regulatory_function_target_id
+          table: par_data_partnership__field_regulatory_function
+          field: field_regulatory_function_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: numeric
+          operator: empty
+          value:
+            min: ''
+            max: ''
+            value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_regulatory_function_target_id_op
+            label: 'Regulatory Function'
+            description: ''
+            use_operator: true
+            operator: field_regulatory_function_target_id_op
+            operator_limit_selection: true
+            operator_list:
+              empty: empty
+              'not empty': 'not empty'
+            identifier: field_regulatory_function_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              par_enforcement: '0'
+              par_authority: '0'
+              par_authority_manager: '0'
+              par_organisation: '0'
+              par_organisation_manager: '0'
+              national_regulator: '0'
+              par_helpdesk: '0'
+              senior_administration_officer: '0'
+              secretary_state: '0'
+              administrator: '0'
+              json_api_consumer: '0'
+            min_placeholder: ''
+            max_placeholder: ''
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        partnership_status:
+          id: partnership_status
+          table: par_partnerships_field_data
+          field: partnership_status
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: par_data_partnership
+          plugin_id: par_data_status_filter
+          operator: '='
+          value: confirmed_rd
+          group: 1
+          exposed: true
+          expose:
+            operator_id: ''
+            label: 'PAR Status'
+            description: ''
+            use_operator: false
+            operator: partnership_status_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: partnership_status
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              par_enforcement: '0'
+              par_authority: '0'
+              par_authority_manager: '0'
+              par_organisation: '0'
+              par_organisation_manager: '0'
+              national_regulator: '0'
+              par_helpdesk: '0'
+              senior_administration_officer: '0'
+              secretary_state: '0'
+              administrator: '0'
+              json_api_consumer: '0'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        partnership_type:
+          id: partnership_type
+          table: par_partnerships_field_data
+          field: partnership_type
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: par_data_partnership
+          entity_field: partnership_type
+          plugin_id: string
+          operator: '='
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: partnership_type_op
+            label: 'Partnership Type'
+            description: ''
+            use_operator: false
+            operator: partnership_type_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: partnership_type
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              par_enforcement: '0'
+              par_authority: '0'
+              par_authority_manager: '0'
+              par_organisation: '0'
+              par_organisation_manager: '0'
+              national_regulator: '0'
+              par_helpdesk: '0'
+              senior_administration_officer: '0'
+              secretary_state: '0'
+              administrator: '0'
+              json_api_consumer: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+      style:
+        type: table
+        options:
+          grouping:
+            -
+              field: id
+              rendered: true
+              rendered_strip: false
+          row_class: ''
+          default_row_class: true
+          columns:
+            id: id
+            field_authority: field_authority
+            partnership_type: partnership_type
+            field_regulatory_function: field_regulatory_function
+            field_organisation: field_organisation
+            field_partnership_legal_entity: field_partnership_legal_entity
+          default: '-1'
+          info:
+            id:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_authority:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            partnership_type:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_regulatory_function:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_organisation:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_partnership_legal_entity:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          override: true
+          sticky: false
+          summary: ''
+          empty_table: false
+          caption: ''
+          description: ''
+      row:
+        type: fields
+        options:
+          default_field_elements: true
+          inline: {  }
+          separator: ''
+          hide_empty: false
+      query:
+        type: views_query
+        options:
+          query_comment: ''
+          disable_sql_rewrite: false
+          distinct: true
+          replica: false
+          query_tags: {  }
+          contextual_filters_or: false
+      relationships:
+        field_partnership_legal_entity:
+          id: field_partnership_legal_entity
+          table: par_data_partnership__field_partnership_legal_entity
+          field: field_partnership_legal_entity
+          relationship: none
+          group_type: group
+          admin_label: 'field_partnership_legal_entity: PAR Partnership Legal Entity'
+          plugin_id: standard
+          required: false
+      use_ajax: true
+      group_by: false
+      header:
+        result:
+          id: result
+          table: views
+          field: result
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: result
+          empty: false
+          content: 'Displaying @start - @end of @total'
+      footer: {  }
+      display_extenders: {  }
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+        - user.roles
+      tags:
+        - 'config:field.storage.par_data_partnership.field_authority'
+        - 'config:field.storage.par_data_partnership.field_organisation'
+        - 'config:field.storage.par_data_partnership.field_partnership_legal_entity'
+        - 'config:field.storage.par_data_partnership.field_regulatory_function'
+  data_export_1:
+    id: data_export_1
+    display_title: 'Data export'
+    display_plugin: data_export
+    position: 2
+    display_options:
+      filters: {  }
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      style:
+        type: data_export
+        options:
+          formats:
+            csv: csv
+          csv_settings:
+            delimiter: ','
+            enclosure: '"'
+            escape_char: \
+            strip_tags: true
+            trim: true
+            encoding: utf8
+            utf8_bom: '0'
+            use_serializer_encode_only: false
+      defaults:
+        filters: false
+        filter_groups: false
+      display_extenders: {  }
+      path: admin/partnerships-reg-functions/csv
+      filename: ''
+      automatic_download: true
+      export_filesystem: private
+      custom_redirect_path: false
+      redirect_to_display: none
+      include_query_params: false
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - request_format
+        - user.roles
+      tags:
+        - 'config:field.storage.par_data_partnership.field_authority'
+        - 'config:field.storage.par_data_partnership.field_organisation'
+        - 'config:field.storage.par_data_partnership.field_partnership_legal_entity'
+        - 'config:field.storage.par_data_partnership.field_regulatory_function'
+  page_1:
+    id: page_1
+    display_title: Page
+    display_plugin: page
+    position: 1
+    display_options:
+      display_extenders: {  }
+      path: admin/partnerships-reg-functions
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - url.query_args
+        - user.roles
+      tags:
+        - 'config:field.storage.par_data_partnership.field_authority'
+        - 'config:field.storage.par_data_partnership.field_organisation'
+        - 'config:field.storage.par_data_partnership.field_partnership_legal_entity'
+        - 'config:field.storage.par_data_partnership.field_regulatory_function'
