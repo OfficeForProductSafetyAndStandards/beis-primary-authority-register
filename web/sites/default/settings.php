@@ -807,7 +807,6 @@ $app_env = getenv('APP_ENV');
 $settings['trusted_host_patterns'] = [
   '^beis-par-' . $app_env . '\.cloudapps\.digital',
   $app_env . '-cdn.par-beta.net',
-
 ];
 
 /**
