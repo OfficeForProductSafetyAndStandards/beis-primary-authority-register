@@ -34,6 +34,7 @@ class ParChooseAccount extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function defaultConfiguration(): array {
     return ['require_user' => FALSE] + parent::defaultConfiguration();
   }
@@ -47,7 +48,7 @@ class ParChooseAccount extends ParFormPluginBase {
    * @return mixed
    *   A user account if selected, otherwise null.
    */
-  static function getUserAccount($value) {
+  static function getUserAccount(mixed $value) {
     foreach ([self::DELETE, self::IGNORE, self::CREATE] as $opt) {
       if ($value === $opt) {
         return NULL;
@@ -62,6 +63,7 @@ class ParChooseAccount extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
 
@@ -131,6 +133,7 @@ class ParChooseAccount extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $account_options = $this->getFlowDataHandler()->getFormPermValue('account_options');
 
@@ -162,6 +165,7 @@ class ParChooseAccount extends ParFormPluginBase {
   /**
    * Validate date field.
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $account_key = $this->getElementKey('account');
     if (!$form_state->getValue($account_key)) {
@@ -176,6 +180,7 @@ class ParChooseAccount extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
@@ -183,6 +188,7 @@ class ParChooseAccount extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }

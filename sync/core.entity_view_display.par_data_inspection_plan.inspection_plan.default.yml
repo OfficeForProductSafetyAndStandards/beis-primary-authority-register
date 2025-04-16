@@ -40,6 +40,14 @@ content:
     third_party_settings: {  }
     weight: 5
     region: content
+  par_label:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
   summary:
     type: text_default
     label: hidden
@@ -61,6 +69,7 @@ content:
     settings:
       timezone_override: ''
       format_type: gds_date_format
+      from_to: both
       separator: ' to '
     third_party_settings: {  }
     weight: 4
@@ -71,5 +80,8 @@ hidden:
   consulted_national_regulator: true
   deleted_reason: true
   name: true
+  par_status: true
+  par_status_date: true
   revocation_reason: true
+  search_api_excerpt: true
   user_id: true

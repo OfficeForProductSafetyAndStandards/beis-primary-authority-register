@@ -41,13 +41,6 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   use ParControllerTrait;
 
   /**
-   * The response cache kill switch.
-   *
-   * @var KillSwitch $killSwitch
-   */
-  protected KillSwitch $killSwitch;
-
-  /**
    * The access result.
    *
    * @var ?AccessResult $accessResult
@@ -68,12 +61,14 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
    * @param \Drupal\Core\PageCache\ResponsePolicy\KillSwitch $kill_switch
    *   The page cache kill switch.
    */
-  public function __construct(ParFlowNegotiatorInterface $negotiator, ParFlowDataHandlerInterface $data_handler, ParDataManagerInterface $par_data_manager, PluginManagerInterface $plugin_manager, KillSwitch $kill_switch, UrlGeneratorInterface $url_generator) {
+  public function __construct(ParFlowNegotiatorInterface $negotiator, ParFlowDataHandlerInterface $data_handler, ParDataManagerInterface $par_data_manager, PluginManagerInterface $plugin_manager, /**
+   * The response cache kill switch.
+   */
+  protected KillSwitch $killSwitch, UrlGeneratorInterface $url_generator) {
     $this->negotiator = $negotiator;
     $this->flowDataHandler = $data_handler;
     $this->parDataManager = $par_data_manager;
     $this->formBuilder = $plugin_manager;
-    $this->killSwitch = $kill_switch;
     $this->urlGenerator = $url_generator;
 
     $this->setCurrentUser();
@@ -84,7 +79,7 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
       $this->getFlowNegotiator()->getFlow();
 
       $this->loadData();
-    } catch (ParFlowException $e) {
+    } catch (ParFlowException) {
 
     }
   }
@@ -92,6 +87,7 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('par_flows.negotiator'),
@@ -185,14 +181,10 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
     $url = $this->getFlowNegotiator()->getFlow()->progress($action);
 
     // All links other than cancel should display as primary buttons.
-    switch($action) {
-      case 'cancel':
-        $route_options = [];
-        break;
-
-      default:
-        $route_options = ['attributes' => ['class' => ['button']]];
-    }
+    $route_options = match ($action) {
+        'cancel' => [],
+        default => ['attributes' => ['class' => ['button']]],
+    };
 
     if ($url && $url instanceof Url) {
       $url->mergeOptions($route_options);

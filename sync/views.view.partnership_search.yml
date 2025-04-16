@@ -888,6 +888,7 @@ display:
               autosubmit: true
               autosubmit_exclude_textfield: true
               autosubmit_textfield_delay: 500
+              autosubmit_textfield_minimum_length: 3
               autosubmit_hide: false
               input_required: false
               allow_secondary: false
@@ -902,6 +903,7 @@ display:
                     filter_rewrite_values: ''
                   collapsible: false
                   is_secondary: false
+                  hide_label: false
       access:
         type: perm
         options:

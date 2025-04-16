@@ -1,13 +1,7 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\d8views\Plugin\views\field\NodeTypeFlagger
- */
-
 namespace Drupal\par_notification\Plugin\views\field;
 
-use Drupal\Component\Utility\Html;
 use Drupal\Core\Link;
 use Drupal\message\MessageInterface;
 use Drupal\par_notification\ParLinkManagerInterface;
@@ -26,7 +20,7 @@ class ParNotificationLink extends FieldPluginBase {
   /**
    * Get the PAR Link Manager service.
    *
-   * @return ParLinkManagerInterface
+   * @return \Drupal\par_notification\ParLinkManagerInterface
    */
   public function getLinkManager(): ParLinkManagerInterface {
     return \Drupal::service('plugin.manager.par_link_manager');
@@ -35,6 +29,7 @@ class ParNotificationLink extends FieldPluginBase {
   /**
    * @{inheritdoc}
    */
+  #[\Override]
   public function query() {
     // Leave empty to avoid a query on this field.
   }
@@ -42,10 +37,13 @@ class ParNotificationLink extends FieldPluginBase {
   /**
    * @{inheritdoc}
    *
-   * @param ResultRow $values
+   * @param \Drupal\views\ResultRow $values
    *
-   * @return string
+   * @return \Drupal\Component\Render\MarkupInterface|null
+   *
+   * @throws \Exception
    */
+  #[\Override]
   public function render(ResultRow $values) {
     $message = $this->getEntity($values);
 
@@ -64,4 +62,5 @@ class ParNotificationLink extends FieldPluginBase {
     return !empty($render_array) ?
       $this->getRenderer()->render($render_array) : NULL;
   }
+
 }

@@ -58,6 +58,7 @@ class ParListFormatter extends FormatterBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
 
@@ -73,7 +74,7 @@ class ParListFormatter extends FormatterBase {
 
       $element[$delta] = [
         '#type' => 'markup',
-        '#markup' => $value ? $value : 'Unknown value',
+        '#markup' => $value ?: 'Unknown value',
       ];
     }
 
@@ -83,6 +84,7 @@ class ParListFormatter extends FormatterBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function defaultSettings() {
     return [
       'display_original_value' => FALSE,
@@ -92,6 +94,7 @@ class ParListFormatter extends FormatterBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $element['display_original_value'] = [
       '#title' => t('Display original value if there is no match'),

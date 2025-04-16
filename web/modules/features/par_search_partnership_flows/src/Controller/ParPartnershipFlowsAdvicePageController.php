@@ -21,6 +21,7 @@ class ParPartnershipFlowsAdvicePageController extends ParBaseController {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
 
     $par_data_partnership_advice = $this->getFlowDataHandler()->getParameter('par_data_advice');
@@ -34,6 +35,7 @@ class ParPartnershipFlowsAdvicePageController extends ParBaseController {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function build($build = [], ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
 
     if ($par_data_advice->isArchived()) {

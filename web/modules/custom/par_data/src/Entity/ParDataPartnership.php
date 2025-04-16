@@ -107,6 +107,7 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * Get the time service.
    */
+  #[\Override]
   public function getTime() {
     return \Drupal::time();
   }
@@ -121,6 +122,7 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function filterRelationshipsByAction($relationship, $action) {
     switch ($action) {
       case 'manage':
@@ -165,7 +167,7 @@ class ParDataPartnership extends ParDataEntity {
         try {
           $legal_entity->nominate($save);
         }
-        catch (ParDataException $ignore) {
+        catch (ParDataException) {
 
         }
       }
@@ -177,6 +179,7 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function revoke($save = TRUE, $reason = '') {
     // Do not revoke partnerships that are already revoked.
     if ($this->isRevoked()) {
@@ -207,6 +210,7 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function unrevoke($save = TRUE) {
     // Only restore partnerships that are revoked.
     if (!$this->isRevoked()) {
@@ -233,6 +237,7 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function isDeletable() {
     // Get the current date.
     $request_time = \Drupal::time()->getRequestTime();
@@ -244,9 +249,7 @@ class ParDataPartnership extends ParDataEntity {
 
     // Rule 2: Check there are no pending enforcement notices on this partnership.
     $enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
-    $enforcement_notices = array_filter($enforcement_notices, function ($relationship) {
-      return $relationship->getEntity()->inProgress();
-    });
+    $enforcement_notices = array_filter($enforcement_notices, fn($relationship) => $relationship->getEntity()->inProgress());
     $no_pending_enforcements = empty($enforcement_notices);
 
     // Only some PAR entities can be deleted.
@@ -258,15 +261,14 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function isRevocable() {
     // Rule 1: Check if the partnership is active and was nominated more than 1 day ago.
     $is_active = $this->isActive();
 
     // Rule 2: Check there are no pending enforcement notices on this partnership.
     $enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
-    $enforcement_notices = array_filter($enforcement_notices, function ($relationship) {
-      return $relationship->getEntity()->inProgress();
-    });
+    $enforcement_notices = array_filter($enforcement_notices, fn($relationship) => $relationship->getEntity()->inProgress());
     $no_pending_enforcements = empty($enforcement_notices);
 
     // Only some PAR entities can be deleted.
@@ -278,6 +280,7 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function isRestorable() {
     // Get the current date.
     $request_time = \Drupal::time()->getRequestTime();
@@ -295,6 +298,7 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function isActive() {
     return parent::isActive() &&
       !$this->isPending();
@@ -316,6 +320,7 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function inProgress() {
     // Freeze partnerships that have un approved enforcement notices
     $enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
@@ -334,6 +339,7 @@ class ParDataPartnership extends ParDataEntity {
    *
    * {@inheritdoc}
    */
+  #[\Override]
   public function getStatusTime($status) {
     switch ($status) {
       case 'confirmed_rd':
@@ -414,25 +420,13 @@ class ParDataPartnership extends ParDataEntity {
     // Make sure not to request this more than once for a given entity.
     $function_id = __FUNCTION__ . ':' . $this->uuid();
     $members = &drupal_static($function_id);
-    if (isset($members)) {
-      return $members;
-    }
-
     // PAR-1741: Use the display method to determine how to get the number of members.
-    switch ($this->getMemberDisplay()) {
-      case self::MEMBER_DISPLAY_INTERNAL:
-        return $this->countMembers();
-
-        break;
-      case self::MEMBER_DISPLAY_EXTERNAL:
-      case self::MEMBER_DISPLAY_REQUEST:
-        return !$this->get('member_number')->isEmpty() ?
-          (int) $this->get('member_number')->getString() : 0;
-
-        break;
-    }
-
-    return 0;
+    return $members ?? match ($this->getMemberDisplay()) {
+        self::MEMBER_DISPLAY_INTERNAL => $this->countMembers(),
+        self::MEMBER_DISPLAY_EXTERNAL, self::MEMBER_DISPLAY_REQUEST => !$this->get('member_number')->isEmpty() ?
+          (int) $this->get('member_number')->getString() : 0,
+        default => 0,
+    };
   }
 
   /**
@@ -513,7 +507,7 @@ class ParDataPartnership extends ParDataEntity {
     // Get comparable timestamp.
     try {
       $since_datetime = new DrupalDateTime($since);
-    } catch (Exception $e) {
+    } catch (Exception) {
       throw new ParDataException('Date format incorrect when comparing membership last updated date.');
     }
 
@@ -590,9 +584,7 @@ class ParDataPartnership extends ParDataEntity {
     $people = $this->get('field_organisation_person')->referencedEntities();
 
     // PAR-1690: Filter out any contact records that are empty.
-    $people = array_filter($people, function ($person) {
-      return ($person instanceof ParDataEntityInterface && !empty($person->getEmail()));
-    });
+    $people = array_filter($people, fn($person) => $person instanceof ParDataEntityInterface && !empty($person->getEmail()));
 
     $person = !empty($people) ? current($people) : NULL;
 
@@ -607,9 +599,7 @@ class ParDataPartnership extends ParDataEntity {
     $people = $this->get('field_authority_person')->referencedEntities();
 
     // PAR-1690: Filter out any contact records that are empty.
-    $people = array_filter($people, function ($person) {
-      return ($person instanceof ParDataPersonInterface && !empty($person->getEmail()));
-    });
+    $people = array_filter($people, fn($person) => $person instanceof ParDataPersonInterface && !empty($person->getEmail()));
 
     $person = !empty($people) ? current($people) : NULL;
 
@@ -713,15 +703,11 @@ class ParDataPartnership extends ParDataEntity {
     $members = $this->get('field_coordinated_business')->referencedEntities();
 
     // Ignore deleted members.
-    $members = array_filter($members, function ($member) {
-      return !$member->isDeleted();
-    });
+    $members = array_filter($members, fn($member) => !$member->isDeleted());
 
     if ($active) {
       // Ignore ceased members if only active members have been requested.
-      $members = array_filter($members, function ($member) {
-        return !$member->isCeased();
-      });
+      $members = array_filter($members, fn($member) => !$member->isCeased());
     }
     $member = !empty($members) ? current($members) : NULL;
 
@@ -841,7 +827,7 @@ class ParDataPartnership extends ParDataEntity {
   public function getPartnershipRegulatoryFunctionNames() {
     $partnership_regulatory_functions = $this->getRegulatoryFunction();
 
-    $partnership_reg_fun_name_list = array();
+    $partnership_reg_fun_name_list = [];
 
     foreach ($partnership_regulatory_functions as $key => $regulatory_function_entity) {
       $partnership_reg_fun_name_list[$regulatory_function_entity->get('id')->getString()] =  $regulatory_function_entity->get('function_name')->getString();
@@ -904,9 +890,7 @@ class ParDataPartnership extends ParDataEntity {
 
     // Retain only the active partnership legal entities.
     if ($active) {
-      $partnership_legal_entities = array_filter($partnership_legal_entities, function ($partnership_legal_entity) {
-        return $partnership_legal_entity->isActive();
-      });
+      $partnership_legal_entities = array_filter($partnership_legal_entities, fn($partnership_legal_entity) => $partnership_legal_entity->isActive());
     }
 
     return $partnership_legal_entities;
@@ -968,9 +952,7 @@ class ParDataPartnership extends ParDataEntity {
    *   A PAR Legal Entity to remove.
    */
   public function removeLegalEntity(ParDataPartnershipLegalEntity $partnership_legal_entity) {
-    $partnership_legal_entities = array_filter($this->getPartnershipLegalEntities(), function ($entity) use ($partnership_legal_entity) {
-      return $entity->id() === $partnership_legal_entity->id();
-    });
+    $partnership_legal_entities = array_filter($this->getPartnershipLegalEntities(), fn($entity) => $entity->id() === $partnership_legal_entity->id());
 
     // Remove the field reference.
     foreach ($partnership_legal_entities as $field_delta => $partnership_legal_entity) {
@@ -1153,6 +1135,7 @@ class ParDataPartnership extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 

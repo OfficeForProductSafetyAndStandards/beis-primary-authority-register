@@ -25,6 +25,7 @@ class ParPersonAccountEmail extends FieldPluginBase {
   /**
    * @{inheritdoc}
    */
+  #[\Override]
   public function query() {
     // Leave empty to avoid a query on this field.
   }
@@ -32,6 +33,7 @@ class ParPersonAccountEmail extends FieldPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function usesGroupBy() {
     return TRUE;
   }
@@ -39,6 +41,7 @@ class ParPersonAccountEmail extends FieldPluginBase {
   /**
    * @{inheritdoc}
    */
+  #[\Override]
   public function render(ResultRow $values) {
     $entity = $this->getEntity($values);
 
@@ -47,7 +50,7 @@ class ParPersonAccountEmail extends FieldPluginBase {
       // then this email address will be used.
       $account = $entity->retrieveUserAccount();
 
-      return $account instanceof UserInterface ? strtolower($account->getEmail()) : strtolower($entity->getEmail());
+      return $account instanceof UserInterface ? strtolower((string) $account->getEmail()) : strtolower((string) $entity->getEmail());
     }
   }
 }
