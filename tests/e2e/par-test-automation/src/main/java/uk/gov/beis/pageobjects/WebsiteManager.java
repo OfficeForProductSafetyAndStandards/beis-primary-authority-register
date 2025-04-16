@@ -374,12 +374,4 @@ public class WebsiteManager {
 		basePageObject = PageFactory.initElements(driver, BasePageObject.class);
 	}
 
-
-    public void waitForPageLoad() {
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-            .until(webDriver -> ((org.openqa.selenium.JavascriptExecutor) webDriver)
-                .executeScript("return document.readyState").equals("complete"));
-    }
-
-
 }
