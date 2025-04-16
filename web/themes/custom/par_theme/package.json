@@ -1,27 +1,25 @@
 {
-  "name": "PAR Theme",
+  "name": "par_theme",
   "version": "1.0.0",
   "description": "Custom theme built up from GOV.UK theme for Drupal",
   "author": "Robert Wild",
   "license": "ISC",
   "homepage": "https://github.com/UKGovernmentBEIS/beis-primary-authority-register#readme",
   "engines": {
-    "node": "^12.0.0"
+    "node": "^22.0.0"
   },
   "dependencies": {
-    "govuk-frontend": "^5.7.1",
-    "gulp": "^5.0.0",
-    "gulp-cli": "^3.0.0",
-    "gulp-sass": "^5.0.0",
+    "govuk-frontend": "^5.9.0",
+    "gulp-cli": "^3",
+    "gulp-sass": "^5",
     "gulp-sass-variables": "^1.2.0",
-    "gulp-sourcemaps": "^3.0.0",
-    "sass": "^1.71.0",
-    "yargs": "~14.2.0"
+    "sass": "^1.80.6",
+    "yargs": ">=15.0.0"
   },
   "scripts": {
     "gulp": "gulp"
   },
   "devDependencies": {
-    "gulp": "^4.0.2"
+    "gulp": "^5"
   }
 }
