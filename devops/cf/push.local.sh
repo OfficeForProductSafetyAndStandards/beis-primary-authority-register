@@ -546,10 +546,13 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
     cf_poll_task $TARGET_ENV DB_IMPORT
     printf "Database imported...\n"
 
-    printf "Sanitising PAR People Data...\n"
-    cf run-task $TARGET_ENV -m 4G -k 4G --name SPP -c "./scripts/sanitise-par-people.sh"
-    cf_poll_task $TARGET_ENV SPP
-    printf "Sanitisation completed...\n"
+    if [[ $ENV != "migration" ]]
+        printf "Sanitising PAR People Data...\n"
+        cf run-task $TARGET_ENV -m 4G -k 4G --name SPP -c "./scripts/sanitise-par-people.sh"
+        cf_poll_task $TARGET_ENV SPP
+        printf "Sanitisation completed...\n"
+    fi
+
 fi
 
 ####################################################################################
