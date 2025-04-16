@@ -25,6 +25,8 @@ theme: {  }
 complete_list:
   - restrict_ip.settings
   - par_data.settings
+  - ultimate_cron.job.dblog_cron.yml
+  - ultimate_cron.job.update_cron
   - update.settings
   - upgrade_status.settings
 partial_list:

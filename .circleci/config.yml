@@ -342,6 +342,14 @@ jobs:
           to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
           arguments: |
             --cache-control "max-age=0"
+      - aws-s3/copy:
+          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${UNSANITISED_DATABASE}-latest.tar.gz"
+          to: "backups/${UNSANITISED_DATABASE}-latest.tar.gz"
+          arguments: |
+            --cache-control "max-age=0"
+      - run:
+          name: "Unpacking database"
+          command: cd backups && tar --no-same-owner -zxvf ${UNSANITISED_DATABASE}-latest.tar.gz
       - run:
           name: "Deploy to migration environment"
           command: |

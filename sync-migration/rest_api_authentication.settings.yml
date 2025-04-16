@@ -1,0 +1,11 @@
+_core:
+  default_config_hash: fc2lPUBS5PlJLPefA8I4U2ppCR0i-vCbmN1A8LGZtv8
+rest_api_authentication_customer_admin_email: null
+rest_api_authentication_license_key: null
+rest_api_authentication_customer_id: ''
+rest_api_authentication_customer_admin_token: ''
+rest_api_authentication_customer_api_key: ''
+rest_api_authentication_status: ''
+enable_authentication: 1
+authentication_method: 0
+api_token: JSON_API_KEY
