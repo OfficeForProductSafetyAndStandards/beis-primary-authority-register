@@ -19,7 +19,14 @@ complete_list:
   - core.date_format.json_api
   - rest_api_authentication.settings
   - user.role.json_api_consumer
+  - views.view.json_api_par_authorities
   - views.view.json_api_par_organisations
   - views.view.json_api_par_users
   - views.view.json_api_people
+  - views.view.la_reg_functions
+  - views.view.par_co_ordinated_business
+  - views.view.par_co_ordinated_partnership
+  - views.view.partnership_members_list
+  - views.view.users_in_multiple_partnerships
+  - views.view.users_with_multiple
 partial_list: {  }
