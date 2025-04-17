@@ -558,7 +558,6 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
         cf_poll_task $TARGET_ENV SPP
         printf "Sanitisation completed...\n"
     fi
-
 fi
 
 ####################################################################################

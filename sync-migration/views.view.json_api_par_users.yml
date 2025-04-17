@@ -1239,7 +1239,7 @@ display:
           settings:
             link_to_entity: false
           group_column: value
-          group_columns: {  }
+          group_columns: { }
           group_rows: true
           delta_limit: 0
           delta_offset: 0
@@ -1358,7 +1358,7 @@ display:
             thousand_separator: ''
             prefix_suffix: true
           group_column: value
-          group_columns: {  }
+          group_columns: { }
           group_rows: true
           delta_limit: 0
           delta_offset: 0
@@ -1371,7 +1371,7 @@ display:
         type: none
         options:
           offset: 0
-      filters: {  }
+      filters: { }
       filter_groups:
         operator: AND
         groups:
@@ -1434,7 +1434,7 @@ display:
         fields: false
         filters: false
         filter_groups: false
-      display_extenders: {  }
+      display_extenders: { }
       path: jsonapi/par-users/roles
       auth:
         - rest_api_authentication
@@ -1445,7 +1445,7 @@ display:
         - 'languages:language_interface'
         - request_format
         - user.roles
-      tags: {  }
+      tags: { }
   par_users:
     id: par_users
     display_title: 'REST export'
