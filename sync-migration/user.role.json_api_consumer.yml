@@ -7,12 +7,14 @@ dependencies:
     - par_data
     - par_json_api
     - par_organisation_update_flows
+    - par_rd_help_desk_flows
     - par_validation
 id: json_api_consumer
 label: 'JSON:API Consumer'
 weight: 1
 is_admin: null
 permissions:
+  - 'access helpdesk'
   - 'access jsonapi routes'
   - 'access par_data_advice entities'
   - 'access par_data_authority entities'
