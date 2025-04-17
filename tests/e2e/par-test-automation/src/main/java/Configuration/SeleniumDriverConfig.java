@@ -62,7 +62,10 @@ public class SeleniumDriverConfig {
                 options.addArguments("--disable-gpu");
                 options.addArguments("--headless=new");
                 options.addArguments("--window-size=1920,1080");
-            return new ChromeDriver(options);
+
+            WebDriverManager.chromedriver().setup();
+
+            return new ChromeDriver();
 
             case ChromeDocker:
                 LOG.info("... Chrome: Windows ...");
