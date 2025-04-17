@@ -21,6 +21,13 @@ class ParSubscriptionRoutes implements ContainerInjectionInterface {
   use StringTranslationTrait;
 
   /**
+   * The subscription manager service.
+   *
+   * @var \Drupal\par_subscriptions\ParSubscriptionManagerInterface
+   */
+  protected $subscriptionManager;
+
+  /**
    * Constructs a ParDataPermissions instance.
    */
   public function __construct(ParSubscriptionManagerInterface $par_subscriptions_manager) {

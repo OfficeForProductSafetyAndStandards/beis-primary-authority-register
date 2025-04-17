@@ -571,7 +571,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: admin/content/messages
+      path: admin/content/message
       menu:
         type: tab
         title: Message

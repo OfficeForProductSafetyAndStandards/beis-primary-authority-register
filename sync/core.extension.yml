@@ -1,9 +1,9 @@
 _core:
   default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc
 module:
+  address: 0
   admin_toolbar: 0
   admin_toolbar_tools: 0
-  address: 0
   audit_log: 0
   automated_cron: 0
   better_exposed_filters: 0
@@ -59,7 +59,6 @@ module:
   jquery_ui_slider: 0
   jquery_ui_tabs: 0
   jquery_ui_touch_punch: 0
-  js_cookie: 0
   language: 0
   link: 0
   locale: 0
@@ -82,6 +81,7 @@ module:
   par_actions: 0
   par_authority_add_flows: 0
   par_authority_update_flows: 0
+  par_cache: 0
   par_dashboards: 0
   par_data: 0
   par_data_config: 0

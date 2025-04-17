@@ -3,7 +3,7 @@
 namespace Drupal\par_subscriptions\Event;
 
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\Event\EventBase;
+use Drupal\core_event_dispatcher\Event\Entity\EntityUpdateEvent;
 use Drupal\par_subscriptions\Entity\ParSubscriptionInterface;
 
 /**
@@ -11,7 +11,7 @@ use Drupal\par_subscriptions\Entity\ParSubscriptionInterface;
  *
  * @package Drupal\par_subscriptions\Event
  */
-class SubscriptionEvent extends EventBase implements SubscriptionEventInterface {
+class SubscriptionEvent extends EntityUpdateEvent implements SubscriptionEventInterface {
 
   /**
    * The list name.
@@ -35,44 +35,32 @@ class SubscriptionEvent extends EventBase implements SubscriptionEventInterface 
   protected $subscription;
 
   /**
-   * The entity object.
-   *
-   * @var \Drupal\Core\Entity\EntityInterface
-   */
-  protected $entity;
-
-  /**
    * @param \Drupal\par_subscriptions\Entity\ParSubscriptionInterface $subscription
    * @param \Drupal\Core\Entity\EntityInterface $entity
    */
-  public function __construct(
-    ParSubscriptionInterface $subscription,
-    EntityInterface $entity,
-  ) {
+  public function __construct(ParSubscriptionInterface $subscription, EntityInterface $entity) {
     $this->listName = $subscription->getListName();
     $this->email = $subscription->getEmail();
     $this->subscription = $subscription;
-    $this->entity = $entity;
-
-    parent::__construct($subscription);
+    parent::__construct($entity);
   }
 
   /**
    * Returns the entity wrapped by this event.
    *
    * @return \Drupal\Core\Entity\EntityInterface
-   *   The entity object.
+   * The entity object.
    */
   #[\Override]
-  public function getEntity() {
-    return $this->entity;
+  public function getEntity(): \Drupal\Core\Entity\EntityInterface {
+    return parent::getEntity();
   }
 
   /**
    * @return string
    */
   #[\Override]
-  public function getEmail(){
+  public function getEmail(): string {
     return $this->email;
   }
 
@@ -80,7 +68,7 @@ class SubscriptionEvent extends EventBase implements SubscriptionEventInterface 
    * @return string
    */
   #[\Override]
-  public function getListName(){
+  public function getListName(): string {
     return $this->listName;
   }
 
@@ -88,7 +76,7 @@ class SubscriptionEvent extends EventBase implements SubscriptionEventInterface 
    * @return \Drupal\par_subscriptions\Entity\ParSubscriptionInterface
    */
   #[\Override]
-  public function getSubscription(){
+  public function getSubscription(): ParSubscriptionInterface {
     return $this->subscription;
   }
 
