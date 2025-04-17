@@ -1,0 +1,14 @@
+version: '3.8'
+
+
+services:
+    selenium-tests:
+        build: .
+        environment:
+            - DISPLAY=:99
+        shm_size: '2gb'
+        volumes:
+            - ./reports:/app/target
+
+
+
