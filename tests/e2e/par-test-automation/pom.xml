@@ -101,12 +101,12 @@
     	<version>${io-cucumber-java.version}</version>
 	</dependency>
 	<!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-junit -->
-	<dependency>
-    	<groupId>io.cucumber</groupId>
-    	<artifactId>cucumber-junit</artifactId>
-    	<version>${io-cucumber-junit.version}</version>
-    	<scope>test</scope>
-	</dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>7.22.0</version>
+            <scope>test</scope>
+        </dependency>
 	<!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-core -->
 	<dependency>
     	<groupId>io.cucumber</groupId>
