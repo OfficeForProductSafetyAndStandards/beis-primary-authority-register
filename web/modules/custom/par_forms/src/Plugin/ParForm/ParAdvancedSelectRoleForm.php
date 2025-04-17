@@ -30,6 +30,7 @@ class ParAdvancedSelectRoleForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function defaultConfiguration(): array {
     return ['roles' => $this->getParRoleManager()->getAllRoles()] + parent::defaultConfiguration();
   }
@@ -44,6 +45,7 @@ class ParAdvancedSelectRoleForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     if ($this->getFlowDataHandler()->getCurrentUser()->isAuthenticated()) {
       $current_user = User::Load($this->getFlowDataHandler()->getCurrentUser()->id());
@@ -148,6 +150,7 @@ class ParAdvancedSelectRoleForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // Get all the allowed authorities.
     $all_role_options = $this->getFlowDataHandler()->getFormPermValue('all_roles_options');
@@ -221,6 +224,7 @@ class ParAdvancedSelectRoleForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     // Get all the roles available for selection.
     $general_role_options = $this->getFlowDataHandler()->getFormPermValue("general_roles_options");
@@ -237,9 +241,9 @@ class ParAdvancedSelectRoleForm extends ParFormPluginBase {
     foreach ($institution_role_options as $institution_type => $institution_roles) {
       $element_name = "{$institution_type}_element";
       $value_name = "{$institution_type}_roles";
-      $$element_name = $this->getElement($form, ['roles', $institution_type], $index);
-      $$value_name = $$element_name ?
-        array_filter($form_state->getValue($$element_name['#parents'])) : [];
+      ${$element_name} = $this->getElement($form, ['roles', $institution_type], $index);
+      ${$value_name} = ${$element_name} ?
+        array_filter($form_state->getValue(${$element_name}['#parents'])) : [];
     }
 
     // Check 1: There must be some roles selected.
@@ -256,8 +260,8 @@ class ParAdvancedSelectRoleForm extends ParFormPluginBase {
         // Only set the error if there are some institution roles.
         if (!empty($institution_roles)) {
           $element_name = "{$institution_type}_element";
-          if ($$element_name) {
-            $this->setError($form, $form_state, $$element_name, $message);
+          if (${$element_name}) {
+            $this->setError($form, $form_state, ${$element_name}, $message);
           }
         }
       }
@@ -272,8 +276,8 @@ class ParAdvancedSelectRoleForm extends ParFormPluginBase {
         'You must select at least one @institution role.',
         ['@institution' => ParRoleManager::INSTITUTION_LABEL[$institution_type]],
       );
-      if (!empty($institution_roles) && empty($$value_name)) {
-        $this->setError($form, $form_state, $$element_name, $message);
+      if (!empty($institution_roles) && empty(${$value_name})) {
+        $this->setError($form, $form_state, ${$element_name}, $message);
       }
     }
 

@@ -6,5 +6,5 @@ WEBROOT="${BASH_SOURCE%/*}/../web"
 cd $WEBROOT
 echo "Current working directory is ${PWD}"
 
-drush spp
-drush cr
+drush par-data:sanitise-users
+drush cache:rebuild

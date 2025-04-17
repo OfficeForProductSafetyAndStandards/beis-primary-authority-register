@@ -21,20 +21,6 @@ use Symfony\Component\Routing\Route;
 class ParFlowAccessCheck implements AccessInterface {
 
   /**
-   * The PAR Data Manager.
-   *
-   * @var \Drupal\par_data\ParDataManagerInterface
-   */
-  private $parDataManager;
-
-  /**
-   * The PAR Flow Negotiator.
-   *
-   * @var \Drupal\par_flows\ParFlowNegotiatorInterface
-   */
-  private $flowNegotiator;
-
-  /**
    * CustomAccessCheck constructor.
    *
    * @param \Drupal\par_data\ParDataManagerInterface
@@ -42,9 +28,17 @@ class ParFlowAccessCheck implements AccessInterface {
    * @param \Drupal\par_flows\ParFlowNegotiatorInterface
    *   Flow Negotiator Service
    */
-  public function __construct(ParDataManagerInterface $par_data_manager, ParFlowNegotiatorInterface $flow_negotiator) {
-    $this->parDataManager = $par_data_manager;
-    $this->flowNegotiator = $flow_negotiator;
+  public function __construct(
+      /**
+       * The PAR Data Manager.
+       */
+      private readonly ParDataManagerInterface $parDataManager,
+      /**
+       * The PAR Flow Negotiator.
+       */
+      private readonly ParFlowNegotiatorInterface $flowNegotiator
+  )
+  {
   }
 
   /**
@@ -77,7 +71,7 @@ class ParFlowAccessCheck implements AccessInterface {
     try {
       // Get a new flow negotiator that points to the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException $e) {
+    } catch (ParFlowException) {
 
     }
 

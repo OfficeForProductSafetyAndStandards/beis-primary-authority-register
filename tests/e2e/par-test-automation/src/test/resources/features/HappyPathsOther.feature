@@ -18,7 +18,7 @@ Feature: Other Happy Paths
     Then the user is shown the information for that partnership
     And the user signs out
 
-  @regression @happypath @authority @authorityManagement @usermanagement
+  @regression @happypath @authority @authorityManagement @usermanagement @publicRegistrySearch
   Scenario: Verify Addition/Update of Authority (Happy Path - PAR-1849, PAR-1850)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -32,7 +32,7 @@ Feature: Other Happy Paths
     Then the update for the authority is successful
     And the user signs out
 
-  @regression @happypath @authority @authorityManagement
+  @regression @happypath @authority @authorityManagement @publicRegistrySearch
   Scenario: Verify The Transfer of a Partnership from an Existing Authority to a New Authority (Happy Path - PAR-2287)
     Given the user is on the PAR login page
     And the user logs in with the "senior_administrator@example.com" user credentials
@@ -41,7 +41,7 @@ Feature: Other Happy Paths
     Then the partnership is transferred to the new authority successfully
     And the user signs out
 
-  @regression @happypath @organisation
+  @regression @happypath @organisation @publicRegistrySearch
   Scenario: Verify Update of Organisation (Happy Path - PAR-1851)
     Given the user is on the PAR login page
     And the user logs in with the "par_helpdesk@example.com" user credentials
@@ -185,7 +185,7 @@ Feature: Other Happy Paths
     And the user logs in with the "par_helpdesk@example.com" user credentials
     When the user creates a new person:
       | Title | WorkNumber | MobileNumber |
-      | Mr    |      01204 |              |
+      | Mr    |      01204 | 12             |
     Then the user can verify the person was created successfully and can send an account invitation
     # Update the User's Contact Details.
     When the user searches for an existing person successfully

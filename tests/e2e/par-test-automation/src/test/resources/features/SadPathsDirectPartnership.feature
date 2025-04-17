@@ -18,7 +18,7 @@
 #Sample Feature Definition Template
 Feature: Direct Partnership Sad Paths
 
-  @regression @sadpath @partnershipapplication @sadupdate @sadLegalEntities @sadadvice @sadinspectionplan @sadenforcement @saddeviation @sadinspectionfeedback @sadenquiry
+  @regression @sadpath @partnershipapplication @sadupdate @sadLegalEntities @sadpathdirect @sadadvice @sadinspectionplan @sadenforcement @saddeviation @sadinspectionfeedback @sadenquiry
   Scenario: Verify a user receives Error Messages for required fields during the Partnership Application and Completion Process (Sad Path - PAR-2392, PAR-2393)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -115,7 +115,7 @@ Feature: Direct Partnership Sad Paths
     And the user confirms the second part of the partnership application
     And the user signs out
 
-  @regression @sadpath @partnershipapplication @sadupdate @sadLegalEntities @sadadvice @sadinspectionplan @sadenforcement @saddeviation @sadinspectionfeedback @sadenquiry
+  @regression @sadpath @sadpathdirect @partnershipapplication @sadupdate @sadLegalEntities @sadadvice @sadinspectionplan @sadenforcement @saddeviation @sadinspectionfeedback @sadenquiry
   Scenario: Verify a user receives Error Messages for required fields when Nominating a Partnership (Sad Path - PAR-2394)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -133,7 +133,7 @@ Feature: Direct Partnership Sad Paths
     Then the partnership is approved successfully
     And the user signs out
 
-  @regression @sadpath @sadupdate
+  @regression @sadpath @sadupdate @sadpathdirect
   Scenario: Verify a user receives Error Messages for required fields when Revoking and Reinstating a Partnership (Sad Path - PAR-2395)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -152,7 +152,7 @@ Feature: Direct Partnership Sad Paths
     Then the partnership is restored successfully
     And the user signs out
 
-  @regression @sadpath @sadupdate
+  @regression @sadpath @sadupdate @sadpathdirect
   Scenario: Verify a user receives Error Messages for required fields when Updating a Partnerships Information (Sad Path - PAR-2400)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -193,7 +193,7 @@ Feature: Direct Partnership Sad Paths
     Then the trading name is updated successfully
     And the user signs out
 
-  @regression @sadpath @sadupdate @sadLegalEntities
+  @regression @sadpath @sadupdate @sadLegalEntities @sadpathdirect
   Scenario: Verify a user receives Error Messages for required fields when Amending Legal Entities for a Partnership (Sad Path - PAR-2401)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -244,7 +244,7 @@ Feature: Direct Partnership Sad Paths
     Then the user verifies the amendments are created successfully with status "Active"
     And the user signs out
 
-  @regression @sadpath @sadupdate
+  @regression @sadpath @sadupdate @sadpathdirect
   Scenario: Verify a user receives Error Messages for required fields when Adding and Removing a Primary Authority Contact for a Partnership (Sad Path - PAR-2402)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -268,7 +268,7 @@ Feature: Direct Partnership Sad Paths
     Then the new Primary Authority contact is removed Successfully
     And the user signs out
 
-  @regression @sadpath @sadupdate
+  @regression @sadpath @sadupdate @sadpathdirect
   Scenario: Verify a user receives Error Messages for required fields when Adding and Removing an Organisation Contact for a Partnership (Sad Path - PAR-2403)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -292,7 +292,7 @@ Feature: Direct Partnership Sad Paths
     Then the new Organisation contact is removed Successfully
     And the user signs out
 
-  @regression @sadpath @sadadvice
+  @regression @sadpath @sadadvice @sadpathdirect
   Scenario: Verify a user receives Error Messages for required fields when Uploading Advice to a Partnership (Sad Path - PAR-2404)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -316,7 +316,7 @@ Feature: Direct Partnership Sad Paths
     Then the advice is created successfully
     And the user signs out
 
-  @regression @sadpath @sadadvice
+  @regression @sadpath @sadadvice @sadpathdirect
   Scenario: Verify a user receives Error Messages for required fields when Editing Advice to a Partnership (Sad Path - PAR-2405)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -337,7 +337,7 @@ Feature: Direct Partnership Sad Paths
     Then the advice is updated successfully
     And the user signs out
 
-  @regression @sadpath @sadadvice
+  @regression @sadpath @sadadvice @sadpathdirect
   Scenario: Verify a user receives Error Messages for required fields when Archiving Advice for a Partnership (Sad Path - PAR-2406)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -352,7 +352,7 @@ Feature: Direct Partnership Sad Paths
     Then the advice is archived successfully
     And the user signs out
 
-  @regression @sadpath @sadadvice
+  @regression @sadpath @sadadvice @sadpathdirect
   Scenario: Verify a user receives Error Messages for required fields when Removing Advice for a Partnership (Sad Path - PAR-2407)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -367,7 +367,7 @@ Feature: Direct Partnership Sad Paths
     Then the advice is removed successfully
     And the user signs out
 
-  @regression @sadpath @sadinspectionplan @saddeviation @sadinspectionfeedback
+  @regression @sadpath @sadinspectionplan @saddeviation @sadinspectionfeedback @sadpathdirect
   Scenario: Verify a user receives Error Messages for required fields when Uploading an Inspection Plan for a Partnership (Sad Path - PAR-2408)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -393,7 +393,7 @@ Feature: Direct Partnership Sad Paths
     Then the inspection plan is created successfully
     And the user signs out
 
-  @regression @sadpath @sadinspectionplan
+  @regression @sadpath @sadinspectionplan @sadpathdirect
   Scenario: Verify a user receives Error Messages for required fields when Editing an Inspection Plan for a Partnership (Sad Path - PAR-2409)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -416,7 +416,7 @@ Feature: Direct Partnership Sad Paths
     Then the inspection plan is created successfully
     And the user signs out
 
-  @regression @sadpath @sadenforcement
+  @regression @sadpath @sadenforcement @sadpathdirect
   Scenario: Verify a user receives Error Messages for required fields when Raising an Enforcement Notice (Sad Path - PAR-2426)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -453,7 +453,7 @@ Feature: Direct Partnership Sad Paths
     Then the enforcement notice is created successfully
     And the user signs out
 
-  @regression @sadpath @sadenforcement
+  @regression @sadpath @sadenforcement @sadpathdirect
   Scenario: Verify a user receives Error Messages for required fields when Blocking an Enforcement Notice (Sad Path - PAR-2427)
     Given the user is on the PAR home page
     When the user is on the PAR login page
@@ -466,7 +466,7 @@ Feature: Direct Partnership Sad Paths
     Then the enforcement notice is set to blocked status
     And the user signs out
 
-  @regression @sadpath @sadenforcement
+  @regression @sadpath @sadenforcement @sadpathdirect
   Scenario: Verify a user receives Error Messages for required fields when Removing an Enforcement Notice (Sad Path - PAR-2428)
     Given the user is on the PAR home page
     When the user is on the PAR login page
@@ -488,7 +488,7 @@ Feature: Direct Partnership Sad Paths
     Then the enforcement notice is removed successfully
     And the user signs out
 
-  @regression @sadpath @saddeviation
+  @regression @sadpath @saddeviation @sadpathdirect
   Scenario: Verify a user receives Error Messages for required fields when requesting a Deviation from the Inspection Plan (Sad Path - PAR-2429)
     Given the user is on the PAR home page
     When the user is on the PAR login page
@@ -516,7 +516,7 @@ Feature: Direct Partnership Sad Paths
     Then the deviation request is created successfully
     And the user signs out
 
-  @regression @sadpath @saddeviation
+  @regression @sadpath @saddeviation @sadpathdirect
   Scenario: Verify a user receives Error Messages for required fields when blocking a Deviation from the Inspection Plan Request (Sad Path - PAR-2430)
     Given the user is on the PAR home page
     When the user is on the PAR login page
@@ -529,7 +529,7 @@ Feature: Direct Partnership Sad Paths
     Then the deviation request is set to blocked status
     And the user signs out
 
-  @regression @sadpath @saddeviation
+  @regression @sadpath @saddeviation @sadpathdirect
   Scenario: Verify a user receives Error Messages for required fields when responding to a Deviation from the Inspection Plan Request (Sad Path - PAR-2431)
     Given the user is on the PAR login page
     And the user logs in with the "par_enforcement_officer@example.com" user credentials
@@ -572,7 +572,7 @@ Feature: Direct Partnership Sad Paths
     Then the response is displayed successfully
     And the user signs out
 
-  @regression @sadpath @sadinspectionfeedback
+  @regression @sadpath @sadinspectionfeedback @sadpathdirect
   Scenario: Verify a user receives Error Messages for required fields when submitting Feedback following an Inspection (Sad Path - PAR-2432)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -595,7 +595,7 @@ Feature: Direct Partnership Sad Paths
     Then the inspection plan feedback is created successfully
     And the user signs out
 
-  @regression @sadpath @sadinspectionfeedback
+  @regression @sadpath @sadinspectionfeedback @sadpathdirect
   Scenario: Verify a user receives Error Messages for required fields when responding to Feedback following an Inspection (Sad Path - PAR-2433)
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
@@ -624,7 +624,7 @@ Feature: Direct Partnership Sad Paths
     Then the inspection feedback response is displayed successfully
     And the user signs out
 
-  @regression @sadpath @sadenquiry
+  @regression @sadpath @sadenquiry @sadpathdirect
   Scenario: Verify a user receives Error Messages for required fields when sending a General Enquiry (Sad Path - PAR-2434)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -647,7 +647,7 @@ Feature: Direct Partnership Sad Paths
     Then the general enquiry is created successfully
     And the user signs out
 
-  @regression @sadpath @sadenquiry
+  @regression @sadpath @sadenquiry @sadpathdirect
   Scenario: Verify a user receives Error Messages for required fields when responding to a General Enquiry (Sad Path - PAR-2435)
     Given the user is on the PAR login page
     And the user logs in with the "par_authority@example.com" user credentials
@@ -676,7 +676,7 @@ Feature: Direct Partnership Sad Paths
     Then the general enquiry response is displayed successfully
     And the user signs out
 
-  @regression @sadpath @sadinspectionplan
+  @regression @sadpath @sadinspectionplan @sadpathdirect
   Scenario: Verify a user receives Error Messages for required fields when Revoking an Inspection Plan for a Partnership (Sad Path - PAR-2410)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -691,7 +691,7 @@ Feature: Direct Partnership Sad Paths
     Then the inspection plan is revoked successfully
     And the user signs out
 
-  @regression @sadpath @sadinspectionplan
+  @regression @sadpath @sadinspectionplan @sadpathdirect
   Scenario: Verify a user receives Error Messages for required fields when Removing an Inspection Plan for a Partnership (Sad Path - PAR-2411)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -706,7 +706,7 @@ Feature: Direct Partnership Sad Paths
     Then the inspection plan is removed successfully
     And the user signs out
 
-  @regression @sadpath @saddeviationrequest
+  @regression @sadpath @saddeviationrequest @sadpathdirect
   Scenario: Verify a user receives Error Messages when attempting to send a Deviation Request without an Inspection Plan (Sad Path - PAR-2424)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -717,7 +717,7 @@ Feature: Direct Partnership Sad Paths
     Then the user is shown the "You can not complete this journey because this partnership doesn't have any inspection plans." error message
     And the user signs out
 
-  @regression @sadpath @sadinspectionfedback
+  @regression @sadpath @sadinspectionfedback @sadpathdirect
   Scenario: Verify a user receives Error Messages when attempting to send Inspection Feedback without an Inspection Plan (Sad Path - PAR-2425)
     Given the user is on the PAR home page
     When the user visits the login page

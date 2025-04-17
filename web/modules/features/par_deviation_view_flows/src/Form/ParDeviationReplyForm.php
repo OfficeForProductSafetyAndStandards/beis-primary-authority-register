@@ -23,6 +23,7 @@ class ParDeviationReplyForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
@@ -36,7 +37,7 @@ class ParDeviationReplyForm extends ParBaseForm {
         'field_name'  => 'messages',
         'uid' => \Drupal::currentUser()->id(),
         'comment_type' => 'par_deviation_request_comments',
-        'subject' => substr($par_data_deviation_request->label(), 0, 64),
+        'subject' => substr((string) $par_data_deviation_request->label(), 0, 64),
         'status' => 1,
       ]);
     }

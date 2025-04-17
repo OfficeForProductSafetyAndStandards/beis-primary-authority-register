@@ -19,18 +19,18 @@ import uk.gov.beis.utility.DataStore;
 import uk.gov.beis.utility.RandomStringGenerator;
 
 public class SadPathStepDefinitions {
-	
+
 	private WebsiteManager websiteManager;
-	
+
 	public SadPathStepDefinitions() throws ClassNotFoundException, IOException {
 		websiteManager = new WebsiteManager();
 	}
-	
+
 	// Direct Partnership Features
 	@When("^the user applies for a new partnership$")
 	public void the_user_applies_for_a_new_partnership() throws Throwable {
 		ScenarioContext.secondJourneyPart = false;
-		
+
 		LOG.info("Select apply new partnership");
 		websiteManager.dashboardPage.selectApplyForNewPartnership();
 	}
@@ -44,17 +44,17 @@ public class SadPathStepDefinitions {
 	@Then("^the user is shown the \"([^\"]*)\" error message$")
 	public void the_user_is_shown_the_error_message(String expectedMessage) throws Throwable {
 		LOG.info("Validating the error message.");
-		
+
 		assertTrue(websiteManager.basePageObject.checkErrorSummary(expectedMessage));
 	}
-	
+
 	@When("^the user selects a primary authority$")
 	public void the_user_selects_a_primary_authority() throws Throwable {
 		LOG.info("Choose authority");
 		websiteManager.parAuthorityPage.selectAuthority("Upper");
 		websiteManager.parAuthorityPage.selectContinueButton();
 	}
-	
+
 	@When("^the user does not select a partnership type$")
 	public void the_user_does_not_select_a_partnership_type() throws Throwable {
 		LOG.info("Not select partnership type.");
@@ -65,7 +65,7 @@ public class SadPathStepDefinitions {
 	public void the_user_selects_a_partnership_type(String partnershipType) throws Throwable {
 		LOG.info("Select partnership type.");
 		DataStore.saveValue(UsableValues.PARTNERSHIP_TYPE, partnershipType);
-		
+
 		websiteManager.parPartnershipTypePage.selectPartnershipType(DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE));
 		websiteManager.parPartnershipTypePage.clickContinueButton();
 	}
@@ -76,7 +76,7 @@ public class SadPathStepDefinitions {
 		websiteManager.parPartnershipTermsPage.deselectTerms();
 		websiteManager.parPartnershipTermsPage.clickContinueButton();
 	}
-	
+
 	@When("^the user confirms the partnership terms and conditions$")
 	public void the_user_confirms_the_partnership_terms_and_conditions() throws Throwable {
 		LOG.info("Confirm Terms and Conditions.");
@@ -87,16 +87,16 @@ public class SadPathStepDefinitions {
 	@When("^the user leaves the information about the partnership field empty$")
 	public void the_user_leaves_the_information_about_the_partnership_field_empty() throws Throwable {
 		LOG.info("Not entering information about the partnership.");
-		
+
 		websiteManager.parPartnershipDescriptionPage.enterDescription("");
 		websiteManager.parPartnershipDescriptionPage.clickContinueButton();
 	}
-	
+
 	@When("^the user enters informations about the partnership$")
 	public void the_user_enters_informations_about_the_partnership() throws Throwable {
 		LOG.info("Entering information about the partnership.");
 		DataStore.saveValue(UsableValues.PARTNERSHIP_INFO, "Partnership Sad Path Testing.");
-		
+
 		websiteManager.parPartnershipDescriptionPage.enterDescription(DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO));
 		websiteManager.parPartnershipDescriptionPage.clickContinueButton();
 	}
@@ -107,12 +107,12 @@ public class SadPathStepDefinitions {
 		websiteManager.businessNamePage.enterBusinessName("");
 		websiteManager.businessNamePage.clickContinueButton();
 	}
-	
+
 	@When("^the user enters an orgnasiation name$")
 	public void the_user_enters_an_orgnasiation_name() throws Throwable {
 		LOG.info("Entering organisation name.");
 		DataStore.saveValue(UsableValues.BUSINESS_NAME, RandomStringGenerator.getBusinessName(4));
-		
+
 		websiteManager.businessNamePage.enterBusinessName(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
 		websiteManager.businessNamePage.clickContinueButton();
 	}
@@ -127,7 +127,7 @@ public class SadPathStepDefinitions {
 	@Then("^the user is shown the following error messages:$")
 	public void the_user_is_shown_the_following_error_messages(DataTable expectedMessages) throws Throwable {
 		LOG.info("Validating the error messages.");
-		
+
 		for (Map<String, String> message : expectedMessages.asMaps(String.class, String.class)) {
 			assertTrue(websiteManager.basePageObject.checkErrorSummary(message.get("ErrorMessage")));
 		}
@@ -136,18 +136,18 @@ public class SadPathStepDefinitions {
 	@When("^the user enters an address with the following details:$")
 	public void the_user_enters_an_address_with_the_following_details(DataTable details) throws Throwable {
 		LOG.info("Enter the address details.");
-		
+
 		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
 			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE1, data.get("AddressLine1"));
 			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE2, data.get("AddressLine2"));
-			
+
 			DataStore.saveValue(UsableValues.BUSINESS_TOWN, data.get("Town"));
 			DataStore.saveValue(UsableValues.BUSINESS_COUNTY, data.get("County"));
 			DataStore.saveValue(UsableValues.BUSINESS_COUNTRY, data.get("Country"));
 			DataStore.saveValue(UsableValues.BUSINESS_NATION, data.get("Nation"));
 			DataStore.saveValue(UsableValues.BUSINESS_POSTCODE, data.get("Postcode"));
 		}
-		
+
 		websiteManager.addAddressPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
 				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTRY),
 				DataStore.getSavedValue(UsableValues.BUSINESS_NATION), DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
@@ -180,7 +180,7 @@ public class SadPathStepDefinitions {
 		websiteManager.checkPartnershipInformationPage.deselectConfirmationCheckbox();
 		websiteManager.checkPartnershipInformationPage.clickSaveButton();
 	}
-	
+
 	@When("^the user accepts the partnership terms and conditions$")
 	public void the_user_accepts_the_partnership_terms_and_conditions() throws Throwable {
 		LOG.info("Accept the Terms and Conditions and complete the Partnership Application.");
@@ -190,26 +190,26 @@ public class SadPathStepDefinitions {
 	@Then("^the user confirms the first part of the partnership application$")
 	public void the_user_confirms_the_first_part_of_the_partnership_application() throws Throwable {
 		LOG.info("Verifying Partnership Details on the Review Page.");
-		
+
 		Assert.assertTrue("About the Partnership is not Displayed.", websiteManager.checkPartnershipInformationPage.verifyAboutThePartnership());
 		Assert.assertTrue("Organisation Name is not Displayed.", websiteManager.checkPartnershipInformationPage.verifyOrganisationName());
 		Assert.assertTrue("Organisation Address is not Displayed.", websiteManager.checkPartnershipInformationPage.verifyOrganisationAddress());
 		Assert.assertTrue("Organisation Contact is not Displayed.", websiteManager.checkPartnershipInformationPage.verifyContactAtTheOrganisation());
 		Assert.assertTrue("Primary Authority name is not Displayed.", websiteManager.checkPartnershipInformationPage.verifyPrimaryAuthorityName());
-		
+
 		LOG.info("Accept the Terms and Conditions and complete the Partnership Application.");
 		websiteManager.checkPartnershipInformationPage.completeApplication();
 		websiteManager.checkPartnershipInformationPage.clickSaveButton();
 		websiteManager.parPartnershipCompletionPage.clickDoneButton();
 	}
-	
+
 	@When("^the user does not confirm they have permission from the organisation$")
 	public void the_user_does_not_confirm_they_have_permission_from_the_organisation() throws Throwable {
 		LOG.info("Not declaring permission to complete the partnership by proxy.");
 		websiteManager.declarationPage.deselectConfirmCheckbox();
 		websiteManager.declarationPage.clickContinueButton();
 	}
-	
+
 	@When("^the user confirms they have permission from the organisation$")
 	public void the_user_confirms_they_have_permission_from_the_organisation() throws Throwable {
 		LOG.info("Declaring permission to complete partnership by proxy.");
@@ -227,9 +227,9 @@ public class SadPathStepDefinitions {
 	@When("^the user enters details about the organisation$")
 	public void the_user_enters_details_about_the_organisation() throws Throwable {
 		LOG.info("Entering details about the Organisation.");
-		
+
 		DataStore.saveValue(UsableValues.BUSINESS_DESC, "Error Message Testing.");
-		
+
 		websiteManager.aboutTheOrganisationPage.enterDescription(DataStore.getSavedValue(UsableValues.BUSINESS_DESC));
 		websiteManager.aboutTheOrganisationPage.clickContinueButton();
 	}
@@ -244,18 +244,18 @@ public class SadPathStepDefinitions {
 	@When("^the user confirms the address details with the following:$")
 	public void the_user_confirms_the_address_details_with_the_following(DataTable details) throws Throwable {
 		LOG.info("Reentering the address details.");
-		
+
 		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
 			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE1, data.get("AddressLine1"));
 			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE2, data.get("AddressLine2"));
-			
+
 			DataStore.saveValue(UsableValues.BUSINESS_TOWN, data.get("Town"));
 			DataStore.saveValue(UsableValues.BUSINESS_COUNTY, data.get("County"));
 			DataStore.saveValue(UsableValues.BUSINESS_COUNTRY, data.get("Country"));
 			DataStore.saveValue(UsableValues.BUSINESS_NATION, data.get("Nation"));
 			DataStore.saveValue(UsableValues.BUSINESS_POSTCODE, data.get("Postcode"));
 		}
-		
+
 		websiteManager.addAddressPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
 				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTRY),
 				DataStore.getSavedValue(UsableValues.BUSINESS_NATION), DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
@@ -273,16 +273,16 @@ public class SadPathStepDefinitions {
 	public void the_user_confirms_the_primary_contact_details_with_the_following(DataTable details) throws Throwable {
 		LOG.info("Reeneter the contact details.");
 		websiteManager.contactDetailsPage.addContactDetails(details);
-		
+
 		LOG.info("Select the prefered contact methods.");
 		websiteManager.contactDetailsPage.selectPreferredEmail();
 		websiteManager.contactDetailsPage.selectPreferredWorkphone();
 		websiteManager.contactDetailsPage.selectPreferredMobilephone();
-		
+
 		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
 			DataStore.saveValue(UsableValues.CONTACT_NOTES, data.get("ContactNote"));
 		}
-		
+
 		websiteManager.contactDetailsPage.enterContactNote(DataStore.getSavedValue(UsableValues.CONTACT_NOTES));
 		websiteManager.contactDetailsPage.clickContinueButton();
 	}
@@ -308,7 +308,7 @@ public class SadPathStepDefinitions {
 		websiteManager.employeesPage.selectNumberOfEmployees(DataStore.getSavedValue(UsableValues.NO_EMPLOYEES));
 		websiteManager.employeesPage.clickContinueButton();
 	}
-	
+
 	@When("^the user confirms the size of the membership list as \"([^\"]*)\"$")
 	public void the_user_confirms_the_size_of_the_membership_list_as(String size) throws Throwable {
 		LOG.info("Selecting Membership List size");
@@ -355,7 +355,7 @@ public class SadPathStepDefinitions {
 			DataStore.saveValue(UsableValues.ENTITY_NAME, data.get("Legal Entity Name"));
 			DataStore.saveValue(UsableValues.ENTITY_TYPE, data.get("Legal Entity Type"));
 		}
-		
+
 		LOG.info("Entering a Legal Entity.");
 		websiteManager.legalEntityTypePage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
 		websiteManager.legalEntityTypePage.clickContinueButton();
@@ -377,14 +377,14 @@ public class SadPathStepDefinitions {
 	@Then("^the user confirms the second part of the partnership application$")
 	public void the_user_confirms_the_second_part_of_the_partnership_application() throws Throwable {
 		LOG.info("Verify the Partnership Information.");
-		
+
 		Assert.assertTrue("About the Organisation is not Displayed.", websiteManager.checkPartnershipInformationPage.verifyAboutTheOrganisation());
 		Assert.assertTrue("Organisation Name is not Displayed.", websiteManager.checkPartnershipInformationPage.verifyOrganisationName());
 		Assert.assertTrue("Organisation Address is not Displayed.", websiteManager.checkPartnershipInformationPage.verifyOrganisationAddress());
 		Assert.assertTrue("Organisation Contact is not Displayed.", websiteManager.checkPartnershipInformationPage.verifyContactAtTheOrganisation());
-		
+
 		Assert.assertTrue("Primary SIC Code is not Displayed.", websiteManager.checkPartnershipInformationPage.verifyPrimarySICCode());
-		
+
 		switch (DataStore.getSavedValue(UsableValues.PARTNERSHIP_TYPE).toLowerCase()) {
 			case ("direct"):
 				LOG.info("Checking Employee Size.");
@@ -395,19 +395,19 @@ public class SadPathStepDefinitions {
 				Assert.assertTrue("Members Size is not Displayed.", websiteManager.checkPartnershipInformationPage.verifyMemberSize());
 				break;
 		}
-		
+
 		Assert.assertTrue("Legal Entity is not Displayed.", websiteManager.checkPartnershipInformationPage.verifyLegalEntity());
 		Assert.assertTrue("Trading Name is not Displayed.", websiteManager.checkPartnershipInformationPage.verifyTradingName());
-		
+
 		LOG.info("Complete Partnership Application.");
 		websiteManager.checkPartnershipInformationPage.confirmApplication();
 		websiteManager.checkPartnershipInformationPage.clickSaveButton();
 		websiteManager.parPartnershipCompletionPage.clickDoneButton();
-	    
+
 	    LOG.info("Set second part of journey part to true.");
 		ScenarioContext.secondJourneyPart = true;
 	}
-	
+
 	@When("^the user selects the approve partnership action link$")
 	public void the_user_selects_the_approve_partnership_action_link() throws Throwable {
 		LOG.info("Select last created partnership Approval link.");
@@ -433,13 +433,13 @@ public class SadPathStepDefinitions {
 		websiteManager.regulatoryFunctionPage.deselectBespokeFunctions();
 		websiteManager.regulatoryFunctionPage.selectContinueButton();
 	}
-	
+
 	@When("^the user selects the type of bespoke regulatory functions$")
 	public void the_user_selects_the_type_of_bespoke_regulatory_functions() throws Throwable {
 		LOG.info("Selecting the Bespoke Radio button andthe type of Regulatory Functions.");
 		websiteManager.regulatoryFunctionPage.selectBespokeFunctions();
 		websiteManager.regulatoryFunctionPage.selectContinueButton();
-		
+
 		LOG.info("Complete the Partnership Approval.");
 		websiteManager.partnershipApprovalPage.clickDoneButton();
 	}
@@ -449,7 +449,7 @@ public class SadPathStepDefinitions {
 		LOG.info("Check status of partnership is set to Active.");
 		assertTrue(websiteManager.partnershipAdvancedSearchPage.checkPartnershipStatus("Active"));
 	}
-	
+
 	@When("^the user selects the revoke partnership action link$")
 	public void the_user_selects_the_revoke_partnership_action_link() throws Throwable {
 		LOG.info("Selecting the Revoke Partnership link.");
@@ -468,7 +468,7 @@ public class SadPathStepDefinitions {
 		LOG.info("Revoking last created partnership.");
 		websiteManager.revokePage.enterReasonForRevocation("Test Revoke.");
 		websiteManager.revokePage.clickRevokeButton();
-		
+
 		websiteManager.partnershipRevokedPage.clickDoneButton();
 	}
 
@@ -483,7 +483,7 @@ public class SadPathStepDefinitions {
 		LOG.info("Selecting the Reinstate Partnership link.");
 		websiteManager.partnershipAdvancedSearchPage.selectRestoreBusinessNameLink();
 	}
-	
+
 	@When("^the user restores the revoked partnership$")
 	public void the_user_restores_the_revoked_partnership() throws Throwable {
 		LOG.info("Reinstate the revoked Partnership.");
@@ -496,21 +496,21 @@ public class SadPathStepDefinitions {
 		LOG.info("Check status of partnership is set to Active.");
 		assertTrue(websiteManager.partnershipAdvancedSearchPage.checkPartnershipStatus("Active"));
 	}
-	
+
 	@When("^the user does not update the information about the partnership field empty$")
 	public void the_user_does_not_update_the_information_about_the_partnership_field_empty() throws Throwable {
 		LOG.info("Leaving the Infdormation about the Partnership field empty.");
 		websiteManager.partnershipInformationPage.editAboutPartnership();
-		
+
 		websiteManager.parPartnershipDescriptionPage.enterDescription("");
 		websiteManager.parPartnershipDescriptionPage.clickSaveButton();
 	}
-	
+
 	@When("^the user enters the following information about the partnership \"([^\"]*)\"$")
 	public void the_user_enters_the_following_information_about_the_partnership(String information) throws Throwable {
 		LOG.info("Entering information about the partnership.");
 		DataStore.saveValue(UsableValues.PARTNERSHIP_INFO, information);
-		
+
 		websiteManager.parPartnershipDescriptionPage.enterDescription(DataStore.getSavedValue(UsableValues.PARTNERSHIP_INFO));
 		websiteManager.parPartnershipDescriptionPage.clickSaveButton();
 	}
@@ -518,14 +518,14 @@ public class SadPathStepDefinitions {
 	@Then("^the information about the partnership is updated successfully$")
 	public void the_information_about_the_partnership_is_updated_successfully() throws Throwable {
 		LOG.info("Verifying About the Partnership have been updated Successfully.");
-		
+
 		assertTrue(websiteManager.partnershipInformationPage.verifyAboutThePartnership());
 	}
 
 	@When("^the user updates the partnership to bespoke but does not choose the regulatory functions$")
 	public void the_user_updates_the_partnership_to_bespoke_but_does_not_choose_the_regulatory_functions() throws Throwable {
 		LOG.info("Selecting the Bespoke Radio but not selecting the Regulatory Functions checkbox.");
-		
+
 		websiteManager.partnershipInformationPage.editRegulatoryFunctions();
 		websiteManager.regulatoryFunctionPage.deselectBespokeFunctions();
 		websiteManager.regulatoryFunctionPage.selectSaveButton();
@@ -542,7 +542,7 @@ public class SadPathStepDefinitions {
 	@Then("^the regulatory function is updated successfully$")
 	public void the_regulatory_function_is_updated_successfully() throws Throwable {
 		LOG.info("Verifying the Regulatory Functions have been updated Successfully.");
-		
+
 		assertTrue(websiteManager.partnershipInformationPage.checkRegulatoryFunctions());
 		websiteManager.partnershipInformationPage.clickSaveButton();
 	}
@@ -558,7 +558,7 @@ public class SadPathStepDefinitions {
 	@When("^the user updates the address with the following details:$")
 	public void the_user_updates_the_address_with_the_following_details(DataTable details) throws Throwable {
 		LOG.info("Updating the address.");
-		
+
 		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
 			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE1, data.get("AddressLine1"));
 			DataStore.saveValue(UsableValues.BUSINESS_ADDRESSLINE2, data.get("AddressLine2"));
@@ -568,13 +568,13 @@ public class SadPathStepDefinitions {
 			DataStore.saveValue(UsableValues.BUSINESS_NATION, data.get("Nation"));
 			DataStore.saveValue(UsableValues.BUSINESS_POSTCODE, data.get("Postcode"));
 		}
-		
+
 		websiteManager.addAddressPage.enterAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
-				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTRY), 
+				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTRY),
 				DataStore.getSavedValue(UsableValues.BUSINESS_NATION), DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
 		websiteManager.addAddressPage.clickSaveButton();
 	}
-	
+
 	@Then("^the organisation address is updated successfully$")
 	public void the_organisation_address_is_updated_successfully() throws Throwable {
 		LOG.info("Verifying the Organisation Address has been updated Successfully.");
@@ -585,7 +585,7 @@ public class SadPathStepDefinitions {
 	@When("^the user does not update the about the organisation field empty$")
 	public void the_user_does_not_update_the_about_the_organisation_field_empty() throws Throwable {
 		LOG.info("Leaving the Information about the Organisation field empty.");
-		
+
 		websiteManager.partnershipInformationPage.editAboutTheOrganisation();
 		websiteManager.parPartnershipDescriptionPage.updateBusinessDescription("");
 		websiteManager.parPartnershipDescriptionPage.clickSaveButton();
@@ -602,14 +602,14 @@ public class SadPathStepDefinitions {
 	@Then("^the information about the organisation is updated successfully$")
 	public void the_information_about_the_organisation_is_updated_successfully() throws Throwable {
 		LOG.info("Verifying all the remaining Partnership details have been updated Successfully.");
-		
+
 		assertTrue(websiteManager.partnershipInformationPage.checkAboutTheOrganisation());
 	}
 
 	@When("^the user clicks the add another trading name link but leaves the text field empty$")
 	public void the_user_clicks_the_add_another_trading_name_link_but_leaves_the_text_field_empty() throws Throwable {
 		LOG.info("Adding a new Trading Name but leaving the field empty.");
-		
+
 		websiteManager.partnershipInformationPage.addAnotherTradingName();
 		websiteManager.tradingPage.enterTradingName("");
 		websiteManager.tradingPage.clickSaveButton();
@@ -626,14 +626,14 @@ public class SadPathStepDefinitions {
 	@Then("^the new trading name is added successfully$")
 	public void the_new_trading_name_is_added_successfully() throws Throwable {
 		LOG.info("Verifying the Trading Name was added Successfully.");
-		
+
 		assertTrue(websiteManager.partnershipInformationPage.verifyTradingName());
 	}
 
 	@When("^the user edits the trading name but leaves the text field empty$")
 	public void the_user_edits_the_trading_name_but_leaves_the_text_field_empty() throws Throwable {
 		LOG.info("Updating a Trading Name but leaving the field empty.");
-		
+
 		websiteManager.partnershipInformationPage.editTradingName();
 		websiteManager.tradingPage.enterTradingName("");
 		websiteManager.tradingPage.clickSaveButton();
@@ -642,7 +642,7 @@ public class SadPathStepDefinitions {
 	@When("^the user updates the trading name: \"([^\"]*)\"$")
 	public void the_user_updates_the_trading_name(String tradingName) throws Throwable {
 		LOG.info("Updating a Trading Name.");
-		
+
 		DataStore.saveValue(UsableValues.TRADING_NAME, tradingName);
 		websiteManager.tradingPage.enterTradingName(DataStore.getSavedValue(UsableValues.TRADING_NAME));
 		websiteManager.tradingPage.clickSaveButton();
@@ -651,11 +651,11 @@ public class SadPathStepDefinitions {
 	@Then("^the trading name is updated successfully$")
 	public void the_trading_name_is_updated_successfully() throws Throwable {
 		LOG.info("Verifying the Trading Name was updated Successfully.");
-		
+
 		assertTrue(websiteManager.partnershipInformationPage.verifyTradingName());
 		websiteManager.partnershipInformationPage.clickSaveButton();
 	}
-	
+
 	@When("^the user does not choose the type of legal entity$")
 	public void the_user_does_not_choose_the_type_of_legal_entity() throws Throwable {
 		LOG.info("Not selecting a Legal Entity type.");
@@ -681,7 +681,7 @@ public class SadPathStepDefinitions {
 	public void the_user_chooses_the_unregistered_entity_structure_but_does_not_enter_the_name() throws Throwable {
 		LOG.info("Choosing a Legal Entity trype and selecting its Structure but not entering its name.");
 		DataStore.saveValue(UsableValues.ENTITY_TYPE, "Sole trader");
-		
+
 		websiteManager.legalEntityTypePage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), "");
 		websiteManager.legalEntityTypePage.clickContinueButton();
 	}
@@ -690,18 +690,18 @@ public class SadPathStepDefinitions {
 	public void the_user_adds_a_legal_entity_amendment_with_the_name(String entityName) throws Throwable {
 		LOG.info("Choosing a Legal Entity trype, selecting its Structure and entering its name.");
 		DataStore.saveValue(UsableValues.ENTITY_NAME, "Error Message Testing Co.");
-		
+
 		websiteManager.legalEntityTypePage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
 		websiteManager.legalEntityTypePage.clickContinueButton();
 		websiteManager.legalEntityReviewPage.clickContinueButton();
 	}
-	
+
 	@When("^the user selects the confirm amendments link$")
 	public void the_user_selects_the_confirm_amendments_link() throws Throwable {
 		LOG.info("Selecting the Confirm legal aentity amendments link.");
 		websiteManager.partnershipInformationPage.selectConfirmLegalEntitiesLink();
 	}
-	
+
 	@When("^the user clicks the nominate amendments link$")
 	public void the_user_clicks_the_nominate_amendments_link() throws Throwable {
 		LOG.info("Selecting the Nominate legal entity amendments link.");
@@ -720,25 +720,25 @@ public class SadPathStepDefinitions {
 		LOG.info("Confirming the Legal Entity Amendments.");
 		websiteManager.confirmThisAmendmentPage.selectConfirmationCheckbox();
 		websiteManager.confirmThisAmendmentPage.selectSubmitAmendmentButton();
-		
+
 		websiteManager.amendmentCompletedPage.clickDoneButton();
 	}
-	
+
 	@When("^the user nominates the legal entity amendment$")
 	public void the_user_nominates_the_legal_entity_amendment() throws Throwable {
 		LOG.info("Nominating the Legal Entity Amendments.");
 		websiteManager.confirmThisAmendmentPage.selectConfirmationCheckbox();
 		websiteManager.confirmThisAmendmentPage.goToAmendmentCompletedPage();
-		
+
 		websiteManager.amendmentCompletedPage.clickDoneButton();
 	}
-	
+
 	@When("^the user selects the add another authority contact link$")
 	public void the_user_selects_the_add_another_authority_contact_link() throws Throwable {
 		LOG.info("Selecting the Add another authority contact link.");
 		websiteManager.partnershipInformationPage.addAnotherAuthorityContactButton();
 	}
-	
+
 	@When("^the user selects the add another organisation contact link$")
 	public void the_user_selects_the_add_another_organisation_contact_link() throws Throwable {
 		LOG.info("Selecting the Add another organisation contact link.");
@@ -750,14 +750,14 @@ public class SadPathStepDefinitions {
 		LOG.info("Entering the Authority contact details.");
 		websiteManager.contactDetailsPage.addContactDetails(details);
 		websiteManager.contactDetailsPage.selectRandomPreferredCommunication();
-		
+
 		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
 			DataStore.saveValue(UsableValues.CONTACT_NOTES, data.get("ContactNotes"));
 		}
-		
+
 		websiteManager.contactDetailsPage.enterContactNote(DataStore.getSavedValue(UsableValues.CONTACT_NOTES));
 		websiteManager.contactDetailsPage.clickContinueButton();
-		
+
 		LOG.info("Reviewing the Contact Details.");
 		websiteManager.profileReviewPage.clickSaveButton();
 	}
@@ -765,15 +765,15 @@ public class SadPathStepDefinitions {
 	@Then("^the new contact is added successfully$")
 	public void the_new_contact_is_added_successfully() throws Throwable {
 		LOG.info("Verifying the new Authority contact is added successfully.");
-		
+
 		String fullName = DataStore.getSavedValue(UsableValues.PERSON_TITLE) + " " + DataStore.getSavedValue(UsableValues.BUSINESS_FIRSTNAME) + " " + DataStore.getSavedValue(UsableValues.BUSINESS_LASTNAME);
 		String workNumber = DataStore.getSavedValue(UsableValues.PERSON_WORK_NUMBER);
 		String mobileNumber = DataStore.getSavedValue(UsableValues.PERSON_MOBILE_NUMBER);
 		String email = DataStore.getSavedValue(UsableValues.BUSINESS_EMAIL).toLowerCase();
 		String contactNote = DataStore.getSavedValue(UsableValues.CONTACT_NOTES);
-		
+
 		// Need to assert each element separately and run the test one at a time per assert to debug the Failure.
-		
+
 		assertTrue(fullName +", "+ workNumber +", "+ mobileNumber +","+ email +", "+ contactNote, websiteManager.partnershipInformationPage.checkContactDetails());
 	}
 
@@ -781,12 +781,12 @@ public class SadPathStepDefinitions {
 	public void the_user_removes_the_new_Primary_Authority_Contact() throws Throwable {
 		LOG.info("Selecting the Remove contact link.");
 		websiteManager.partnershipInformationPage.removeContactsDetailsButton();
-		
+
 		LOG.info("Removing the contact.");
 		websiteManager.removePage.clickRemoveButton();
 	}
-	
-	
+
+
 	// Other Features
 	@Given("^the user is on the home page$")
 	public void the_user_is_on_the_home_page() throws Throwable {
@@ -799,11 +799,11 @@ public class SadPathStepDefinitions {
 		LOG.info("Navigating to PAR login page - logging out user first if already logged in");
 		websiteManager.loginPage.navigateToUrl();
 	}
-	
+
 	@When("^the user enters the following  and  credentials$")
 	public void the_user_enters_the_following_and_credentials() throws Throwable {
 		LOG.info("Leaving the email and password fields empty.");
-		
+
 		websiteManager.loginPage.enterEmailAddress("");
 		websiteManager.loginPage.enterPassword("");
 		websiteManager.loginPage.selectSignIn();
@@ -812,7 +812,7 @@ public class SadPathStepDefinitions {
 	@Then("^the user is shown an error message The Enter your e-mail address is required\\. The Enter your password is required\\. successfully$")
 	public void the_user_is_shown_an_error_message_The_Enter_your_e_mail_address_is_required_The_Enter_your_password_is_required_successfully() throws Throwable {
 		LOG.info("Validating the error messages.");
-		
+
 		assertTrue(websiteManager.loginPage.checkErrorSummary("The Enter your e-mail address is required."));
 		assertTrue(websiteManager.loginPage.checkErrorSummary("The Enter your password is required."));
 	}
@@ -820,7 +820,7 @@ public class SadPathStepDefinitions {
 	@When("^the user enters the following  and TestPassword credentials$")
 	public void the_user_enters_the_following_and_TestPassword_credentials() throws Throwable {
 		LOG.info("Entering a valid password and leaving the email field empty.");
-		
+
 		websiteManager.loginPage.enterEmailAddress("");
 		websiteManager.loginPage.enterPassword("TestPassword");
 		websiteManager.loginPage.selectSignIn();
@@ -829,14 +829,14 @@ public class SadPathStepDefinitions {
 	@Then("^the user is shown an error message The Enter your e-mail address is required\\.  successfully$")
 	public void the_user_is_shown_an_error_message_The_Enter_your_e_mail_address_is_required_successfully() throws Throwable {
 		LOG.info("Validating the error message.");
-		
+
 		assertTrue(websiteManager.loginPage.checkErrorSummary("The Enter your e-mail address is required."));
 	}
 
 	@When("^the user enters the following par_coordinator@example\\.com and  credentials$")
 	public void the_user_enters_the_following_par_coordinator_example_com_and_credentials() throws Throwable {
 		LOG.info("Entering a valid email and leaving the password field empty.");
-		
+
 		websiteManager.loginPage.enterEmailAddress("par_coordinator@example.com");
 		websiteManager.loginPage.enterPassword("");
 		websiteManager.loginPage.selectSignIn();
@@ -845,24 +845,24 @@ public class SadPathStepDefinitions {
 	@Then("^the user is shown an error message The Enter your password is required\\. Unrecognized username or password\\. Forgot your password\\? successfully$")
 	public void the_user_is_shown_an_error_message_The_Enter_your_password_is_required_Unrecognized_username_or_password_Forgot_your_password_successfully() throws Throwable {
 		LOG.info("Validating the error messages.");
-		
+
 		assertTrue(websiteManager.loginPage.checkErrorSummary("The Enter your password is required."));
 		assertTrue(websiteManager.loginPage.checkErrorSummary("Unrecognized username or password. Forgot your password?"));
 	}
-	
+
 	@When("^the user enters the following par_coordinator@example\\.com and Invalid credentials$")
 	public void the_user_enters_the_following_par_coordinator_example_com_and_Invalid_credentials() throws Throwable {
 		LOG.info("Entering a valid email and an invalid password.");
-		
+
 		websiteManager.loginPage.enterEmailAddress("par_coordinator@example.com");
 		websiteManager.loginPage.enterPassword("Invalid");
 		websiteManager.loginPage.selectSignIn();
 	}
-	
+
 	@When("^the user enters the following Invalid and TestPassword credentials$")
 	public void the_user_enters_the_following_Invalid_and_TestPassword_credentials() throws Throwable {
 		LOG.info("Entering an invalid email and a valid password.");
-		
+
 		websiteManager.loginPage.enterEmailAddress("Invalid");
 		websiteManager.loginPage.enterPassword("TestPassword");
 		websiteManager.loginPage.selectSignIn();
@@ -871,7 +871,7 @@ public class SadPathStepDefinitions {
 	@When("^the user enters the following Invalid and Invalid credentials$")
 	public void the_user_enters_the_following_Invalid_and_Invalid_credentials() throws Throwable {
 		LOG.info("Entering an invalid email and password.");
-		
+
 		websiteManager.loginPage.enterEmailAddress("Invalid");
 		websiteManager.loginPage.enterPassword("Invalid");
 		websiteManager.loginPage.selectSignIn();
@@ -880,10 +880,10 @@ public class SadPathStepDefinitions {
 	@Then("^the user is shown an error message Unrecognized username or password\\. Forgot your password\\?  successfully$")
 	public void the_user_is_shown_an_error_message_Unrecognized_username_or_password_Forgot_your_password_successfully() throws Throwable {
 		LOG.info("Validating the error message.");
-		
+
 		assertTrue(websiteManager.loginPage.checkErrorSummary("Unrecognized username or password. Forgot your password?"));
 	}
-	
+
 	@When("^the user selects the see all advice link$")
 	public void the_user_selects_the_see_all_advice_link() throws Throwable {
 		LOG.info("Navigate to the See All Advice page.");
@@ -895,7 +895,7 @@ public class SadPathStepDefinitions {
 	public void the_user_selects_upload_without_choosing_a_file() throws Throwable {
 		LOG.info("Navigate to the Upload Advice Documents page.");
 		websiteManager.adviceNoticeSearchPage.selectUploadLink();
-		
+
 		LOG.info("Select the Upload button without Uploading a file to receive an Error Message.");
 		websiteManager.uploadAdviceNoticePage.selectUploadButton();
 	}
@@ -916,15 +916,15 @@ public class SadPathStepDefinitions {
 
 	@When("^the user enters the following advice details:$")
 	public void the_user_enters_the_following_advice_details(DataTable details) throws Throwable {
-		
+
 		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
-			
+
 			DataStore.saveValue(UsableValues.ADVICENOTICE_TITLE, data.get("Title"));
 			DataStore.saveValue(UsableValues.ADVICENOTICE_TYPE, data.get("Type of Advice"));
 			DataStore.saveValue(UsableValues.ADVICENOTICE_REGFUNCTION, data.get("Reg Function"));
 			DataStore.saveValue(UsableValues.ADVICENOTICE_DESCRIPTION, data.get("Description"));
 		}
-		
+
 		websiteManager.adviceNoticeDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
 		websiteManager.adviceNoticeDetailsPage.selectAdviceType(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TYPE));
 		websiteManager.adviceNoticeDetailsPage.selectRegulatoryFunction(DataStore.getSavedValue(UsableValues.ADVICENOTICE_REGFUNCTION));
@@ -937,11 +937,11 @@ public class SadPathStepDefinitions {
 		LOG.info("Verify the Advice was created successfully and has an Active status.");
 		Assert.assertTrue(websiteManager.adviceNoticeSearchPage.getAdviceStatus().equalsIgnoreCase("Active"));
 	}
-	
+
 	@When("^the user selects the edit link$")
 	public void the_user_selects_the_edit_link() throws Throwable {
 		LOG.info("Searching for the newly added Advice notice.");
-		
+
 		websiteManager.adviceNoticeSearchPage.searchForAdvice(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
 		websiteManager.adviceNoticeSearchPage.selectEditAdviceButton();
 	}
@@ -951,11 +951,11 @@ public class SadPathStepDefinitions {
 		LOG.info("Verify the Advice was updated successfully and has an Active status.");
 		Assert.assertTrue("Failed: Status not set to \"Active\"", websiteManager.adviceNoticeSearchPage.getAdviceStatus().equalsIgnoreCase("Active"));
 	}
-	
+
 	@When("^the user selects the archive link$")
 	public void the_user_selects_the_archive_link() throws Throwable {
 		LOG.info("Select the Archiving Advice Link.");
-		
+
 		websiteManager.adviceNoticeSearchPage.searchForAdvice(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
 		websiteManager.adviceNoticeSearchPage.selectArchiveAdviceButton();
 	}
@@ -979,11 +979,11 @@ public class SadPathStepDefinitions {
 		LOG.info("Verify the Advice was Archived successfully and has the Archived status.");
 		Assert.assertTrue(websiteManager.adviceNoticeSearchPage.getAdviceStatus().equalsIgnoreCase("Archived"));
 	}
-	
+
 	@When("^the user selects the remove link$")
 	public void the_user_selects_the_remove_link() throws Throwable {
 		LOG.info("Select the Remove Advice Link.");
-		
+
 		websiteManager.adviceNoticeSearchPage.searchForAdvice(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
 		websiteManager.adviceNoticeSearchPage.selectRemoveAdviceButton();
 	}
@@ -1006,23 +1006,23 @@ public class SadPathStepDefinitions {
 	public void the_advice_is_removed_successfully() throws Throwable {
 		LOG.info("Verify the Advice was Removed Successfully.");
 		websiteManager.adviceNoticeSearchPage.searchForAdvice(DataStore.getSavedValue(UsableValues.ADVICENOTICE_TITLE));
-		
+
 		Assert.assertTrue("Failed: Advice Notice was not Removed.", websiteManager.adviceNoticeSearchPage.checkNoResultsReturned());
 	}
-	
+
 	@When("^the user selects the see all inspection plans link$")
 	public void the_user_selects_the_see_all_inspection_plans_link() throws Throwable {
 		LOG.info("Navigate to the See All Inspection Plans page.");
 		websiteManager.partnershipAdvancedSearchPage.selectPartnershipLink();
 		websiteManager.partnershipInformationPage.selectSeeAllInspectionPlans();
 	}
-	
+
 	@When("^the user selects the upload inspection plan link$")
 	public void the_user_selects_the_upload_inspection_plan_link() throws Throwable {
 		LOG.info("Navigate to the Upload Inspection Plan page.");
 		websiteManager.inspectionPlanSearchPage.selectUploadLink();
 	}
-	
+
 	@When("^the user attempts to upload an inspection plan without choosing a file$")
 	public void the_user_attempts_to_upload_an_inspection_plan_without_choosing_a_file() throws Throwable {
 		LOG.info("Select the Upload Button without uploading an Inspection Plan Document.");
@@ -1046,13 +1046,13 @@ public class SadPathStepDefinitions {
 	@When("^the user enters the following inspection plan details:$")
 	public void the_user_enters_the_following_inspection_plan_details(DataTable details) throws Throwable {
 		LOG.info("Enter Inspection Plan details.");
-		
+
 		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
-			
+
 			DataStore.saveValue(UsableValues.INSPECTIONPLAN_TITLE, data.get("Title"));
 			DataStore.saveValue(UsableValues.INSPECTIONPLAN_DESCRIPTION, data.get("Description"));
 		}
-		
+
 		websiteManager.inspectionPlanDetailsPage.enterTitle(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_TITLE));
 		websiteManager.inspectionPlanDetailsPage.enterInspectionDescription(DataStore.getSavedValue(UsableValues.INSPECTIONPLAN_DESCRIPTION));
 		websiteManager.inspectionPlanDetailsPage.selectSaveButton();
@@ -1064,7 +1064,7 @@ public class SadPathStepDefinitions {
 		websiteManager.enterTheDatePage.clearDateFields();
 		websiteManager.enterTheDatePage.selectSaveButton();
 	}
-	
+
 	@When("^the user enters an inspection plan expiry date$")
 	public void the_user_enters_an_inspection_plan_expiry_date() throws Throwable {
 		LOG.info("Enter Inspection Plan Expiry Date.");
@@ -1077,13 +1077,13 @@ public class SadPathStepDefinitions {
 		LOG.info("Verifying the Inpsection Plan was created successfully and has the Current status.");
 		Assert.assertTrue("Failed: Inspection Plan Status is not set to Current.", websiteManager.inspectionPlanSearchPage.getPlanStatus().equalsIgnoreCase("Current"));
 	}
-	
+
 	@When("^the user clicks the edit link$")
 	public void the_user_clicks_the_edit_link() throws Throwable {
 		LOG.info("Select the Inspection Plans Edit link.");
 		websiteManager.inspectionPlanSearchPage.selectEditLink();
 	}
-	
+
 	@When("^the user clicks the revoke link$")
 	public void the_user_clicks_the_revoke_link() throws Throwable {
 		LOG.info("Select the Inspection Plans Revoke link.");
@@ -1103,7 +1103,7 @@ public class SadPathStepDefinitions {
 		websiteManager.revokePage.enterReasonForRevocation("Sad Path Test.");
 		websiteManager.revokePage.selectRevokeButton();
 	}
-	
+
 	@When("^the user clicks the remove link$")
 	public void the_user_clicks_the_remove_link() throws Throwable {
 		LOG.info("Select the Inspection Plans Remove link.");
@@ -1122,7 +1122,7 @@ public class SadPathStepDefinitions {
 		LOG.info("Verifying the Inspection Plan was Removed Successfully.");
 		assertEquals("Failed: Inspection Plan was not Removed.", websiteManager.inspectionPlanSearchPage.getPlanStatus(), "No results returned");
 	}
-	
+
 	@When("^the user selects the Request to deviate from the inspection plan link$")
 	public void the_user_selects_the_Request_to_deviate_from_the_inspection_plan_link() throws Throwable {
 		LOG.info("Attempt to create a Deviation Request.");
@@ -1130,7 +1130,7 @@ public class SadPathStepDefinitions {
 		websiteManager.partnershipInformationPage.clickDeviateInspectionPlan();
 		websiteManager.chooseAnInspectionPlanPage.selectContinueButton();
 	}
-	
+
 	@When("^the user selects the Submit feedback following an inspection link$")
 	public void the_user_selects_the_Submit_feedback_following_an_inspection_link() throws Throwable {
 		LOG.info("Attempt to send Inspection Feedback.");
@@ -1138,12 +1138,12 @@ public class SadPathStepDefinitions {
 		websiteManager.partnershipInformationPage.clickSendInspectionFeedbk();
 		websiteManager.chooseAnInspectionPlanPage.selectContinueButton();
 	}
-	
+
 	@When("^the user clicks the Send a notification of a proposed enforcement action link$")
 	public void the_user_clicks_the_Send_a_notification_of_a_proposed_enforcement_action_link() throws Throwable {
 		LOG.info("Navigate to the Partnership.");
 		websiteManager.partnershipSearchPage.selectBusinessNameLinkFromPartnership();
-		
+
 		LOG.info("Start the Enforcement Notice Creation.");
 		websiteManager.partnershipInformationPage.createEnforcement();
 		websiteManager.enforcementNotificationPage.clickContinueButton();
@@ -1186,7 +1186,7 @@ public class SadPathStepDefinitions {
 		websiteManager.enforcementDetailsPage.enterEnforcementDescription("");
 		websiteManager.enforcementDetailsPage.clickContinueButton();
 	}
-	
+
 	@When("^the user enters a summary with the enforcement details:$")
 	public void the_user_enters_a_summary_with_the_enforcement_details(DataTable details) throws Throwable {
 		LOG.info("Choose the Enforcment action type and enter a summary.");
@@ -1218,18 +1218,18 @@ public class SadPathStepDefinitions {
 	public void the_enforcement_notice_is_created_successfully() throws Throwable {
 	    LOG.info("Choose the Enforcment action type and enter a summary.");
 	    Assert.assertTrue("Failed: Enforcement Details are not Correct.", websiteManager.enforcementReviewPage.checkEnforcementCreation());
-		
+
 		websiteManager.enforcementReviewPage.clickSaveButton();
 		websiteManager.enforcementCompletionPage.clickDoneButton();
 	}
-	
+
 	@When("^the user selects the block button without entering a reason to block$")
 	public void the_user_selects_the_block_button_without_entering_a_reason_to_block() throws Throwable {
 		LOG.info("Select Block Radio and leave the Reason field empty.");
 		websiteManager.proposedEnforcementPage.selectBlock();
 		websiteManager.proposedEnforcementPage.clickContinueButton();
 	}
-	
+
 	@When("^the user selects the Remove enforcement action link$")
 	public void the_user_selects_the_Remove_enforcement_action_link() throws Throwable {
 		LOG.info("Selecting the Remove Enforcement action link..");
@@ -1245,12 +1245,12 @@ public class SadPathStepDefinitions {
 	@When("^the user provides the following reason and a description for the removal:$")
 	public void the_user_provides_the_following_reason_and_a_description_for_the_removal(DataTable details) throws Throwable {
 		LOG.info("Entering the Enforcement Notice Removal reason and description.");
-		
+
 		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
 			DataStore.saveValue(UsableValues.REMOVAL_REASON, data.get("RemovalReason"));
 			DataStore.saveValue(UsableValues.REMOVAL_DESCRIPTION, data.get("RemovalDescription"));
 		}
-		
+
 		websiteManager.removeEnforcementPage.selectRemovalReason(DataStore.getSavedValue(UsableValues.REMOVAL_REASON));
 		websiteManager.removeEnforcementPage.enterRemovalDescription(DataStore.getSavedValue(UsableValues.REMOVAL_DESCRIPTION));
 		websiteManager.removeEnforcementPage.clickContinueButton();
@@ -1269,7 +1269,7 @@ public class SadPathStepDefinitions {
 		websiteManager.declarationPage.selectConfirmCheckbox();
 		websiteManager.declarationPage.goToEnforcementSearchPage(); // Test fails due to the button not being clicked properly, Selenium "hovers" on the button as it is shown as highlighted.
 	}
-	
+
 	@When("^the user clicks the Request to deviate from the inspection plan link$")
 	public void the_user_clicks_the_Request_to_deviate_from_the_inspection_plan_link() throws Throwable {
 		LOG.info("Navigating to and select Send Deviation Request.");
@@ -1287,11 +1287,11 @@ public class SadPathStepDefinitions {
 	@When("^the user enters the deviation request with the following details:$")
 	public void the_user_enters_the_deviation_request_with_the_following_details(DataTable details) throws Throwable {
 		LOG.info("Enter the Deviation Request details.");
-		
+
 		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
 			DataStore.saveValue(UsableValues.DEVIATION_DESCRIPTION, data.get("Description"));
 		}
-		
+
 		websiteManager.requestDeviationPage.enterDescription(DataStore.getSavedValue(UsableValues.DEVIATION_DESCRIPTION));
 		websiteManager.requestDeviationPage.chooseFile("link.txt");
 		websiteManager.requestDeviationPage.clickContinueButton();
@@ -1300,33 +1300,33 @@ public class SadPathStepDefinitions {
 	@Then("^the deviation request is created successfully$")
 	public void the_deviation_request_is_created_successfully() throws Throwable {
 		LOG.info("Verify the Deviation Request is created Successfully.");
-		
+
 		Assert.assertTrue("Failed: Deviation Request details are not displayed.", websiteManager.deviationReviewPage.checkDeviationCreation());
 		websiteManager.deviationReviewPage.clickSaveChanges();
 		websiteManager.deviationCompletionPage.clickDoneButton();
 	}
-	
+
 	@When("^the user selects blocks the deviation without providing a reason$")
 	public void the_user_selects_blocks_the_deviation_without_providing_a_reason() throws Throwable {
 		LOG.info("Block the deviation request without providing a reason.");
-		
+
 		websiteManager.deviationApprovalPage.selectBlock();
 		websiteManager.deviationApprovalPage.clearAllFields();
 		websiteManager.deviationApprovalPage.clickContinueButton();
 	}
-	
-	
+
+
 	@When("^the user selects the approved deviation request$")
 	public void the_user_selects_the_approved_deviation_request() throws Throwable {
 		LOG.info("Select the latest Deviation Request.");
 		websiteManager.deviationSearchPage.selectDeviationRequest();
 	}
-	
+
 	@When("^the user tries to submit a response without any details$")
 	public void the_user_tries_to_submit_a_response_without_any_details() throws Throwable {
 		LOG.info("Attempt to submit a Deviation Request response without any details.");
 		websiteManager.deviationReviewPage.clickSubmitResponse();
-		
+
 		websiteManager.replyDeviationRequestPage.clearAllFields();
 		websiteManager.replyDeviationRequestPage.clickSaveButton();
 	}
@@ -1335,12 +1335,12 @@ public class SadPathStepDefinitions {
 	public void the_user_enters_the_following_response(String response) throws Throwable {
 		LOG.info("Submit reply to the deviation request.");
 		DataStore.saveValue(UsableValues.MESSAGE_RESPONSE, response);
-		
+
 		websiteManager.replyDeviationRequestPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.MESSAGE_RESPONSE));
 		websiteManager.replyDeviationRequestPage.chooseFile("link.txt");
 		websiteManager.replyDeviationRequestPage.clickSaveButton();
 	}
-	
+
 	@When("^the user clicks the Submit Feedback following an inspection link$")
 	public void the_user_clicks_the_Submit_Feedback_following_an_inspection_link() throws Throwable {
 		LOG.info("Submit Feedback following an Inspection.");
@@ -1359,7 +1359,7 @@ public class SadPathStepDefinitions {
 	public void the_user_enters_the_following_inspection_plan_feedback(String feedback) throws Throwable {
 		LOG.info("Complete feedback fields.");
 		DataStore.saveValue(UsableValues.INSPECTIONFEEDBACK_DESCRIPTION, feedback);
-		
+
 		websiteManager.inspectionFeedbackDetailsPage.enterFeedbackDescription(DataStore.getSavedValue(UsableValues.INSPECTIONFEEDBACK_DESCRIPTION));
 		websiteManager.inspectionFeedbackDetailsPage.chooseFile("link.txt");
 		websiteManager.inspectionFeedbackDetailsPage.clickContinueButton();
@@ -1369,11 +1369,11 @@ public class SadPathStepDefinitions {
 	public void the_inspection_plan_feedback_is_created_successfully() throws Throwable {
 		LOG.info("Verifying the Inspection Feedback Details.");
 		Assert.assertTrue("Failed: Inspection Feedback Details are Incorrect.", websiteManager.inspectionFeedbackConfirmationPage.checkInspectionFeedback());
-		
+
 		websiteManager.inspectionFeedbackConfirmationPage.clickSaveButton();
 		websiteManager.inspectionFeedbackCompletionPage.clickDoneButton();
 	}
-	
+
 	@When("^the user clicks the Send a general enquiry to the primary authority link$")
 	public void the_user_clicks_the_Send_a_general_enquiry_to_the_primary_authority_link() throws Throwable {
 		LOG.info("Send a General Enquiry.");
@@ -1392,7 +1392,7 @@ public class SadPathStepDefinitions {
 	public void the_user_enters_the_following_general_enquiry_details(String description) throws Throwable {
 		LOG.info("Enter Enquiry details.");
 		DataStore.saveValue(UsableValues.ENQUIRY_DESCRIPTION, description);
-		
+
 		websiteManager.requestEnquiryPage.enterDescription(DataStore.getSavedValue(UsableValues.ENQUIRY_DESCRIPTION));
 		websiteManager.requestEnquiryPage.chooseFile("link.txt");
 		websiteManager.requestEnquiryPage.clickContinueButton();
@@ -1402,11 +1402,11 @@ public class SadPathStepDefinitions {
 	public void the_general_enquiry_is_created_successfully() throws Throwable {
 		LOG.info("Verify the enquiry is created.");
 		Assert.assertTrue("Failed: Enquiry details are not correct.", websiteManager.enquiryReviewPage.checkEnquiryDescription());
-		
+
 		websiteManager.enquiryReviewPage.clickSaveChanges();
 		websiteManager.enquiryCompletionPage.clickDoneButton();
 	}
-	
+
 	@When("^the user adds a new organisation member$")
 	public void the_user_adds_a_new_organisation_member() throws Throwable {
 		LOG.info("Add a Single Member Organisation to a Co-ordinated Partnership.");
@@ -1450,7 +1450,7 @@ public class SadPathStepDefinitions {
 		websiteManager.enterTheDatePage.enterCurrentDate();
 		websiteManager.enterTheDatePage.clickContinueButton();
 	}
-	
+
 	@When("^the user leaves the member trading name field empty$")
 	public void the_user_leaves_the_member_trading_name_field_empty() throws Throwable {
 		LOG.info("Clear the Member Organisation's Trading Name Text Field.");
@@ -1465,7 +1465,7 @@ public class SadPathStepDefinitions {
 		websiteManager.tradingPage.enterTradingNameForMember(DataStore.getSavedValue(UsableValues.TRADING_NAME));
 		websiteManager.tradingPage.clickContinueButton();
 	}
-	
+
 	@When("^the user confirms the legal entity for the new member$")
 	public void the_user_confirms_the_legal_entity_for_the_new_member() throws Throwable {
 		LOG.info("Confirm the Legal Entity.");
@@ -1477,7 +1477,7 @@ public class SadPathStepDefinitions {
 		LOG.info("Confirming the Member Organisation is covered by the Inspection Plan.");
 		websiteManager.inspectionPlanCoveragePage.selectYesRadial();
 		websiteManager.inspectionPlanCoveragePage.selectContinueButton();
-		
+
 		LOG.info("Saving the Member Organisation's Details.");
 		websiteManager.memberOrganisationSummaryPage.clickSaveButton();
 		websiteManager.memberOrganisationAddedConfirmationPage.clickDoneButton();
@@ -1486,19 +1486,19 @@ public class SadPathStepDefinitions {
 	@Then("^the new member organistion has been added to the partnership successfully$")
 	public void the_new_member_organistion_has_been_added_to_the_partnership_successfully() throws Throwable {
 		LOG.info("Verify the Member Organisation was added to the Co-ordinated Partnership Successfully.");
-		
+
 		websiteManager.memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
 		Assert.assertTrue("Failed: Member Organisation was not Created.", websiteManager.memberListPage.checkMemberCreated());
 	}
-	
+
 	@When("^the user searches for the last created organisation member$")
 	public void the_user_searches_for_the_last_created_organisation_member() throws Throwable {
 		LOG.info("Navigate to the Member summary page for a Member Organisation.");
 		websiteManager.partnershipAdvancedSearchPage.selectOrganisationLink();
 		websiteManager.partnershipInformationPage.selectShowMembersListLink();
-		
+
 		websiteManager.memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
-		
+
 	}
 
 	@Then("^the user is on the organisation members summary page$")
@@ -1547,7 +1547,7 @@ public class SadPathStepDefinitions {
 		LOG.info("Updating the Member Organisation's Address.");
 		websiteManager.addAddressPage.editAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
 				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY), DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
-		
+
 		websiteManager.addAddressPage.clickSaveButton();
 	}
 
@@ -1563,7 +1563,7 @@ public class SadPathStepDefinitions {
 		websiteManager.enterTheDatePage.clearDateFields();
 		websiteManager.enterTheDatePage.selectSaveButton();
 	}
-	
+
 	@When("^the user edits the member organisation membership start date$")
 	public void the_user_edits_the_member_organisation_membership_start_date() throws Throwable {
 		LOG.info("Enter the Member Organisation's Membership Start Date.");
@@ -1596,32 +1596,32 @@ public class SadPathStepDefinitions {
 		LOG.info("Select the Add Member Organisation's Legal Entity Link.");
 		websiteManager.memberOrganisationSummaryPage.selectAddAnotherLegalEntity();
 	}
-	
+
 	@When("^the user does not select a registered, charity or unregistered legal entity for the member$")
 	public void the_user_does_not_select_a_registered_charity_or_unregistered_legal_entity_for_the_member() throws Throwable {
 		LOG.info("Not selecting a Legal Entity type.");
 		websiteManager.updateLegalEntityPage.clickSaveButton();
 	}
-	
+
 	@When("^the user selects an \"([^\"]*)\" legal entity for the member$")
 	public void the_user_selects_an_legal_entity_for_the_member(String type) throws Throwable {
 	    LOG.info("Selecting a Legal Entity type.");
 		websiteManager.updateLegalEntityPage.selectUnregisteredEntity(type, "");
 	}
-	
+
 	@When("^the user does not select a legal entity type or enter a legal entity name for the member$")
 	public void the_user_does_not_select_a_legal_entity_type_or_enter_a_legal_entity_name_for_the_member() throws Throwable {
 		LOG.info("Entering a Legal Entity type but not selecting an entity structure or entering an entity name.");
 		websiteManager.updateLegalEntityPage.clickSaveButton();
 	}
-	
+
 	@When("^the user chooses a legal entity with the following details for the member:$")
 	public void the_user_chooses_a_legal_entity_with_the_following_details_for_the_member(DataTable details) throws Throwable {
 		for (Map<String, String> data : details.asMaps(String.class, String.class)) {
 			DataStore.saveValue(UsableValues.ENTITY_NAME, data.get("Legal Entity Name"));
 			DataStore.saveValue(UsableValues.ENTITY_TYPE, data.get("Legal Entity Type"));
 		}
-		
+
 		LOG.info("Entering a Legal Entity.");
 		websiteManager.updateLegalEntityPage.selectUnregisteredEntity(DataStore.getSavedValue(UsableValues.ENTITY_TYPE), DataStore.getSavedValue(UsableValues.ENTITY_NAME));
 		websiteManager.updateLegalEntityPage.clickSaveButton();
@@ -1653,12 +1653,12 @@ public class SadPathStepDefinitions {
 		LOG.info("Verifying All Member Details are Correct.");
 		Assert.assertTrue(websiteManager.memberOrganisationSummaryPage.checkMemberDetails());
 		websiteManager.memberOrganisationSummaryPage.clickDoneButton();
-		
+
 		LOG.info("Verify the Updated Member Organisation Name is Displayed on the Members List.");
 		websiteManager.memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
 		Assert.assertTrue("Failed: Member Organisation was not Updated.", websiteManager.memberListPage.checkMemberCreated());
 	}
-	
+
 	@When("^the user selects the cease membership link$")
 	public void the_user_selects_the_cease_membership_link() throws Throwable {
 		LOG.info("Selecting the Cease membership link..");
@@ -1677,7 +1677,7 @@ public class SadPathStepDefinitions {
 		LOG.info("Entering the Current Date for the Cessation to Happen.");
 		websiteManager.enterTheDatePage.enterCurrentDate();
 		websiteManager.enterTheDatePage.clickContinueButton();
-		
+
 		websiteManager.membershipCeasedPage.clickCeaseButton();
 	}
 
@@ -1685,17 +1685,17 @@ public class SadPathStepDefinitions {
 	public void the_organisations_membership_is_cesased_successfully() throws Throwable {
 		LOG.info("Verify the Member Organisation has been Ceased Successfully.");
 		websiteManager.memberListPage.searchForAMember(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
-		
+
 		Assert.assertTrue("Failed: Links are still present.", websiteManager.memberListPage.checkMembershipActionButtons());
 		Assert.assertEquals("Failed: Dates do not match.", DataStore.getSavedValue(UsableValues.MEMBERSHIP_CEASE_DATE), websiteManager.memberListPage.getMembershipCeasedDate());
 	}
-	
+
 	@When("^the user selects the upload a member list link\\.$")
 	public void the_user_selects_the_upload_a_member_list_link() throws Throwable {
 		LOG.info("Navigate to the Member Organisation List Upload.");
 		websiteManager.partnershipAdvancedSearchPage.selectOrganisationLink();
 		websiteManager.partnershipInformationPage.selectShowMembersListLink();
-		
+
 		LOG.info("Select the Member Organisation List Upload Link.");
 		websiteManager.memberListPage.selectUploadMembersListLink();
 	}
@@ -1712,7 +1712,7 @@ public class SadPathStepDefinitions {
 		LOG.info("Uploading the Members List CSV File.");
 		websiteManager.uploadListOfMembersPage.chooseCSVFile();
 		websiteManager.uploadListOfMembersPage.clickUploadButton();
-		
+
 		LOG.info("Confirm the Uploade of the Members List CSV File.");
 		websiteManager.confirmMemberUploadPage.selectUploadButton();
 		websiteManager.memberListUploadedPage.clickDoneButton();

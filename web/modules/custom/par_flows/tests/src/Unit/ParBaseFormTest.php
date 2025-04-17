@@ -1,14 +1,13 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Tests\par_flows\Unit\ParFlowEntityTest
- */
-
 namespace Drupal\Tests\par_flows\Unit;
 
+use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Tests\UnitTestCase;
+use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\Form\ParBaseForm;
+use Drupal\par_flows\ParFlowDataHandlerInterface;
+use Drupal\par_flows\ParFlowNegotiatorInterface;
 
 /**
  * Test the logical methods of the base form.
@@ -21,28 +20,31 @@ class ParBaseFormTest extends UnitTestCase {
 
   /**
    * The test flow class to run the tests on.
+   *
+   * @var \Drupal\par_flows\Form\ParBaseForm
    */
-  protected $baseForm;
+  protected ParBaseForm $baseForm;
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function setUp(): void {
     parent::setUp();
 
     // Mock flow negotiator.
-    $negotiator = $this->getMockBuilder('Drupal\par_flows\ParFlowNegotiatorInterface');
+    $negotiator = $this->getMockBuilder(ParFlowNegotiatorInterface::class);
 
     // Mock data handler for flows.
-    $data_handler = $this->createMock('Drupal\par_flows\ParFlowDataHandlerInterface');
+    $data_handler = $this->createMock(ParFlowDataHandlerInterface::class);
 
     // Mock par data manager.
-    $par_data_manager = $this->createMock('Drupal\par_data\ParDataManagerInterface');
+    $par_data_manager = $this->createMock(ParDataManagerInterface::class);
 
     // Mock entity repository.
-    $component_plugin_manager = $this->createMock('Drupal\Component\Plugin\PluginManagerInterface');
+    $component_plugin_manager = $this->createMock(PluginManagerInterface::class);
 
-    $this->baseForm = $this->getMockBuilder('Drupal\par_flows\Form\ParBaseForm')
+    $this->baseForm = $this->getMockBuilder(ParBaseForm::class)
       ->onlyMethods(['getIgnoredValues'])
       ->setConstructorArgs([$negotiator, $data_handler, $par_data_manager, $component_plugin_manager])
       ->disableOriginalConstructor()
@@ -68,4 +70,5 @@ class ParBaseFormTest extends UnitTestCase {
     $this->assertTrue($this->baseForm->decideBooleanValue('on'), "The boolean value is correctly identified as being 'on'.");
     $this->assertTrue($this->baseForm->decideBooleanValue(TRUE), "The boolean value is correctly identified as being 'on'.");
   }
+
 }

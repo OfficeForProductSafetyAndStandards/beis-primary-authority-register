@@ -28,6 +28,7 @@ class NewEnforcementSubscriber extends ParMessageSubscriberBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getRecipients(MessageInterface $message): array {
     $recipients = parent::getRecipients($message);
 
@@ -44,7 +45,7 @@ class NewEnforcementSubscriber extends ParMessageSubscriberBase {
         );
       }
     }
-    catch (ParNotificationException $e) {
+    catch (ParNotificationException) {
       return $recipients;
     }
 
@@ -67,6 +68,7 @@ class NewEnforcementSubscriber extends ParMessageSubscriberBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getSubscribedEntities(MessageInterface $message): array {
     $subscriptions = parent::getSubscribedEntities($message);
 
@@ -74,7 +76,7 @@ class NewEnforcementSubscriber extends ParMessageSubscriberBase {
       /** @var ParDataEnforcementNotice[] $enforcement_notices */
       $enforcement_notices = $this->getMessageHandler()->getPrimaryData($message);
     }
-    catch (ParNotificationException $e) {
+    catch (ParNotificationException) {
       return $subscriptions;
     }
 

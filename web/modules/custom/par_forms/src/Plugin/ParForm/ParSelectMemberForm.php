@@ -21,6 +21,7 @@ class ParSelectMemberForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $organisations = [];
 
@@ -46,6 +47,7 @@ class ParSelectMemberForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // Get all the allowed authorities.
     $partnership_organisations = $this->getFlowDataHandler()->getFormPermValue('partnership_organisations');
@@ -93,6 +95,7 @@ class ParSelectMemberForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $organisation_id_key = $this->getElementKey('par_data_organisation_id');
     if (empty($form_state->getValue($organisation_id_key))) {

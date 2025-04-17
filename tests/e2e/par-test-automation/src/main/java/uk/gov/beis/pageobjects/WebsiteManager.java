@@ -1,8 +1,12 @@
 package uk.gov.beis.pageobjects;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
 
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import uk.gov.beis.helper.ScenarioContext;
 
 import uk.gov.beis.pageobjects.AdvicePageObjects.*;
@@ -23,10 +27,12 @@ import uk.gov.beis.pageobjects.TransferPartnerships.*;
 import uk.gov.beis.pageobjects.UserDashboardPageObjects.*;
 import uk.gov.beis.pageobjects.UserManagement.*;
 
+import java.time.Duration;
+
 public class WebsiteManager {
-	
+
 	public WebDriver driver;
-	
+
 	// PAR Home Page
 	public HomePage homePage;
 	public LocalRegulationPrimaryAuthorityPage localRegulationPrimaryAuthorityPage;
@@ -194,11 +200,11 @@ public class WebsiteManager {
 	public DeletePage deletePage;
 	public ChooseAnInspectionPlanPage chooseAnInspectionPlanPage;
 	public BasePageObject basePageObject;
-	
+
 	public WebsiteManager() {
-		
+
 		driver = ScenarioContext.lastDriver;
-		
+
 		// PAR Home Page
 		homePage = PageFactory.initElements(driver, HomePage.class);
 		localRegulationPrimaryAuthorityPage = PageFactory.initElements(driver, LocalRegulationPrimaryAuthorityPage.class);
@@ -367,4 +373,5 @@ public class WebsiteManager {
 		chooseAnInspectionPlanPage = PageFactory.initElements(driver, ChooseAnInspectionPlanPage.class);
 		basePageObject = PageFactory.initElements(driver, BasePageObject.class);
 	}
+
 }

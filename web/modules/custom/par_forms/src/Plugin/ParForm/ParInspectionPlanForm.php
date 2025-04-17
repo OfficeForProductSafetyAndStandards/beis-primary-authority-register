@@ -30,6 +30,7 @@ class ParInspectionPlanForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     if ($par_data_inspection_feedback = $this->getFlowDataHandler()->getParameter('par_data_inspection_feedback')) {
       $this->getFlowDataHandler()->setFormPermValue('notes', $par_data_inspection_feedback->getPlain('notes'));
@@ -41,6 +42,7 @@ class ParInspectionPlanForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $par_data_inspection_plan_fields = \Drupal::getContainer()->get('entity_field.manager')->getFieldDefinitions('par_data_inspection_plan', 'document');
     $field_definition = $par_data_inspection_plan_fields['document'];

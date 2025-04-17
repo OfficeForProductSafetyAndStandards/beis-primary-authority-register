@@ -52,9 +52,7 @@ trait ParEntityValidationMappingTrait {
    * @return ParEntityMapping[]
    */
   public function getMappingByEntityType($entityType) {
-    return array_filter($this->getEntityMappings(), function ($mapping) use ($entityType) {
-      return ($mapping->getEntityTypeId() === $entityType);
-    });
+    return array_filter($this->getEntityMappings(), fn($mapping) => $mapping->getEntityTypeId() === $entityType);
   }
 
   /**
@@ -82,11 +80,11 @@ trait ParEntityValidationMappingTrait {
     $matched = array_filter($this->getEntityMappings(), function ($mapping) use ($violation) {
       /** @var $mapping ParEntityMapping */
       if ($violation->getRoot() instanceof EntityAdapter) {
-        @list($field_name, $delta, $property) = explode('.', $violation->getPropertyPath(), 3);
+        @[$field_name, $delta, $property] = explode('.', $violation->getPropertyPath(), 3);
       }
       elseif ($violation->getRoot() instanceof FieldItemListInterface) {
         $field_name = $violation->getRoot()->getName();
-        @list($delta, $property) = explode('.', $violation->getPropertyPath(), 3);
+        @[$delta, $property] = explode('.', $violation->getPropertyPath(), 3);
       }
 
       return (isset($field_name) && $mapping->getFieldName() === $field_name

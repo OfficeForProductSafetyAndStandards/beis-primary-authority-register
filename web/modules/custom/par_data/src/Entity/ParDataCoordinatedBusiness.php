@@ -78,6 +78,7 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function filterRelationshipsByAction($relationship, $action) {
     switch ($action) {
       case 'manage':
@@ -150,6 +151,7 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function destroy($reason = '') {
     // Freeze memberships that have active enforcement notices.
     $enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
@@ -252,6 +254,7 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 

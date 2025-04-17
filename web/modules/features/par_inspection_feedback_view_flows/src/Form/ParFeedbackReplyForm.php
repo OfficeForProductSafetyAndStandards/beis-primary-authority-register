@@ -23,6 +23,7 @@ class ParFeedbackReplyForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
@@ -36,7 +37,7 @@ class ParFeedbackReplyForm extends ParBaseForm {
         'field_name'  => 'messages',
         'uid' => \Drupal::currentUser()->id(),
         'comment_type' => 'par_inspection_feedback_comments',
-        'subject' => substr($par_data_inspection_feedback->label(), 0, 64),
+        'subject' => substr((string) $par_data_inspection_feedback->label(), 0, 64),
         'status' => 1,
       ]);
     }

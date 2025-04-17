@@ -34,6 +34,7 @@ class ParPartnershipFlowsApplicationTypeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     $this->retrieveEditableValues();
     $partnership_bundle = $this->getParDataManager()->getParBundleEntity('par_data_partnership');
@@ -57,6 +58,7 @@ class ParPartnershipFlowsApplicationTypeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
     if (!$form_state->getValue('application_type')) {

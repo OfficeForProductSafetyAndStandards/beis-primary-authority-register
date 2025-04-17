@@ -32,41 +32,32 @@ class ParDashboardsDashboardController extends ControllerBase {
   use ParControllerTrait;
 
   /**
-   * The response cache kill switch.
-   *
-   * @var KillSwitch $killSwitch
-   */
-  protected KillSwitch $killSwitch;
-
-  /**
-   * The flow negotiator.
-   *
-   * @var ConfigEntityStorageInterface $flowStorage
-   */
-  protected ConfigEntityStorageInterface $flowStorage;
-
-  /**
    * Constructs a Par Form.
    *
-   * @param ConfigEntityStorageInterface $flow_storage
+   * @param ConfigEntityStorageInterface $flowStorage
    *   The flow entity storage handler.
    * @param ParDataManagerInterface $par_data_manager
    *   The current user object.
    * @param AccountInterface $current_user
    *   The current user object.
-   * @param KillSwitch $kill_switch
+   * @param KillSwitch $killSwitch
    *   The page cache kill switch.
    */
-  public function __construct(ConfigEntityStorageInterface $flow_storage, ParDataManagerInterface $par_data_manager, AccountInterface $current_user, KillSwitch $kill_switch) {
-    $this->flowStorage = $flow_storage;
+  public function __construct(/**
+   * The flow negotiator.
+   */
+  protected ConfigEntityStorageInterface $flowStorage, ParDataManagerInterface $par_data_manager, AccountInterface $current_user, /**
+   * The response cache kill switch.
+   */
+  protected KillSwitch $killSwitch) {
     $this->parDataManager = $par_data_manager;
-    $this->killSwitch = $kill_switch;
     $this->setCurrentUser($current_user);
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container) {
     $entity_type_manager = $container->get('entity_type.manager');
     return new static(

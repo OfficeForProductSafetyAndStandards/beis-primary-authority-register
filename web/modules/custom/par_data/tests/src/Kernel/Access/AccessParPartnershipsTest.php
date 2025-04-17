@@ -2,17 +2,12 @@
 
 namespace Drupal\Tests\par_data\Kernel\Access;
 
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataAuthorityType;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPremises;
-use Drupal\par_data\ParDataManagerInterface;
 use Drupal\Tests\par_data\Kernel\ParDataTestBase;
-use Drupal\user\Entity\User;
-use Drupal\Core\Cache\Cache;
 
 /**
  * Tests PAR Authority entity.
@@ -21,38 +16,79 @@ use Drupal\Core\Cache\Cache;
  */
 class AccessParPartnershipsTest extends ParDataTestBase {
 
-  /** @var  ParDataManagerInterface */
+  /**
+   * PAR Data Manager service.
+   *
+   * @var \Drupal\par_data\ParDataManagerInterface
+   */
   protected $parDataManager;
 
+  /**
+   * Email address.
+   *
+   * @var string
+   */
   protected $email = 'test@example.com';
-  /** @var  User */
+
+  /**
+   * Membership user.
+   *
+   * @var \Drupal\user\Entity\User
+   */
   protected $membershipUser;
 
+  /**
+   * List of partnerships.
+   *
+   * @var array
+   */
   protected $partnerships = [];
+
+  /**
+   * List of authorities.
+   *
+   * @var array
+   */
   protected $authorities = [];
+
+  /**
+   * List of organisations.
+   *
+   * @var array
+   */
   protected $organisations = [];
+
+  /**
+   * List of people.
+   *
+   * @var array
+   */
   protected $people = [];
+
+  /**
+   * List of premises.
+   *
+   * @var array
+   */
   protected $premises = [];
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function setUp(): void {
     parent::setup();
 
-    // PAR-1747: https://app.circleci.com/pipelines/github/UKGovernmentBEIS/beis-primary-authority-register/5477/workflows/c6161291-91d0-453b-96a5-5d8dc4dc8667/jobs/17606
-    $this->markTestSkipped('Need to investigate this more, perhaps a performance issue, perhaps a deprecation issue.');
-
     $this->parDataManager = \Drupal::service('par_data.manager');
-    $this->membershipUser = $this->createUser(['mail' => $this->email], $this->permissions);
+    $this->membershipUser = $this->createUser($this->permissions, NULL, FALSE, ['mail' => $this->email]);
   }
 
   /**
    * Test to validate an authority entity.
    */
-  public function testPatnershipMembership() {
+  public function testPartnershipMembership() {
     // Create 20 partnerships.
-    for ($i=0; $i < 20; $i++) {
+    for ($i = 0; $i < 20; $i++) {
       $partnership_values = [
         'name' => "Partnership $i",
       ];
@@ -65,10 +101,10 @@ class AccessParPartnershipsTest extends ParDataTestBase {
       }
       else {
         $this->people[$i] = ParDataPerson::create([
-            'name' => "Person $i",
-            'email' => $this->email,
-            'field_user_account' => [$this->membershipUser->id()]
-          ] + $this->getPersonValues()
+          'name' => "Person $i",
+          'email' => $this->email,
+          'field_user_account' => [$this->membershipUser->id()],
+        ] + $this->getPersonValues()
         );
         $this->people[$i]->save();
       }
@@ -129,15 +165,22 @@ class AccessParPartnershipsTest extends ParDataTestBase {
       $cache = \Drupal::cache('par_data')->get("relationships:{$authority->uuid()}");
       // Only a select number of authorities have member people.
       if ($i >= 10 && $i % 2 == 0) {
-        $this->assertNotFalse($cache, t("Relationships for authority entity {$authority->id()} have been correctly cached."));
+        $this->assertNotFalse(
+          $cache,
+          "Relationships for authority entity {$authority->id()} have been correctly cached."
+        );
       }
     }
     foreach ($this->organisations as $i => $organisation) {
       $cache = \Drupal::cache('par_data')->get("relationships:{$organisation->uuid()}");
       // Only a select number of authorities have member people.
       if ($i >= 10 && $i % 2 != 0) {
-        $this->assertNotFalse($cache, t("Relationships for organisation entity {$organisation->id()} have been correctly cached."));
+        $this->assertNotFalse(
+          $cache,
+          "Relationships for organisation entity {$organisation->id()} have been correctly cached."
+        );
       }
     }
   }
+
 }

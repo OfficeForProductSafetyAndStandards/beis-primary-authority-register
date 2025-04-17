@@ -24,7 +24,7 @@
 
 		<io-cucumber-java.version>7.21.1</io-cucumber-java.version>
 		<io-cucumber-core.version>7.21.1</io-cucumber-core.version>
-		<io-cucumber-junit.version>7.21.1</io-cucumber-junit.version>
+		<io-cucumber-junit.version>7.22.0</io-cucumber-junit.version>
 
 		<maven.failsafe.plugin.version>3.0.0-M5</maven.failsafe.plugin.version>
 		<maven.compiler.plugin.version>3.2</maven.compiler.plugin.version>
@@ -54,11 +54,13 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.0</version>
 		</dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>${google-code-gson.version}</version>
 		</dependency>
+        <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
@@ -89,6 +91,11 @@
 			<artifactId>selenium-ie-driver</artifactId>
 			<version>${selenium-ie-java.version}</version>
 		</dependency>
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>5.9.3</version>
+        </dependency>
 		<!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-java -->
 	<dependency>
     	<groupId>io.cucumber</groupId>
