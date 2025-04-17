@@ -51,7 +51,9 @@ public class NewsLetterSubscriptionPage extends BasePageObject {
 	}
 
 	public void ClickSearchButton() {
+        waitForElementToBeClickable(By.id("edit-submit-subscriptions"), 2000);
 		searchBtn.click();
+        waitForPageLoad();
 	}
 
 	public String GetEmailAddress() {
