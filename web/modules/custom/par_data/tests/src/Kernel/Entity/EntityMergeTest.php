@@ -2,13 +2,10 @@
 
 namespace Drupal\Tests\par_data\Kernel\Entity;
 
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPersonType;
 use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 
 /**
@@ -18,16 +15,32 @@ use Drupal\Tests\par_data\Kernel\ParDataTestBase;
  */
 class EntityMergeTest extends ParDataTestBase {
 
-  /** @var \Drupal\par_data\Entity\ParDataPartnership[] */
+  /**
+   * List of partnerships.
+   *
+   * @var \Drupal\par_data\Entity\ParDataPartnership[]
+   */
   protected $partnerships;
 
-  /** @var \Drupal\par_data\Entity\ParDataOrganisation[] */
+  /**
+   * List of Organisations.
+   *
+   * @var \Drupal\par_data\Entity\ParDataOrganisation[]
+   */
   protected $organisations;
 
-  /** @var \Drupal\par_data\Entity\ParDataAuthority[] */
+  /**
+   * List of authorities.
+   *
+   * @var \Drupal\par_data\Entity\ParDataAuthority[]
+   */
   protected $authorities;
 
-  /** @var \Drupal\par_data\Entity\ParDataPerson[] */
+  /**
+   * List of persons.
+   *
+   * @var \Drupal\par_data\Entity\ParDataPerson[]
+   */
   protected $people;
 
   /**
@@ -105,24 +118,25 @@ class EntityMergeTest extends ParDataTestBase {
    *       ├── Org Contact 11
    *       └── Org Contact 12
    */
+  #[\Override]
   protected function setUp(): void {
     parent::setUp();
 
     // Create 12 people with two different email addresses.
     $first_email = $this->randomMachineName(20) . '@example.com';
     $second_email = $this->randomMachineName(20) . '@example.com';
-    for ($i=1; $i<=12; $i++) {
+    for ($i = 1; $i <= 12; $i++) {
       // Odd indexes should _not_ have a user account associated with them.
       $default_values = $i % 2 == 0 ? [] : ['field_user_account' => []];
 
-      // The first six people should have the email address $first_email
+      // The first six people should have the email address $first_email.
       if ($i <= 6) {
         $person_values = $this->getPersonValues($default_values + [
           'first_name' => $i,
           'email' => $first_email,
         ]);
       }
-      // The second six people should have the email address $second_email
+      // The second six people should have the email address $second_email.
       else {
         $person_values = $this->getPersonValues($default_values + [
           'first_name' => $i,
@@ -134,26 +148,28 @@ class EntityMergeTest extends ParDataTestBase {
     }
 
     // Create 3 authorities.
-    for ($i=1; $i<=3; $i++) {
+    for ($i = 1; $i <= 3; $i++) {
       switch ($i) {
         case 1:
           $authority_values = $this->getAuthorityValues([
             'authority_name' => 'Test Authority 1',
-            'field_person' => [$this->people[1], $this->people[2]]
+            'field_person' => [$this->people[1], $this->people[2]],
           ]);
 
           break;
+
         case 2:
           $authority_values = $this->getAuthorityValues([
             'authority_name' => 'Test Authority 2',
-            'field_person' => [$this->people[3], $this->people[4]]
+            'field_person' => [$this->people[3], $this->people[4]],
           ]);
 
           break;
+
         case 3:
           $authority_values = $this->getAuthorityValues([
             'authority_name' => 'Test Authority 3',
-            'field_person' => [$this->people[5], $this->people[6]]
+            'field_person' => [$this->people[5], $this->people[6]],
           ]);
 
           break;
@@ -163,26 +179,28 @@ class EntityMergeTest extends ParDataTestBase {
     }
 
     // Create 3 organisations.
-    for ($i=1; $i<=3; $i++) {
+    for ($i = 1; $i <= 3; $i++) {
       switch ($i) {
         case 1:
           $organisation_values = $this->getOrganisationValues([
             'organisation_name' => 'Test Organisation 1',
-            'field_person' => [$this->people[7], $this->people[8]]
+            'field_person' => [$this->people[7], $this->people[8]],
           ]);
 
           break;
+
         case 2:
           $organisation_values = $this->getOrganisationValues([
             'organisation_name' => 'Test Organisation 2',
-            'field_person' => [$this->people[9], $this->people[10]]
+            'field_person' => [$this->people[9], $this->people[10]],
           ]);
 
           break;
+
         case 3:
           $organisation_values = $this->getOrganisationValues([
             'organisation_name' => 'Test Organisation 3',
-            'field_person' => [$this->people[11], $this->people[12]]
+            'field_person' => [$this->people[11], $this->people[12]],
           ]);
 
           break;
@@ -192,7 +210,7 @@ class EntityMergeTest extends ParDataTestBase {
     }
 
     // Create 9 partnerships.
-    for ($i=1; $i<=9; $i++) {
+    for ($i = 1; $i <= 9; $i++) {
       // Add the appropriate authority values.
       if ($i <= 3) {
         $partnership_values = [
@@ -222,6 +240,7 @@ class EntityMergeTest extends ParDataTestBase {
           ];
 
           break;
+
         case 2:
           $partnership_values += [
             'field_organisation' => [$this->organisations[2]],
@@ -229,6 +248,7 @@ class EntityMergeTest extends ParDataTestBase {
           ];
 
           break;
+
         case 0:
           $partnership_values += [
             'field_organisation' => [$this->organisations[3]],
@@ -256,7 +276,7 @@ class EntityMergeTest extends ParDataTestBase {
     $storage = \Drupal::entityTypeManager()->getStorage('par_data_person');
 
     // Assert that 6 people records were created.
-    $original_entities = $storage->loadByProperties(['email'=> $person_mail]);
+    $original_entities = $storage->loadByProperties(['email' => $person_mail]);
     $this->assertCount(6, $original_entities, t('6 contact records have been created for First Person.'));
 
     // Assert that the new contact record contains a reference to the user.
@@ -266,7 +286,7 @@ class EntityMergeTest extends ParDataTestBase {
     $this->assertTrue(empty($user_keys), t('The user account was not found on person %person.', ['%person' => $this->people[1]->label()]));
 
     // Assert that each of the authorities has the correct number of records.
-    for ($i=1; $i<=3; $i++) {
+    for ($i = 1; $i <= 3; $i++) {
       $original_count = $this->authorities[$i]->get('field_person')->count();
       $this->assertEquals(2, $original_count, t('Authority @i has 2 contact records.', ['@i' => $i]));
 
@@ -277,16 +297,36 @@ class EntityMergeTest extends ParDataTestBase {
     }
 
     // Assert that each of the partnerships has the correct number of records.
-    for ($i=1; $i<=9; $i++) {
+    for ($i = 1; $i <= 9; $i++) {
       $count = ($i <= 6) ? 1 : 2;
       // Assert that each of the authorities has the correct number of records.
       $original_count = $this->partnerships[$i]->get('field_authority_person')->count();
-      $this->assertEquals($count, $original_count, t('Partnership @i has @count contact records.', ['@i' => $i, '@count' => $count]));
+      $this->assertEquals(
+        $count,
+        $original_count,
+        t(
+          'Partnership @i has @count contact records.',
+          [
+            '@i' => $i,
+            '@count' => $count,
+          ]
+        )->render()
+      );
 
       // Also assert that both contact records are legitimate entity references,
       // it's possible that a reference to a deleted record might remain.
       $original_authority_entities = $this->partnerships[$i]->get('field_authority_person')->referencedEntities();
-      $this->assertCount($count, $original_authority_entities, t('Partnership @i has @count contact references.', ['@i' => $i, '@count' => $count]));
+      $this->assertCount(
+        $count,
+        $original_authority_entities,
+        t(
+          'Partnership @i has @count contact references.',
+          [
+            '@i' => $i,
+            '@count' => $count,
+          ]
+        )->render()
+      );
     }
 
     // Check that the right number of matching people are found.
@@ -295,22 +335,22 @@ class EntityMergeTest extends ParDataTestBase {
 
     // Merge the contact records.
     // All authority contacts 2-6 should now be deleted and merged into contact 1.
-    for ($i=2; $i<=6; $i++) {
+    for ($i = 2; $i <= 6; $i++) {
       $this->people[1]->merge($this->people[$i], FALSE);
     }
     $this->people[1]->save();
 
     // Re-load all the entities that may or may not have been updated since merging.
-    for ($i=1; $i<=3; $i++) {
+    for ($i = 1; $i <= 3; $i++) {
       $this->authorities[$i] = ParDataAuthority::load($this->authorities[$i]->id());
       $this->organisations[$i] = ParDataOrganisation::load($this->organisations[$i]->id());
     }
-    for ($i=1; $i<=9; $i++) {
+    for ($i = 1; $i <= 9; $i++) {
       $this->partnerships[$i] = ParDataPartnership::load($this->partnerships[$i]->id());
     }
 
     // Assert that all 6 records were merged into one.
-    $merged_entities = $storage->loadByProperties(['email'=> $person_mail]);
+    $merged_entities = $storage->loadByProperties(['email' => $person_mail]);
     $this->assertCount(1, $merged_entities, t('Only 1 contact record now exists for First Person, the others have been merged.'));
 
     // Assert that the new contact record contains a reference to the user.
@@ -320,7 +360,7 @@ class EntityMergeTest extends ParDataTestBase {
     $this->assertTrue(!empty($user_keys), t('The user account was found on person %person.', ['%person' => $this->people[1]->label()]));
 
     // Assert that each of the authorities has the correct number of records.
-    for ($i=1; $i<=3; $i++) {
+    for ($i = 1; $i <= 3; $i++) {
       $original_count = $this->authorities[$i]->get('field_person')->count();
       $this->assertEquals(1, $original_count, t('Authority @i has 1 contact record.', ['@i' => $i]));
 
@@ -331,7 +371,7 @@ class EntityMergeTest extends ParDataTestBase {
     }
 
     // Assert that each of the partnerships has the correct number of records.
-    for ($i=1; $i<=9; $i++) {
+    for ($i = 1; $i <= 9; $i++) {
       // Assert that each of the authorities has the correct number of records.
       $original_count = $this->partnerships[$i]->get('field_authority_person')->count();
       $this->assertEquals(1, $original_count, t('Partnership @i has 1 contact record.', ['@i' => $i]));
@@ -342,4 +382,5 @@ class EntityMergeTest extends ParDataTestBase {
       $this->assertCount(1, $original_authority_entities, t('Partnership @i has 1 contact references.', ['@i' => $i]));
     }
   }
+
 }

@@ -23,6 +23,7 @@ class ParAdviceList extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     // If a partnership parameter is set use this to get a list of advice.
     if ($par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership')) {
@@ -37,6 +38,7 @@ class ParAdviceList extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
 
     $form['documentation_list'] = [
@@ -107,7 +109,7 @@ class ParAdviceList extends ParFormPluginBase {
             ];
             $form['documentation_list']['#rows'][$key]['data']['actions'] = $this->getRenderer()->render($links);
           }
-          catch (ParFlowException $e) {
+          catch (ParFlowException) {
 
           }
         }

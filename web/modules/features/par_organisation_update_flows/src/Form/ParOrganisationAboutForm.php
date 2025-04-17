@@ -22,6 +22,7 @@ class ParOrganisationAboutForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataOrganisation $par_data_organisation = NULL) {
     // Change the secondary action to back.
     $this->getFlowNegotiator()->getFlow()->setActions(['save', 'back']);

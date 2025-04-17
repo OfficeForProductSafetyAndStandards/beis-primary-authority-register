@@ -26,6 +26,7 @@ class ParPartnershipDocuments extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
@@ -50,6 +51,7 @@ class ParPartnershipDocuments extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // Partnership Documents - component.
     if ($this->getFlowDataHandler()->getFormPermValue("show_title")) {
@@ -82,7 +84,7 @@ class ParPartnershipDocuments extends ParFormPluginBase {
       // Add the inspection plan link safely with access checks.
       try {
         $add_inspection_list_link = $this->getFlowNegotiator()->getFlow()->getFlowLink('inspection_plans', 'See all Inspection Plans');
-      } catch (ParFlowException $e) {
+      } catch (ParFlowException) {
 
       }
       if (isset($add_inspection_list_link) && $add_inspection_list_link instanceof Link) {
@@ -120,7 +122,7 @@ class ParPartnershipDocuments extends ParFormPluginBase {
 
       try {
         $add_advice_list_link = $this->getFlowNegotiator()->getFlow()->getFlowLink('advice', 'See all Advice');
-      } catch (ParFlowException $e) {
+      } catch (ParFlowException) {
 
       }
       if (isset($add_advice_list_link) && $add_advice_list_link instanceof Link) {
@@ -149,6 +151,7 @@ class ParPartnershipDocuments extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
@@ -156,6 +159,7 @@ class ParPartnershipDocuments extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }

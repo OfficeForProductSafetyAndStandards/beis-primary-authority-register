@@ -40,6 +40,7 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     // Get the user account.
     $account = $this->getFlowDataHandler()->getParameter('user');
@@ -100,6 +101,7 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // Get all the allowed organisations and authorities.
     $organisation_options = $this->getFlowDataHandler()->getFormPermValue('organisation_options');
@@ -209,6 +211,7 @@ class ParSelectMembershipsForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     // Allow validation to be disabled if memberships are not required.
     $required = $this->getFlowDataHandler()->getDefaultValues('required', TRUE);

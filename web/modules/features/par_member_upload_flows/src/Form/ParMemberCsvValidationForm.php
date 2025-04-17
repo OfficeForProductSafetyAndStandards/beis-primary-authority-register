@@ -37,6 +37,7 @@ class ParMemberCsvValidationForm extends ParBaseForm {
    *
    * @return \Drupal\unique_pager\UniquePagerService
    */
+  #[\Override]
   public static function getUniquePager() {
     return \Drupal::service('unique_pager.unique_pager_service');
   }
@@ -44,6 +45,7 @@ class ParMemberCsvValidationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     // Load csv data from temporary data storage and display any errors or move on.
     $cid = $this->getFlowNegotiator()->getFormKey('par_member_upload_csv');
@@ -88,8 +90,8 @@ class ParMemberCsvValidationForm extends ParBaseForm {
     }
 
     // Initialize pager and get current page.
-    $pager = $this->getUniquePager()->getPager('csv_members_validation');
-    $current_pager = $this->getUniquePager()->getPagerManager()->createPager(count($rows), 10, $pager);
+    $pager = static::getUniquePager()->getPager('csv_members_validation');
+    $current_pager = static::getUniquePager()->getPagerManager()->createPager(count($rows), 10, $pager);
 
     // Split the items up into chunks:
     $chunks = array_chunk($rows, 10);

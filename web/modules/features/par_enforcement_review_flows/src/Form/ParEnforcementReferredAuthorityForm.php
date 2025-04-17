@@ -20,6 +20,7 @@ class ParEnforcementReferredAuthorityForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     if ($par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice')) {
       $this->getFlowDataHandler()->setParameter('par_data_enforcement_actions', $par_data_enforcement_notice->getEnforcementActions());

@@ -38,6 +38,7 @@ class ParBulkInviteAction extends ViewsBulkOperationsActionBase implements Views
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function execute($entity = NULL) {
     /*
      * All config resides in $this->configuration.
@@ -130,6 +131,7 @@ HEREDOC;
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildPreConfigurationForm(array $element, array $values, FormStateInterface $form_state): array {
     $element['par_bulk_invite_existing'] = [
       '#title' => $this->t('Invite existimg members'),
@@ -199,6 +201,7 @@ HEREDOC;
    * @param Drupal\Core\Form\FormStateInterface $form_state
    *   The form state object.
    */
+  #[\Override]
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     // This is not required here, when this method is not defined,
     // form values are assigned to the action configuration by default.
@@ -211,6 +214,7 @@ HEREDOC;
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
     if (!$account->hasPermission('invite authority members')) {
       return FALSE;

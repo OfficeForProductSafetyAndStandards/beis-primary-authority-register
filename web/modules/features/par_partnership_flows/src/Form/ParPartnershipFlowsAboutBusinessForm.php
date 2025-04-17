@@ -21,6 +21,7 @@ class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     if ($par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership')) {
       $this->getFlowDataHandler()->setParameter('par_data_organisation', $par_data_partnership?->getOrganisation(TRUE));
@@ -32,6 +33,7 @@ class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

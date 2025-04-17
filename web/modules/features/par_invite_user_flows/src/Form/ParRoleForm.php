@@ -23,6 +23,7 @@ class ParRoleForm extends ParBaseForm {
   /**
    * Title callback default.
    */
+  #[\Override]
   public function titleCallback() {
     // If there is an existing user selected force a user role to be choosen.
     $link_account_cid = $this->getFlowNegotiator()->getFormKey('par_profile_update_link');
@@ -43,14 +44,13 @@ class ParRoleForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     parent::loadData();
 
     // Remove the empty value, a user account must be invited in this journey.
     $role_options = (array) $this->getFlowDataHandler()->getFormPermValue("roles_options");
-    $role_options = array_filter($role_options, function($k) {
-      return !empty($k);
-    }, ARRAY_FILTER_USE_KEY);
+    $role_options = array_filter($role_options, fn($k) => !empty($k), ARRAY_FILTER_USE_KEY);
 
     $this->getFlowDataHandler()->setFormPermValue("roles_options", $role_options);
   }

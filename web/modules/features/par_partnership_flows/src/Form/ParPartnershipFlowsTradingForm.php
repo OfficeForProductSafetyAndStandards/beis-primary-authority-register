@@ -20,6 +20,7 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     $trading_name_delta = $this->getFlowDataHandler()->getParameter('trading_name_delta');
 
@@ -34,6 +35,7 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $trading_name_delta = $this->getFlowDataHandler()->getParameter('trading_name_delta');
@@ -55,6 +57,7 @@ class ParPartnershipFlowsTradingForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

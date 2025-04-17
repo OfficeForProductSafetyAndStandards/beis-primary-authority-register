@@ -7,6 +7,6 @@ _core:
 id: x_generator
 label: X-Generator
 description: 'Allows the declaration of the CMS type and version to be modified.'
-group: Security
 name: X-Generator
 value: ''
+visibility: {  }

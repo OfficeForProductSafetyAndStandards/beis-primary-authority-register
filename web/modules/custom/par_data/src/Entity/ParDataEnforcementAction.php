@@ -77,6 +77,7 @@ class ParDataEnforcementAction extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function filterRelationshipsByAction($relationship, $action) {
     switch ($action) {
       case 'manage':
@@ -209,7 +210,7 @@ class ParDataEnforcementAction extends ParDataEntity {
       try {
         $this->setParStatus(self::APPROVED);
       }
-      catch (ParDataException $e) {
+      catch (ParDataException) {
         // If the status could not be updated we want to log this but continue.
         $message = $this->t("This status could not be updated to '%status' for %label");
         $replacements = [
@@ -250,7 +251,7 @@ class ParDataEnforcementAction extends ParDataEntity {
           'format' => 'plain_text',
         ]);
       }
-      catch (ParDataException $e) {
+      catch (ParDataException) {
         // If the status could not be updated we want to log this but continue.
         $message = $this->t("This status could not be updated to '%status' for %label");
         $replacements = [
@@ -292,7 +293,7 @@ class ParDataEnforcementAction extends ParDataEntity {
           'format' => 'plain_text',
         ]);
       }
-      catch (ParDataException $e) {
+      catch (ParDataException) {
         // If the status could not be updated we want to log this but continue.
         $message = $this->t("This status could not be updated to '%status' for %label");
         $replacements = [
@@ -314,6 +315,7 @@ class ParDataEnforcementAction extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function inProgress() {
     // Freeze Enforcement Actions that are awaiting approval.
     if ($this->getTypeEntity()->getDefaultStatus() === $this->getRawStatus()) {
@@ -378,6 +380,7 @@ class ParDataEnforcementAction extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 

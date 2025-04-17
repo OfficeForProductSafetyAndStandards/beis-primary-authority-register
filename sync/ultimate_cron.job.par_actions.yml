@@ -8,7 +8,7 @@ title: 'Process all scheduled PAR rules.'
 id: par_actions
 weight: 0
 module: par_actions
-callback: par_actions_cron
+callback: 'par_actions#cron'
 scheduler:
   id: crontab
   configuration:

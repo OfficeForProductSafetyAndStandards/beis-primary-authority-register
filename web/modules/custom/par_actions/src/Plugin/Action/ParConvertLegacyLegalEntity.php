@@ -36,6 +36,7 @@ class ParConvertLegacyLegalEntity extends ActionBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function execute($entity = NULL) {
     if (!$entity instanceof ParDataLegalEntity) {
       return;
@@ -49,7 +50,7 @@ class ParConvertLegacyLegalEntity extends ActionBase {
           $entity->save();
         }
       }
-      catch (RegisterException|DataException $ignored) {
+      catch (RegisterException|DataException) {
         // Catch unmanageable errors which should result in no further processing.
       }
     }
@@ -58,6 +59,7 @@ class ParConvertLegacyLegalEntity extends ActionBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
     // @TODO Implement entity/action checks
     $result = AccessResult::allowed();

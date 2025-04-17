@@ -64,6 +64,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function getPluginNamespace(): string {
     return $this->getConfiguration()[ParFormPluginInterface::NAMESPACE_PROPERTY] ?? $this->getPluginId();
   }
@@ -95,6 +96,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
    *
    * @return array
    */
+  #[\Override]
   public function getConfiguration(): array {
     return array_merge($this->defaultConfiguration(), $this->configuration);
   }
@@ -102,6 +104,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function setConfiguration(array $configuration = []): void {
     $this->configuration = $configuration;
   }
@@ -111,10 +114,12 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
    *
    * @return array
    */
+  #[\Override]
   public function getFormDefaults(): array {
     return $this->formDefaults;
   }
 
+  #[\Override]
   public function getFormDefaultByKey($key) {
     $defaults = $this->getFormDefaults();
     return $defaults[$key] ?? FALSE;
@@ -123,6 +128,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function defaultConfiguration(): array {
     return [
       'weight' => 0,
@@ -231,7 +237,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
     try {
       $url = $this->getPathValidator()->getUrlIfValid($entry_point);
     }
-    catch (InvalidArgumentException $ignored) {
+    catch (InvalidArgumentException) {
 
     }
 
@@ -244,6 +250,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function isMultiple(): bool {
     return $this->getCardinality() !== 1;
   }
@@ -251,6 +258,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function isFlattened(): bool {
     return !$this->isMultiple();
   }
@@ -258,6 +266,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function isFull(array $data = NULL): bool {
     return $this->getCardinality() !== FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED &&
       $this->countItems($data) >= $this->getCardinality();
@@ -266,6 +275,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function hasData(): bool {
     return !empty($this->getData());
   }
@@ -273,6 +283,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getData(): array {
     // Ensure that at the very
     $data = (array) $this->getFlowDataHandler()->getPluginTempData($this);
@@ -310,6 +321,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function setData(array $data): void {
     // Allow plugins to filter
     $data = $this->filter($data);
@@ -436,6 +448,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function countItems(array $data = NULL): int {
     // If data is not passed attempt to retrieve it from the data handler.
     if (empty($data)) {
@@ -646,6 +659,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getMapping() {
     return $this->formItems;
   }
@@ -660,6 +674,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     // To be overridden by individual plugins.
   }
@@ -697,6 +712,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     foreach ($this->createMappedEntities() as $entity) {
       if (!$this->isFlattened()) {
@@ -734,7 +750,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
                 $message = $mapping->getErrorMessage($violation->getMessage());
                 $this->setError($form, $form_state, $element, $message);
               }
-              catch (ParFlowException|\TypeError $ignore) {
+              catch (ParFlowException|\TypeError) {
                 // The element could not be found.
               }
 
@@ -767,6 +783,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function save($index = 1) {
     // @see ParEntityValidationMappingTrait::buildEntity to build and save the values to an entity.
   }

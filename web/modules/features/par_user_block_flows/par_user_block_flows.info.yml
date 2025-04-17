@@ -1,7 +1,7 @@
 name: 'PAR User Block Flows'
 type: module
 description: 'Creates the flows required to view a user profile.'
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^9 || ^10 || ^11
 package: PAR
 dependencies:
   - par_data
