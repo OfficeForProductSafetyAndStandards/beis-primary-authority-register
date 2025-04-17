@@ -9,23 +9,23 @@
 	<properties>
 		<slf4j.version>1.7.25</slf4j.version>
 		<joda-time.version>2.3</joda-time.version>
-		
-		<logback.version>1.2.3</logback.version>
+
+		<logback.version>1.5.18</logback.version>
 		<junit.version>4.13.2</junit.version>
-		
-		<!-- <selenium-java.version>2.53.1</selenium-java.version> -->
+        <json.version>20250107</json.version>
+
 		<selenium-java.version>4.12.1</selenium-java.version>
 		<selenium-support-java-version>4.12.1</selenium-support-java-version>
 		<selenium-chrome-java-version>4.12.1</selenium-chrome-java-version>
 		<selenium-ie-java.version>3.14.0</selenium-ie-java.version>
-		
-		<google-code-gson.version>2.8.5</google-code-gson.version>
+
+		<google-code-gson.version>2.13.0</google-code-gson.version>
 		<cluecumber.report.version>2.5.0</cluecumber.report.version>
-		
+
 		<io-cucumber-java.version>7.21.1</io-cucumber-java.version>
 		<io-cucumber-core.version>7.21.1</io-cucumber-core.version>
 		<io-cucumber-junit.version>7.21.1</io-cucumber-junit.version>
-		
+
 		<maven.failsafe.plugin.version>3.0.0-M5</maven.failsafe.plugin.version>
 		<maven.compiler.plugin.version>3.2</maven.compiler.plugin.version>
 	</properties>
@@ -34,7 +34,7 @@
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>20180813</version>
+			<version>${json.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>joda-time</groupId>
@@ -47,7 +47,7 @@
 			<version>1.1.1</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -148,7 +148,7 @@
 				<configuration>
 					<sourceJsonReportDirectory>${project.build.directory}/cucumber-report</sourceJsonReportDirectory>
 					<generatedHtmlReportDirectory>${project.build.directory}/test-report</generatedHtmlReportDirectory>
-					
+
 					<customPageTitle>PAR Report</customPageTitle>
 				</configuration>
 			</plugin>
