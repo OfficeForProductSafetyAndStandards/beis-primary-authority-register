@@ -43,6 +43,7 @@ steps:
         weight: -2
     redirect:
       edit_about_partnership: 17
+      edit_regulatory_functions: 18
       edit_comments: 2
       add_field_premises: 3
       edit_field_premises: 4
@@ -161,6 +162,14 @@ steps:
   17:
     route: par_partnership_flows.about_partnership
     form_id: par_partnership_about
+    redirect:
+      save: 1
+      cancel: 1
+  18:
+    route: par_partnership_flows.regulatory_function_update
+    form_id: par_partnership_regulatory_function_update
+    components:
+      partnership_regulatory_functions: {}
     redirect:
       save: 1
       cancel: 1
