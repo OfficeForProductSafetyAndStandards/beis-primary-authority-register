@@ -1,0 +1,296 @@
+From a12eec8eadbbdaa1cf3be2573d0a0eae08e2d437 Mon Sep 17 00:00:00 2001
+From: Suresh Prabhu <sureshprabhu@Apples-MacBook-Pro.local>
+Date: Mon, 16 Jan 2023 16:34:58 +0530
+Subject: [PATCH] Store data in configuration files instead of database.
+
+---
+ config/install/restrict_ip.settings.yml  |  9 +++
+ config/schema/restrict_ip.schema.yml     | 18 +++++
+ restrict_ip.services.yml                 |  2 +-
+ src/Mapper/RestrictIpMapper.php          | 94 ++++++++++--------------
+ src/Mapper/RestrictIpMapperInterface.php | 33 +++------
+ 5 files changed, 79 insertions(+), 77 deletions(-)
+
+diff --git a/config/install/restrict_ip.settings.yml b/config/install/restrict_ip.settings.yml
+index 0ff4dd7..1338831 100644
+--- a/config/install/restrict_ip.settings.yml
++++ b/config/install/restrict_ip.settings.yml
+@@ -33,3 +33,12 @@ country_white_black_list: 0
+ 
+ # A string indicating which countries should be white/black listed
+ country_list: ''
++
++# The whitelist Ip addresses
++ip_addresses: ''
++
++# The whitelist path
+++whitelist_path: ''
++
++# The blacklist path
++blacklist_path: ''
+diff --git a/config/schema/restrict_ip.schema.yml b/config/schema/restrict_ip.schema.yml
+index 8a0928e..9af5a2e 100644
+--- a/config/schema/restrict_ip.schema.yml
++++ b/config/schema/restrict_ip.schema.yml
+@@ -26,3 +26,21 @@ restrict_ip.settings:
+     country_list:
+       type: string
+       label: 'A colon separated list of countries that should be white/black listed'
++    ip_addresses:
++      type: sequence
++      label: 'IP Addresses'
++      sequence:
++        type: string
++        label: 'Ip Address'
++    whitelist_path:
++      type: sequence
++      label: 'Whitelisted paths'
++      sequence:
++        type: string
++        label: 'Whitelist path'
++    blacklist_path:
++      type: sequence
++      label: 'Blacklisted paths'
++      sequence:
++        type: string
++        label: 'Blacklisted path'
+diff --git a/restrict_ip.services.yml b/restrict_ip.services.yml
+index a027553..3642fc5 100644
+--- a/restrict_ip.services.yml
++++ b/restrict_ip.services.yml
+@@ -7,7 +7,7 @@ services:
+   restrict_ip.mapper:
+     class: Drupal\restrict_ip\Mapper\RestrictIpMapper
+     arguments:
+-      - '@database'
++      - '@config.factory'
+ 
+   restrict_ip.service:
+     class: Drupal\restrict_ip\Service\RestrictIpService
+diff --git a/src/Mapper/RestrictIpMapper.php b/src/Mapper/RestrictIpMapper.php
+index f927a09..58837df 100644
+--- a/src/Mapper/RestrictIpMapper.php
++++ b/src/Mapper/RestrictIpMapper.php
+@@ -2,104 +2,88 @@
+ 
+ namespace Drupal\restrict_ip\Mapper;
+ 
+-use Drupal\Core\Database\Connection;
++use Drupal\Core\Config\ConfigFactoryInterface;
+ 
+ /**
+  * A mapper helper class to restrict / unrestrict specific IPs.
+  */
+ class RestrictIpMapper implements RestrictIpMapperInterface {
+   /**
+-   * The database connection.
++   * Stores the configuration factory.
+    *
+-   * @var \Drupal\Core\Database\Connection
++   * @var \Drupal\Core\Config\ConfigFactoryInterface
+    */
+-  protected $connection;
++  protected $configFactory;
+ 
+-  /**
+-   * The class constructor.
+-   *
+-   * @param \Drupal\Core\Database\Connection $connection
+-   *   A connection object.
+-   */
+-  public function __construct(Connection $connection) {
+-    $this->connection = $connection;
++  public function __construct(ConfigFactoryInterface $config_factory) {
++    $this->configFactory = $config_factory;
+   }
+ 
+   /**
+    * {@inheritdoc}
+    */
+-  public function getWhitelistedIpAddresses() {
+-    return $this->connection->query('SELECT ip_address FROM {restrict_ip_whitelisted_ip_addresses} ORDER BY ip_address ASC')->fetchCol();
++  public function getWhitelistedIpAddresses()
++  {
++    $config = $this->configFactory->get('restrict_ip.settings');
++    return $config->get('ip_addresses');
+   }
+ 
+   /**
+    * {@inheritdoc}
+    */
+-  public function saveWhitelistedIpAddresses(array $ip_addresses, $overwriteExisting = TRUE) {
+-    if ($overwriteExisting) {
+-      $this->connection->query('DELETE FROM {restrict_ip_whitelisted_ip_addresses}');
+-    }
+-
+-    $query = $this->connection->insert('restrict_ip_whitelisted_ip_addresses')->fields(['ip_address']);
++  public function saveWhitelistedIpAddresses(array $ip_addresses)
++  {
++    $config = $this->configFactory->getEditable('restrict_ip.settings');
++    $addresses = [];
+     foreach ($ip_addresses as $ip_address) {
+-      $query->values(['ip_address' => $ip_address]);
++      $addresses[] = trim($ip_address);
+     }
+-
+-    $query->execute();
++    $config->set('ip_addresses', $addresses)->save();
+   }
+ 
++
+   /**
+    * {@inheritdoc}
+    */
+-  public function getWhitelistedPaths() {
+-    return $this->connection->query('SELECT path FROM {restrict_ip_paths} WHERE type = :white ORDER BY path ASC', [':white' => 'white'])->fetchCol();
++  public function getWhitelistedPaths()
++  {
++    $config = $this->configFactory->get('restrict_ip.settings');
++    return $config->get('whitelist_path');
+   }
+ 
+   /**
+    * {@inheritdoc}
+    */
+-  public function saveWhitelistedPaths(array $whitelistedPaths, $overwriteExisting = TRUE) {
+-    if ($overwriteExisting) {
+-      $this->connection->query('DELETE FROM {restrict_ip_paths} WHERE type = :white', [':white' => 'white']);
++  public function saveWhitelistedPaths(array $whitelistedPaths)
++  {
++    $config = $this->configFactory->getEditable('restrict_ip.settings');
++    $paths = [];
++    foreach ($whitelistedPaths as $whitelistedPath) {
++      $paths[] = trim($whitelistedPath);
+     }
+-
+-    $query = $this->connection->insert('restrict_ip_paths')->fields([
+-      'type',
+-      'path',
+-    ]);
+-    foreach ($whitelistedPaths as $whitelisted_path) {
+-      $query->values(['type' => 'white', 'path' => $whitelisted_path]);
+-    }
+-
+-    $query->execute();
++    $config->set('whitelist_path', $paths)->save();
+   }
+ 
+   /**
+    * {@inheritdoc}
+    */
+-  public function getBlacklistedPaths() {
+-    return $this->connection->query('SELECT path FROM {restrict_ip_paths} WHERE type = :black ORDER BY path ASC', [':black' => 'black'])->fetchCol();
++  public function getBlacklistedPaths()
++  {
++    $config = $this->configFactory->get('restrict_ip.settings');
++    return $config->get('blacklist_path');
+   }
+ 
+   /**
+    * {@inheritdoc}
+    */
+-  public function saveBlacklistedPaths(array $blacklistedPaths, $overwriteExisting = TRUE) {
+-    if ($overwriteExisting) {
+-      $this->connection->query('DELETE FROM {restrict_ip_paths} WHERE type = :black', [
+-        ':black' => 'black',
+-      ]);
++  public function saveBlacklistedPaths(array $blacklistedPaths)
++  {
++    $config = $this->configFactory->getEditable('restrict_ip.settings');
++    $paths = [];
++    foreach ($blacklistedPaths as $blacklistedPath) {
++      $paths[] = trim($blacklistedPath);
+     }
+-
+-    $query = $this->connection->insert('restrict_ip_paths')->fields([
+-      'type',
+-      'path',
+-    ]);
+-    foreach ($blacklistedPaths as $blacklisted_path) {
+-      $query->values(['type' => 'black', 'path' => $blacklisted_path]);
+-    }
+-
+-    $query->execute();
++    $config->set('blacklist_path', $paths)->save();
+   }
+ 
+ }
+diff --git a/src/Mapper/RestrictIpMapperInterface.php b/src/Mapper/RestrictIpMapperInterface.php
+index 6fe9614..f537659 100644
+--- a/src/Mapper/RestrictIpMapperInterface.php
++++ b/src/Mapper/RestrictIpMapperInterface.php
+@@ -8,7 +8,7 @@ namespace Drupal\restrict_ip\Mapper;
+ interface RestrictIpMapperInterface {
+ 
+   /**
+-   * Retrieve a list of whitelisted IP addresses from the data source.
++   * Retrieve a list of whitelisted IP addresses from the data source
+    *
+    * @return array
+    *   An array of whitelisted IP addresses
+@@ -16,17 +16,15 @@ interface RestrictIpMapperInterface {
+   public function getWhitelistedIpAddresses();
+ 
+   /**
+-   * Save whitelisted IP addresses to the database.
++   * Save whitelisted IP addresses to the database
+    *
+    * @param array $ip_addresses
+-   *   An array of IP addresses to be saved.
+-   * @param bool $overwriteExisting
+-   *   Indicator whether existing IP addresses should be deleted before saving.
++   *   An array of IP addresses to be saved
+    */
+-  public function saveWhitelistedIpAddresses(array $ip_addresses, $overwriteExisting = TRUE);
++  public function saveWhitelistedIpAddresses(array $ip_addresses);
+ 
+   /**
+-   * Retrieve a list of whitelisted paths from the data source.
++   * Retrieve a list of whitelisted paths from the data source
+    *
+    * @return array
+    *   An array of whitelisted paths
+@@ -34,18 +32,15 @@ interface RestrictIpMapperInterface {
+   public function getWhitelistedPaths();
+ 
+   /**
+-   * Save paths to be whitelisted to the database.
++   * Save paths to be whitelisted to the database
+    *
+    * @param array $whitelistedPaths
+-   *   An array of paths to be saved for whitelisting.
+-   * @param bool $overwriteExisting
+-   *   Indicator whether existing whitelisted paths should be deleted before
+-   *   saving.
++   *   An array of paths to be saved for whitelisting
+    */
+-  public function saveWhitelistedPaths(array $whitelistedPaths, $overwriteExisting = TRUE);
++  public function saveWhitelistedPaths(array $whitelistedPaths);
+ 
+   /**
+-   * Retrieve a list of blacklisted paths from the data source.
++   * Retrieve a list of blacklisted paths from the data source
+    *
+    * @return array
+    *   An array of blacklisted paths
+@@ -53,14 +48,10 @@ interface RestrictIpMapperInterface {
+   public function getBlacklistedPaths();
+ 
+   /**
+-   * Save paths to be blacklisted to the database.
++   * Save paths to be blacklisted to the database
+    *
+    * @param array $blacklistedPaths
+-   *   An array of paths to be saved for blacklisting.
+-   * @param bool $overwriteExisting
+-   *   Indicator whether existing blacklisted paths should be deleted before
+-   *   saving.
++   *   An array of paths to be saved for blacklisting
+    */
+-  public function saveBlacklistedPaths(array $blacklistedPaths, $overwriteExisting = TRUE);
+-
++  public function saveBlacklistedPaths(array $blacklistedPaths);
+ }
+-- 
+GitLab
+

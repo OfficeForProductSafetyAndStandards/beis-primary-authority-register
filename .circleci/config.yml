@@ -336,12 +336,6 @@ jobs:
           name: "Examine asset bundle."
           command: |
             ls -lah /tmp/workspace
-      - *aws_setup
-      - aws-s3/copy:
-          from: /tmp/${CIRCLE_TAG}.tar.gz
-          to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
-          arguments: |
-            --cache-control "max-age=0"
       - aws-s3/copy:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${UNSANITISED_DATABASE}-latest.tar.gz"
           to: "backups/${UNSANITISED_DATABASE}-latest.tar.gz"
@@ -350,12 +344,18 @@ jobs:
       - run:
           name: "Unpacking database"
           command: cd backups && tar --no-same-owner -zxvf ${UNSANITISED_DATABASE}-latest.tar.gz
+      - *aws_setup
+      - aws-s3/copy:
+          from: /tmp/${CIRCLE_TAG}.tar.gz
+          to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
+          arguments: |
+            --cache-control "max-age=0"
       - run:
           name: "Deploy to migration environment"
           command: |
             DEPLOY_ENV="migration"
             printf "$DEPLOY_ENV\n"
-            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${UNSANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
 
   deploy_stage:
     circleci_ip_ranges: true

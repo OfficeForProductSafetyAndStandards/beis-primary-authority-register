@@ -1,10 +1,13 @@
 _core:
   default_config_hash: KqW5yyfbMyG5hTaA-2QCxLFmV9gVn4gBpAjsuB28Z6g
-enable: true
+enable: false
 mail_address: ''
-dblog: false
+dblog: true
 allow_role_bypass: false
 bypass_action: provide_link_login_page
 white_black_list: 0
 country_white_black_list: 0
 country_list: ''
+ip_addresses: {  }
+whitelist_path: {  }
+blacklist_path: {  }
