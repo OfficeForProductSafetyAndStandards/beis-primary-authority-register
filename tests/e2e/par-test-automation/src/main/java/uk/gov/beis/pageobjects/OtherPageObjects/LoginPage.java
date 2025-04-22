@@ -14,50 +14,50 @@ import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.utility.DataStore;
 
 public class LoginPage extends BasePageObject {
-	
+
 	@FindBy(id = "edit-name")
 	private WebElement emailTextfield;
-	
+
 	@FindBy(id = "password-input")
 	private WebElement passwordTextfield;
-	
+
 	@FindBy(id = "edit-submit")
 	private WebElement loginBtn;
-	
+
 	private String login = "//a[contains(text(),'?')]";
-	
+
 	public LoginPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-	
+
 	public void navigateToUrl() {
-		ScenarioContext.lastDriver.get(PropertiesUtil.getConfigPropertyValue("par_url") + "/user/login%3Fcurrent");
+		ScenarioContext.lastDriver.get(PropertiesUtil.getConfigPropertyValue("par_url") + "/user/login?current");
 		checkLoginPage();
 	}
-	
+
 	public void navigateToInviteLink() throws InterruptedException {
 		ScenarioContext.lastDriver.get(DataStore.getSavedValue(UsableValues.INVITE_LINK));
 	}
-	
+
 	public void enterEmailAddress(String email) {
 		emailTextfield.clear();
 		emailTextfield.sendKeys(email);
 	}
-	
+
 	public void enterPassword(String password) {
 		passwordTextfield.clear();
 		passwordTextfield.sendKeys(password);
 	}
-	
+
 	public void enterLoginDetails(String user, String pass) {
 		emailTextfield.sendKeys(user);
 		passwordTextfield.sendKeys(pass);
 	}
-	
+
 	public void selectSignIn() {
 		loginBtn.click();
 	}
-	
+
 	public void checkLoginPage() {
 		try {
 			driver.findElement(By.xpath(login.replace("?", "Sign in")));
