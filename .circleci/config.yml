@@ -344,7 +344,7 @@ jobs:
             --cache-control "max-age=0"
       - run:
           name: "Unpacking database"
-          command: cd backups && tar --no-same-owner -zxvf ${UNSANITISED_DATABASE}-latest.tar.gz-
+          command: cd backups && tar --no-same-owner -zxvf ${UNSANITISED_DATABASE}-latest.tar.gz
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
           to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
