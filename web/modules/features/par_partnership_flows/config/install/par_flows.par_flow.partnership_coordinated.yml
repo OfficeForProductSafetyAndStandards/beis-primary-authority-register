@@ -42,6 +42,7 @@ steps:
         show_title: false
         weight: -2
     redirect:
+      edit_about_partnership: 17
       edit_comments: 2
       add_field_premises: 3
       edit_field_premises: 4
@@ -154,6 +155,12 @@ steps:
   16:
     route: par_partnership_flows.legal_entity_reinstate
     form_id: par_partnership_legal_entity_reinstate
+    redirect:
+      save: 1
+      cancel: 1
+  17:
+    route: par_partnership_flows.about_partnership
+    form_id: par_partnership_about
     redirect:
       save: 1
       cancel: 1
