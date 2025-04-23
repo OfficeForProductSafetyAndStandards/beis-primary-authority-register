@@ -868,6 +868,13 @@ public class SadPathStepDefinitions {
 		websiteManager.loginPage.selectSignIn();
 	}
 
+	@Then("^the user is shown an error message Unrecognized email address or password\\. Forgot your password\\?  successfully$")
+	public void the_user_is_shown_an_error_message_Unrecognized_email_address_or_password_Forgot_your_password_successfully() throws Throwable {
+		LOG.info("Validating the error message.");
+
+		assertTrue(websiteManager.loginPage.checkErrorSummary("Unrecognized email address or password. Forgot your password?"));
+	}
+
 	@When("^the user enters the following Invalid and Invalid credentials$")
 	public void the_user_enters_the_following_Invalid_and_Invalid_credentials() throws Throwable {
 		LOG.info("Entering an invalid email and password.");
