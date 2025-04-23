@@ -30,7 +30,8 @@ public class BaseDashboardPage extends BasePageObject{
 	}
 
 	public void acceptCookies() {
-		driver.manage().deleteAllCookies();
+	    // This also logs the visitor out.
+		// driver.manage().deleteAllCookies();
 
 		WebElement acceptBtn = cookieBanner.findElement(By.xpath("//button[contains(text(),'Accept additional cookies')]"));
 	    acceptBtn.click();
