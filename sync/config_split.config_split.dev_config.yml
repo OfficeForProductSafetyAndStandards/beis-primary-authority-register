@@ -14,7 +14,6 @@ module:
   devel: 0
   maillog: 0
   tracer: 0
-  restrict_ip: 0
   config_inspector: 0
   dblog: 0
   masquerade: 0
@@ -23,7 +22,6 @@ module:
   upgrade_status: 0
 theme: {  }
 complete_list:
-  - restrict_ip.settings
   - par_data.settings
   - ultimate_cron.job.dblog_cron.yml
   - ultimate_cron.job.update_cron

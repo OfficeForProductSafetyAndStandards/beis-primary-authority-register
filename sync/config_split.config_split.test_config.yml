@@ -13,8 +13,6 @@ folder: ../sync-test
 module:
   maillog: 0
   par_data_test: 0
-  restrict_ip: 0
-  shield: 0
 theme: {  }
 complete_list: {  }
 partial_list:

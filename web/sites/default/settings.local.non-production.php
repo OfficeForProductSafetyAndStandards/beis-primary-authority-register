@@ -9,10 +9,8 @@ $config['config_split.config_split.dev_config']['status'] = TRUE;
 $config['config_split.config_split.test_config']['status'] = TRUE;
 
 // Set Shield and Restrict IP config
-$config['shield.settings']['credentials.shield.user'] = getenv('SHIELD_USER');
-$config['shield.settings']['credentials.shield.pass'] = getenv('SHIELD_PASS');
-$config['shield.settings']['allowlist'] = getenv('WHITE_IPS');
-$config['restrict_ip.settings']['ip_addresses'] = getenv('WHITE_IPS');
+$config['shield.settings']['credentials']['shield']['user'] = getenv('SHIELD_USER');
+$config['shield.settings']['credentials']['shield']['pass'] = getenv('SHIELD_PASS');
 
 // Enable the local services configuration which enables debugging.
 if (file_exists($app_root . '/' . $site_path . '/services.local.yml')) {

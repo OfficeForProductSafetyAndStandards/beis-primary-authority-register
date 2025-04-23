@@ -209,9 +209,6 @@
             "drupal/registered_organisations": {
                 "Change form validation to allow for 6 characters": "./patches/charities_commission_number_format.patch"
             },
-            "drupal/restrict_ip": {
-                "Allow IPs to be exported to config": "./patches/restrict_ip/ip_to_config_10-2.patch"
-            },
             "drupal/pagerer": {
                 "Pagerer upgrade issue": "https://git.drupalcode.org/project/pagerer/-/merge_requests/18.diff"
             },
