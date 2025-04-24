@@ -104,17 +104,6 @@ class ParTradingNameDisplay extends ParFormPluginBase {
       catch (ParFlowException $e) {
         $this->getLogger($this->getLoggerChannel())->notice($e);
       }
-      try {
-        // Remove the trading name.
-        $params['trading_name_delta'] = $delta;
-        $options = ['attributes' => ['aria-label' => $this->t("Remove the trading name @label", ['@label' => strtolower((string) $trading_name)])]];
-        $operations['remove'] = $this->getFlowNegotiator()->getFlow()
-          ->getOperationLink('remove_trading_name', 'remove trading name', $params, $options);
-
-      }
-      catch (ParFlowException $e) {
-        $this->getLogger($this->getLoggerChannel())->notice($e);
-      }
 
       // Display operation links if any are present.
       if (!empty(array_filter($operations))) {
