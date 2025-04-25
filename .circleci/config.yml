@@ -151,14 +151,6 @@ jobs:
       - aws-s3/copy:
           arguments: |
             --cache-control "max-age=0"
-          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SEED_DATABASE}-latest.tar.gz"
-          to: backups/${SEED_DATABASE}-latest.tar.gz
-      - run:
-          name: "Unpack seed database"
-          command: cd backups && tar --no-same-owner -zxvf ${SEED_DATABASE}-latest.tar.gz
-      - aws-s3/copy:
-          arguments: |
-            --cache-control "max-age=0"
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}-latest.tar.gz"
           to: backups/${SANITISED_DATABASE}-latest.tar.gz
       - run:
