@@ -1224,6 +1224,7 @@ display:
               allow_secondary: false
               secondary_label: 'Advanced options'
               secondary_open: false
+              autosubmit_textfield_minimum_length: 3
             sort:
               plugin_id: default
               advanced:
@@ -1243,6 +1244,7 @@ display:
                     filter_rewrite_values: ''
                   collapsible: false
                   is_secondary: false
+                  hide_label: false
               partnership_type:
                 plugin_id: default
                 advanced:
@@ -1251,6 +1253,7 @@ display:
                     filter_rewrite_values: ''
                   collapsible: false
                   is_secondary: false
+                  hide_label: false
               partnership_status_1:
                 plugin_id: default
                 advanced:
@@ -1259,6 +1262,7 @@ display:
                     filter_rewrite_values: ''
                   collapsible: false
                   is_secondary: false
+                  hide_label: false
               regulatory_function:
                 plugin_id: default
                 advanced:
@@ -1267,6 +1271,7 @@ display:
                     filter_rewrite_values: ''
                   collapsible: false
                   is_secondary: false
+                  hide_label: false
               advice_type:
                 plugin_id: default
                 advanced:
@@ -1275,6 +1280,7 @@ display:
                     filter_rewrite_values: ''
                   collapsible: false
                   is_secondary: false
+                  hide_label: false
               advice_status_1:
                 plugin_id: default
                 advanced:
@@ -1283,6 +1289,7 @@ display:
                     filter_rewrite_values: ''
                   collapsible: false
                   is_secondary: false
+                  hide_label: false
               inspection_plan_status_1:
                 plugin_id: default
                 advanced:
@@ -1291,6 +1298,7 @@ display:
                     filter_rewrite_values: ''
                   collapsible: false
                   is_secondary: false
+                  hide_label: false
               member_display:
                 plugin_id: default
                 advanced:
@@ -1299,12 +1307,13 @@ display:
                     filter_rewrite_values: ''
                   collapsible: false
                   is_secondary: false
+                  hide_label: false
       access:
         type: perm
         options:
           perm: 'access helpdesk'
       cache:
-        type: none
+        type: search_api_none
         options: {  }
       empty:
         area_text_custom:

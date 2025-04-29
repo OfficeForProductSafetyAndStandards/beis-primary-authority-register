@@ -91,6 +91,7 @@ abstract class ParStatisticBase extends PluginBase implements ParStatisticInterf
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function renderStat(): ?array {
     // Loading the statistic through the statistic manager adds the caching layer.
     $stat = $this->getReportingManager()->get($this->getPluginId());

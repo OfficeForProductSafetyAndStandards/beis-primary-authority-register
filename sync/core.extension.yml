@@ -2,6 +2,8 @@ _core:
   default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc
 module:
   address: 0
+  admin_toolbar: 0
+  admin_toolbar_tools: 0
   audit_log: 0
   automated_cron: 0
   better_exposed_filters: 0
@@ -14,12 +16,12 @@ module:
   comment: 0
   config: 0
   config_filter: 0
-  config_readonly: 0
   config_split: 0
   config_translation: 0
   config_update: 0
   content_translation: 0
   contextual: 0
+  core_event_dispatcher: 0
   csv_serialization: 0
   ctools: 0
   datetime: 0
@@ -35,12 +37,14 @@ module:
   field_ui: 0
   file: 0
   filter: 0
+  flood_control: 0
   flysystem: 0
   flysystem_s3: 0
   google_tag: 0
   govuk_notify: 0
   health_check: 0
   help: 0
+  hook_event_dispatcher: 0
   http_response_headers: 0
   image: 0
   inline_entity_form: 0

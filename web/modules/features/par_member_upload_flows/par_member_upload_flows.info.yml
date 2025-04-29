@@ -1,7 +1,7 @@
 name: PAR Member Upload Flows
 type: module
 description: 'Allows co-ordinators to upload csvs with their members data.'
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^9 || ^10 || ^11
 package: PAR
 dependencies:
   - par_data

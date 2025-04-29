@@ -24,6 +24,7 @@ class ParDeviationResponseReviewForm extends ParBaseForm {
    */
   protected $pageTitle = "Review response";
 
+  #[\Override]
   public function loadData() {
     // Set the data values on the entities
     $entities = $this->createEntities();
@@ -46,15 +47,13 @@ class ParDeviationResponseReviewForm extends ParBaseForm {
     $status = $this->getFlowDataHandler()->getTempDataValue('primary_authority_status', $deviation_review_cid);
     $notes = $this->getFlowDataHandler()->getTempDataValue('primary_authority_notes', $deviation_review_cid);
 
-    switch ($status) {
-      case ParDataDeviationRequest::APPROVED:
-        $par_data_deviation_request->approve($notes, FALSE);
-        break;
-
-      case ParDataDeviationRequest::BLOCKED:
-        $par_data_deviation_request->block($notes, FALSE);
-        break;
-    }
+    match ($status) {
+        ParDataDeviationRequest::APPROVED => $par_data_deviation_request->approve($notes, FALSE),
+        ParDataDeviationRequest::BLOCKED => $par_data_deviation_request->block($notes, FALSE),
+        default => [
+          'par_data_deviation_request' => $par_data_deviation_request,
+        ],
+    };
 
     return [
       'par_data_deviation_request' => $par_data_deviation_request,
@@ -64,6 +63,7 @@ class ParDeviationResponseReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
@@ -73,6 +73,7 @@ class ParDeviationResponseReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

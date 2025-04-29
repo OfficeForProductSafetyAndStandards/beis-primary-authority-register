@@ -1,0 +1,18 @@
+diff --git a/src/FlysystemStreamWrapper.php b/src/FlysystemStreamWrapper.php
+index 93a79b6..5c5a200 100644
+--- a/src/FlysystemStreamWrapper.php
++++ b/src/FlysystemStreamWrapper.php
+@@ -25,6 +25,13 @@ class FlysystemStreamWrapper
+      */
+     const STREAM_URL_IGNORE_SIZE = 8;
+
++    /**
++     * PHP-passed stream context.
++     *
++     * @var resource|null
++     */
++    public $context;
++
+     /**
+      * The registered filesystems.
+      *

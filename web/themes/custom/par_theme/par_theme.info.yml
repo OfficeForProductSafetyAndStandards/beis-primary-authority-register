@@ -3,7 +3,7 @@ type: theme
 version: v2.2.8
 package: Custom
 description: A Drupal theme based on the GDS GOV.UK Frontend Toolkit.
-core_version_requirement: ^9 || ^10
+core_version_requirement: ^9 || ^10 || ^11
 base theme: govuk
 libraries:
   - govuk/framework

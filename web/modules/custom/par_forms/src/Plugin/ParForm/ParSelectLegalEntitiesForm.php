@@ -19,6 +19,7 @@ class ParSelectLegalEntitiesForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = $this->getflowDataHandler()->getParameter('par_data_organisation');
@@ -47,6 +48,7 @@ class ParSelectLegalEntitiesForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // Get all the allowed authorities.
     $radio_options = $this->getFlowDataHandler()->getFormPermValue('legal_entity_options');

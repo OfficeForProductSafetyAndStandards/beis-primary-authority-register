@@ -105,7 +105,7 @@ function par_data_views_query_alter(ViewExecutable $view, QueryPluginBase $query
       return;
     }
   }
-  catch (ReflectionException $exception) {
+  catch (ReflectionException) {
     return;
   }
 
@@ -114,7 +114,7 @@ function par_data_views_query_alter(ViewExecutable $view, QueryPluginBase $query
     foreach ($group['conditions'] as $key => $condition) {
 
       // Only apply to combined fields, Views stamps in queries are useful!
-      if (preg_match('/:views_combine/', $condition['field'])) {
+      if (preg_match('/:views_combine/', (string) $condition['field'])) {
         // ILIKE is proprietary to PostgreSQL.
         $query->where[$group_key]['conditions'][$key]['field'] = str_replace(' LIKE', ' ILIKE', $condition['field']);
       }

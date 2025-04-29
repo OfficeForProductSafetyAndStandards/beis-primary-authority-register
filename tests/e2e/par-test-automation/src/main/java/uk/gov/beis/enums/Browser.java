@@ -5,6 +5,7 @@ public enum Browser {
 	Chromeheadless,
 	Firefox,
 	Firefoxheadless,
-	IE
+	IE,
+    ChromeDocker
 }
 

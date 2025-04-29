@@ -14,13 +14,6 @@ use Drush\Exceptions\UserAbortException;
 class ParCacheCommands extends DrushCommands {
 
   /**
-   * Cache Factory.
-   *
-   * @var \Drupal\Core\Cache\CacheFactoryInterface
-   */
-  private $cacheFactory;
-
-  /**
    * A list of cache bins that use backend wrapper with alternative lifecycles.
    *
    * @var array
@@ -30,11 +23,16 @@ class ParCacheCommands extends DrushCommands {
   /**
    * ParCacheCommands constructor.
    *
-   * @param \Drupal\Core\Cache\CacheFactoryInterface $cache_factory
+   * @param \Drupal\Core\Cache\CacheFactoryInterface $cacheFactory
    *   Cache Factory.
    */
-  public function __construct(CacheFactoryInterface $cache_factory) {
-    $this->cacheFactory = $cache_factory;
+  public function __construct(
+      /**
+       * Cache Factory.
+       */
+      private readonly CacheFactoryInterface $cacheFactory
+  )
+  {
   }
 
   public static function create(ContainerInterface $container, DrushContainer $drush): self {
@@ -67,7 +65,7 @@ class ParCacheCommands extends DrushCommands {
         $this->logger()->error(dt('@bin bin is not using par cache backend.', ['@bin' => $bin]));
       }
     }
-    catch (\Exception $e) {
+    catch (\Exception) {
       $this->logger()->error(dt('@bin not a valid cache bin.', ['@bin' => $bin]));
     }
   }

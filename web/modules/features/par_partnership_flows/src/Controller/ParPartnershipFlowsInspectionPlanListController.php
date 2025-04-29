@@ -81,7 +81,7 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
                   ->toString(),
             ]),
         ];
-      } catch (ParFlowException $e) {
+      } catch (ParFlowException) {
 
       }
     } else {

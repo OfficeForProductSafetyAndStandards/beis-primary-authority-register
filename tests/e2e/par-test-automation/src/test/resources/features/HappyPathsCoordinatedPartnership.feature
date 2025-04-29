@@ -1,7 +1,7 @@
 Feature: Coordinated Partnership Happy Paths
   As a user of the PAR service, I  want to be able to view/manage partnerships, So I can comply with the BEIS standards for goods and services
 
-  @regression @happypath @partnershipapplication @coordinated @authorityManagement
+  @regression @happypath @partnershipapplication @coordinated @authorityManagement @temp
   Scenario: Verify Coordinated Partnership application by authority and completion by new business (Happy Path - PAR-1838, PAR-1839, PAR-1840, PAR-1841)
     Given the user is on the PAR home page
     And the user visits the login page
@@ -65,7 +65,7 @@ Feature: Coordinated Partnership Happy Paths
     And the user Ceases a single member organisation of the patnership with the current date
     Then the member organistion has been Ceased successfully
     And the user signs out
-	
+
   @regression @happypath @coordinated @organisationMember
   Scenario: Verify the Upload of a Members List to a Coordinated partnership (Happy Path - PAR-1872)
     Given the user is on the PAR login page
@@ -74,7 +74,7 @@ Feature: Coordinated Partnership Happy Paths
     And the user Uploads a members list to the coordinated partnership with the following file "memberslist.csv"
     Then the members list is uploaded successfully
     And the user signs out
-  
+
   @regression @happypath @coordinated @organisationMember
   Scenario: Verify a Coordinated Partnerships Members List Type can be Changed Successfully (Happy Path - PAR-2325)
     Given the user is on the PAR login page
@@ -83,4 +83,3 @@ Feature: Coordinated Partnership Happy Paths
     And the user changes the members list type to "externalRequest"
     Then the members list type is changed successfully
     And the user signs out
-    

@@ -9,21 +9,23 @@ import org.openqa.selenium.support.FindBy;
 import uk.gov.beis.pageobjects.BasePageObject;
 
 public class NumberOfEmployeesPage extends BasePageObject {
-	
+
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
 
 	String noEmployees = "//select/option[contains(text(),'?')]";
-	
+
 	public NumberOfEmployeesPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-	
+
 	public void selectNumberOfEmployees(String number) {
 		driver.findElement(By.xpath(noEmployees.replace("?", number))).click();
 	}
-	
+
 	public void clickContinueButton() {
+        waitForElementToBeClickable(By.id("edit-next"), 2000);
 		continueBtn.click();
+        waitForPageLoad();
 	}
 }

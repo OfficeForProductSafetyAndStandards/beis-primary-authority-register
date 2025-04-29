@@ -76,6 +76,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function filterRelationshipsByAction($relationship, $action) {
     switch ($action) {
       case 'manage':
@@ -93,6 +94,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function inProgress() {
     // Any Enforcement Notices with actions that are awaiting approval are marked as 'in progress'.
     foreach ($this->getEnforcementActions() as $action) {
@@ -194,9 +196,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
       ->getEntitiesByQuery('par_data_partnership', $conditions, 10, 'id');
 
     // Ignore all inactive partnerships.
-    $par_data_partnerships = array_filter($par_data_partnerships, function ($partnership) {
-      return $partnership->isActive();
-    });
+    $par_data_partnerships = array_filter($par_data_partnerships, fn($partnership) => $partnership->isActive());
 
     // Load all the authorities belonging to these partnerships.
     foreach ($par_data_partnerships as $partnership) {
@@ -252,6 +252,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getRawStatus() {
     if ($this->isDeleted()) {
       return 'deleted';
@@ -273,12 +274,13 @@ class ParDataEnforcementNotice extends ParDataEntity {
       }
     }
 
-    return isset($status) ? $status : NULL;
+    return $status ?? NULL;
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getStatusTime($status) {
     // Loop through all actions to determine status.
     foreach ($this->getEnforcementActions() as $action) {
@@ -293,6 +295,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getStatusAuthor($status) {
     // Loop through all actions to determine status.
     foreach ($this->getEnforcementActions() as $action) {
@@ -339,6 +342,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 

@@ -25,6 +25,7 @@ class ParRoleForm extends ParBaseForm {
   /**
    * Title callback default.
    */
+  #[\Override]
   public function titleCallback() {
     // If there is an existing user selected force a user role to be choosen.
     $link_account_cid = $this->getFlowNegotiator()->getFormKey('par_profile_update_link');
@@ -45,6 +46,7 @@ class ParRoleForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
 
     parent::loadData();

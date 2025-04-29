@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms;
 
+use Drupal\par_forms\Annotation\ParForm;
 use Drupal\Component\Plugin\Factory\DefaultFactory;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\CacheBackendInterface;
@@ -59,8 +60,8 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
       'Plugin/ParForm',
       $namespaces,
       $module_handler,
-      'Drupal\par_forms\ParFormPluginInterface',
-      'Drupal\par_forms\Annotation\ParForm'
+      ParFormPluginInterface::class,
+      ParForm::class
     );
 
     $this->alterInfo('par_form_info');
@@ -73,6 +74,7 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
    *
    * @return ParFormPluginInterface
    */
+  #[\Override]
   public function createInstance($plugin_id, array $configuration = []): ParFormPluginInterface {
     /** @var ParFormPluginInterface $plugin */
     $plugin = parent::createInstance($plugin_id, $configuration);
@@ -88,6 +90,7 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
    * @param ParFormPluginInterface $component
    *   The form plugin to load data for.
    */
+  #[\Override]
   public function loadData(ParFormPluginInterface $component): void {
     // Count the current cardinality.
     $count = $component->countItems() + 1 ?: 1;
@@ -107,6 +110,7 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
    * @return array|RedirectResponse
    *   The form elements for the rendered component.
    */
+  #[\Override]
   public function build(ParFormPluginInterface $component, int $index = NULL): array|RedirectResponse {
     // If the component supports a summary list
     if ($this->supportsSummaryList($component)) {
@@ -123,6 +127,7 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function validate(ParFormPluginInterface $component, array $form, FormStateInterface &$form_state, $index = NULL): void {
     // Get the data to validate from the form_state.
     $data = $component->getDataFromFormState($form_state);

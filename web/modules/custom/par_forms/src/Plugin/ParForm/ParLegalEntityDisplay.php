@@ -26,6 +26,7 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
@@ -46,6 +47,7 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $legal_entities = $this->getDefaultValuesByKey('legal_entities', $index, []);
 
@@ -101,7 +103,7 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
       try {
         // Edit the legal entity.
         $params['par_data_legal_entity'] = $legal_entity->id();
-        $options = ['attributes' => ['aria-label' => $this->t("Edit the legal entity @label", ['@label' => strtolower($legal_entity->label())])]];
+        $options = ['attributes' => ['aria-label' => $this->t("Edit the legal entity @label", ['@label' => strtolower((string) $legal_entity->label())])]];
         $operations['edit'] = $this->getFlowNegotiator()->getFlow()
           ->getOperationLink('edit_field_legal_entity', 'edit legal entity', $params, $options);
       }
@@ -111,7 +113,7 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
       try {
         // Remove the legal entity.
         $params['par_data_legal_entity'] = $legal_entity->id();
-        $options = ['attributes' => ['aria-label' => $this->t("Remove the legal entity @label", ['@label' => strtolower($legal_entity->label())])]];
+        $options = ['attributes' => ['aria-label' => $this->t("Remove the legal entity @label", ['@label' => strtolower((string) $legal_entity->label())])]];
         $operations['remove'] = $this->getFlowNegotiator()->getFlow()
           ->getOperationLink('remove_field_legal_entity', 'remove legal entity', $params, $options);
       }
@@ -162,6 +164,7 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
@@ -169,6 +172,7 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }

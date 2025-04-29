@@ -2,6 +2,8 @@ package uk.gov.beis.stepdefs;
 
 import java.util.List;
 
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,17 +30,27 @@ public class Hooks {
 		LOG = LoggerFactory.getLogger(Hooks.class);
 		tag = (List<String>) scenario.getSourceTagNames();
 		WebdriverFactory.checkBrowserRequired(isDifferentDriverRequired());
-		
+
 		LOG.info("... Doing BeforeMethod createdriver routine...");
-		
-		driver = new SeleniumDriverConfig(Browser.Chrome, 15, 15).driver;
-		
+
+		driver = new SeleniumDriverConfig(Browser.Chrome, 50, 50).driver;
+
 		ScenarioContext.lastDriver = driver;
 	}
 
 	@After
 	public void closeBrowser(Scenario scenario) throws Exception, Throwable {
 		if (scenario.isFailed()) {
+            // Capture screenshot
+            byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+
+            // Attach to Cucumber Report
+            scenario.attach(screenshot, "image/png", "Failed Step Screenshot");
+
+            // Log the current URL
+            String currentURL = driver.getCurrentUrl();
+            System.out.println("Test failed at URL: " + currentURL);
+            scenario.log("Test failed at URL: " + currentURL);
 			LOG.info("Doing After Method routine");
 			driver.close();
 			driver.quit();

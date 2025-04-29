@@ -24,6 +24,7 @@ class ParAuthorityDisplay extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_authority = $this->getFlowDataHandler()->getParameter('par_data_authority');
     $par_data_premises = $this->getFlowDataHandler()->getParameter('par_data_premises') ??
@@ -70,6 +71,7 @@ class ParAuthorityDisplay extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // Return path for all redirect links.
     $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
@@ -183,7 +185,7 @@ class ParAuthorityDisplay extends ParFormPluginBase {
             '@link' => $link ? $link->toString() : '',
           ]),
         ];
-      } catch (ParFlowException $e) {
+      } catch (ParFlowException) {
 
       }
     }
@@ -256,7 +258,7 @@ class ParAuthorityDisplay extends ParFormPluginBase {
         ]),
       ];
     }
-    catch (ParFlowException $e) {
+    catch (ParFlowException) {
 
     }
 
