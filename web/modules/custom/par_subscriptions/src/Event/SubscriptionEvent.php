@@ -35,29 +35,24 @@ class SubscriptionEvent extends EntityUpdateEvent implements SubscriptionEventIn
   protected $subscription;
 
   /**
+   * Handles a subscription event.
+   *
    * @param \Drupal\par_subscriptions\Entity\ParSubscriptionInterface $subscription
-   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The subscription entity.
    */
-  public function __construct(ParSubscriptionInterface $subscription, EntityInterface $entity) {
+  public function __construct(ParSubscriptionInterface $subscription) {
     $this->listName = $subscription->getListName();
     $this->email = $subscription->getEmail();
     $this->subscription = $subscription;
-    parent::__construct($entity);
+
+    parent::__construct($subscription);
   }
 
   /**
-   * Returns the entity wrapped by this event.
+   * Returns the email address.
    *
-   * @return \Drupal\Core\Entity\EntityInterface
-   * The entity object.
-   */
-  #[\Override]
-  public function getEntity(): \Drupal\Core\Entity\EntityInterface {
-    return parent::getEntity();
-  }
-
-  /**
    * @return string
+   *   The email Address.
    */
   #[\Override]
   public function getEmail(): string {
@@ -65,7 +60,10 @@ class SubscriptionEvent extends EntityUpdateEvent implements SubscriptionEventIn
   }
 
   /**
+   * Returns the subscription list name.
+   *
    * @return string
+   *   The subscription list name
    */
   #[\Override]
   public function getListName(): string {
@@ -73,7 +71,10 @@ class SubscriptionEvent extends EntityUpdateEvent implements SubscriptionEventIn
   }
 
   /**
+   * Returns the subscription entity.
+   *
    * @return \Drupal\par_subscriptions\Entity\ParSubscriptionInterface
+   *   Return the subscription.
    */
   #[\Override]
   public function getSubscription(): ParSubscriptionInterface {
