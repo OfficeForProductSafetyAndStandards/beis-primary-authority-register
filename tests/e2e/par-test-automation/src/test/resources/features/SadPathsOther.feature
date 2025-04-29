@@ -17,13 +17,13 @@
 ## (Comments)
 Feature: Other Sad Paths
 
-  @regression @sadpath @invalidsignin
+  @regression @sadpath @invalidsignin @sadPathOther
   Scenario Outline: Verify Unauthorised user credentials receive an errormessage when attempting to sign in (Sad Path - PAR-2385)
     Given the user is on the home page
     And the user is on the sign in page
     When the user enters the following <email> and <password> credentials
     Then the user is shown an error message <errormessage1> <errormessage2> successfully
-    
+
     Examples:
     	| email                       | password     | errormessage1                                            | errormessage2                                            |
       |                             |              | The Enter your e-mail address is required.               | The Enter your password is required.                     |

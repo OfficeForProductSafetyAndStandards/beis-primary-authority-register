@@ -24,6 +24,7 @@ class ParSelectLegalEntityForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 

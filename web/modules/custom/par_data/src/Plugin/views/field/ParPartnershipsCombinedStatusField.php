@@ -32,6 +32,7 @@ class ParPartnershipsCombinedStatusField extends FieldPluginBase {
   /**
    * @{inheritdoc}
    */
+  #[\Override]
   public function query() {
     // Leave empty to avoid a query on this field.
   }
@@ -39,6 +40,7 @@ class ParPartnershipsCombinedStatusField extends FieldPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function defineOptions() {
     $options = parent::defineOptions();
 
@@ -52,6 +54,7 @@ class ParPartnershipsCombinedStatusField extends FieldPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);
 
@@ -91,6 +94,7 @@ class ParPartnershipsCombinedStatusField extends FieldPluginBase {
    *
    * @return string $documentation_completion
    */
+  #[\Override]
   public function render(ResultRow $values) {
     $entity = $values->_entity;
 

@@ -32,7 +32,7 @@ class ApprovedEnforcementSubscriberTest extends ParNotificationTestBase {
       ->getMock();
     $this->entityEvent->expects($this->any())
       ->method('getEntity')
-      ->will($this->returnCallback([$this, 'getEntity']));
+      ->will($this->returnCallback($this->getEntity(...)));
     $recipients = $this->new_enforcement_subscriber->getRecipients($this->entityEvent);
 
     // There should be three primary contacts and 1 contact who has opted in to receive all notifications.
@@ -58,7 +58,7 @@ class ApprovedEnforcementSubscriberTest extends ParNotificationTestBase {
     $this->parDataEvent
       ->expects($this->any())
       ->method('getEntity')
-      ->will($this->returnCallback([$this, 'getEntity']));
+      ->will($this->returnCallback($this->getEntity(...)));
     $recipients = $this->enforcement_reviewed_subscriber->getRecipients($this->parDataEvent);
 
     // There should be one primary contact (the enforcement officer) and 2 contacts who have opted in to receive all notifications.
@@ -84,7 +84,7 @@ class ApprovedEnforcementSubscriberTest extends ParNotificationTestBase {
     $this->parDataEvent
       ->expects($this->any())
       ->method('getEntity')
-      ->will($this->returnCallback([$this, 'getEntity']));
+      ->will($this->returnCallback($this->getEntity(...)));
     $recipients = $this->enforcement_approved_subscriber->getRecipients($this->parDataEvent);
 
     // There should be one primary contact (the enforcement officer) and 2 contacts who have opted in to receive all notifications.

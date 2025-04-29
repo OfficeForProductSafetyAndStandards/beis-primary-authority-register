@@ -71,7 +71,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
     // If using our custom 'working days' relative time format convert this to
     // a php supported time format before processing.
     return $this->countWorkingDays() ?
-      preg_replace('/working day/', 'day', $time) : $time;
+      preg_replace('/working day/', 'day', (string) $time) : $time;
   }
 
   /**
@@ -82,7 +82,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
 
     // Only a limited subset of the relative time formats are allowed for simplicity.
     // e.g. 3 weeks, 2 months, 1 year
-    return !empty($frequency) && preg_match("/^[0-9]*[\s]+(day|week|month|year)[s]*$/", $frequency) === 1 ?
+    return !empty($frequency) && preg_match("/^[0-9]*[\s]+(day|week|month|year)[s]*$/", (string) $frequency) === 1 ?
       "+" . $this->pluginDefinition['frequency'] :
       self::DEFAULT_FREQUENCY;
   }
@@ -95,7 +95,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
   public function countWorkingDays() {
     $time = $this->pluginDefinition['time'];
     // If the relative time format contains '+1 working day(s)'.
-    return (preg_match('/^[+-][\d]+ working days?$/', $time) === 1);
+    return (preg_match('/^[+-][\d]+ working days?$/', (string) $time) === 1);
   }
 
   /**
@@ -164,6 +164,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function query() {
     $query = \Drupal::entityQuery($this->getEntity())->accessCheck();
 
@@ -231,6 +232,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getItems() {
     $results = $this->query()->execute();
     $storage = $this->getParDataManager()->getEntityTypeStorage($this->getEntity());
@@ -243,6 +245,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
    *
    * Some actions will run immediately, some will run from a queue.
    */
+  #[\Override]
   public function run() {
     if ($this->getQueue()) {
       $this->buildQueue();
@@ -269,6 +272,7 @@ abstract class ParSchedulerRuleBase extends PluginBase implements ParSchedulerRu
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildQueue() {
     /** @var QueueFactory $queue_factory */
     $queue_factory = \Drupal::service('queue');

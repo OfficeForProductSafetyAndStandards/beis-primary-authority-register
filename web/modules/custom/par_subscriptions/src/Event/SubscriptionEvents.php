@@ -14,7 +14,7 @@ final class SubscriptionEvents {
    *
    * @var string
    */
-  const SUBSCRIBE = 'par_subscriptions.subscribe';
+  const string SUBSCRIBE = 'par_subscriptions.subscribe';
 
   /**
    * Fired after a subscription is removed.
@@ -23,7 +23,7 @@ final class SubscriptionEvents {
    *
    * @var string
    */
-  const UNSUBSCRIBE = 'par_subscriptions.unsubscribe';
+  const string UNSUBSCRIBE = 'par_subscriptions.unsubscribe';
 
   /**
    * Returns the event name when subscribing to a specific list.

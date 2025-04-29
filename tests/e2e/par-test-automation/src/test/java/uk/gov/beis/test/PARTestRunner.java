@@ -7,10 +7,10 @@ import io.cucumber.junit.Cucumber;
 import io.cucumber.junit.CucumberOptions;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(dryRun = false, features = { "classpath:features" }, glue = { "uk.gov.beis.stepdefs" }, tags = "@happypath", plugin = { "json:target/cucumber-report/report.json" })
+@CucumberOptions(dryRun = false, features = { "classpath:features" }, glue = { "uk.gov.beis.stepdefs" }, tags = "@coordinated", plugin = { "json:target/cucumber-report/report.json", "html:target/cucumber-report/cucumber.html" })
 public class PARTestRunner {
 	@BeforeClass
 	public static void setUp() {
-		
+
 	}
 }

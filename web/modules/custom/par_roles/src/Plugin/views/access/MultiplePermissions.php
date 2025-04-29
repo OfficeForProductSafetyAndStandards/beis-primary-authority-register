@@ -30,6 +30,7 @@ class MultiplePermissions extends Permission {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function access(AccountInterface $account) {
     $access = FALSE; // flag for only one access rule enough
     $access_all = TRUE; // flag for all access rules needed
@@ -49,12 +50,14 @@ class MultiplePermissions extends Permission {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function alterRouteDefinition(Route $route) {
     $glue = ($this->options['mult_perm_all']) ? ',' : '+';
     $permission = implode($glue, $this->options['mult_perm']);
     $route->setRequirement('_permission', $permission);
   }
 
+  #[\Override]
   public function summaryTitle() {
     return ($this->options['mult_perm_all']) ?
       $this->t('Need have all permissions') :
@@ -62,6 +65,7 @@ class MultiplePermissions extends Permission {
   }
 
 
+  #[\Override]
   protected function defineOptions() {
     $options = parent::defineOptions();
     $options['mult_perm'] = ['default' => 'access content'];
@@ -70,6 +74,7 @@ class MultiplePermissions extends Permission {
     return $options;
   }
 
+  #[\Override]
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);
 

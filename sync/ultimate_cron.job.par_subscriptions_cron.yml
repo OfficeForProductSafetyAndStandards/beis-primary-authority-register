@@ -8,7 +8,7 @@ title: 'Default cron handler'
 id: par_subscriptions_cron
 weight: 0
 module: par_subscriptions
-callback: par_subscriptions_cron
+callback: 'par_subscriptions#cron'
 scheduler:
   id: simple
 launcher:

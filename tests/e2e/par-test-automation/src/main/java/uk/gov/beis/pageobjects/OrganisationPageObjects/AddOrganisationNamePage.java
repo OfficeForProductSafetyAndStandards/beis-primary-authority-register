@@ -2,6 +2,7 @@ package uk.gov.beis.pageobjects.OrganisationPageObjects;
 
 import java.io.IOException;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -14,28 +15,34 @@ public class AddOrganisationNamePage extends BasePageObject {
 
 	@FindBy(id = "edit-next")
 	private WebElement continueBtn;
-	
+
 	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
-	
+
 	public AddOrganisationNamePage() throws ClassNotFoundException, IOException {
 		super();
 	}
-	
+
 	public void enterMemberName(String name) {
+        waitForElementToBeVisible(By.id("edit-name"), 2000);
 		organisationName.clear();
 		organisationName.sendKeys(name);
 	}
-	
+
 	public void clearOrganisationNameField() {
 		organisationName.clear();
 	}
-	
+
 	public void clickContinueButton() {
-		continueBtn.click();
+		waitForElementToBeVisible(By.id("edit-next"), 2000);
+        continueBtn.click();
+        waitForPageLoad();
 	}
-	
+
 	public void clickSaveButton() {
-		saveBtn.click();
+
+        waitForElementToBeVisible(By.id("edit-save"), 2000);
+        saveBtn.click();
+        waitForPageLoad();
 	}
 }

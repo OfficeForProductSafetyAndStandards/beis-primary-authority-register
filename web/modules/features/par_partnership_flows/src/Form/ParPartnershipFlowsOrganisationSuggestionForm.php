@@ -33,6 +33,7 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_application_organisation');
     $searchQuery = $this->getFlowDataHandler()->getDefaultValues('organisation_name', '', $cid);
@@ -94,6 +95,7 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
@@ -102,6 +104,7 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

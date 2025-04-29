@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -29,9 +30,9 @@ public class BrowserFactory {
 	// ReadSharedPropertyFile.loadSharedDriverProperties();
 	public static String LINUX_CHROME_EXECUTABLE = PropertiesUtil.getSharedPropertyValue("linux.chrome.executable");
 	public static Browser browser = Browser.valueOf(System.getProperty("browser", PropertiesUtil.getConfigPropertyValue("browser")));
-	
+
 	static String desiredBrowserVersion = "browserVersion";
-	
+
 	private static String CHROMEDRIVER_LINUX = PropertiesUtil.getSharedPropertyValue("linux.chrome.driver.path");
 	private static String CHROMEDRIVER_WINDOWS = PropertiesUtil.getSharedPropertyValue("windows.chrome.driver.path");
 	private static String GECKODRIVER_WINDOWS = PropertiesUtil.getSharedPropertyValue("windows.gecko.driver.path");
@@ -56,22 +57,27 @@ public class BrowserFactory {
 
 	public static WebDriver selectLocalBrowser(DesiredCapabilities caps) {
 		switch (browser) {
-		
+
 		case Chrome:
-			System.setProperty("webdriver.chrome.driver", CHROMEDRIVER_WINDOWS);
+			//System.setProperty("webdriver.chrome.driver", CHROMEDRIVER_WINDOWS);
+            // Automatically download and setup the latest ChromeDriver
+            WebDriverManager.chromedriver().setup();
+
+            // Initialize WebDriver
+            //WebDriver driver = new ChromeDriver();
 			return new ChromeDriver();
 		case Chromeheadless:
 			ChromeOptions options = new ChromeOptions();
-			
+
 			if(PlatformFactory.platform.equals("Windows")) {
-				
+
 				LOG.info("... Chrome headless: Windows ...");
 				System.setProperty("webdriver.chrome.driver", CHROMEDRIVER_WINDOWS);
-				
+
 				options.addArguments(getChromeOptions());
-				
+
 				return new ChromeDriver(options);
-				
+
 			}else {
 				LOG.info("... Disabling download prompt and setting download path to project workspace ...");
 				HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
@@ -84,19 +90,19 @@ public class BrowserFactory {
 				caps.setCapability(ChromeOptions.CAPABILITY, options);
 				System.setProperty("webdriver.chrome.driver", CHROMEDRIVER_LINUX);
 			}
-			
+
 			return new ChromeDriver();
-			
+
 		case Firefox:
 			System.setProperty("webdriver.gecko.driver", GECKODRIVER_WINDOWS);
-			
+
 			return new FirefoxDriver();
 		case Firefoxheadless:
 			System.setProperty("webdriver.gecko.driver", GECKODRIVER_WINDOWS);
-			
+
 			FirefoxOptions fireOptions = new FirefoxOptions();
-			
-			
+
+
 			return new FirefoxDriver(fireOptions);
 		case IE:
 			InternetExplorerOptions ieOptions = new InternetExplorerOptions();
@@ -109,6 +115,7 @@ public class BrowserFactory {
 		}
 	}
 
+
 	private static List<String> getChromeOptions() {
 		// optionsStr should be a comma separated list
 		String OptionsStr = PropertiesUtil.getSharedPropertyValue(CHROME_OPTIONS_KEY);
@@ -117,14 +124,14 @@ public class BrowserFactory {
 		// followed by zero or more whitespace
 		return Arrays.asList(OptionsStr.split("\\s*,\\s*"));
 	}
-	
+
 	public static void changeDriverInstance(String newBrowser) {
 		browser = Browser.valueOf(newBrowser);
 	}
-	
+
 	public static void resetDriverInstance() {
 		browser = Browser.valueOf(System.getProperty("browser", PropertiesUtil.getConfigPropertyValue("browser")));
 	}
-	
-	
+
+
 }

@@ -2,10 +2,8 @@
 
 namespace Drupal\Tests\par_data\Kernel\Entity;
 
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataAdvice;
 use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataAuthorityType;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataEnforcementAction;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
@@ -95,4 +93,5 @@ class EntityParCommonTest extends ParDataTestBase {
     $label_length = strlen($entity->label());
     $this->assertTrue(($label_length > 5 && $label_length < 500), 'SIC Code label fits within the required length.');
   }
+
 }

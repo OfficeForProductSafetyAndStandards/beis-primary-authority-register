@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\par_notification\Kernel;
 
+use Drupal\par_notification\ParMessageHandler;
 use Drupal\comment\Entity\Comment;
 use Drupal\message\Entity\MessageTemplate;
 use Drupal\par_data\Entity\ParDataAdvice;
@@ -28,7 +29,7 @@ use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 class ParNotificationTestBase extends ParDataTestBase
 {
 
-  static $modules = [
+  protected static $modules = [
     'user',
     'system',
     'field',
@@ -88,7 +89,8 @@ class ParNotificationTestBase extends ParDataTestBase
   /**
    * {@inheritdoc}
    */
-  protected function setUp()
+  #[\Override]
+  protected function setUp(): void
   {
     parent::setUp();
 
@@ -111,7 +113,7 @@ class ParNotificationTestBase extends ParDataTestBase
     // Mock all the par_notification event subscriber services.
     $container = \Drupal::getContainer();
 
-    $this->message_handler = $this->getMockBuilder('Drupal\par_notification\ParMessageHandler')
+    $this->message_handler = $this->getMockBuilder(ParMessageHandler::class)
       ->onlyMethods(['getSubscribedEvents', 'onEvent'])
       ->disableOriginalConstructor()
       ->getMock();
@@ -474,7 +476,7 @@ class ParNotificationTestBase extends ParDataTestBase
       'field_name'  => 'messages',
       'uid' => $enforcing_officer->id(),
       'comment_type' => 'par_deviation_request_comments',
-      'subject' => substr($enquiry->label(), 0, 64),
+      'subject' => substr((string) $enquiry->label(), 0, 64),
       'status' => 1,
       'comment_body' => $this->randomString(1000),
     ]);

@@ -24,6 +24,7 @@ class ParChangeRoleForm extends ParBaseForm {
   /**
    * @return DateFormatterInterface
    */
+  #[\Override]
   protected function getDateFormatter() {
     return \Drupal::service('date.formatter');
   }
@@ -40,6 +41,7 @@ class ParChangeRoleForm extends ParBaseForm {
    */
   protected $pageTitle = "Change roles";
 
+  #[\Override]
   public function loadData() {
     $user = $this->getFlowDataHandler()->getParameter('user');
     if (!$user && $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
@@ -57,6 +59,7 @@ class ParChangeRoleForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
@@ -74,7 +77,7 @@ class ParChangeRoleForm extends ParBaseForm {
       try {
         $user = $this->getParRoleManager()->addRole($user, $role);
       }
-      catch (ParRoleException $ignore) {
+      catch (ParRoleException) {
 
       }
     }
@@ -85,7 +88,7 @@ class ParChangeRoleForm extends ParBaseForm {
       try {
         $user = $this->getParRoleManager()->removeRole($user, $role);
       }
-      catch (ParRoleException $ignore) {
+      catch (ParRoleException) {
 
       }
     }

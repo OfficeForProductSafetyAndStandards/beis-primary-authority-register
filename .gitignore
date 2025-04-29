@@ -61,12 +61,17 @@ web/themes/custom/par_theme/assets/vendor/
 /sync/simpletest.*
 /sync/par_data_test.*
 /sync/config_inspector.*
+phpcs.xml
+phpunit.xml
+/.phpunit.result.cache
 
 # Exclude test reports
 web/sites/simpletest
 
 # Exclude project files.
 /.idea/
+/.docksal
+/.ddev
 *.DS_Store
 .buildpath
 .project

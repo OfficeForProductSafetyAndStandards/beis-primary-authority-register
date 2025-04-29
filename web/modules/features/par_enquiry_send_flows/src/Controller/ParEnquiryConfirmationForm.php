@@ -21,6 +21,7 @@ class ParEnquiryConfirmationForm extends ParBaseController {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function build($build = [], ParDataPartnership $par_data_partnership = NULL) {
     // Display the help contact fo this partnership.
     $build['help_text'] = $this->renderSection('If you have any questions you can contact', $par_data_partnership, ['field_authority_person' => 'summary'], [], TRUE, TRUE);

@@ -21,6 +21,7 @@ class ParSelectEnforcedLegalEntityForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
@@ -44,6 +45,7 @@ class ParSelectEnforcedLegalEntityForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // Get all the allowed authorities.
     $select_legal_entities = $this->getFlowDataHandler()->getFormPermValue('select_legal_entities');
@@ -93,6 +95,7 @@ class ParSelectEnforcedLegalEntityForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $legal_entity = $this->getElementKey('legal_entities_select');
     $alternative_legal_entity = $this->getElementKey('alternative_legal_entity');

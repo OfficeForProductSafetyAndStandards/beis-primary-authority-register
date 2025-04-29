@@ -21,6 +21,7 @@ class ParStartDateForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     $par_data_coordinated_business = $this->getFlowDataHandler()->getParameter('par_data_coordinated_business');
     $par_data_organisation = $par_data_coordinated_business->getOrganisation(TRUE);
@@ -28,6 +29,7 @@ class ParStartDateForm extends ParBaseForm {
     parent::loadData();
   }
 
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $date = $this->getFlowDataHandler()->getTempDataValue('date_membership_began');
 

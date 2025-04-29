@@ -24,6 +24,7 @@ class ParCommunicationPreferencesForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     $cid_person_select = $this->getFlowNegotiator()->getFormKey('par_choose_person');
     $person = $this->getFlowDataHandler()->getDefaultValues('user_person', '', $cid_person_select);
@@ -34,6 +35,7 @@ class ParCommunicationPreferencesForm extends ParBaseForm {
     parent::loadData();
   }
 
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

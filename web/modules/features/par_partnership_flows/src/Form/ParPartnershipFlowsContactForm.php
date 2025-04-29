@@ -67,6 +67,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
     }
   }
 
+  #[\Override]
   public function titleCallback() {
     // Check if editing an existing entity.
     $par_data_person = $this->getPersonParam();
@@ -121,6 +122,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
     $par_data_person = $this->getPersonParam();
     $this->retrieveEditableValues($par_data_partnership, $par_data_person);
@@ -136,6 +138,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // Validate required fields.
     // @todo create wrapper for setErrorByName as this is ugly creating a link.
@@ -165,6 +168,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

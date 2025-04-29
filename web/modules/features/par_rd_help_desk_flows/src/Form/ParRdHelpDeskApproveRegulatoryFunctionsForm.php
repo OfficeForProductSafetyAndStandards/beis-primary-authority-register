@@ -26,6 +26,7 @@ class ParRdHelpDeskApproveRegulatoryFunctionsForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     return 'Confirmation | Choose the regulatory functions';
   }
@@ -33,11 +34,12 @@ class ParRdHelpDeskApproveRegulatoryFunctionsForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL): AccessResult {
     try {
       // Get a new flow negotiator that points the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException $e) {
+    } catch (ParFlowException) {
 
     }
 
@@ -63,6 +65,7 @@ class ParRdHelpDeskApproveRegulatoryFunctionsForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
@@ -74,7 +77,7 @@ class ParRdHelpDeskApproveRegulatoryFunctionsForm extends ParBaseForm {
       try {
         $partnership->nominate();
       }
-      catch (ParDataException $e) {
+      catch (ParDataException) {
         // If the partnership could not be saved the application can't be progressed.
         // @TODO Find a better way to alert the user without redirecting them away from the form.
         $this->messenger()->addMessage('There was an error approving this partnership, please check it is ready to be approved.');

@@ -39,6 +39,7 @@ class ParSubscribeForm extends FormBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('par_subscriptions.manager'),
@@ -58,6 +59,7 @@ class ParSubscribeForm extends FormBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getFormId() {
     return 'subscription_list_subscribe';
   }
@@ -74,6 +76,7 @@ class ParSubscribeForm extends FormBase {
    *
    * {@inheritDoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, $list = NULL, $subscription_status = NULL) {
     if ($subscription_status === ParSubscriptionManager::SUBSCRIPTION_STATUS_SUBSCRIBED) {
       // Display a success message if the subscription has been processed.
@@ -123,6 +126,7 @@ class ParSubscribeForm extends FormBase {
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
@@ -148,6 +152,7 @@ class ParSubscribeForm extends FormBase {
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Register flood protection.
     $fid = implode(':', [$this->getRequest()->getClientIP(), $this->currentUser()->id()]);

@@ -24,6 +24,7 @@ class ParStatusField extends FieldItemList {
   /**
   * {@inheritdoc}
   */
+  #[\Override]
   protected function computeValue() {
     $entity = $this->getEntity();
 

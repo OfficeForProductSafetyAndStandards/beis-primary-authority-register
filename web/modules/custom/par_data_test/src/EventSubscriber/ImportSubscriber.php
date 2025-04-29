@@ -26,7 +26,8 @@ class ImportSubscriber implements EventSubscriberInterface {
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  #[\Override]
+  public static function getSubscribedEvents(): array {
     $events[DefaultContentEvents::IMPORT][] = ['onRespond', -100];
     return $events;
   }

@@ -26,6 +26,7 @@ class ParFeedbackViewController extends ParBaseController {
    */
   protected $pageTitle = 'Inspection plan feedback';
 
+  #[\Override]
   public function loadData() {
     $par_data_inspection_feedback = $this->getFlowDataHandler()->getParameter('par_data_inspection_feedback');
 
@@ -53,6 +54,7 @@ class ParFeedbackViewController extends ParBaseController {
     parent::loadData();
   }
 
+  #[\Override]
   public function build($build = []) {
     $par_data_inspection_feedback = $this->getFlowDataHandler()->getParameter('par_data_inspection_feedback');
     if ($par_data_inspection_feedback) {

@@ -21,6 +21,7 @@ class ParEnforcementActionReviewForm extends ParEnforcementActionDetail {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_enforcement_actions = $this->getFlowDataHandler()->getParameter('par_data_enforcement_actions');
 
@@ -40,6 +41,7 @@ class ParEnforcementActionReviewForm extends ParEnforcementActionDetail {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // Inherit the base plugin.
     $form = parent::getElements($form, $index);
@@ -97,6 +99,7 @@ class ParEnforcementActionReviewForm extends ParEnforcementActionDetail {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $status_element = $this->getElement($form, ['primary_authority_status'], $index);
     $status = $status_element ? $form_state->getValue($status_element['#parents']) : NULL;
