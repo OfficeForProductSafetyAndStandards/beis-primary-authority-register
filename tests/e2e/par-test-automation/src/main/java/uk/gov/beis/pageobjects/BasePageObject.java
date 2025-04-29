@@ -77,8 +77,7 @@ public class BasePageObject {
 
 	public void uploadDocument(WebElement filebrowser, String filename) {
 		if(BrowserFactory.browser == Browser.Chrome) {
-			filebrowser.sendKeys(System.getProperty("user.dir") + "/" + filename);
-           // filebrowser.sendKeys("/app/" + filename);
+			filebrowser.sendKeys(System.getProperty("user.dir") + (System.getProperty("user.dir").toString().endsWith("/") ? "" : "/") + filename);
 		}
 		else if (BrowserFactory.browser == Browser.Firefox) {
 			filebrowser.sendKeys(System.getProperty("user.dir") + "\\" + filename);
@@ -93,7 +92,7 @@ public class BasePageObject {
 		String path = "";
 
 		if(BrowserFactory.browser == Browser.Chrome) {
-			path = System.getProperty("user.dir") + "/" + filename;
+			path = System.getProperty("user.dir") + (System.getProperty("user.dir").toString().endsWith("/") ? "" : "/") + filename;
 		}
 		else if (BrowserFactory.browser == Browser.Firefox) {
 			path = System.getProperty("user.dir") + "\\" + filename;
