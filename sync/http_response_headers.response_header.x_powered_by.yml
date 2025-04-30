@@ -8,5 +8,5 @@ id: x_powered_by
 label: X-Powered-By
 description: "The X-Powered-By header gives information on the technology that's supporting the Web Server. It is best not to provide this information."
 name: X-Powered-By
-value: Turbo-Kittens
+value: ''
 visibility: {  }

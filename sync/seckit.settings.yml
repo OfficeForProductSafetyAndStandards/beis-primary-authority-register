@@ -7,22 +7,22 @@ seckit_xss:
       x: false
       webkit: false
     report-only: true
-    default-src: ''
-    script-src: ''
+    default-src: "'self' https://*.google-analytics.com"
+    script-src: "'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com"
     object-src: ''
-    style-src: ''
-    img-src: ''
+    style-src: "'self' 'unsafe-inline' https://cdnjs.cloudflare.com"
+    img-src: "'self' data: https://*.googleapis.com https://*.gstatic.com  https://*.google-analytics.com https://*.googletagmanager.com"
     media-src: ''
     frame-src: ''
     frame-ancestors: ''
     child-src: ''
-    font-src: ''
-    connect-src: ''
+    font-src: "'self' data: https://cdnjs.cloudflare.com"
+    connect-src: "'self' https://*.google-analytics.com https://api.ideal-postcodes.co.uk"
     report-uri: /report-csp-violation
-    upgrade-req: false
+    upgrade-req: true
     policy-uri: ''
   x_xss:
-    select: 0
+    select: 2
     seckit_x_xss_option_disable: Disabled
     seckit_x_xss_option_0: '0'
     seckit_x_xss_option_1: 1;
@@ -36,10 +36,10 @@ seckit_clickjacking:
   x_frame: '1'
   x_frame_allow_from: ''
 seckit_ssl:
-  hsts: false
-  hsts_subdomains: false
+  hsts: true
+  hsts_subdomains: true
   hsts_max_age: 31536000
-  hsts_preload: false
+  hsts_preload: true
 seckit_ct:
   expect_ct: false
   max_age: 86400
