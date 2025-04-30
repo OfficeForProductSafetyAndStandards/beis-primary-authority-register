@@ -869,6 +869,20 @@ $settings['config_readonly_whitelist_patterns'] = [
  */
 $settings['par_branded_header_footer'] = TRUE;
 
+if (PHP_SAPI === 'cli') {
+  $services_name = [
+    'VCAP_SERVICES',
+    'DATABASE_CREDENTIALS',
+  ];
+  foreach ($services_name as $service_name) {
+    $service_env = getenv('SECRET_' . $service_name);
+    if ($service_env) {
+      // Need to decode the environment variable.
+      putenv($service_name . '=' . json_decode($service_env));
+    }
+  }
+}
+
 /**
  * Extract the connection credentials from the VCAP_SERVICES environment variable
  * which is configured by the PaaS service manager

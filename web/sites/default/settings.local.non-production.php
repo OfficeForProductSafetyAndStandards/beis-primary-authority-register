@@ -8,6 +8,10 @@ $settings['trusted_host_patterns'] = [''];
 $config['config_split.config_split.dev_config']['status'] = TRUE;
 $config['config_split.config_split.test_config']['status'] = TRUE;
 
+// Set Shield and Restrict IP config
+$config['shield.settings']['credentials']['shield']['user'] = getenv('SHIELD_USER');
+$config['shield.settings']['credentials']['shield']['pass'] = getenv('SHIELD_PASS');
+
 // Enable the local services configuration which enables debugging.
 if (file_exists($app_root . '/' . $site_path . '/services.local.yml')) {
   $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.local.yml';

@@ -1,4 +1,4 @@
-uuid: ab59c6e0-227b-412c-b647-44d40dfa5fcb
+uuid: f03ddcbb-ea95-46c1-8b15-81a32b672a35
 langcode: en
 status: true
 dependencies:
@@ -10,6 +10,8 @@ dependencies:
   enforced:
     module:
       - maillog
+_core:
+  default_config_hash: xQe_9UDnOYMgxHaQU_vAbBAt_2NfDnyCjJ_ue6vh_uA
 id: maillog_overview
 label: 'Maillog overview'
 module: views
@@ -339,157 +341,7 @@ display:
           exposed: false
           granularity: second
       arguments: {  }
-      filters:
-        header_from:
-          id: header_from
-          table: maillog
-          field: header_from
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: string
-          operator: word
-          value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: header_from_op
-            label: From
-            description: ''
-            use_operator: false
-            operator: header_from_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: header_from
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              par_enforcement: '0'
-              par_authority: '0'
-              par_authority_manager: '0'
-              par_organisation: '0'
-              par_organisation_manager: '0'
-              national_regulator: '0'
-              par_helpdesk: '0'
-              senior_administration_officer: '0'
-              secretary_state: '0'
-              administrator: '0'
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-        subject:
-          id: subject
-          table: maillog
-          field: subject
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: string
-          operator: word
-          value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: subject_op
-            label: Subject
-            description: ''
-            use_operator: false
-            operator: subject_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: subject
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              par_enforcement: '0'
-              par_authority: '0'
-              par_authority_manager: '0'
-              par_organisation: '0'
-              par_organisation_manager: '0'
-              national_regulator: '0'
-              par_helpdesk: '0'
-              senior_administration_officer: '0'
-              secretary_state: '0'
-              administrator: '0'
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-        header_to:
-          id: header_to
-          table: maillog
-          field: header_to
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: string
-          operator: word
-          value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: header_to_op
-            label: To
-            description: ''
-            use_operator: false
-            operator: header_to_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: header_to
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              par_enforcement: '0'
-              par_authority: '0'
-              par_authority_manager: '0'
-              par_organisation: '0'
-              par_organisation_manager: '0'
-              national_regulator: '0'
-              par_helpdesk: '0'
-              senior_administration_officer: '0'
-              secretary_state: '0'
-              administrator: '0'
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
+      filters: {  }
       style:
         type: table
         options:
@@ -559,10 +411,9 @@ display:
       footer: {  }
       display_extenders: {  }
     cache_metadata:
-      max-age: -1
+      max-age: 0
       contexts:
         - 'languages:language_interface'
-        - url
         - url.query_args
         - user.permissions
       tags: {  }
@@ -584,10 +435,9 @@ display:
         parent: system.admin_reports
         context: '0'
     cache_metadata:
-      max-age: -1
+      max-age: 0
       contexts:
         - 'languages:language_interface'
-        - url
         - url.query_args
         - user.permissions
       tags: {  }

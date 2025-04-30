@@ -100,6 +100,9 @@ NP_IDEAL_POSTCODES_API_KEY=${NP_IDEAL_POSTCODES_API_KEY:-}
 NP_PAR_GOVUK_NOTIFY_KEY=${NP_PAR_GOVUK_NOTIFY_KEY:-}
 NP_PAR_GOVUK_NOTIFY_TEMPLATE=${NP_PAR_GOVUK_NOTIFY_TEMPLATE:-}
 JSON_API_KEY=${JSON_API_KEY:-}
+SHIELD_USER=${SHIELD_USER:-}
+SHIELD_PASS=${SHIELD_PASS:-}
+WHITE_IPS=${WHITE_IPS:-}
 
 while true; do
     case "$1" in
@@ -391,6 +394,9 @@ cf set-env $TARGET_ENV CLAMAV_HTTP_PASS ${CLAMAV_HTTP_PASS}
 cf set-env $TARGET_ENV CLAMAV_HTTP_USER ${CLAMAV_HTTP_USER}
 cf set-env $TARGET_ENV S3_REGION ${S3_REGION}
 cf set-env $TARGET_ENV JSON_API_KEY ${JSON_API_KEY}
+cf set-env $TARGET_ENV SHIELD_USER ${SHIELD_USER}
+cf set-env $TARGET_ENV SHIELD_PASS ${SHIELD_PASS}
+cf set-env $TARGET_ENV WHITE_IPS ${WHITE_IPS}
 
 # Set environment specific env vars
 if [[ $ENV = "staging" ]]; then
@@ -536,6 +542,7 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
     # Running a python script instead of bash because python has immediate
     # access to all of the environment variables and configuration.
     printf "Importing the database...\n"
+
     cf run-task $TARGET_ENV -m 2G -k 2G --name DB_IMPORT -c "./scripts/drop.sh && \
         cd $REMOTE_BUILD_DIR/web && \
         tar --no-same-owner -zxvf $REMOTE_BUILD_DIR/$DB_DIR/$DB_NAME.tar.gz -C $REMOTE_BUILD_DIR/$DB_DIR && \
@@ -546,10 +553,6 @@ if [[ $ENV != "production" ]] && [[ $DB_RESET ]]; then
     cf_poll_task $TARGET_ENV DB_IMPORT
     printf "Database imported...\n"
 
-    printf "Sanitising PAR People Data...\n"
-    cf run-task $TARGET_ENV -m 4G -k 4G --name SPP -c "./scripts/sanitise-par-people.sh"
-    cf_poll_task $TARGET_ENV SPP
-    printf "Sanitisation completed...\n"
 fi
 
 ####################################################################################
@@ -617,6 +620,9 @@ cf set-env $TARGET_ENV CLAMAV_HTTP_PASS ${CLAMAV_HTTP_PASS}
 cf set-env $TARGET_ENV CLAMAV_HTTP_USER ${CLAMAV_HTTP_USER}
 cf set-env $TARGET_ENV S3_REGION ${S3_REGION}
 cf set-env $TARGET_ENV JSON_API_KEY ${JSON_API_KEY}
+cf set-env $TARGET_ENV SHIELD_USER ${SHIELD_USER}
+cf set-env $TARGET_ENV SHIELD_PASS ${SHIELD_PASS}
+cf set-env $TARGET_ENV WHITE_IPS ${WHITE_IPS}
 
 # Set environment specific env vars
 if [[ $ENV = "staging" ]]; then
