@@ -22,6 +22,7 @@ class UserParMembershipsCacheContext extends UserCacheContextBase implements Cal
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function getLabel() {
     return t("User's par memberships");
   }
@@ -50,6 +51,7 @@ class UserParMembershipsCacheContext extends UserCacheContextBase implements Cal
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getContext($type = NULL) {
     $entities = [];
     $account = $this->userLoad($this->user->id());
@@ -81,6 +83,7 @@ class UserParMembershipsCacheContext extends UserCacheContextBase implements Cal
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getCacheableMetadata($type = NULL) {
     return (new CacheableMetadata())->setCacheTags(['user:' . $this->user->id()]);
   }

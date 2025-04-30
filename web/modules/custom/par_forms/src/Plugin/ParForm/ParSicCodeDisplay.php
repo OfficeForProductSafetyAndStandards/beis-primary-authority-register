@@ -27,6 +27,7 @@ class ParSicCodeDisplay extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
@@ -45,6 +46,7 @@ class ParSicCodeDisplay extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // Get the SIC codes.
     $sic_codes = $this->getDefaultValuesByKey('sic_codes', $index, []);
@@ -101,20 +103,9 @@ class ParSicCodeDisplay extends ParFormPluginBase {
       try {
         // Edit the SIC code.
         $params = ['field_sic_code_delta' => $delta];
-        $options = ['attributes' => ['aria-label' => $this->t("Edit the SIC code @label", ['@label' => strtolower($label)])]];
+        $options = ['attributes' => ['aria-label' => $this->t("Edit the SIC code @label", ['@label' => strtolower((string) $label)])]];
         $operations['edit'] = $this->getFlowNegotiator()->getFlow()
           ->getOperationLink('edit_field_sic_code', 'edit sic code', $params, $options);
-      }
-      catch (ParFlowException $e) {
-        $this->getLogger($this->getLoggerChannel())->notice($e);
-      }
-      try {
-        // Remove the SIC code.
-        $params = ['field_sic_code_delta' => $delta];
-        $options = ['attributes' => ['aria-label' => $this->t("Remove the SIC code @label", ['@label' => strtolower($label)])]];
-        $operations['remove'] = $this->getFlowNegotiator()->getFlow()
-          ->getOperationLink('remove_field_sic_code', 'remove sic code', $params, $options);
-
       }
       catch (ParFlowException $e) {
         $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -163,6 +154,7 @@ class ParSicCodeDisplay extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
@@ -170,6 +162,7 @@ class ParSicCodeDisplay extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }

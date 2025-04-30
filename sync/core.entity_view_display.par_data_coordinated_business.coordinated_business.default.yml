@@ -66,13 +66,25 @@ content:
     settings:
       timezone_override: ''
       date_format: d/m/Y
+      from_to: both
       separator: '-'
     third_party_settings: {  }
     weight: 2
+    region: content
+  par_label:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
     region: content
 hidden:
   archive_reason: true
   deleted_reason: true
   name: true
+  par_status: true
+  par_status_date: true
   revocation_reason: true
+  search_api_excerpt: true
   user_id: true

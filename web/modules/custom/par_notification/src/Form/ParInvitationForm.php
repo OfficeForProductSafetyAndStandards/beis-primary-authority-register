@@ -31,6 +31,7 @@ class ParInvitationForm extends FormBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getFormId() {
     return 'par_notification_invite';
   }
@@ -42,6 +43,7 @@ class ParInvitationForm extends FormBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, MessageInterface $message = NULL) {
     // Need to check to see if the user has an account already.
     $message = \Drupal::routeMatch()->getParameter('message');
@@ -106,6 +108,7 @@ class ParInvitationForm extends FormBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $email = $form_state->getValue('email');
     if (empty($email)) {
@@ -116,6 +119,7 @@ class ParInvitationForm extends FormBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $submit_action = $form_state->getTriggeringElement()['#name'];
 
@@ -158,17 +162,13 @@ class ParInvitationForm extends FormBase {
    * @return string
    *  The invitiation type to be created.
    */
-  public function getInvitationType(MessageInterface $message) {
-    // @TODO PAR-1736: Add invitations for more message types.
-    switch ($message->getTemplate()->id()) {
-      case 'approved_enforcement':
-        return 'invite_organisation_member';
-
-        break;
-
-    }
-
-    return NULL;
+  public function getInvitationType(MessageInterface $message)
+  {
+      // @TODO PAR-1736: Add invitations for more message types.
+      return match ($message->getTemplate()->id()) {
+          'approved_enforcement' => 'invite_organisation_member',
+          default => NULL,
+      };
   }
 
   /**
@@ -181,10 +181,8 @@ class ParInvitationForm extends FormBase {
     if ($email && $primary_entity = $this->getPrimaryEntity($message)) {
       $related_entities = $this->getParDataManager()->getRelatedEntities($primary_entity);
 
-      $people = array_filter($related_entities, function ($entity) use ($email) {
-        return ($entity instanceof ParDataPersonInterface
-          && $entity->getEmail() === $email);
-      });
+      $people = array_filter($related_entities, fn($entity) => $entity instanceof ParDataPersonInterface
+        && $entity->getEmail() === $email);
 
       // @TODO this doesn't necessarily return the most related person,
       // if there are multiple entities it will just return the first one found.

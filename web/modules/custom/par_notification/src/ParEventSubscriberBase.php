@@ -8,11 +8,13 @@ use Drupal\message\MessageInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\message\MessageTemplateInterface;
 use Drupal\message_expire\MessageExpiryManagerInterface;
-use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Event\ParDataEventInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Drupal\Core\Entity\EntityEvent;
 
+/**
+ * Base class for PAR event subscribers.
+ */
 abstract class ParEventSubscriberBase implements EventSubscriberInterface {
 
   use LoggerChannelTrait;
@@ -23,33 +25,50 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
   const MESSAGE_ID = '';
 
   /**
-   * @var ParDataEventInterface|EntityEvent $event
+   * The event object.
+   *
+   * @var \Drupal\par_data\Event\ParDataEventInterface|null
    */
-  protected ParDataEventInterface|EntityEvent $event;
+  protected ?ParDataEventInterface $event = NULL;
+
+  /**
+   * The event dispatcher service.
+   *
+   * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+   */
+  protected EventDispatcherInterface $eventDispatcher;
+
+  /**
+   * Constructs a ParEventSubscriberBase object.
+   *
+   * @param \Symfony\Component\EventDispatcher\EventDispatcherInterface $event_dispatcher
+   *   The event dispatcher service.
+   */
 
   /**
    * Returns the logger channel specific to errors logged by PAR Forms.
    *
    * @return string
-   *   Get the logger channel to use.
+   *   The logger channel to use.
    */
   public function getLoggerChannel(): string {
     return 'par';
   }
 
   /**
-   * Get the current user sending the message.
+   * Gets the current user sending the message.
    *
-   * @return AccountProxyInterface
+   * @return \Drupal\Core\Session\AccountProxyInterface
+   *   The current user.
    */
   public function getCurrentUser(): AccountProxyInterface {
     return \Drupal::currentUser();
   }
 
   /**
-   * Get the PAR message handler.
+   * Gets the PAR message handler.
    *
-   * @return ParMessageHandlerInterface
+   * @return \Drupal\par_notification\ParMessageHandlerInterface
    *   The message handler.
    */
   public function getMessageHandler(): ParMessageHandlerInterface {
@@ -57,9 +76,9 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
   }
 
   /**
-   * Get the message expiry service.
+   * Gets the message expiry service.
    *
-   * @return MessageExpiryManagerInterface
+   * @return \Drupal\message_expire\MessageExpiryManagerInterface
    *   The message expiry service.
    */
   public function getMessageExpiryService(): MessageExpiryManagerInterface {
@@ -67,64 +86,79 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
   }
 
   /**
-   * Getter for the event.
+   * Gets the event.
+   *
+   * @return \Drupal\par_data\Event\ParDataEventInterface|null
+   *   The event object.
    */
-  public function getEvent() {
+  public function getEvent():?ParDataEventInterface {
     return $this->event;
   }
 
   /**
-   * Setter for the event.
+   * Sets the event.
+   *
+   * @param \Drupal\par_data\Event\ParDataEventInterface|null $event
+   *   The event object.
    */
-  public function setEvent($event) {
+  public function setEvent(?ParDataEventInterface $event): void {
     $this->event = $event;
   }
 
   /**
-   * Get the messages associated with this event.
+   * Gets the messages associated with this event.
+   *
+   * @param \Drupal\par_data\Event\ParDataEventInterface $event
+   *   The event object.
+   *
+   * @return array
+   *   An array of messages.
    */
-  public function getMessages($event) {
-    $entity = $event?->getEntity();
+  public function getMessages(ParDataEventInterface $event): array {
+    $entity = $event->getEntity();
 
-    /** @var MessageTemplateInterface $template */
     $template = $this->getMessageHandler()->getMessageTemplateStorage()->load(static::MESSAGE_ID);
     $field = $this->getMessageHandler()->getPrimaryField($template);
 
-    $messages = [];
-    if ($field && $template instanceof MessageTemplateInterface) {
+    $messages = '';
+    if ($field && $template instanceof MessageTemplateInterface && $entity instanceof EntityInterface) {
       $messages = $this->getMessageHandler()->getMessageStorage()
         ->loadByProperties([
-          'template' => $template?->id(),
+          'template' => $template->id(),
           $field => $entity->id(),
         ]);
 
       // Sort the messages in descending order with the most recent first.
-      ksort($messages);
+      krsort($messages);
     }
 
     return $messages;
   }
 
   /**
-   * Send and save the message.
+   * Sends and saves the message.
    *
    * @param array $arguments
    *   An array of replacement arguments to be set on the message.
-   * @param ParDataEntityInterface[] $parameters
+   * @param array $parameters
    *   The additional data parameters to be added to the message.
+   *     - key is a field name
+   *     - value is the value to set that field to.
    */
-  public function sendMessage(array $arguments = [], array $parameters = []) {
+  public function sendMessage(array $arguments, array $parameters = []) {
     $entity = $this->getEvent()?->getEntity();
 
     // Create the message.
     try {
       $message = $this->getMessageHandler()->createMessage(static::MESSAGE_ID);
-    } catch (ParNotificationException $e) {
+    }
+    catch (ParNotificationException $e) {
+      $this->getLogger('PAR')
+        ->error('Failed to create message: @error', ['@error' => $e->getMessage()]);
       return;
     }
 
-    if ($entity instanceof EntityInterface &&
-      $message instanceof MessageInterface) {
+    if ($entity instanceof EntityInterface && $message instanceof MessageInterface) {
 
       $field = $this->getMessageHandler()->getPrimaryField($message->getTemplate());
       // Add the primary contextual information to this message.
@@ -133,8 +167,12 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
       }
       // Add any additional parameters to this message.
       foreach ($parameters as $parameter_field => $parameter) {
-        if ($field && $message->hasField($parameter_field)) {
+        if ($message->hasField($parameter_field)) {
           $message->set($parameter_field, $parameter);
+        }
+        else {
+          $this->getLogger('PAR')
+            ->warning('Parameter field "@field" does not exist on message template.', ['@field' => $parameter_field]);
         }
       }
 
@@ -143,7 +181,13 @@ abstract class ParEventSubscriberBase implements EventSubscriberInterface {
       $message->setArguments($arguments);
 
       // Save the message (this will also send it).
-      $message->save();
+      try {
+        $message->save();
+      }
+      catch (\Exception $e) {
+        $this->getLogger('PAR')
+          ->error('Failed to save message: @error', ['@error' => $e->getMessage()]);
+      }
     }
   }
 

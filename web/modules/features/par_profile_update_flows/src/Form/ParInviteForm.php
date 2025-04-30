@@ -25,6 +25,7 @@ class ParInviteForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
 //    $cid_person_select = $this->getFlowNegotiator()->getFormKey('par_choose_person');
 //    $person = $this->getFlowDataHandler()->getDefaultValues('user_person', '', $cid_person_select);
@@ -74,6 +75,7 @@ class ParInviteForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     $cid_link_account = $this->getFlowNegotiator()->getFormKey('par_profile_update_link');
     $user_id = $this->getFlowDataHandler()->getDefaultValues('user_id', NULL, $cid_link_account);

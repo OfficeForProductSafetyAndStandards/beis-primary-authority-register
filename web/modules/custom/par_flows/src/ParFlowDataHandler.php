@@ -21,34 +21,6 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   const ENTRY_POINT = 'entry_point';
 
   /**
-   * The PAR Flow Negotiator.
-   *
-   * @var ParFlowNegotiatorInterface $negotiator
-   */
-  public ParFlowNegotiatorInterface $negotiator;
-
-  /**
-   * The PAR data manager for acting upon PAR Data.
-   *
-   * @var ParDataManagerInterface $parDataManager
-   */
-  protected ParDataManagerInterface $parDataManager;
-
-  /**
-   * The PAR data manager for acting upon PAR Data.
-   *
-   * @var SessionManagerInterface $sessionManager
-   */
-  protected SessionManagerInterface $sessionManager;
-
-  /**
-   * The current user account.
-   *
-   * @var AccountInterface $account
-   */
-  protected AccountInterface $account;
-
-  /**
    * The private temporary storage for persisting multistep form data.
    *
    * Each key (form) will last 1 week since it was last updated.
@@ -88,19 +60,27 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
    *   The private temporary store.
    * @param ParFlowNegotiatorInterface $negotiator
    *   The flow negotiator.
-   * @param ParDataManagerInterface $par_data_manager
+   * @param ParDataManagerInterface $parDataManager
    *   The par data manager.
-   * @param SessionManagerInterface $session_manager
+   * @param SessionManagerInterface $sessionManager
    *   The session manager.
-   * @param AccountInterface $current_user
+   * @param AccountInterface $account
    *   The entity bundle info service.
    */
-  public function __construct(PrivateTempStoreFactory $temp_store_factory, ParFlowNegotiatorInterface $negotiator, ParDataManagerInterface $par_data_manager, SessionManagerInterface $session_manager, AccountInterface $current_user) {
+  public function __construct(PrivateTempStoreFactory $temp_store_factory, /**
+   * The PAR Flow Negotiator.
+   */
+  public ParFlowNegotiatorInterface $negotiator, /**
+   * The PAR data manager for acting upon PAR Data.
+   */
+  protected ParDataManagerInterface $parDataManager, /**
+   * The PAR data manager for acting upon PAR Data.
+   */
+  protected SessionManagerInterface $sessionManager, /**
+   * The current user account.
+   */
+  protected AccountInterface $account) {
     $this->store = $temp_store_factory->get('par_flows_flows');
-    $this->negotiator = $negotiator;
-    $this->parDataManager = $par_data_manager;
-    $this->sessionManager = $session_manager;
-    $this->account = $current_user;
 
     $this->reset();
   }
@@ -137,6 +117,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getDefaultValues($key, $default = '', $cid = NULL) {
     $value = $this->getTempDataValue($key, $cid);
 
@@ -154,6 +135,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getTempDataValue($key, $cid = NULL) {
     $tmp_data = $this->getFormTempData($cid);
 
@@ -165,6 +147,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function setTempDataValue($key, $value, $cid = NULL) {
     $data = $this->getFormTempData($cid);
     NestedArray::setValue($data, (array) $key, $value, TRUE);
@@ -174,6 +157,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getFormTempData($cid = NULL) {
     $cid = empty($cid) ? $this->negotiator->getFlowKey() : $cid;
 
@@ -187,6 +171,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function setFormTempData(array $data, $cid = NULL) {
     $cid = empty($cid) ? $this->negotiator->getFlowKey() : $cid;
 
@@ -203,6 +188,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function deleteFormTempData($cid = NULL) {
     $cid = empty($cid) ? $this->negotiator->getFlowKey() : $cid;
 
@@ -243,6 +229,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getAllTempData() {
     $data = [];
 
@@ -258,6 +245,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getMetaDataValue($key, $cid = NULL) {
     $meta_data = $this->getFlowMetaData($cid);
     $value = NestedArray::getValue($meta_data, (array) $key, $exists);
@@ -267,6 +255,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function setMetaDataValue($key, $value, $cid = NULL) {
     $meta_data = $this->getFlowMetaData($cid);
     NestedArray::setValue($meta_data, (array) $key, $value, TRUE);
@@ -276,6 +265,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getFlowMetaData($cid = NULL) {
     $cid = empty($cid) ? $this->negotiator->getFlowStateKey() : $cid;
 
@@ -289,6 +279,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function setFlowMetaData(array $meta_data, $cid = NULL) {
     $cid = empty($cid) ? $this->negotiator->getFlowStateKey() : $cid;
 
@@ -305,6 +296,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function deleteFlowMetaData($cid = NULL) {
     $cid = empty($cid) ? $this->negotiator->getFlowStateKey() : $cid;
 
@@ -317,6 +309,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function deleteStore() {
     $data = [];
 
@@ -335,6 +328,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getParameter($parameter) {
     return $this->parameters->get($parameter);
   }
@@ -351,6 +345,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
    *
    * @return array
    */
+  #[\Override]
   public function getParameters() {
     return $this->parameters->all();
   }
@@ -370,6 +365,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
    * @param $parameter
    * @param $value
    */
+  #[\Override]
   public function setParameter($parameter, $value) {
     $this->parameters->set($parameter, $value);
 
@@ -389,6 +385,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
    *
    * @param $params
    */
+  #[\Override]
   public function setParameters($params) {
     foreach ($params as $key => $param) {
       $this->setParameter($key, $param);
@@ -398,6 +395,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getFormPermValue($key, ParFormPluginInterface $plugin = NULL) {
     $key = (array) $key;
 
@@ -412,6 +410,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function setFormPermValue($key, $value, ParFormPluginInterface $plugin = NULL) {
     $key = (array) $key;
     // Allow the plugin namespace to be used as a prefix if a plugin is passed in.
@@ -469,7 +468,6 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
    * - False
    * - 0
    *
-   * @param mixed $value
    *
    * @return bool
    */

@@ -2,6 +2,7 @@
 
 namespace Drupal\par_notification;
 
+use Drupal\par_notification\Annotation\ParLinkAction;
 use Drupal\Component\Plugin\Factory\DefaultFactory;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Cache\CacheBackendInterface;
@@ -75,8 +76,8 @@ class ParLinkManager extends DefaultPluginManager implements ParLinkManagerInter
       'Plugin/ParLinkAction',
       $namespaces,
       $module_handler,
-      'Drupal\par_notification\ParLinkActionInterface',
-      'Drupal\par_notification\Annotation\ParLinkAction'
+      ParLinkActionInterface::class,
+      ParLinkAction::class
     );
 
     $this->alterInfo('par_notification_link_action_info');
@@ -110,6 +111,7 @@ class ParLinkManager extends DefaultPluginManager implements ParLinkManagerInter
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function processDefinition(&$definition, $plugin_id) {
     parent::processDefinition($definition, $plugin_id);
 
@@ -127,6 +129,7 @@ class ParLinkManager extends DefaultPluginManager implements ParLinkManagerInter
    *
    * @return \Drupal\par_notification\ParLinkActionInterface
    */
+  #[\Override]
   public function createInstance($plugin_id, array $configuration = []): ?ParLinkActionInterface {
     /** @var ParLinkActionInterface $instance */
     $instance = parent::createInstance($plugin_id, $configuration);
@@ -143,6 +146,7 @@ class ParLinkManager extends DefaultPluginManager implements ParLinkManagerInter
    * @return array
    *   An array of plugin definitions.
    */
+  #[\Override]
   public function getDefinitions(bool $only_active = FALSE): array {
     $definitions = [];
     foreach (parent::getDefinitions() as $id => $definition) {
@@ -152,9 +156,7 @@ class ParLinkManager extends DefaultPluginManager implements ParLinkManagerInter
     }
 
     if (!empty($definitions))
-      usort($definitions, function ($a, $b) {
-        return $a['weight'] <=> $b['weight'];
-      });{
+      usort($definitions, fn($a, $b) => $a['weight'] <=> $b['weight']);{
     }
 
     return $definitions;
@@ -189,14 +191,13 @@ class ParLinkManager extends DefaultPluginManager implements ParLinkManagerInter
   public function getTaskTemplates(): array {
     $message_templates = $this->getMessageTemplateStorage()->loadMultiple();
 
-    return array_filter($message_templates, function ($message_template) {
-      return !empty($this->retrieveTasks($message_template));
-    });
+    return array_filter($message_templates, fn($message_template) => !empty($this->retrieveTasks($message_template)));
   }
 
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function retrieveTasks(MessageTemplateInterface $message_template): array {
     // Retrieve tasks once per notification type.
     $function_id = __FUNCTION__ . ':' . $message_template->id();
@@ -222,6 +223,7 @@ class ParLinkManager extends DefaultPluginManager implements ParLinkManagerInter
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function generateLink(int|string $message_id): Url {
     $link_options = ['absolute' => TRUE];
     return Url::fromRoute('par_notification.link_manager', ['message' => $message_id], $link_options);
@@ -230,6 +232,7 @@ class ParLinkManager extends DefaultPluginManager implements ParLinkManagerInter
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function receive(RouteMatchInterface $route, MessageInterface $message): ?RedirectResponse {
     // The current link manager link, used for sequential redirection.
     // This will be used until all prerequisite actions are completed.
@@ -258,6 +261,7 @@ class ParLinkManager extends DefaultPluginManager implements ParLinkManagerInter
   /**
    * {@inheritDoc}
    */
+  #[\Override]
   public function link(MessageInterface $message): ?Link {
     // Get all redirection plugins.
     $plugin_definitions = $this->getDefinitionsByNotification($message->getTemplate());

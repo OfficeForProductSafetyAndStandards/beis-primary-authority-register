@@ -24,6 +24,7 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
     $par_data_enforcement_actions = $this->getFlowDataHandler()->getParameter('par_data_enforcement_actions');
@@ -79,6 +80,7 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // Return path for all redirect links.
     $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
@@ -148,7 +150,7 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
           ]),
         ];
       }
-      catch (ParFlowException $e) {
+      catch (ParFlowException) {
 
       }
     }
@@ -159,6 +161,7 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
   /**
    * Get the container wrapper for this component.
    */
+  #[\Override]
   public function getWrapper() {
     $fieldset = parent::getWrapper();
 
@@ -175,6 +178,7 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
@@ -182,6 +186,7 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }

@@ -243,7 +243,7 @@ jobs:
       - run:
           name: "Run unit tests"
           command: |
-            ./vendor/bin/paratest --processes=16 --no-coverage
+            ./vendor/bin/phpunit --no-coverage
       # Save artifacts
       - store_artifacts:
           path: /var/www/html/tests/reports

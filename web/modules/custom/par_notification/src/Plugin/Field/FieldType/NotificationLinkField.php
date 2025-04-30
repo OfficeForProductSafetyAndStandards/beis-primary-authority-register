@@ -36,12 +36,15 @@ class NotificationLinkField extends FieldItemList implements FieldItemListInterf
   /**
   * {@inheritdoc}
   */
+  #[\Override]
   protected function computeValue() {
     $message = $this->getEntity();
 
     // Only process for message entities.
     if ($message instanceof MessageInterface) {
-      $link = $this->getLinkManager()->link($message);
+      // TODO: Drupal Rector Notice: Please delete the following comment after you've made any necessary changes.
+      // Please confirm that `$` is an instance of `\Drupal\Core\Entity\EntityInterface`. Only the method name and not the class name was checked for this replacement, so this may be a false positive.
+      $link = $this->getLinkManager()->toLink($message)->toString();
 
       // Add links to values array.
       if ($link instanceof Link) {

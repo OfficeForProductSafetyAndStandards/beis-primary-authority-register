@@ -40,12 +40,13 @@ class ParScheduledActionsWorker extends QueueWorkerBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function processItem($data) {
     if (!isset($data['action']) || !isset($data['entity'])) {
       return;
     }
 
-    $configuration = isset($data['configuration']) ? $data['configuration'] : [];
+    $configuration = $data['configuration'] ?? [];
 
     $action = $this->getActionPlugin($data['action'], $configuration);
     if (empty($action)) {
@@ -55,7 +56,7 @@ class ParScheduledActionsWorker extends QueueWorkerBase {
     try {
       $action->execute($data['entity']);
     }
-    catch (\Exception $e) {
+    catch (\Exception) {
       throw new ParActionsException("The {$data['action']} action could not be processed.");
     }
   }
