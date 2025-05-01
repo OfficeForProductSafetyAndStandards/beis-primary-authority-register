@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a751692775e7f9827795c48a814501a0",
+    "content-hash": "e3f6ed66f4b3ccb78d3c339a6a6dd0e7",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -5929,6 +5929,137 @@
             }
         },
         {
+            "name": "drupal/rest_api_authentication",
+            "version": "2.0.18",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/rest_api_authentication.git",
+                "reference": "2.0.18"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/rest_api_authentication-2.0.18.zip",
+                "reference": "2.0.18",
+                "shasum": "87537ad80142604cb513cae0f96997d88c9a3e46"
+            },
+            "require": {
+                "drupal/core": "^9.3 || ^10 || ^11"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.18",
+                    "datestamp": "1738573059",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "arsh244",
+                    "homepage": "https://www.drupal.org/user/3619504"
+                },
+                {
+                    "name": "gauravsood91",
+                    "homepage": "https://www.drupal.org/user/3288491"
+                },
+                {
+                    "name": "purva_shende",
+                    "homepage": "https://www.drupal.org/user/3723921"
+                },
+                {
+                    "name": "singh_ankit",
+                    "homepage": "https://www.drupal.org/user/3723914"
+                }
+            ],
+            "description": "Drupal API Authentication module secures unauthorized access to your Drupal site APIs using different API authentication methods.",
+            "homepage": "https://www.drupal.org/project/rest_api_authentication",
+            "support": {
+                "source": "https://git.drupalcode.org/project/rest_api_authentication"
+            }
+        },
+        {
+            "name": "drupal/restrict_ip",
+            "version": "5.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/restrict_ip.git",
+                "reference": "5.0.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/restrict_ip-5.0.1.zip",
+                "reference": "5.0.1",
+                "shasum": "9a1a1a0116fef21ea71245d529472ff035a65fa3"
+            },
+            "require": {
+                "drupal/core": "^10.3 || ^11"
+            },
+            "require-dev": {
+                "drupal/ip2country": "^2.1"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "5.0.1",
+                    "datestamp": "1736880709",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "agentrickard",
+                    "homepage": "https://www.drupal.org/user/20975"
+                },
+                {
+                    "name": "anybody",
+                    "homepage": "https://www.drupal.org/user/291091"
+                },
+                {
+                    "name": "gobinathm",
+                    "homepage": "https://www.drupal.org/user/21629"
+                },
+                {
+                    "name": "grevil",
+                    "homepage": "https://www.drupal.org/user/3668491"
+                },
+                {
+                    "name": "jaypan",
+                    "homepage": "https://www.drupal.org/user/324696"
+                },
+                {
+                    "name": "smustgrave",
+                    "homepage": "https://www.drupal.org/user/3252890"
+                },
+                {
+                    "name": "thomas.frobieter",
+                    "homepage": "https://www.drupal.org/user/409335"
+                }
+            ],
+            "description": "Allows administrators to restrict access to the site to an administrator defined set of IP addresses.",
+            "homepage": "https://drupal.org/project/restrict_ip",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "source": "https://git.drupalcode.org/project/restrict_ip",
+                "issues": "https://drupal.org/project/issues/restrict_ip"
+            }
+        },
+        {
             "name": "drupal/robotstxt",
             "version": "1.6.0",
             "source": {
@@ -6249,6 +6380,80 @@
             "support": {
                 "source": "https://git.drupalcode.org/project/seckit",
                 "issues": "http://drupal.org/project/issues/seckit"
+            }
+        },
+        {
+            "name": "drupal/shield",
+            "version": "1.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/shield.git",
+                "reference": "8.x-1.8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/shield-8.x-1.8.zip",
+                "reference": "8.x-1.8",
+                "shasum": "709b5580790a3b5bd8dda26f722cdb5a9c3911c5"
+            },
+            "require": {
+                "drupal/core": "^9.2 || ^10 || ^11"
+            },
+            "require-dev": {
+                "drupal/key": "^1.16"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.8",
+                    "datestamp": "1719947682",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                },
+                "branch-alias": {
+                    "dev-8.x-1.x": "1.x-dev"
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "badjava",
+                    "homepage": "https://www.drupal.org/user/83372"
+                },
+                {
+                    "name": "chx",
+                    "homepage": "https://www.drupal.org/user/9446"
+                },
+                {
+                    "name": "geek-merlin",
+                    "homepage": "https://www.drupal.org/user/229048"
+                },
+                {
+                    "name": "japerry",
+                    "homepage": "https://www.drupal.org/user/45640"
+                },
+                {
+                    "name": "kalman.hosszu",
+                    "homepage": "https://www.drupal.org/user/267481"
+                },
+                {
+                    "name": "pkiraly",
+                    "homepage": "https://www.drupal.org/user/352587"
+                },
+                {
+                    "name": "vbouchet",
+                    "homepage": "https://www.drupal.org/user/1671428"
+                }
+            ],
+            "description": "Creates a general shield for the site.",
+            "homepage": "https://www.drupal.org/project/shield",
+            "support": {
+                "source": "https://git.drupalcode.org/project/shield"
             }
         },
         {
