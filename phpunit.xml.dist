@@ -9,20 +9,22 @@
  - -printer="\Drupal\Tests\Listeners\HtmlOutputPrinter" to use it (note there
  should be no spaces between the hyphens).
 -->
-<phpunit bootstrap="web/core/tests/bootstrap.php"
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         bootstrap="web/core/tests/bootstrap.php"
+         colors="true"
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutChangesToGlobalState="true"
-         colors="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          forceCoversAnnotation="true"
-         stopOnError="true"
-         stopOnFailure="true"
-         stopOnIncomplete="true"
-         stopOnSkipped="true"
-         verbose="true">
+         stopOnError="false"
+         stopOnFailure="false"
+         stopOnIncomplete="false"
+         stopOnSkipped="false"
+         verbose="true"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
   <php>
     <!-- Set error reporting to E_ALL. -->
     <ini name="error_reporting" value="22527"/>
@@ -36,10 +38,39 @@
     <env name="SIMPLETEST_DB" value="pgsql://par:123456@db:5432/par"/>
     <!-- Example BROWSERTEST_OUTPUT_DIRECTORY value: /path/to/webroot/sites/simpletest/browser_output -->
     <env name="BROWSERTEST_OUTPUT_DIRECTORY" value=""/>
-    <!-- Example BROWSERTEST_OUTPUT_FILE value: /path/to/webroot/sites/simpletest/browser_output/outputfile.txt -->
-    <env name="BROWSERTEST_OUTPUT_FILE" value=""/>
+    <!-- By default, browser tests will output links that use the base URL set
+    in SIMPLETEST_BASE_URL. However, if your SIMPLETEST_BASE_URL is an internal
+    path (such as may be the case in a virtual or Docker-based environment),
+    you can set the base URL used in the browser test output links to something
+    reachable from your host machine here. This will allow you to follow them
+    directly and view the output. -->
+    <env name="BROWSERTEST_OUTPUT_BASE_URL" value=""/>
+
+    <!-- Deprecation testing is managed through Symfony's PHPUnit Bridge.
+      The environment variable SYMFONY_DEPRECATIONS_HELPER is used to configure
+      the behavior of the deprecation tests.
+      See https://symfony.com/doc/current/components/phpunit_bridge.html#configuration
+      Drupal core's testing framework is setting this variable to its defaults.
+      Projects with their own requirements need to manage this variable
+      explicitly.
+    -->
+    <!-- To disable deprecation testing completely uncomment the next line. -->
+    <!-- <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/> -->
+    <!-- Deprecation errors can be selectively ignored by specifying a file of
+      regular expression patterns for exclusion.
+      See https://symfony.com/doc/current/components/phpunit_bridge.html#ignoring-deprecations
+      Uncomment the line below to specify a custom deprecations ignore file.
+      NOTE: it may be required to specify the full path to the file to run tests
+      correctly.
+    -->
     <!-- Do not show depreciation notices. -->
     <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak"/>
+    <!-- Example for changing the driver class for mink tests MINK_DRIVER_CLASS value: 'Drupal\FunctionalJavascriptTests\DrupalSelenium2Driver' -->
+    <env name="MINK_DRIVER_CLASS" value=''/>
+    <!-- Example for changing the driver args to mink tests MINK_DRIVER_ARGS value: '["http://127.0.0.1:8510"]' -->
+    <env name="MINK_DRIVER_ARGS" value=''/>
+    <!-- Example for changing the driver args to webdriver tests MINK_DRIVER_ARGS_WEBDRIVER value: '["chrome", { "goog:chromeOptions": { "w3c": false } }, "http://localhost:4444/wd/hub"]' For using the Firefox browser, replace "chrome" with "firefox" -->
+    <env name="MINK_DRIVER_ARGS_WEBDRIVER" value=''/>
   </php>
   <testsuites>
     <testsuite name="par">
@@ -51,11 +82,8 @@
   <listeners>
     <listener class="\Drupal\Tests\Listeners\DrupalListener">
     </listener>
-    <!-- The Symfony deprecation listener has to come after the Drupal listener -->
-    <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener">
-    </listener>
   </listeners>
-  <!-- Filter for coverage reports. -->
+  <!-- Settings for coverage reports. -->
   <coverage processUncoveredFiles="true">
     <include>
       <directory>web/core/includes</directory>

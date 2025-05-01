@@ -2,6 +2,7 @@ package uk.gov.beis.pageobjects.OrganisationPageObjects;
 
 import java.io.IOException;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -10,26 +11,27 @@ import uk.gov.beis.pageobjects.BasePageObject;
 import uk.gov.beis.utility.DataStore;
 
 public class OrganisationsSearchPage extends BasePageObject {
-	
+
 	@FindBy(id = "edit-name-search")
 	private WebElement searchInput;
-	
+
 	@FindBy(id = "edit-submit-helpdesk-organisations")
 	private WebElement searchBtn;
-	
+
 	@FindBy(linkText = "Manage organisation")
 	private WebElement organisationLink;
-	
+
 	public OrganisationsSearchPage() throws ClassNotFoundException, IOException {
 		super();
 	}
-	
+
 	public void searchOrganisation() {
 		searchInput.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
 		searchBtn.click();
 	}
-	
+
 	public void selectOrganisation() {
+        waitForElementToBeVisible(By.linkText("Manage organisation"), 2000);
 		organisationLink.click();
 	}
 }

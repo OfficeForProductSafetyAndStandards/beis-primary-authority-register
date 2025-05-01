@@ -92,7 +92,7 @@ class CookieConsentForm extends FormBase {
           '#type' => 'radios',
           '#title' => "Do you want to accept $type cookies?",
           '#options' => $options,
-          '#default_value' => $cookie_policy[$type] !== false ?
+          '#default_value' => isset($cookie_policy[$type]) && $cookie_policy[$type] !== false ?
             self::ALLOW_VALUE :
             self::BLOCK_VALUE,
         ];
