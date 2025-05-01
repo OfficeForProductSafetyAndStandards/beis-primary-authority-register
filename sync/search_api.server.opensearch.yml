@@ -15,4 +15,3 @@ backend_config:
   advanced:
     fuzziness: auto
     prefix: ''
-    max_ngram_diff: 1
