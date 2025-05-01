@@ -9,12 +9,9 @@ name: OpenSearch
 description: ''
 backend: opensearch
 backend_config:
-  connector: basicauth
+  connector: standard
   connector_config:
-    url: 'http://beis-par-search:9200'
-    ssl_verification: true
-    username: admin
-    password: VahktEIC_Dxs6B1O
+    url: 'http://os.localhost:9200'
   advanced:
     fuzziness: auto
     prefix: ''
