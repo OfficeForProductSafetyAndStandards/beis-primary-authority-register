@@ -110,17 +110,6 @@ class ParSicCodeDisplay extends ParFormPluginBase {
       catch (ParFlowException $e) {
         $this->getLogger($this->getLoggerChannel())->notice($e);
       }
-      try {
-        // Remove the SIC code.
-        $params = ['field_sic_code_delta' => $delta];
-        $options = ['attributes' => ['aria-label' => $this->t("Remove the SIC code @label", ['@label' => strtolower((string) $label)])]];
-        $operations['remove'] = $this->getFlowNegotiator()->getFlow()
-          ->getOperationLink('remove_field_sic_code', 'remove sic code', $params, $options);
-
-      }
-      catch (ParFlowException $e) {
-        $this->getLogger($this->getLoggerChannel())->notice($e);
-      }
 
       // Display operation links if any are present.
       if (!empty(array_filter($operations))) {
