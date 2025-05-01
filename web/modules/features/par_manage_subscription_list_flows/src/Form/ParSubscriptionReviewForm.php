@@ -50,7 +50,7 @@ class ParSubscriptionReviewForm extends ParBaseForm {
           '#markup' => "$subscribe_list",
           '#prefix' => '<p>',
           '#suffix' => '</p>',
-        ]
+        ],
       ];
     }
     if (!empty($unsubscribe)) {
@@ -64,7 +64,7 @@ class ParSubscriptionReviewForm extends ParBaseForm {
           '#markup' => "$unsubscribe_list",
           '#prefix' => '<p>',
           '#suffix' => '</p>',
-        ]
+        ],
       ];
     }
 

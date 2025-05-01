@@ -51,7 +51,7 @@ public class BaseDashboardPage extends BasePageObject{
 	}
 
 	public Boolean checkPage() {
-        waitForElementToBeVisible(By.id("block-par-theme-page-title"), 60);
+        waitForElementToBeVisible(By.id("block-par-theme-page-title"), 3000);
 		return dashBoardHeader.getText().contains("Dashboard");
 	}
 

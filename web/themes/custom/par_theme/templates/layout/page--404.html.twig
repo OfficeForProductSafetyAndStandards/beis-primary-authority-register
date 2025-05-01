@@ -28,6 +28,7 @@
  *   comment/reply/12345).
  *
  * Regions:
+ * - page.cookies: For the cookie banner messages.
  * - page.header: Items for the header region.
  * - page.primary_menu: Items for the primary menu region.
  * - page.secondary_menu: Items for the secondary menu region.
@@ -45,7 +46,6 @@
  * @ingroup themeable
  */
 #}
-<!-- page template -->
 {% if page.cookies %}
   {{ page.cookies }}
 {% endif %}
@@ -92,8 +92,16 @@
     {{  govuk_phase_banner }}
   {% endif %}
 
+  {% if page.pre_content %}
+    {{ page.pre_content }}
+  {% endif %}
+
   {% if page.breadcrumb and show_breadcrumb %}
     {{ page.breadcrumb }}
+  {% endif %}
+
+  {% if page.highlighted %}
+    {{ page.highlighted }}
   {% endif %}
 
   {%
@@ -106,10 +114,20 @@
   %}
   <main {{ attributes.addClass(main_classes) }} id="main-content" role="main">
     <div class="govuk-grid-row">
+
         <div class="govuk-grid-column-full">
-          {{ page.content }}
-        </div>
+          <div class="govuk-width-container">
+
+            <main class="govuk-main-wrapper{% if page.breadcrumb and show_breadcrumb %} has-breadcrumb{% endif %}" id="main-content" role="main">
+              {{ page.content.govuk_page_title }}
+              <p>If you typed the web address, check it is correct.</p>
+              <p>If you pasted the web address, check you copied the entire address.</p>
+              <p>If the web address is correct or you selected a link or button, <a href="/contact">contact the {{ site_name}} {{site_slogan}} Helpline</a> if you need to speak to someone about this service.</p>
+            </main>
+          </div>
       </div>
+
+    </div>
   </main>
 </div>
 
@@ -120,10 +138,10 @@
         {% if page.footer %}
           {{ page.footer }}
         {% endif %}
-
         {{ govuk_footer }}
       </div>
       {{ govuk_meta }}
     </div>
   </div>
 </footer>
+<!-- ends page template -->

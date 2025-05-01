@@ -14,7 +14,6 @@
     "gulp-cli": "^3.0.0",
     "gulp-sass": "^5.0.0",
     "gulp-sass-variables": "^1.2.0",
-    "gulp-sourcemaps": "^3.0.0",
     "sass": "^1.71.0",
     "yargs": "~14.2.0"
   },
@@ -22,6 +21,6 @@
     "gulp": "gulp"
   },
   "devDependencies": {
-    "gulp": "^4.0.2"
+    "gulp-sourcemaps": "^3.0.0"
   }
 }

@@ -1,6 +1,6 @@
 Feature: Coordinated Partnership Sad Paths
 
-  @regression @sadpath @partnershipapplication @sadorganisationmember @sadorganisationmemberlist
+  @regression @sadpath @partnershipapplication @sadorganisationmember @sadorganisationmemberlist @sadpathCoordinated
   Scenario: Verify a user receives Error Messages for required fields during the Coordinated Partnership Application and Completion (Sad Path - PAR-2459, PAR-2460)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -95,7 +95,7 @@ Feature: Coordinated Partnership Sad Paths
     And the user confirms the second part of the partnership application
     And the user signs out
 
-  @regression @sadpath @partnershipapplication @sadorganisationmember @sadorganisationmemberlist
+  @regression @sadpath @partnershipapplication @sadorganisationmember @sadorganisationmemberlist @sadpathCoordinated
   Scenario: Verify a user receives Error Messages for required fields when Nominating a Coordinated Partnership (Sad Path - PAR-2461)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -113,7 +113,7 @@ Feature: Coordinated Partnership Sad Paths
     Then the partnership is approved successfully
     And the user signs out
 
-  @regression @sadpath @partnershipapplication @sadorganisationmember
+  @regression @sadpath @partnershipapplication @sadorganisationmember @sadpathCoordinated
   Scenario: Verify a user receives Error Messages for required fields when Adding a Member Organisation to a Coordinated Partnership (Sad Path - PAR-2465)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -165,7 +165,7 @@ Feature: Coordinated Partnership Sad Paths
     Then the new member organistion has been added to the partnership successfully
     And the user signs out
 
-  @regression @sadpath @partnershipapplication @sadorganisationmember
+  @regression @sadpath @partnershipapplication @sadorganisationmember @sadpathCoordinated
   Scenario: Verify a user receives Error Messages for required fields when Updating a Member Organisation for a Coordinated Partnership (Sad Path - PAR-2466)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -222,7 +222,7 @@ Feature: Coordinated Partnership Sad Paths
     Then the member organisation is updated successfully
     And the user signs out
 
-  @regression @sadpath @partnershipapplication @sadorganisationmember
+  @regression @sadpath @partnershipapplication @sadorganisationmember @sadpathCoordinated
   Scenario: Verify a user receives Error Messages for required fields when Ceasing a Member Organisation for a Coordinated Partnership (Sad Path - PAR-2467)
     Given the user is on the PAR home page
     When the user visits the login page
@@ -237,7 +237,7 @@ Feature: Coordinated Partnership Sad Paths
     Then the organisations membership is cesased successfully
     And the user signs out
 
-  @regression @sadpath @partnershipapplication @sadorganisationmemberlist
+  @regression @sadpath @partnershipapplication @sadorganisationmemberlist @sadpathCoordinated
   Scenario: Verify a user receives Error Messages for required fields when Uploading a Member Organisation List to a Coordinated Partnership (Sad Path - PAR-2468)
     Given the user is on the PAR home page
     When the user visits the login page

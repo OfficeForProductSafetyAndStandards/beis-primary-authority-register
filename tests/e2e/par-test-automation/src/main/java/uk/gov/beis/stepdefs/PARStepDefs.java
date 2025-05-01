@@ -56,7 +56,8 @@ public class PARStepDefs {
 		LOG.info("Logging in user with credentials; username: " + user + " and password " + pass);
 		websiteManager.loginPage.enterLoginDetails(user, pass);
 		websiteManager.loginPage.selectSignIn();
-        websiteManager.waitForPageLoad();
+        websiteManager.loginPage.waitForPageLoad();
+        Thread.sleep(3000);
 
 	}
 
@@ -1379,15 +1380,19 @@ public class PARStepDefs {
 		}
 
 		websiteManager.partnershipInformationPage.selectShowMembersListLink();
+        websiteManager.authorityAddressDetailsPage.waitForPageLoad();
 		websiteManager.memberListPage.selectAddAMemberLink();
+        websiteManager.authorityAddressDetailsPage.waitForPageLoad();
 
 		LOG.info("Entering the Member Organisation's Name.");
 		websiteManager.addOrganisationNamePage.enterMemberName(DataStore.getSavedValue(UsableValues.MEMBER_ORGANISATION_NAME));
+        websiteManager.authorityAddressDetailsPage.waitForPageLoad();
 		websiteManager.addOrganisationNamePage.clickContinueButton();
 
 		LOG.info("Entering the Member Organisation's Address.");
 		websiteManager.authorityAddressDetailsPage.enterMemberOrganisationAddressDetails(DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE1), DataStore.getSavedValue(UsableValues.BUSINESS_ADDRESSLINE2),
 				DataStore.getSavedValue(UsableValues.BUSINESS_TOWN), DataStore.getSavedValue(UsableValues.BUSINESS_COUNTY), DataStore.getSavedValue(UsableValues.BUSINESS_POSTCODE));
+        websiteManager.authorityAddressDetailsPage.waitForPageLoad();
 		websiteManager.authorityAddressDetailsPage.clickContinueButton();
 
 		LOG.info("Entering the Member Organisation's Contact Details.");
@@ -1593,7 +1598,7 @@ public class PARStepDefs {
 	@When("^the user can search for a PA Organisation Trading name Company number$")
 	public void the_user_can_search_for_a_PA_Organisation_Trading_name_Company_number() throws Throwable {
 		LOG.info("Enter business name and click the search button");
-		websiteManager.publicRegistrySearchPage.searchForPartnership(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
+        websiteManager.publicRegistrySearchPage.searchForPartnership(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
 		websiteManager.publicRegistrySearchPage.clickSearchButton();
 	}
 
@@ -2032,8 +2037,8 @@ public class PARStepDefs {
 	public void the_user_cannot_sign_in_and_receives_an_error_message() throws Throwable {
 		LOG.info("Verifying the User cannot sign in and receives an error message.");
 
-		assertTrue(websiteManager.loginPage.checkErrorSummary("The username national_regulator@example.com has not been activated or is blocked."));
-		assertTrue(websiteManager.loginPage.checkErrorMessage("The username national_regulator@example.com has not been activated or is blocked."));
+		assertTrue(websiteManager.loginPage.checkErrorSummary("The account with email address national_regulator@example.com has not been activated or is blocked."));
+		assertTrue(websiteManager.loginPage.checkErrorMessage("The account with email address national_regulator@example.com has not been activated or is blocked."));
 	}
 
 	@When("^the user reinstates the user account$")
