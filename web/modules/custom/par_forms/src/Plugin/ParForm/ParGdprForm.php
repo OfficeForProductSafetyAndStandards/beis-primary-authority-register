@@ -22,6 +22,7 @@ class ParGdprForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $account = $this->getFlowDataHandler()->getParameter('user');
     if ($account && ('1' === $account->get('field_gdpr')->getString() || $account->get('field_gdpr')->getString() === TRUE)) {
@@ -34,6 +35,7 @@ class ParGdprForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // If this notice has already been reviewed then skip this form.
     if ($this->getDefaultValuesByKey('gdpr_agreement', $index, FALSE)) {
@@ -89,6 +91,7 @@ class ParGdprForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $data_policy_key = $this->getElementKey('data_policy');
     if ($form_state->getValue($data_policy_key) !== 'on') {

@@ -9,4 +9,4 @@ label: Referrer-Policy
 description: 'Referrer Policy is a new header that allows a site to control how much information the browser includes with navigations away from a document and should be set by all sites.'
 name: Referrer-Policy
 value: strict-origin-when-cross-origin
-group: Security
+visibility: {  }

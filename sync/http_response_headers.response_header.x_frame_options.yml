@@ -9,4 +9,4 @@ label: X-Frame-Options
 description: "Clickjacking protection. Valid values include <em>DENY</em> meaning your site can't be framed, <em>SAMEORIGIN</em> which allows you to frame your own site or <em>ALLOW-FROM https://example.com/</em> which lets you specify sites that are permitted to frame"
 name: X-Frame-Options
 value: sameorigin
-group: Security
+visibility: {  }

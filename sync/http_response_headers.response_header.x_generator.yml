@@ -9,4 +9,4 @@ label: X-Generator
 description: 'Allows the declaration of the CMS type and version to be modified.'
 name: X-Generator
 value: ''
-group: Security
+visibility: {  }

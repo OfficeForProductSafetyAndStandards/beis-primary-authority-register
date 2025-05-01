@@ -28,6 +28,7 @@ class ParReviewForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     // Nothing to load at the moment.
     parent::loadData();
@@ -36,6 +37,7 @@ class ParReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     // Set the data values on the entities
     $entities = $this->createEntities();
@@ -145,6 +147,7 @@ class ParReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
@@ -163,6 +166,7 @@ class ParReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
@@ -192,7 +196,7 @@ class ParReviewForm extends ParBaseForm {
             $partnership_legal_entities[$delta] = $partnership_legal_entity;
           }
         }
-        catch (ParDataException $ignored) {
+        catch (ParDataException) {
 
         }
       }

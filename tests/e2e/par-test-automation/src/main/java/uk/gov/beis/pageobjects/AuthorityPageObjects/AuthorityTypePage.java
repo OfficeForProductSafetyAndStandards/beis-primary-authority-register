@@ -15,23 +15,27 @@ public class AuthorityTypePage extends BasePageObject {
 
 	@FindBy(id = "edit-save")
 	private WebElement saveBtn;
-	
+
 	private String locator = "//label[contains(text(),'?')]";
-	
+
 	public AuthorityTypePage() throws ClassNotFoundException, IOException {
 		super();
 	}
-	
+
 	public void selectAuthorityType(String type) {
 		WebElement link = driver.findElement(By.xpath(locator.replace("?", type)));
 		link.click();
 	}
-	
+
 	public void clickContinueButton() {
-		continueBtn.click();
+        waitForElementToBeClickable(By.id("edit-next"), 3000);
+        continueBtn.click();
+        waitForPageLoad();
 	}
-	
+
 	public void clickSaveButton() {
-		saveBtn.click();
+        waitForElementToBeClickable(By.id("edit-save"), 3000);
+        saveBtn.click();
+        waitForPageLoad();
 	}
 }

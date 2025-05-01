@@ -738,15 +738,6 @@ $settings['session_write_interval'] = 180;
  */
 $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
 
-/**
- * Load the par cache backend.
- *
- * To enable the backends at the same time as enabling the module the drupal
- * boostrap container must be aware of the cache backends. To do so register
- * the par_cache.services.yml in the Drupal settings file:
- */
-$settings['container_yamls'][] = 'modules/custom/par_cache/par_cache.services.yml';
-$class_loader->addPsr4('Drupal\\par_cache\\', 'modules/custom/par_cache/src');
 
 /**
  * Override the default service container class.
@@ -919,6 +910,11 @@ if (isset($redis_credentials)) {
   $settings['redis.connection']['port'] = $redis_credentials->port;
   $settings['redis.connection']['password'] = $redis_credentials->password;
   $settings['cache']['default'] = 'cache.backend.redis';
+  $settings['cache']['bins']['form'] = 'cache.backend.database';
+  $settings['cache']['bins']['render'] = 'cache.backend.database';
+  $settings['redis.connection']['persistent'] = TRUE;
+  $settings['redis_compress_length'] = 100;
+  $settings['redis_compress_level'] = 1;
 
   // Apply changes to the container configuration to better leverage Redis.
   // This includes using Redis for the lock and flood control systems, as well
@@ -1179,4 +1175,9 @@ $settings['state_cache'] = TRUE;
 $ddev_settings = dirname(__FILE__) . '/settings.ddev.php';
 if (getenv('IS_DDEV_PROJECT') == 'true' && is_readable($ddev_settings)) {
   require $ddev_settings;
+}
+
+// Include settings required for Redis cache.
+if ((file_exists(__DIR__ . '/settings.ddev.redis.php') && getenv('IS_DDEV_PROJECT') == 'true')) {
+  include __DIR__ . '/settings.ddev.redis.php';
 }

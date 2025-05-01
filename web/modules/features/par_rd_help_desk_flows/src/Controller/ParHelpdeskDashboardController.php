@@ -30,41 +30,32 @@ class ParHelpdeskDashboardController extends ControllerBase {
   use ParControllerTrait;
 
   /**
-   * The response cache kill switch.
-   *
-   * @var KillSwitch $killSwitch
-   */
-  protected KillSwitch $killSwitch;
-
-  /**
-   * The flow negotiator.
-   *
-   * @var ConfigEntityStorageInterface $flowStorage
-   */
-  protected ConfigEntityStorageInterface $flowStorage;
-
-  /**
    * Constructs a \Drupal\par_flows\Form\ParBaseForm.
    *
-   * @param \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $flow_storage
+   * @param \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $flowStorage
    *   The flow entity storage handler.
    * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
    *   The current user object.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current user object.
-   * @param \Drupal\Core\PageCache\ResponsePolicy\KillSwitch $kill_switch
+   * @param \Drupal\Core\PageCache\ResponsePolicy\KillSwitch $killSwitch
    *   The page cache kill switch.
    */
-  public function __construct(ConfigEntityStorageInterface $flow_storage, ParDataManagerInterface $par_data_manager, AccountInterface $current_user, KillSwitch $kill_switch) {
-    $this->flowStorage = $flow_storage;
+  public function __construct(/**
+   * The flow negotiator.
+   */
+  protected ConfigEntityStorageInterface $flowStorage, ParDataManagerInterface $par_data_manager, AccountInterface $current_user, /**
+   * The response cache kill switch.
+   */
+  protected KillSwitch $killSwitch) {
     $this->parDataManager = $par_data_manager;
-    $this->killSwitch = $kill_switch;
     $this->setCurrentUser($current_user);
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container) {
     $entity_type_manager = $container->get('entity_type.manager');
     return new static(
@@ -280,7 +271,7 @@ class ParHelpdeskDashboardController extends ControllerBase {
       $params = ['user' => $this->getCurrentUser()->id()];
       $manage_profile_flow = ParFlow::load('profile_update');
       $manage_profile_link = $manage_profile_flow?->getStartLink(1, 'Manage your profile details', $params);
-    } catch (ParFlowException $e) {
+    } catch (ParFlowException) {
 
     }
 

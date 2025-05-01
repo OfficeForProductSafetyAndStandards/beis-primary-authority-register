@@ -39,34 +39,33 @@
         "composer/installers": "^2.2",
         "cweagans/composer-patches": "^1.7",
         "drupal/address": "^2.0",
-        "drupal/admin_toolbar": "^3.4",
+        "drupal/admin_toolbar": "^3.5",
         "drupal/audit_log": "3.0.x-dev",
-        "drupal/autologout": "~1.4.0",
-        "drupal/better_exposed_filters": "^6.0",
+        "drupal/better_exposed_filters": "^7.0",
         "drupal/block_classes": "^1.0",
         "drupal/cacheexclude": "^2.0",
         "drupal/chosen": "~3.0.0",
-        "drupal/clamav": "~2.0.0",
         "drupal/config_filter": "^2.7",
         "drupal/config_readonly": "^1.0",
         "drupal/config_split": "~2.0.0",
         "drupal/config_update": "^2.0@alpha",
-        "drupal/core-composer-scaffold": "~10.2.0",
-        "drupal/core-recommended": "~10.2.0",
+        "drupal/core-composer-scaffold": "10.4.5",
+        "drupal/core-project-message": "10.4.5",
+        "drupal/core-recommended": "10.4.5",
         "drupal/csv_serialization": "^4.0",
         "drupal/ctools": "^4.1",
         "drupal/default_content": "^2.0@alpha",
-        "drupal/email_registration": "~1.4.0",
+        "drupal/email_registration": "^2.0@RC",
         "drupal/features": "~3.14.0",
-        "drupal/flysystem": "2.1.0-rc6",
+        "drupal/flood_control": "^3.0",
+        "drupal/flysystem": "2.2.0-beta2",
         "drupal/flysystem_s3": "~2.1.0",
-        "drupal/google_analytics": "~4.0.0",
         "drupal/google_tag": "^2.0",
-        "drupal/govuk_cookies": "^1.0@dev",
         "drupal/govuk_notify": "^3.1",
         "drupal/govuk_theme": "^2.1",
         "drupal/health_check": "^3.1",
-        "drupal/http_response_headers": "~2.0.0",
+        "drupal/hook_event_dispatcher": "^4.2",
+        "drupal/http_response_headers": "^3.0",
         "drupal/inline_entity_form": "^3.0@RC",
         "drupal/invite": "8.x-1.x-dev",
         "drupal/jquery_ui": "^1.7",
@@ -77,57 +76,54 @@
         "drupal/jquery_ui_slider": "^2.1",
         "drupal/jquery_ui_tabs": "^2.1",
         "drupal/jquery_ui_touch_punch": "^1.1",
-        "drupal/log_stdout": "dev-1.x#cb9c63ee1e124c8eaa984640d0f3bd94a2c1c8fa",
         "drupal/login_destination": "^2.0@beta",
         "drupal/maillog": "~1.1.0",
-        "drupal/mailsystem": "~4.4.0",
+        "drupal/mailsystem": "^4.5",
         "drupal/masquerade": "~2.0.0",
         "drupal/menu_link_attributes": "^1.5",
-        "drupal/message": "1.4",
+        "drupal/message": "^1.5",
         "drupal/message_expire": "~1.0.0",
         "drupal/message_notify": "^1.4",
         "drupal/migrate_plus": "^6.0",
         "drupal/migrate_tools": "^6",
         "drupal/pagerer": "^3.1",
         "drupal/password_policy": "^4.0",
-        "drupal/queue_ui": "~3.1.0",
-        "drupal/range": "~1.5.0",
+        "drupal/queue_ui": "3.2.1",
         "drupal/raven": "^5.0",
-        "drupal/redis": "1.7",
+        "drupal/redis": "1.9",
         "drupal/registered_organisations": "1.0.x-dev",
         "drupal/robotstxt": "^1.6",
-        "drupal/role_delegation": "~1.2.0",
+        "drupal/role_delegation": "1.3.0",
         "drupal/search_api": "^1.35",
-        "drupal/search_api_opensearch": "^2.1",
+        "drupal/search_api_opensearch": "^2.4",
         "drupal/seckit": "^2.0",
         "drupal/symfony_mailer": "~1.4.0",
         "drupal/token": "^1.15",
         "drupal/tracer": "~1.0.0",
         "drupal/trance": "8.x-1.x-dev",
         "drupal/twig_field_value": "~2.0.0",
-        "drupal/twig_tweak": "~3.3.0",
         "drupal/ultimate_cron": "^2.0@alpha",
-        "drupal/upgrade_status": "^4.0.0",
+        "drupal/upgrade_status": "^4.3",
         "drupal/vbo_export": "^4.1",
         "drupal/views_bulk_operations": "^4.2",
-        "drupal/views_contextual_filters_or": "~1.4.0",
-        "drupal/views_data_export": "~1.4.0",
-        "drupal/views_field_view": "~1.0.0",
-        "drupal/xmlsitemap": "~1.5.0",
-        "drush/drush": "^12.5",
-        "predis/predis": "~2.2.2",
+        "drupal/views_contextual_filters_or": "~1.5.0",
+        "drupal/views_data_export": "^1.5",
+        "drupal/xmlsitemap": "~2.0",
+        "drush/drush": "^13.0",
+        "predis/predis": "^2.3",
         "rapidwebltd/php-uk-bank-holidays": "~5.0.0",
-        "vlucas/phpdotenv": "^5.6"
+        "vlucas/phpdotenv": "~5.6.0"
     },
     "require-dev": {
         "behat/mink-browserkit-driver": "^2.2.0",
         "brianium/paratest": "^6.0.0",
         "drupal/config_inspector": "^2.1.3",
-        "drupal/core-dev": "~10.2.0",
-        "drupal/devel": "5.1.2",
-        "drupal/webprofiler": "10.1.4",
+        "drupal/core-dev": "10.4.5",
+        "drupal/devel": "^5.2",
+        "drupal/git_deploy": "*",
         "mglaman/drupal-check": "^1.4",
-        "palantirnet/drupal-rector": "^0.19.0",
+        "palantirnet/drupal-rector": "*",
+        "phpcompatibility/php-compatibility": "*",
         "phpspec/prophecy": "^1.8.0",
         "phpspec/prophecy-phpunit": "^2",
         "zaporylie/composer-drupal-optimizations": "^1.2"
@@ -151,7 +147,8 @@
             "dealerdirect/phpcodesniffer-composer-installer": true,
             "php-http/discovery": true,
             "phpstan/extension-installer": true,
-            "tbachert/spi": true
+            "tbachert/spi": true,
+            "drupal/core-project-message": true
         }
     },
     "extra": {
@@ -183,49 +180,43 @@
             }
         },
         "composer-exit-on-patch-failure": true,
+        "patchLevel": {
+            "drupal/core": "-p2"
+        },
         "patches": {
             "drupal/core": {
-                "Ensure the table alias is no longer than 60 characters long": "https://www.drupal.org/files/issues/2022-06-30/571548-165.patch",
-                "Broken aria-describedby in radios and checkboxes": "https://www.drupal.org/files/issues/2020-09-08/2839344_0.patch",
-                "Add events for matching entity hooks": "https://www.drupal.org/files/issues/2024-01-30/2551893-122.patch",
-                "PostgreSQL: email case insensitivity": "https://www.drupal.org/files/issues/2022-12-19/drupal-case_sensitive_email-2490294-58-d95.patch",
-                "System: Removed batch column update": "./patches/core-system_update_10201-removed-batch-column-update.patch"
+                "Identifiers longer than 63 characters are truncated, causing Views to break on Postgres - https://www.drupal.org/project/drupal/issues/571548": "https://www.drupal.org/files/issues/2025-01-16/drupal-postgres_identifiers_10_4-571548-207.patch"
             },
             "drupal/flysystem": {
-                "Add Drush commands for sending and receiving files": "https://www.drupal.org/files/issues/2023-08-31/3192777-4-added_drush_commands.patch",
-                "Support new lazy asset collection optimizers": "https://git.drupalcode.org/project/flysystem/-/merge_requests/26.diff",
-                "Remove $state in CollectionOptimizerLazy asset handlers": "https://git.drupalcode.org/project/flysystem/-/merge_requests/46.diff"
+                "Add drush commands for getting and putting files - https://www.drupal.org/project/flysystem/issues/3192777": "https://www.drupal.org/files/issues/2023-08-31/3192777-4-added_drush_commands.patch"
             },
             "drupal/govuk_notify": {
                 "Message body formatting array to string": "https://www.drupal.org/files/issues/2021-08-11/3227617-2-govuk-notify-message-body-formatting.diff"
             },
-            "drupal/log_stdout": {
-                "PAR-2541 Reformat to ASIM JSON - https://regulatorydelivery.atlassian.net/browse/PAR-2541": "./patches/log_stdout-convert_to_asim_json.patch"
-            },
-            "drupal/redis": {
-                "Unable to override default scheme with settings": "https://www.drupal.org/files/issues/2021-02-16/redis-support_tls_on_predis-3004561-33.patch",
-                "Take into account CONFIG command may not work": "https://www.drupal.org/files/issues/2021-02-16/redis-allow_disabled_config-3173988-4.patch"
-            },
-            "drupal/registered_organisations": {
-                "Change form validation to allow for 6 characters": "./patches/charities_commission_number_format.patch"
-            },
             "drupal/pagerer": {
                 "Pagerer upgrade issue": "https://git.drupalcode.org/project/pagerer/-/merge_requests/18.diff"
+            },
+            "drupal/redis": {
+                "Currently Drush Cr or Cache Clear UI does not flush Redis cache - https://www.drupal.org/project/redis/issues/2765895": "https://www.drupal.org/files/issues/redis-n2765895-16.patch",
+                "Support TLS for Predis - https://www.drupal.org/project/redis/issues/3004561": "https://www.drupal.org/files/issues/2021-11-19/redis-support_tls_on_predis-3004561-37.patch",
+                "Implement initial RedisCluster client integration - https://www.drupal.org/project/redis/issues/2900947": "https://www.drupal.org/files/issues/2024-10-15/2900947-82.patch",
+                "Cache bin handling in multiple Redis DBs - https://www.drupal.org/project/redis/issues/2395255": "https://www.drupal.org/files/issues/2025-03-13/redis-Cache_bin_handling_in_multiple_Redis_DBs-2395255-10.patch"
+            },
+            "drupal/registered_organisations": {
+                "Fix number format for regsistered charities": "./patches/registered_organisations/charities_commission_number_format.patch"
             },
             "drupal/vbo_export": {
                 "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2021-11-23/allow_configurable_scheme-2988257-18.patch"
             },
-            "drupal/views_data_export": {
-                "Allow output file scheme to be chosen": "https://www.drupal.org/files/issues/2021-03-01/allow-configurable-filesystems_3200974-6.patch"
-            },
             "twistor/flysystem-stream-wrapper": {
-                "Fix PHP error on flystem (see https://github.com/twistor/flysystem-stream-wrapper/issues/27 & https://www.drupal.org/project/flysystem/issues/3387094": "patches/flysystem-deprecated-dynamic-prop.patch"
+                "Fix PHP error on flystem (see https://github.com/twistor/flysystem-stream-wrapper/issues/27 & https://www.drupal.org/project/flysystem/issues/3387094": "./patches/flysystem-stream-wrapper/flysystem-deprecated-dynamic-property.patch"
             }
         }
     },
     "autoload": {
         "psr-4": {
-            "Drupal\\Core\\Composer\\": "core/lib/Drupal/Core/Composer"
+            "Drupal\\Core\\Composer\\": "core/lib/Drupal/Core/Composer",
+            "Par\\Rector\\": "tests/rector/src"
         }
     },
     "scripts": {

@@ -1,0 +1,21 @@
+# e2e-testing
+End-to-End Testing with Docker container.
+
+### Step 1
+
+Set up the PARTestRunner to specify the tags you want to use. For running all the tests set up the tag as '@regression.If you just want to run hapy path tests , tag is '@happypath' and for sad paths '@sadpath'
+
+### Step 2
+Open your powershell from the root folder (Par-test-automation)
+
+
+### Step 3
+ Start your docker desktop
+
+ ### Step 3
+Run the tests with the below docker command
+
+ docker build -t selenium-chrome-tests . && docker run -v $(pwd)/reports:/app/target/cucumber-report selenium-chrome-tests mvn test
+
+ Note- The cucumber report can be copied to your local folder in the host machine by specifying the path like this - docker build -t selenium-chrome-tests . && docker run -v C:/cucumber-reports:/app/target/cucumber-report selenium-chrome-tests mvn test
+

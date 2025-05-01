@@ -9,4 +9,4 @@ label: Content-Security-Policy
 description: 'This HTTP header parameter allows you to define a whitelist of approved sources of content for your site. By restricting the assets that a browser can load for your site you will have extra level of protection from XSS attacks.'
 name: Content-Security-Policy
 value: "frame-ancestors 'self';"
-group: Security
+visibility: {  }

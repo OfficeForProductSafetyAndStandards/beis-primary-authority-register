@@ -5,9 +5,13 @@
  * Contains par_roles.module.
  */
 
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\user\UserInterface;
 
 /**
  * Implements hook_help().
@@ -25,7 +29,10 @@ function par_roles_help($route_name, RouteMatchInterface $route_match) {
   }
 }
 
-function par_roles_user_presave($account) {
+/**
+ * Implements hook_ENTITY_TYPE_ID_presave().
+ */
+function par_roles_user_presave(UserInterface $account) {
   /** @var \Drupal\par_roles\ParRoleManagerInterface $par_role_manager */
   $par_role_manager = \Drupal::service('par_roles.role_manager');
   // Auto-assign the correct roles based on memberships.
@@ -37,42 +44,52 @@ function par_roles_user_presave($account) {
     $person = ParDataPerson::create([
       'email' => $account->getEmail(),
       'field_user_account' => [$account->id()],
+      'type' => 'person',
     ]);
     $person->save();
   }
 }
 
-function par_roles_user_insert($account) {
+/**
+ * Implements hook_ENTITY_TYPE_ID_insert().
+ */
+function par_roles_user_insert(UserInterface $account) {
   // Do not run this check for test accounts.
-  if (preg_match('/@example.com$/', $account->getEmail()) === 1) {
+  if (preg_match('/@example.com$/', (string) $account->getEmail()) === 1) {
     return;
   }
 
-  $par_data_manager = \Drupal::service('par_data.manager');
-  $par_data_manager->linkPeople($account);
-}
-
-function par_roles_user_update($account) {
-  // Do not run this check for test accounts.
-  if (preg_match('/@example.com$/', $account->getEmail()) === 1) {
-    return;
-  }
-
+  /** @var Drupal\par_data\ParDataManagerInterface $par_data_manager */
   $par_data_manager = \Drupal::service('par_data.manager');
   $par_data_manager->linkPeople($account);
 }
 
 /**
- * Add a permission to allow other users to see user fields such as last login time.
+ * Implements hook_ENTITY_TYPE_ID_update().
+ */
+function par_roles_user_update(UserInterface $account): void {
+  // Do not run this check for test accounts.
+  if (preg_match('/@example.com$/', (string) $account->getEmail()) === 1) {
+    return;
+  }
+
+  /** @var Drupal\par_data\ParDataManagerInterface $par_data_manager */
+  $par_data_manager = \Drupal::service('par_data.manager');
+  $par_data_manager->linkPeople($account);
+}
+
+/**
+ * Add a permission to allow other users to see user fields.
  *
- * Added in PAR-1624 to allow last login time to be displayed in the /members view.
+ * Added in PAR-1624 to allow last login time to be displayed in the /members
+ * view.
  * https://www.drupal.org/project/drupal/issues/2799049
  *
  * @see \hook_entity_field_access()
  *
  * {@inheritDoc}
  */
-function par_roles_entity_field_access($operation, \Drupal\Core\Field\FieldDefinitionInterface $field_definition, \Drupal\Core\Session\AccountInterface $account, \Drupal\Core\Field\FieldItemListInterface $items = NULL) {
+function par_roles_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, ?FieldItemListInterface $items = NULL) {
   if ($operation === 'view' && $field_definition->getTargetEntityTypeId() === 'user') {
     return AccessResult::allowedIfHasPermission($account, 'view user fields');
   }

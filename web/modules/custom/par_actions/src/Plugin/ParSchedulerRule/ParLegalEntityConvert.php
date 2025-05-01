@@ -20,6 +20,7 @@ use Drupal\par_data\Entity\ParDataLegalEntity;
  */
 class ParLegalEntityConvert extends ParSchedulerRuleBase {
 
+  #[\Override]
   public function query() {
     $query = parent::query();
 

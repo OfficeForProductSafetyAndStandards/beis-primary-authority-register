@@ -24,6 +24,7 @@ class ParMigrateLegalEntities extends ActionBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function execute($entity = NULL) {
     if ($entity instanceof ParDataPartnership) {
       // Get partnership organisation entity.
@@ -45,6 +46,7 @@ class ParMigrateLegalEntities extends ActionBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
     // @TODO Implement entity/action checks
     $result = AccessResult::allowed();

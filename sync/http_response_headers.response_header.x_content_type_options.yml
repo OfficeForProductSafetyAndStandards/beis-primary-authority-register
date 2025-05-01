@@ -9,4 +9,4 @@ label: X-Content-Type-Options
 description: 'This header parameter prevents Google Chrome and Internet Explorer from trying to mime-sniff the content-type of a response away from the one being declared by the server.'
 name: X-Content-Type-Options
 value: nosniff
-group: Security
+visibility: {  }

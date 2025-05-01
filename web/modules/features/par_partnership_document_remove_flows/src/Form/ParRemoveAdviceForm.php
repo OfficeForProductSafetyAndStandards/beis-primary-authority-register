@@ -22,6 +22,7 @@ class ParRemoveAdviceForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_advice = $this->getFlowDataHandler()->getParameter('par_data_advice');
@@ -43,6 +44,7 @@ class ParRemoveAdviceForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $par_data_advice = NULL) {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_advice = $this->getFlowDataHandler()->getParameter('par_data_advice');
@@ -108,6 +110,7 @@ class ParRemoveAdviceForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
@@ -119,6 +122,7 @@ class ParRemoveAdviceForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
@@ -140,7 +144,7 @@ class ParRemoveAdviceForm extends ParBaseForm {
         throw new \InvalidArgumentException('No field delta has been provided.');
       }
     }
-    catch (\InvalidArgumentException $e) {
+    catch (\InvalidArgumentException) {
 
     }
 

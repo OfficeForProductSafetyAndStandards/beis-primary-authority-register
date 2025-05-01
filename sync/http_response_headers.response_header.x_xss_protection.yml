@@ -9,4 +9,4 @@ label: X-Xss-Protection
 description: "This response header can be used to configure a user-agent's built in reflective XSS protection. Currently, only Microsoft's Internet Explorer, Google Chrome and Safari (WebKit) support this header."
 name: X-Xss-Protection
 value: '1; mode=block'
-group: Security
+visibility: {  }

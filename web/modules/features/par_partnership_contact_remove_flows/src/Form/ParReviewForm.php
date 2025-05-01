@@ -35,6 +35,7 @@ class ParReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
     if ($par_data_person) {
@@ -44,7 +45,7 @@ class ParReviewForm extends ParBaseForm {
 
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     if ($par_data_partnership) {
-      $this->getFlowDataHandler()->setFormPermValue("partnership_label", lcfirst($par_data_partnership->label()));
+      $this->getFlowDataHandler()->setFormPermValue("partnership_label", lcfirst((string) $par_data_partnership->label()));
 
       switch ($this->getFlowDataHandler()->getParameter('type')) {
         case 'authority':
@@ -68,6 +69,7 @@ class ParReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $form['partnership_info'] = [
       '#type' => 'fieldset',
@@ -108,6 +110,7 @@ class ParReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

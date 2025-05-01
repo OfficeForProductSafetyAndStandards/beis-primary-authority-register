@@ -28,6 +28,7 @@ class NewInspectionPlanSubscriber extends ParMessageSubscriberBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getRecipients(MessageInterface $message): array {
     $recipients = parent::getRecipients($message);
 
@@ -44,7 +45,7 @@ class NewInspectionPlanSubscriber extends ParMessageSubscriberBase {
         );
       }
     }
-    catch (ParNotificationException $e) {
+    catch (ParNotificationException) {
       return $recipients;
     }
 
@@ -67,6 +68,7 @@ class NewInspectionPlanSubscriber extends ParMessageSubscriberBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getSubscribedEntities(MessageInterface $message): array {
     $subscriptions = parent::getSubscribedEntities($message);
 
@@ -83,7 +85,7 @@ class NewInspectionPlanSubscriber extends ParMessageSubscriberBase {
         );
       }
     }
-    catch (ParNotificationException $e) {
+    catch (ParNotificationException) {
       return $subscriptions;
     }
 

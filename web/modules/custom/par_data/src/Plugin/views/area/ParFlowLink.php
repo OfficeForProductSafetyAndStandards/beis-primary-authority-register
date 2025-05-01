@@ -43,6 +43,7 @@ class ParFlowLink extends AreaPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function defineOptions() {
     $options = parent::defineOptions();
 
@@ -57,6 +58,7 @@ class ParFlowLink extends AreaPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);
 
@@ -92,6 +94,7 @@ class ParFlowLink extends AreaPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validate() {
     $errors = parent::validate();
 
@@ -106,9 +109,10 @@ class ParFlowLink extends AreaPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function render($empty = FALSE) {
     $path = $this->options['link'] ?: '';
-    $classes = explode(',', $this->options['class'] ?: 'flow-link');
+    $classes = explode(',', (string) ($this->options['class'] ?: 'flow-link'));
     $title = trim(strip_tags(Html::decodeEntities($this->options['title'] ?: '')));
     $assistive_text = strip_tags(Html::decodeEntities($this->options['assistive_text'] ?: ''));
 

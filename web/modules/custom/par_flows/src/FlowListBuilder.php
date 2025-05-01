@@ -24,6 +24,7 @@ class FlowListBuilder extends ConfigEntityListBuilder {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildHeader() {
     $header = [];
 
@@ -38,6 +39,7 @@ class FlowListBuilder extends ConfigEntityListBuilder {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildRow(EntityInterface $entity) {
     $row = [];
 
