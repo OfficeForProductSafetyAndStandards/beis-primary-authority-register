@@ -5,6 +5,6 @@ dependencies: {  }
 id: server
 label: Server
 description: 'The Server header describes the software used by the origin server'
-group: Security
 name: Server
 value: ''
+visibility: {  }

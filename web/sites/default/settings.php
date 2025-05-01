@@ -6,6 +6,9 @@ if (file_exists($root_path . '.env')) {
   $dotenv->safeLoad();
 }
 
+// PAR-2589
+header_remove("X-Powered-By");
+
 // @codingStandardsIgnoreFile
 
 /**
