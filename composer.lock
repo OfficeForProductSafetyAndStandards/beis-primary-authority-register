@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a751692775e7f9827795c48a814501a0",
+    "content-hash": "6e5036de2b30c55b371b64d659905d35",
     "packages": [
         {
             "name": "alphagov/notifications-php-client",
@@ -4812,6 +4812,61 @@
             "support": {
                 "source": "https://www.drupal.org/project/jquery_ui_touch_punch",
                 "issues": "https://www.drupal.org/project/issues/jquery_ui_touch_punch"
+            }
+        },
+        {
+            "name": "drupal/log_stdout",
+            "version": "dev-1.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/log_stdout.git",
+                "reference": "cb9c63ee1e124c8eaa984640d0f3bd94a2c1c8fa"
+            },
+            "require": {
+                "drupal/core": "^8.8 || ^9 || ^10"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.5+3-dev",
+                    "datestamp": "1737361815",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "bladedu",
+                    "homepage": "https://www.drupal.org/user/436000"
+                },
+                {
+                    "name": "Bohun Tak",
+                    "homepage": "https://www.drupal.org/user/1205098"
+                },
+                {
+                    "name": "mrhanlon",
+                    "homepage": "https://www.drupal.org/user/764624"
+                },
+                {
+                    "name": "singularo",
+                    "homepage": "https://www.drupal.org/user/143"
+                }
+            ],
+            "description": "This module provides an hook for Drupal Watchdog that directs log messages to php://stdout or php://stderr for better log handling with Docker.",
+            "homepage": "https://www.drupal.org/project/log_stdout",
+            "support": {
+                "source": "https://git.drupalcode.org/project/log_stdout",
+                "issues": "https://www.drupal.org/project/issues/log_stdout",
+                "irc": "irc://irc.freenode.org/drupal-support"
             }
         },
         {
@@ -20449,6 +20504,7 @@
         "drupal/email_registration": 5,
         "drupal/inline_entity_form": 5,
         "drupal/invite": 20,
+        "drupal/log_stdout": 20,
         "drupal/login_destination": 10,
         "drupal/registered_organisations": 20,
         "drupal/trance": 20,
