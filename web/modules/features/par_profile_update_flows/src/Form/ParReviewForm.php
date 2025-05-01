@@ -49,6 +49,7 @@ class ParReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     $cid_person_select = $this->getFlowNegotiator()->getFormKey('par_choose_person');
     $person = $this->getFlowDataHandler()->getDefaultValues('user_person', '', $cid_person_select);
@@ -100,6 +101,7 @@ class ParReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $form['personal'] = [
       '#type' => 'fieldset',
@@ -197,7 +199,7 @@ class ParReviewForm extends ParBaseForm {
     $select_organisation_cid = $this->getFlowNegotiator()->getFormKey('par_update_institution');
 
     // Create a new profile record if one doesn't exist.
-    $par_data_person = $par_data_person ?? ParDataPerson::create([
+    $par_data_person ??= ParDataPerson::create([
       'type' => 'person',
     ]);
 
@@ -259,6 +261,7 @@ class ParReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

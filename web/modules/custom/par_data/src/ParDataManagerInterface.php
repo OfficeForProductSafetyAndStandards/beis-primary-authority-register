@@ -71,7 +71,7 @@ interface ParDataManagerInterface {
    * @return ParDataTypeInterface
    *   A PAR Data Bundle Entity
    */
-  public function getParBundleEntity(string $type, $bundle = NULL): ?ParDataTypeInterface;
+  public function getParBundleEntity(string $type, mixed $bundle = NULL): ?ParDataTypeInterface;
 
   /**
    * @param string $definition
@@ -93,6 +93,6 @@ interface ParDataManagerInterface {
    * @return NULL|FieldDefinitionInterface
    *   The field definition.
    */
-  public function getFieldDefinition(string $type, string $field, $bundle = NULL): ?FieldDefinitionInterface;
+  public function getFieldDefinition(string $type, string $field, mixed $bundle = NULL): ?FieldDefinitionInterface;
 
 }

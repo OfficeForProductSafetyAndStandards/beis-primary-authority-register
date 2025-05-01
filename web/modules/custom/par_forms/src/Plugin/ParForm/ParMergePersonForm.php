@@ -24,6 +24,7 @@ class ParMergePersonForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $contacts = $this->getFlowDataHandler()->getParameter('contacts');
 
@@ -40,6 +41,7 @@ class ParMergePersonForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $form['intro'] = [
       '#type' => 'markup',
@@ -63,6 +65,7 @@ class ParMergePersonForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $person_id_key = $this->getElementKey('contacts');
     $values = array_filter($form_state->getValue($person_id_key));

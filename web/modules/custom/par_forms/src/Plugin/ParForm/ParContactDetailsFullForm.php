@@ -43,6 +43,7 @@ class ParContactDetailsFullForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
       $this->setDefaultValuesByKey("salutation", $index, $par_data_person->get('salutation')->getString());
@@ -76,6 +77,7 @@ class ParContactDetailsFullForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $form['title'] = [
       '#type' => 'html_tag',

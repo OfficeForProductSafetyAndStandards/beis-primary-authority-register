@@ -31,6 +31,7 @@ class ParUserDetail extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $user = $this->getFlowDataHandler()->getParameter('user');
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
@@ -70,6 +71,7 @@ class ParUserDetail extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // Get the current invitation expiry date if one has already been sent.
     $invitation_expiry = $this->getFlowDataHandler()->getDefaultValues('invitation_expiration', FALSE);
@@ -216,7 +218,7 @@ class ParUserDetail extends ParFormPluginBase {
           ];
         }
       }
-      catch (ParFlowException $e) {
+      catch (ParFlowException) {
 
       }
 
@@ -250,7 +252,7 @@ class ParUserDetail extends ParFormPluginBase {
           ];
         }
       }
-      catch (ParFlowException $e) {
+      catch (ParFlowException) {
 
       }
     }
@@ -261,6 +263,7 @@ class ParUserDetail extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
@@ -268,6 +271,7 @@ class ParUserDetail extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }

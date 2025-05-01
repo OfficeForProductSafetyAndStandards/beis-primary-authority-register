@@ -29,6 +29,7 @@ class ParEnforcementSendWarning extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
     $this->getFlowDataHandler()
@@ -58,6 +59,7 @@ class ParEnforcementSendWarning extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     // Only display this warning if the enforcement has been approved.
     if ($this->getFlowDataHandler()->getFormPermValue('enforcement_approved')) {

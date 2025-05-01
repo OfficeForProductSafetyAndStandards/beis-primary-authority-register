@@ -19,6 +19,7 @@ class ParSubscriptionReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     return 'Help Desk | Review changes';
   }
@@ -30,6 +31,7 @@ class ParSubscriptionReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Determine which subscriptions need to be subscribed or unsubscribed.
     $cid = $this->getFlowNegotiator()->getFormKey('manage_subscriptions');
@@ -48,7 +50,7 @@ class ParSubscriptionReviewForm extends ParBaseForm {
           '#markup' => "$subscribe_list",
           '#prefix' => '<p>',
           '#suffix' => '</p>',
-        ]
+        ],
       ];
     }
     if (!empty($unsubscribe)) {
@@ -62,7 +64,7 @@ class ParSubscriptionReviewForm extends ParBaseForm {
           '#markup' => "$unsubscribe_list",
           '#prefix' => '<p>',
           '#suffix' => '</p>',
-        ]
+        ],
       ];
     }
 
@@ -76,6 +78,7 @@ class ParSubscriptionReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
   }
@@ -83,6 +86,7 @@ class ParSubscriptionReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

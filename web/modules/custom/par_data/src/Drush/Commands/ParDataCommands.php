@@ -2,9 +2,11 @@
 
 namespace Drupal\par_data\Drush\Commands;
 
-use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Database\Connection;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\par_data\ParDataManagerInterface;
+use Drupal\search_api\ConsoleException;
 use Drush\Attributes as CLI;
 use Drush\Commands\DrushCommands;
 
@@ -31,63 +33,74 @@ final class ParDataCommands extends DrushCommands {
   #[CLI\Usage(name: 'par-data:sanitise-users', description: 'Sanitise user data')]
   public function sanitiseUserData() {
     // Drupal user.
-    $this->output->writeln(dt('Sanitise Drupal Users the PAR way...'));
-    $drupal_users = $this->databaseConnection->query("SELECT uid, name, mail FROM users_field_data WHERE uid > 1 AND mail NOT LIKE ''")->fetchAll();
+    $this->output->writeln(t('Sanitise Drupal Users the PAR way...')->render());
+    $drupal_users = $this->databaseConnection->query(
+      "SELECT uid, mail FROM {users_field_data} WHERE uid > 1 AND mail NOT LIKE ''"
+    )->fetchAll();
 
     if (!empty($drupal_users)) {
       foreach ($drupal_users as $drupal_user) {
-        $random_name = $this->randomNumber();
         $hash_email = md5($drupal_user->mail) . '@localhost.localdomain';
 
-        $query = sprintf('UPDATE users_field_data SET init = \'%s\', mail = \'%s\', name = \'%s\' WHERE uid = %s',
-          $hash_email,
-          $hash_email,
-          $random_name,
-          $drupal_user->uid,
+        $this->databaseConnection->query(
+          'UPDATE {users_field_data} SET init = :init, mail = :mail, name = :name WHERE uid = :uid',
+          [
+            'init' => $hash_email,
+            'mail' => $hash_email,
+            'name' => $this->randomNumber(),
+            'uid' => $drupal_user->uid,
+          ]
         );
-        $this->databaseConnection->query($query)->execute();
       }
     }
 
     // PAR Data Person.
-    $this->output->writeln(dt('Sanitise PAR Data Person records...'));
-    $par_person_data = $this->databaseConnection->query("SELECT id, salutation, work_phone, mobile_phone, email, first_name, last_name FROM par_people_field_data")->fetchAll();
+    $this->output->writeln(t('Sanitise PAR Data Person records...')->render());
+    $par_person_data = $this->databaseConnection->query(
+      'SELECT id, email FROM {par_people_field_data}'
+    )->fetchAll();
 
     if (!empty($par_person_data)) {
       foreach ($par_person_data as $person_data) {
         $hash_email = md5($person_data->email) . '@localhost.localdomain';
 
-        $query = sprintf('UPDATE par_people_field_data SET salutation=\'%s\', work_phone=\'%s\', mobile_phone=\'%s\', email=\'%s\', first_name=\'%s\', last_name=\'%s\' WHERE id=%d',
-          $this->randomNumber(),
-          $this->randomNumber(),
-          $this->randomNumber(),
-          $hash_email,
-          $this->randomNumber(),
-          $this->randomNumber(),
-          $person_data->id,
+        $this->databaseConnection->query(
+          'UPDATE {par_people_field_data} SET salutation=:salutation, work_phone=:work_phone, mobile_phone=:mobile_phone, email=:email, first_name=:first_name, last_name=:last_name WHERE id=:id',
+          [
+            'salutation' => $this->randomNumber(),
+            'work_phone' => $this->randomNumber(),
+            'mobile_phone' => $this->randomNumber(),
+            'email' => $hash_email,
+            'first_name' => $this->randomNumber(),
+            'last_name' => $this->randomNumber(),
+            'id' => $person_data->id,
+          ]
         );
-        $this->databaseConnection->query($query)->execute();
       }
     }
 
     // PAR Data Person revisions.
-    $this->output->writeln(dt('Sanitise PAR Data Person revision records...'));
-    $par_person_revision_data = $this->databaseConnection->query("SELECT id, salutation, work_phone, mobile_phone, email, first_name, last_name FROM par_people_field_revision")->fetchAll();
+    $this->output->writeln(t('Sanitise PAR Data Person revision records...')->render());
+    $par_person_revision_data = $this->databaseConnection->query(
+      'SELECT revision_id, email FROM {par_people_field_revision}'
+    )->fetchAll();
 
     if (!empty($par_person_revision_data)) {
       foreach ($par_person_revision_data as $person_data_revision) {
         $hash_email = md5($person_data_revision->email) . '@localhost.localdomain';
 
-        $query = sprintf('UPDATE par_people_field_revision SET salutation=\'%s\', work_phone=\'%s\', mobile_phone=\'%s\', email=\'%s\', first_name=\'%s\', last_name=\'%s\' WHERE id=%d',
-          $this->randomNumber(),
-          $this->randomNumber(),
-          $this->randomNumber(),
-          $hash_email,
-          $this->randomNumber(),
-          $this->randomNumber(),
-          $person_data_revision->id,
+        $this->databaseConnection->query(
+          'UPDATE {par_people_field_revision} SET salutation=:salutation, work_phone=:work_phone, mobile_phone=:mobile_phone, email=:email, first_name=:first_name, last_name=:last_name WHERE revision_id=:revision_id',
+          [
+            'salutation' => $this->randomNumber(),
+            'work_phone' => $this->randomNumber(),
+            'mobile_phone' => $this->randomNumber(),
+            'email' => $hash_email,
+            'first_name' => $this->randomNumber(),
+            'last_name' => $this->randomNumber(),
+            'revision_id' => $person_data_revision->revision_id,
+          ]
         );
-        $this->databaseConnection->query($query)->execute();
       }
     }
   }
@@ -99,7 +112,7 @@ final class ParDataCommands extends DrushCommands {
    *   Random number.
    */
   public function randomNumber() {
-    return rand(100000000000, 999999999999);
+    return random_int(100000000000, 999999999999);
   }
 
   /**
@@ -118,7 +131,8 @@ final class ParDataCommands extends DrushCommands {
       // Warming for selected caches only as it's currently memory intensive.
       foreach ($this->parDataManager->getEntitiesByType($type) as $entity) {
         $count++;
-        // By default it's the relationship cache's responsible for entity management we want to warm.
+        // By default it's the relationship cache's responsible for
+        // entity management we want to warm.
         $entity->getRelationships();
 
         $unique_function_id = "getRelationships:{$entity->uuid()}:null:null";
@@ -127,7 +141,15 @@ final class ParDataCommands extends DrushCommands {
         // Assess memory usage.
         if ($count % 100 == 0 && $count > 0) {
           $memory = round(memory_get_usage() / 1024 / 1024, 2);
-          $this->output->writeln(dt('@memory MB used in the generation of %count caches', ['@memory' => $memory, '%count' => $count]));
+          $this->output->writeln(
+            t(
+              '@memory MB used in the generation of %count caches',
+              [
+                '@memory' => $memory,
+                '%count' => $count,
+              ]
+            )->render()
+          );
         }
       }
 
@@ -174,15 +196,15 @@ final class ParDataCommands extends DrushCommands {
       $index_health = (($total == $indexed) && ($indexed == $count));
 
       if (!$server_health) {
-        throw new ConsoleException(dt('Server for index %index is not valid.', ['%index' => $index->id()]));
+        throw new ConsoleException(t('Server for index %index is not valid.', ['%index' => $index->id()])->render());
       }
       if ($include_index_health and !$index_health) {
-        throw new ConsoleException(dt('Index %index has only indexed %indexed out of %total items (%count entities).', [
+        throw new ConsoleException(t('Index %index has only indexed %indexed out of %total items (%count entities).', [
           '%index' => $index->id(),
           '%indexed' => $indexed,
           '%total' => $total,
           '%count' => $count,
-        ]));
+        ])->render());
       }
     }
 
@@ -206,7 +228,7 @@ final class ParDataCommands extends DrushCommands {
         $plugin->run();
       }
     }
-    catch (PluginNotFoundException $e) {
+    catch (PluginNotFoundException) {
       return "Failed to convert legacy legal entities.";
     }
 

@@ -21,6 +21,7 @@ class ParMessageForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     if ($message = $this->getFlowDataHandler()->getParameter('comment')) {
       $message_value = !$message->get('comment_body')->isEmpty() ? $message->get('comment_body')->first()->get('value')->getValue() : '';
@@ -34,6 +35,7 @@ class ParMessageForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
 
     $form['message'] = [
@@ -65,6 +67,7 @@ class ParMessageForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
+  #[\Override]
   public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $response_element = $this->getElement($form, ['message'], $index);
     $response = $response_element ? $form_state->getValue($response_element['#parents']) : NULL;

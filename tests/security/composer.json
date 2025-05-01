@@ -8,7 +8,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "drupal/flysystem": "^2.1.0",
+        "drupal/flysystem": "^2.2.0",
         "drupal/flysystem_s3": "^2.1.0",
         "vlucas/phpdotenv": "^2.4"
     }

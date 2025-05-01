@@ -110,15 +110,13 @@ class ParDataInspectionPlan extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
-  public function filterRelationshipsByAction($relationship, $action) {
-    switch ($action) {
-      case 'manage':
-        // No relationships should be followed, this is one of the lowest tier entities.
-        return FALSE;
-
-    }
-
-    return parent::filterRelationshipsByAction($relationship, $action);
+  #[\Override]
+  public function filterRelationshipsByAction($relationship, $action)
+  {
+      return match ($action) {
+          'manage' => FALSE,
+          default => parent::filterRelationshipsByAction($relationship, $action),
+      };
   }
 
   /**
@@ -150,6 +148,7 @@ class ParDataInspectionPlan extends ParDataEntity {
    * @return boolean
    *   True if the entity was revoked, false for all other results.
    */
+  #[\Override]
   public function revoke($save = TRUE, $reason = '') {
 
     if ($this->isNew()) {
@@ -164,7 +163,7 @@ class ParDataInspectionPlan extends ParDataEntity {
       try {
         $this->setParStatus('expired');
       }
-      catch (ParDataException $exception) {
+      catch (ParDataException) {
 
       }
 
@@ -189,6 +188,7 @@ class ParDataInspectionPlan extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function unrevoke($save = TRUE) {
     $revoke_time_stamp = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
     $revoke_time_stamp_value = $revoke_time_stamp->format("Y-m-d");
@@ -212,6 +212,7 @@ class ParDataInspectionPlan extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 

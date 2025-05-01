@@ -28,6 +28,7 @@ class ParMember extends FilterPluginBase {
    * @param \Drupal\views\Plugin\views\display\DisplayPluginBase $display
    * @param array|NULL $options
    */
+  #[\Override]
   public function init(ViewExecutable $view, DisplayPluginBase $display, array &$options = NULL) {
     parent::init($view, $display, $options);
   }
@@ -35,6 +36,7 @@ class ParMember extends FilterPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function valueForm(&$form, FormStateInterface $form_state) {
     // Whether to show only direct memberships.
     $form['value'] = [
@@ -48,6 +50,7 @@ class ParMember extends FilterPluginBase {
   /**
    * {@inheritdoc)
    */
+  #[\Override]
   public function query() {
     // This filter does not apply if not on a PAR entity.
     if (!$this->getParDataManager()->getParEntityType($this->getEntityType())) {

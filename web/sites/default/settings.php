@@ -738,15 +738,6 @@ $settings['session_write_interval'] = 180;
  */
 $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
 
-/**
- * Load the par cache backend.
- *
- * To enable the backends at the same time as enabling the module the drupal
- * boostrap container must be aware of the cache backends. To do so register
- * the par_cache.services.yml in the Drupal settings file:
- */
-$settings['container_yamls'][] = 'modules/custom/par_cache/par_cache.services.yml';
-$class_loader->addPsr4('Drupal\\par_cache\\', 'modules/custom/par_cache/src');
 
 /**
  * Override the default service container class.
@@ -882,6 +873,11 @@ $settings['par_branded_header_footer'] = TRUE;
  * Extract the connection credentials from the VCAP_SERVICES environment variable
  * which is configured by the PaaS service manager
  */
+if (PHP_SAPI === 'cli' && $env_services = getenv("SECRET_VCAP_SERVICES")) {
+  // Need to decode the VCAP_SERVICES environment variable.
+  putenv('VCAP_SERVICES=' . json_decode($env_services));
+}
+
 if ($env_services = getenv("VCAP_SERVICES")) {
   $services = json_decode($env_services);
   $db_credentials = isset($services->postgres) ? $services->postgres[0]->credentials : NULL;
@@ -892,7 +888,7 @@ if ($env_services = getenv("VCAP_SERVICES")) {
 // Set the PaaS database connection credentials.
 if (isset($db_credentials)) {
   $databases['default']['default'] = [
-    'namespace' => 'Drupal\\Core\\Database\\Driver\\pgsql',
+    'namespace' => 'Drupal\\pgsql\\Driver\\Database\\pgsql',
     'driver' => 'pgsql',
     'database' => $db_credentials->name,
     'username' => $db_credentials->username,
@@ -901,18 +897,24 @@ if (isset($db_credentials)) {
     'host' => $db_credentials->host,
     'port' => $db_credentials->port,
     'collation' => 'utf8mb4_general_ci',
+    'autoload' => 'core/modules/pgsql/src/Driver/Database/pgsql/',
   ];
 }
 
-// Set the PaaS redis conneciton credentials.
+// Set the PaaS redis connection credentials.
 if (isset($redis_credentials)) {
   // Enable Redis services.
   $settings['redis.connection']['interface'] = 'Predis';
-  $settings['redis.connection']['scheme'] = 'tls';
+  $settings['redis.connection']['scheme'] = $redis_credentials->scheme ?? 'tls';
   $settings['redis.connection']['host'] = $redis_credentials->host;
   $settings['redis.connection']['port'] = $redis_credentials->port;
   $settings['redis.connection']['password'] = $redis_credentials->password;
   $settings['cache']['default'] = 'cache.backend.redis';
+  $settings['cache']['bins']['form'] = 'cache.backend.database';
+  $settings['cache']['bins']['render'] = 'cache.backend.database';
+  $settings['redis.connection']['persistent'] = TRUE;
+  $settings['redis_compress_length'] = 100;
+  $settings['redis_compress_level'] = 1;
 
   // Apply changes to the container configuration to better leverage Redis.
   // This includes using Redis for the lock and flood control systems, as well
@@ -1165,4 +1167,17 @@ if ($app_env != 'staging') {
 if (PHP_SAPI === 'cli') {
   ini_set('memory_limit', '4G');
   ini_set('max_execution_time', '3600');
+}
+
+$settings['state_cache'] = TRUE;
+
+// Automatically generated include for settings managed by ddev.
+$ddev_settings = dirname(__FILE__) . '/settings.ddev.php';
+if (getenv('IS_DDEV_PROJECT') == 'true' && is_readable($ddev_settings)) {
+  require $ddev_settings;
+}
+
+// Include settings required for Redis cache.
+if ((file_exists(__DIR__ . '/settings.ddev.redis.php') && getenv('IS_DDEV_PROJECT') == 'true')) {
+  include __DIR__ . '/settings.ddev.redis.php';
 }

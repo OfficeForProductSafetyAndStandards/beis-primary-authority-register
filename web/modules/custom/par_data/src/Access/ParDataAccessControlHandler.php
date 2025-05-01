@@ -19,6 +19,7 @@ class ParDataAccessControlHandler extends EntityAccessControlHandler {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function access(EntityInterface $entity, $operation, AccountInterface $account = NULL, $return_as_object = FALSE) {
     // @see PAR-1462 - Do not allow access to any entities that are deleted.
     if ($entity->isDeleted()) {
@@ -43,6 +44,7 @@ class ParDataAccessControlHandler extends EntityAccessControlHandler {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {
     // @see PAR-1462 - Do not allow access to any entities that are deleted.
     if ($entity->isDeleted()) {
@@ -98,6 +100,7 @@ class ParDataAccessControlHandler extends EntityAccessControlHandler {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL) {
     return AccessResult::allowedIfHasPermission($account, 'add ' . $this->entityTypeId . ' entities');
   }
@@ -105,6 +108,7 @@ class ParDataAccessControlHandler extends EntityAccessControlHandler {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function createAccess($entity_bundle = NULL, AccountInterface $account = NULL, array $context = [], $return_as_object = FALSE) {
     $account = $this->prepareUser($account);
 

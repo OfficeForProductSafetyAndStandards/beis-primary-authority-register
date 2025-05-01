@@ -2,23 +2,19 @@
 
 namespace Drupal\par_data;
 
-use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\Core\Database\Connection;
-use Drupal\Core\Cache\CacheBackendInterface;
-use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\Component\Utility\NestedArray;
-use Drupal\Component\Utility\Unicode;
+use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Cache\MemoryCache\MemoryCacheInterface;
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\par_data\Entity\ParDataEntity;
-use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\Core\Language\LanguageManagerInterface;
 use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\trance\TranceStorage;
-use Drupal\Core\Entity\EntityInterface;
 
 /**
  * Defines the storage class for flows.
@@ -28,6 +24,11 @@ use Drupal\Core\Entity\EntityInterface;
  */
 class ParDataStorage extends TranceStorage {
 
+  /**
+   * The PAR data manager service.
+   *
+   * @var \Drupal\par_data\ParDataManagerInterface
+   */
   protected $parDataManager;
 
   public function __construct(EntityTypeInterface $entity_type, Connection $database, EntityFieldManagerInterface $entity_field_manager, CacheBackendInterface $cache, LanguageManagerInterface $language_manager, MemoryCacheInterface $memory_cache, EntityTypeBundleInfoInterface $entity_type_bundle_info, EntityTypeManagerInterface $entity_type_manager) {
@@ -46,31 +47,27 @@ class ParDataStorage extends TranceStorage {
   }
 
   /**
-   * Soft delete all PAR Data entities.
-   *
-   * {@inheritdoc}
-   */
-  public function delete(array $entities) {
-    parent::delete($entities);
-  }
-
-  /**
    * Add some default options to newly created entities.
    *
    * {@inheritdoc}
    */
+  #[\Override]
   public function create(array $values = []) {
-    $bundle = isset($values['type']) ? $values['type'] : NULL;
+    $bundle = $values['type'] ?? NULL;
     $bundle_entity = \Drupal::service('par_data.manager')->getParBundleEntity($this->entityTypeId, $bundle);
 
-    // Set the type if not already set.
-    $values['type'] = $bundle_entity && isset($values['type']) ? $values['type'] : $bundle_entity->id();
+    if ($bundle_entity) {
+      if (!isset($values['type'])) {
+        $values['type'] = $bundle_entity->id();
+      }
 
-    // Set the default status (as the first allowed_status value configured).
-    $status_field = $bundle_entity->getConfigurationElementByType('entity', 'status_field');
-    $allowed_statuses = $bundle_entity->getAllowedValues($status_field);
-    if (isset($status_field) && empty($values[$status_field]) && !empty($allowed_statuses)) {
-      $values[$status_field] = key($allowed_statuses);
+      // Set the type if not already set.
+      // Set the default status (as the first allowed_status value configured).
+      $status_field = $bundle_entity->getConfigurationElementByType('entity', 'status_field');
+      $allowed_statuses = $bundle_entity->getAllowedValues($status_field);
+      if (isset($status_field) && empty($values[$status_field]) && !empty($allowed_statuses)) {
+        $values[$status_field] = key($allowed_statuses);
+      }
     }
 
     // Clear all empty values.
@@ -81,17 +78,19 @@ class ParDataStorage extends TranceStorage {
 
   /**
    * Save entity.
+   *
    * This function deletes relationship cache for the new/updated entity refs.
    *
    * {@inheritdoc}
    */
+  #[\Override]
   public function save(EntityInterface $entity) {
     // Lowercase all email addresses, these are used in some aggregate functions
     // and should not be upper case.
     if ($entity instanceof ParDataPersonInterface && $entity->hasField('email')) {
       foreach ($entity->get('email') as $delta => $field_item) {
         if (isset($field_item->getValue()['value'])) {
-          $email = mb_strtolower($field_item->getValue()['value']);
+          $email = mb_strtolower((string) $field_item->getValue()['value']);
           $field_item->setValue($email);
         }
         $entity->get('email')->set($delta, $field_item);
@@ -118,7 +117,8 @@ class ParDataStorage extends TranceStorage {
     // Get relationships for the entity being saved.
     $relationships = $entity->getRelationships();
 
-    // Loop through relationships and delete appropriate relationship cache records.
+    // Loop through relationships
+    // and delete appropriate relationship cache records.
     foreach ($relationships as $uuid => $relationship) {
       // Delete cache record for new/updated references.
       $hash_key = "relationships:{$relationship->getEntity()->uuid()}";
@@ -150,6 +150,7 @@ class ParDataStorage extends TranceStorage {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function doPostSave(EntityInterface $entity, $update) {
     parent::doPostSave($entity, $update);
 
@@ -160,7 +161,8 @@ class ParDataStorage extends TranceStorage {
   /**
    * {@inheritdoc}
    */
-  public function loadMultiple(array $ids = NULL) {
+  #[\Override]
+  public function loadMultiple(?array $ids = NULL) {
     $entities = parent::loadMultiple($ids);
 
     return $entities;

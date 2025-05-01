@@ -12,24 +12,9 @@ use Drupal\user\UserInterface;
 /**
  * A class that defines relationships.
  */
-class ParRecipient {
+class ParRecipient implements \Stringable {
 
   const DEFAULT_ADDRESSABLE_NAME = 'Subscriber';
-
-  /**
-   * The email address for this recipient.
-   */
-  protected string $email;
-
-  /**
-   * The addressable name for this recipient.
-   */
-  protected ?string $name;
-
-  /**
-   * An optional entity that contains the information about this recipient.
-   */
-  protected ?EntityInterface $entity;
 
   /**
    * Constructs an instance of a PAR Recipient class.
@@ -37,10 +22,18 @@ class ParRecipient {
    * @param ?EntityInterface $entity
    *   The related entity, usually a user or contact record.
    */
-  public function __construct(string $email, string $name = NULL, EntityInterface $entity = NULL) {
-    $this->email = $email;
-    $this->name = $name;
-    $this->entity = $entity;
+  public function __construct(
+      /**
+       * The email address for this recipient.
+       */
+      protected string $email,
+      /**
+       * The addressable name for this recipient.
+       */
+      protected ?string $name = NULL,
+      protected ?EntityInterface $entity = NULL
+  )
+  {
   }
 
   /**
@@ -53,7 +46,8 @@ class ParRecipient {
   /**
    * The string representation of the recipient should be the email address.
    */
-  public function __toString() {
+  #[\Override]
+  public function __toString(): string {
     return $this->getEmail();
   }
 

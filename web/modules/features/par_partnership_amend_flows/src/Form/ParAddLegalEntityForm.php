@@ -16,6 +16,7 @@ class ParAddLegalEntityForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     // There is no extra data to load at the moment.
     parent::loadData();
@@ -24,6 +25,7 @@ class ParAddLegalEntityForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
 
     // Make sure to add the partnership cacheability data to this form.

@@ -26,6 +26,7 @@ class ParTradingNameDisplay extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
@@ -44,6 +45,7 @@ class ParTradingNameDisplay extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getElements(array $form = [], int $index = 1) {
     $trading_names = $this->getDefaultValuesByKey('trading_names', $index, []);
 
@@ -95,20 +97,9 @@ class ParTradingNameDisplay extends ParFormPluginBase {
       try {
         // Edit the trading name.
         $params['trading_name_delta'] = $delta;
-        $options = ['attributes' => ['aria-label' => $this->t("Edit the trading name @label", ['@label' => strtolower($trading_name)])]];
+        $options = ['attributes' => ['aria-label' => $this->t("Edit the trading name @label", ['@label' => strtolower((string) $trading_name)])]];
         $operations['edit'] = $this->getFlowNegotiator()->getFlow()
           ->getOperationLink('edit_trading_name', 'edit trading name', $params, $options);
-      }
-      catch (ParFlowException $e) {
-        $this->getLogger($this->getLoggerChannel())->notice($e);
-      }
-      try {
-        // Remove the trading name.
-        $params['trading_name_delta'] = $delta;
-        $options = ['attributes' => ['aria-label' => $this->t("Remove the trading name @label", ['@label' => strtolower($trading_name)])]];
-        $operations['remove'] = $this->getFlowNegotiator()->getFlow()
-          ->getOperationLink('remove_trading_name', 'remove trading name', $params, $options);
-
       }
       catch (ParFlowException $e) {
         $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -157,6 +148,7 @@ class ParTradingNameDisplay extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
@@ -164,6 +156,7 @@ class ParTradingNameDisplay extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
+  #[\Override]
   public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }

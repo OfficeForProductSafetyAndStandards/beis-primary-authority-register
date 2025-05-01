@@ -19,7 +19,9 @@ class ParFlowFallbackSubscriber extends ParFlowSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  #[\Override]
+  static function getSubscribedEvents(): array {
+    $events = [];
     foreach (ParFlowEvents::getAlLEvents() as $event) {
       $events[$event][] = ['onEvent', -800];
     }
@@ -41,7 +43,7 @@ class ParFlowFallbackSubscriber extends ParFlowSubscriberBase {
         $route_params = $event->getFlow()->getRequiredParams($redirect_route);
         // Note the URL won't be set if it is not accessible in ParFlowEvent::setUrl()
         $event->setUrl(Url::fromRoute($redirect_route, $route_params));
-      } catch (ParFlowException $e) {
+      } catch (ParFlowException) {
 
       }
     }
