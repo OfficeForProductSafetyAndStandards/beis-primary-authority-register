@@ -19,9 +19,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  */
 class ParNotFound extends ParLinkActionBase {
 
-  public function receive(MessageInterface $message) {
+  /**
+   * {@inheritDoc}
+   */
+  public function getUrl(MessageInterface $message): ?Url {
     // This should be the last redirection to happen if no other one could be found.
-    $dashboard_url = Url::fromRoute('par_notification.link_not_found', ['message' => $message->id()]);
-    return new RedirectResponse($dashboard_url->toString());
+    return Url::fromRoute('par_notification.link_not_found', ['message' => $message->id()]);
   }
 }

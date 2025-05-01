@@ -16,7 +16,8 @@ use Drupal\par_reporting\ParStatisticBase;
  */
 class TotalEnquiryMessages extends ParStatisticBase {
 
-  public function getStat() {
+  #[\Override]
+  public function getStat(): int {
     $query = $this->getParDataManager()->getEntityQuery('par_data_general_enquiry');
 
     $revoked = $query

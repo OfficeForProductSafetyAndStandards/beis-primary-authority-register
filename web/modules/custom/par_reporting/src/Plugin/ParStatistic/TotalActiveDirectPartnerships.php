@@ -9,14 +9,15 @@ use Drupal\par_reporting\ParStatisticBase;
  *
  * @ParStatistic(
  *   id = "total_active_direct_partnerships",
- *   title = @Translation("Active direct partnerships."),
+ *   title = @Translation("Active direct partnership applications."),
  *   description = @Translation("The number of active direct partnerships. Each partnership is recorded once regarldess of how many businesses it covers."),
  *   status = TRUE,
  * )
  */
 class TotalActiveDirectPartnerships extends ParStatisticBase {
 
-  public function getStat() {
+  #[\Override]
+  public function getStat(): int {
     $query = $this->getParDataManager()->getEntityQuery('par_data_partnership')
       ->condition('partnership_status', 'confirmed_rd');
 

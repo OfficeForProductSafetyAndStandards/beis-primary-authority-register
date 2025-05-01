@@ -1,13 +1,21 @@
 uuid: 31c00f6d-3560-40b8-948e-bcfd593c0eba
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.basic_html
 template: new_partnership_notification
 label: 'New partnership notification'
 description: 'This notification is set to the organisation when a new partnership is created.'
 text:
   -
-    value: "<p>Dear @first_name,</p>\r\n\r\n<p>This message is about your pending primary authority partnership with @primary_authority.</p>\r\n\r\n<p>Before your partnership can be submitted for nomination by the Secretary of State, you need to update a few details about your organisation.</p>\r\n\r\n<p>^ Update details now: [message:primary-action]</p>\r\n\r\n<p>Regards, Primary Authority Register team</p>\r\n"
+    value: "<p><span>A new partnership application for your business has been submitted by @primary_authority.</span></p>\r\n"
+    format: basic_html
+  -
+    value: "<p><span>Before your partnership can be submitted for nomination by the Secretary of State, you need to update a few details about your organisation and confirm the partnership. </span></p>\r\n"
+    format: basic_html
+  -
+    value: "<p>^ Complete the partnership: [message:primary-action]</p>\r\n"
     format: basic_html
 settings:
   'token options':

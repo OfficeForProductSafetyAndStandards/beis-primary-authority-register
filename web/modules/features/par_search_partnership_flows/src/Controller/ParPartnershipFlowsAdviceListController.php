@@ -25,16 +25,14 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
     $par_data_partnership_id = !empty($par_data_partnership) ? $par_data_partnership->id() : NULL;
 
     $build['partnership'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      '#type' => 'container',
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
     $build['partnership']['title'] = [
-      '#type' => 'markup',
-      '#markup' => $par_data_partnership->label(),
-      '#prefix' => '<h2>',
-      '#suffix' => '</h2>',
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => $par_data_partnership->label(),
+      '#attributes' => ['class' => 'govuk-heading-m'],
     ];
 
     $advice_search_block_exposed  = views_embed_view('advice_lists', 'advice_search_block_exposed', $par_data_partnership_id);

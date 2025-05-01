@@ -1,0 +1,17 @@
+uuid: 1586c611-b5ec-4a96-bafa-2656dfb187ee
+langcode: en
+status: true
+dependencies:
+  module:
+    - search_api_opensearch
+id: opensearch
+name: OpenSearch
+description: ''
+backend: opensearch
+backend_config:
+  connector: standard
+  connector_config:
+    url: 'http://os.localhost:9200'
+  advanced:
+    fuzziness: auto
+    prefix: ''

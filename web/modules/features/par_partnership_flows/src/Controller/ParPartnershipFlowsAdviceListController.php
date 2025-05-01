@@ -28,16 +28,10 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
     $par_data_partnership_id = !empty($par_data_partnership) ? $par_data_partnership->id() : NULL;
 
     $build['partnership'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
-    ];
-    $build['partnership']['title'] = [
-      '#type' => 'markup',
-      '#markup' => $par_data_partnership->label(),
-      '#prefix' => '<h2>',
-      '#suffix' => '</h2>',
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => $par_data_partnership->label(),
+      '#attributes' => ['class' => 'govuk-heading-m']
     ];
 
     switch ($this->getFlowNegotiator()->getFlowName()) {
@@ -59,10 +53,9 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
     }
     else {
       $build['advice_search_block'] = [
-        '#type' => 'markup',
-        '#markup' => "Advice can't be listed here. Please contact the helpdesk.",
-        '#prefix' => '<p>',
-        '#suffix' => '</p>',
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => "Advice can't be listed here. Please contact the helpdesk.",
       ];
     }
 
@@ -71,7 +64,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
     if ($par_data_partnership->isActive() && $this->getFlowNegotiator()->getFlowName() === 'partnership_authority') {
       $build['actions'] = [
         '#type' => 'fieldset',
-        '#attributes' => ['class' => ['form-group', 'btn-link-upload']],
+        '#attributes' => ['class' => ['govuk-form-group', 'btn-link-upload']],
       ];
 
       try {
@@ -86,7 +79,7 @@ class ParPartnershipFlowsAdviceListController extends ParBaseController {
             ]),
         ];
       }
-      catch (ParFlowException $e) {
+      catch (ParFlowException) {
 
       }
     }

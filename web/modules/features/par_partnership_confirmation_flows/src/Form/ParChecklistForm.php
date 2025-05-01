@@ -18,6 +18,7 @@ class ParChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     // Set page title.
     $this->pageTitle = "Declaration for completion by proxy";
@@ -28,6 +29,7 @@ class ParChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     // Load application type from previous step.
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
@@ -45,6 +47,7 @@ class ParChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Organisation members can skip this form.
     if ($this->getFlowDataHandler()->getDefaultValues('organisation_member', FALSE)) {
@@ -57,13 +60,16 @@ class ParChecklistForm extends ParBaseForm {
       '#title' => $this->t('I confirm I have been given written permission by the organisation.'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('confirm', FALSE),
       '#return_value' => 'on',
+      '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
     ];
 
     // There is a legal requirement to mention that the PA is the processor (under GDPR) and as such they must
     // adhere to the Office for Safety and Standards procedures concerning anything that could constitute personal data.
     $form['help'] = [
-      '#type' => 'markup',
-      '#markup' => '<p>You are required to have obtained written permission from the organisation to fill in the details on their behalf and submit the partnership for nomination.</p>',
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#attributes' => ['class' => ['govuk-form-group']],
+      '#value' => $this->t('You are required to have obtained written permission from the organisation to fill in the details on their behalf and submit the partnership for nomination.'),
     ];
 
     return parent::buildForm($form, $form_state);
@@ -72,6 +78,7 @@ class ParChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 

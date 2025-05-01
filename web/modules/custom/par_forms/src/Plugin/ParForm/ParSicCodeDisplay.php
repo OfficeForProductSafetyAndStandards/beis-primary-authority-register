@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -26,7 +27,8 @@ class ParSicCodeDisplay extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  #[\Override]
+  public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
     if (!$par_data_organisation && $par_data_partnership instanceof ParDataEntityInterface) {
@@ -35,18 +37,19 @@ class ParSicCodeDisplay extends ParFormPluginBase {
     if ($par_data_organisation) {
       // Get the SIC Codes.
       $sic_codes = $par_data_organisation->get('field_sic_code')->referencedEntities();
-      $this->setDefaultValuesByKey("sic_codes", $cardinality, $sic_codes);
+      $this->setDefaultValuesByKey("sic_codes", $index, $sic_codes);
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  #[\Override]
+  public function getElements(array $form = [], int $index = 1) {
     // Get the SIC codes.
-    $sic_codes = $this->getDefaultValuesByKey('sic_codes', $cardinality, []);
+    $sic_codes = $this->getDefaultValuesByKey('sic_codes', $index, []);
 
     //  Generate the add new SIC code link.
     try {
@@ -65,12 +68,17 @@ class ParSicCodeDisplay extends ParFormPluginBase {
 
     // Display the sic codes.
     $form['sic_codes'] = [
-      '#type' => 'fieldset',
-      '#title' => 'Standard industrial classification (SIC) codes',
-      '#attributes' => ['class' => ['form-group']],
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => $this->t('Standard industrial classification (SIC) codes'),
+      ],
+      '#attributes' => ['class' => ['govuk-form-group']],
       'sic_code' => [
         '#type' => 'container',
-        '#attributes' => ['class' => ['grid-row']],
+        '#attributes' => ['class' => ['govuk-grid-row']],
       ],
     ];
 
@@ -81,10 +89,10 @@ class ParSicCodeDisplay extends ParFormPluginBase {
 
       $form['sic_codes']['sic_code'][$delta] = [
         '#type' => 'container',
-        '#attributes' => ['class' => 'column-full'],
+        '#attributes' => ['class' => 'govuk-grid-column-full'],
         'code' => [
           '#type' => 'html_tag',
-          '#tag' => 'div',
+          '#tag' => 'p',
           '#value' => $label,
           '#attributes' => ['class' => 'sic-code'],
         ],
@@ -95,20 +103,9 @@ class ParSicCodeDisplay extends ParFormPluginBase {
       try {
         // Edit the SIC code.
         $params = ['field_sic_code_delta' => $delta];
-        $options = ['attributes' => ['aria-label' => $this->t("Edit the SIC code @label", ['@label' => strtolower($label)])]];
+        $options = ['attributes' => ['aria-label' => $this->t("Edit the SIC code @label", ['@label' => strtolower((string) $label)])]];
         $operations['edit'] = $this->getFlowNegotiator()->getFlow()
           ->getOperationLink('edit_field_sic_code', 'edit sic code', $params, $options);
-      }
-      catch (ParFlowException $e) {
-        $this->getLogger($this->getLoggerChannel())->notice($e);
-      }
-      try {
-        // Remove the SIC code.
-        $params = ['field_sic_code_delta' => $delta];
-        $options = ['attributes' => ['aria-label' => $this->t("Remove the SIC code @label", ['@label' => strtolower($label)])]];
-        $operations['remove'] = $this->getFlowNegotiator()->getFlow()
-          ->getOperationLink('remove_field_sic_code', 'remove sic code', $params, $options);
-
       }
       catch (ParFlowException $e) {
         $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -118,14 +115,14 @@ class ParSicCodeDisplay extends ParFormPluginBase {
       if (!empty(array_filter($operations))) {
         $form['sic_codes']['sic_code'][$delta]['operations'] = [
           '#type' => 'container',
-          '#attributes' => ['class' => ['grid-row']],
+          '#attributes' => ['class' => ['govuk-grid-row']],
         ];
         if (isset($operations['edit']) && $operations['edit'] instanceof Link) {
           $form['sic_codes']['sic_code'][$delta]['operations']['edit'] = [
             '#type' => 'html_tag',
             '#tag' => 'p',
             '#value' => $operations['edit']->toString(),
-            '#attributes' => ['class' => ['edit-sic-code', 'column-one-third']],
+            '#attributes' => ['class' => ['edit-sic-code', 'govuk-grid-column-one-third']],
           ];
         }
         if (isset($operations['remove']) && $operations['remove'] instanceof Link) {
@@ -133,7 +130,7 @@ class ParSicCodeDisplay extends ParFormPluginBase {
             '#type' => 'html_tag',
             '#tag' => 'p',
             '#value' => $operations['remove']->setText("remove sic code")->toString(),
-            '#attributes' => ['class' => ['remove-sic-code', 'column-one-third']],
+            '#attributes' => ['class' => ['remove-sic-code', 'govuk-grid-column-one-third']],
           ];
         }
       }
@@ -157,14 +154,16 @@ class ParSicCodeDisplay extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
-  public function getElementActions($cardinality = 1, $actions = []) {
+  #[\Override]
+  public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
 
   /**
    * Return no actions for this plugin.
    */
-  public function getComponentActions($actions = [], $count = NULL) {
+  #[\Override]
+  public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }
 }

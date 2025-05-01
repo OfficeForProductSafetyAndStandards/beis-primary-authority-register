@@ -56,7 +56,8 @@ class ErrorPageSubscriber implements EventSubscriberInterface {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  #[\Override]
+  static function getSubscribedEvents(): array {
     // Run as one of the last subscribers.
     $events[KernelEvents::EXCEPTION][] = ['onException', -200];
     return $events;
@@ -68,7 +69,7 @@ class ErrorPageSubscriber implements EventSubscriberInterface {
    * @param ExceptionEvent $event
    */
   public function onException(ExceptionEvent $event) {
-    $exception = $event->getException();
+    $exception = $event->getThrowable();
     $error = Error::decodeException($exception);
 
     // Log all errors with a custom code.
@@ -83,7 +84,7 @@ class ErrorPageSubscriber implements EventSubscriberInterface {
     $log->error($message);
 
     $content_type = $event->getRequest()->getRequestFormat() == 'html' ? 'text/html' : 'text/plain';
-    $file_path = dirname(__FILE__) . '/../../assets/error.html';
+    $file_path = __DIR__ . '/../../assets/error.html';
     $html = file_get_contents($file_path);
     $response = new Response($html, 500, ['Content-Type' => $content_type]);
 

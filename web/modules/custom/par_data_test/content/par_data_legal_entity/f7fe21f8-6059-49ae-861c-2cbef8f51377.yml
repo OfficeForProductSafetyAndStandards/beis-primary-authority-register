@@ -34,9 +34,12 @@ default:
   archived:
     -
       value: false
+  par_status:
+    -
+      value: active
   registered_name:
     -
-      value: 'Active Organisaiton Ltd'
+      value: 'Active Organisation 1 Ltd'
   registered_number:
     -
       value: '209823156'

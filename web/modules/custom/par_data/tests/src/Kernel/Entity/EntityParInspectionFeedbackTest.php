@@ -2,11 +2,7 @@
 
 namespace Drupal\Tests\par_data\Kernel\Entity;
 
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataInspectionFeedback;
-use Drupal\par_data\Entity\ParDataInspectionFeedbackType;
-use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 
 /**
@@ -22,7 +18,7 @@ class EntityParInspectionFeedbackTest extends ParDataTestBase {
   public function testEntityValidate() {
     $entity = ParDataInspectionFeedback::create($this->getInspectionFeedbackValues());
     $violations = $entity->validate();
-    $this->assertEqual(count($violations->getFieldNames()), 0, 'No violations when validating a default Par Inspection Feedback entity.');
+    $this->assertEquals(0, count($violations->getFieldNames()), 'No violations when validating a default Par Inspection Feedback entity.');
   }
 
   /**
@@ -41,14 +37,26 @@ class EntityParInspectionFeedbackTest extends ParDataTestBase {
    * Test to validate an authority entity.
    */
   public function testInspectionFeedbackRequiredFields() {
+    // List of fields that have the addConstraint() applied.
     $values = [
-      'request_date' => '',
+      // @see ParDataEntity::baseFieldDefinitions()
+      'archive_reason' => '',
+      // @see ParDataInspectionFeedback::baseFieldDefinitions()
+      'primary_authority_notes' => '',
       'notes' => '',
+      'request_date' => '',
     ];
 
     $entity = ParDataInspectionFeedback::create($values + $this->getInspectionFeedbackValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
-    $this->assertEqual(count($violations->getFieldNames()), count($values), t('Field values are required for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
+    $this->assertEquals(
+      count($values),
+      count($violations->getFieldNames()),
+      t(
+        'Violations are reported for fields @fields.',
+        ['@fields' => implode(', ', $violations->getFieldNames())]
+      )->render()
+    );
   }
 
   /**
@@ -58,4 +66,5 @@ class EntityParInspectionFeedbackTest extends ParDataTestBase {
     $entity = ParDataInspectionFeedback::create($this->getInspectionFeedbackValues());
     $this->assertTrue($entity->save() === SAVED_NEW, 'Par Inspection Feedback entity saved correctly.');
   }
+
 }

@@ -24,6 +24,7 @@ class ParBlockUserController extends ParBaseForm {
   /**
    * @return DateFormatterInterface
    */
+  #[\Override]
   protected function getDateFormatter() {
     return \Drupal::service('date.formatter');
   }
@@ -33,6 +34,7 @@ class ParBlockUserController extends ParBaseForm {
    */
   protected $pageTitle = "Disable this user account";
 
+  #[\Override]
   public function loadData() {
     $user = $this->getFlowDataHandler()->getParameter('user');
     if (!$user && $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
@@ -50,6 +52,7 @@ class ParBlockUserController extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPerson $par_data_person = NULL, User $user = NULL) {
     // Add a message to explain the action being taken.
     $form['info'] = [
@@ -73,17 +76,18 @@ class ParBlockUserController extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
+    /** @var \Drupal\par_roles\ParRoleManagerInterface $par_role_manager */
+    $par_role_manager = \Drupal::service('par_roles.role_manager');
     $user = $this->getFlowDataHandler()->getParameter('user');
 
     // Block this user.
-    if ($user && $user->block() && $user->save()) {
+    if ($user && $par_role_manager->blockable($user) && $user->block() && $user->save()) {
       // Also invalidate the user account cache if there is one.
-      if ($user) {
-        \Drupal::entityTypeManager()->getStorage('user')->resetCache([$user->id()]);
-      }
+      \Drupal::entityTypeManager()->getStorage('user')->resetCache([$user->id()]);
 
       $this->getFlowDataHandler()->deleteStore();
     }

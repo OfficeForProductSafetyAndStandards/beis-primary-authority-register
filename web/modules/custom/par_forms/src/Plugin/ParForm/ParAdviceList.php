@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataOrganisation;
@@ -22,7 +23,8 @@ class ParAdviceList extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  #[\Override]
+  public function loadData(int $index = 1): void {
     // If a partnership parameter is set use this to get a list of advice.
     if ($par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership')) {
       if ($advice_list = $par_data_partnership->getAdvice()) {
@@ -30,17 +32,18 @@ class ParAdviceList extends ParFormPluginBase {
       }
     }
 
-    parent::loadData($cardinality);
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  #[\Override]
+  public function getElements(array $form = [], int $index = 1) {
 
     $form['documentation_list'] = [
       '#theme' => 'table',
-      '#attributes' => ['class' => ['form-group']],
+      '#attributes' => ['class' => ['govuk-form-group']],
       '#title' => 'Advice documentation',
       '#header' => [
         'Advice document download link(s)',
@@ -106,7 +109,7 @@ class ParAdviceList extends ParFormPluginBase {
             ];
             $form['documentation_list']['#rows'][$key]['data']['actions'] = $this->getRenderer()->render($links);
           }
-          catch (ParFlowException $e) {
+          catch (ParFlowException) {
 
           }
         }

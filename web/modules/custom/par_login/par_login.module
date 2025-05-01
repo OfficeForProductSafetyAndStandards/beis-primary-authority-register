@@ -4,7 +4,7 @@
  * @file
  * Contains validation routines for user forms.
  */
-
+use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Form\FormStateInterface;
 use \Drupal\Core\Link;
 
@@ -23,8 +23,8 @@ function par_login_form_user_login_form_alter(&$form, FormStateInterface $form_s
 
   // Adding secondary links according to GOV.UK design patterns.
   $form['secondary_links'] = [
-    '#type' => 'fieldset',
-    '#attributes' => ['class' => ['form-group']],
+    '#type' => 'container',
+    '#attributes' => ['class' => ['govuk-form-group']],
     '#weight' => 100,
   ];
   $form['secondary_links']['password_reset'] = [
@@ -45,12 +45,10 @@ function par_login_form_user_pass_alter(&$form, FormStateInterface $form_state, 
  * Implements hook_form_FORM_ID_alter() for user_form().
  */
 function par_login_form_user_form_alter(&$form, &$form_state) {
-  // Check for specific conditions.
-  $show_password_policy_status = _password_policy_show_policy();
-
   // Load form if relevant.
-  if ($show_password_policy_status) {
-    $form['account']['password_policy_status']['#attributes'] = ['class' => ['form-group']];
+  if (\Drupal::moduleHandler()->moduleExists('password_policy') &&
+      \Drupal::service('password_policy.validation_manager')->tableShouldBeVisible()) {
+    $form['account']['password_policy_status']['#attributes'] = ['class' => ['govuk-form-group']];
   }
 }
 
@@ -108,7 +106,7 @@ function par_login_menu_links_discovered_alter(&$links) {
   }
 }
 
-function par_login_user_format_name_alter(&$name, \Drupal\Core\Session\AccountInterface $account) {
+function par_login_user_format_name_alter(&$name, AccountInterface $account) {
   // Display the user's email instead of name.
   if ($account->isAuthenticated()) {
     $name = $account->getEmail();

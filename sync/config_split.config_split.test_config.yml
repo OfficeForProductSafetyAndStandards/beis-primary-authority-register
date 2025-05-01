@@ -4,14 +4,16 @@ status: true
 dependencies: {  }
 id: test_config
 label: 'Test Config'
+description: ''
+weight: 5
+stackable: false
+no_patching: false
+storage: folder
 folder: ../sync-test
 module:
   maillog: 0
   par_data_test: 0
 theme: {  }
-blacklist: {  }
-graylist:
+complete_list: {  }
+partial_list:
   - system.mail
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 5

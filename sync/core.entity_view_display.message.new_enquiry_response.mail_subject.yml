@@ -7,6 +7,7 @@ dependencies:
     - field.field.message.new_enquiry_response.field_comment
     - field.field.message.new_enquiry_response.field_general_enquiry
     - field.field.message.new_enquiry_response.field_message_subject
+    - field.field.message.new_enquiry_response.field_to
     - message.template.new_enquiry_response
 id: message.new_enquiry_response.mail_subject
 targetEntityType: message
@@ -15,14 +16,18 @@ mode: mail_subject
 content:
   field_message_subject:
     type: string
-    weight: 0
-    region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   field_comment: true
   field_general_enquiry: true
+  field_to: true
   partial_0: true
   partial_1: true
+  partial_2: true
+  partial_3: true
+  search_api_excerpt: true

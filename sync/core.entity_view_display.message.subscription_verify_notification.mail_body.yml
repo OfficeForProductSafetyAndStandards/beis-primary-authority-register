@@ -5,6 +5,8 @@ dependencies:
   config:
     - core.entity_view_mode.message.mail_body
     - field.field.message.subscription_verify_notification.field_message_subject
+    - field.field.message.subscription_verify_notification.field_subscription
+    - field.field.message.subscription_verify_notification.field_to
     - message.template.subscription_verify_notification
 id: message.subscription_verify_notification.mail_body
 targetEntityType: message
@@ -12,12 +14,30 @@ bundle: subscription_verify_notification
 mode: mail_body
 content:
   partial_0:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
   partial_1:
+    weight: 0
+    region: content
+  partial_2:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  partial_3:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  partial_4:
+    settings: {  }
+    third_party_settings: {  }
     weight: 0
     region: content
 hidden:
   field_message_subject: true
+  field_subscription: true
+  field_to: true
+  search_api_excerpt: true

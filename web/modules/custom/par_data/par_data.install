@@ -3,15 +3,26 @@
  * @file
  * Installation hooks for par_data module.
  */
-
+use Drupal\par_data\Entity\ParDataOrganisation;
+use Drupal\Core\Entity\Sql\DefaultTableMapping;
+use Drupal\user\Entity\User;
+use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
+use Drupal\block_content\Entity\BlockContent;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\link\LinkItemInterface;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataEntity;
+use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\par_data\Entity\ParDataPartnershipLegalEntity;
 use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_data\Entity\ParDataPremises;
+use Drupal\par_data\Plugin\Field\FieldType\ParLabelField;
+use Drupal\par_data\Plugin\Field\FieldType\ParStatusField;
 
 /**
  * Implements hook_install().
@@ -79,11 +90,10 @@ function par_data_update_8007() {
   $db = \Drupal::database();
 
   // Change the bundle type.
-  foreach (\Drupal\par_data\Entity\ParDataOrganisation::loadMultiple() as $entity) {
+  foreach (ParDataOrganisation::loadMultiple() as $entity) {
     if ($entity->hasField('field_coordinator_number')) {
       $entity->set('coordinator_number', $entity->get('field_coordinator_number')->getString());
     }
-    $entity->type = 'organisation';
     $entity->save();
   }
 
@@ -96,8 +106,8 @@ function par_data_update_8007() {
     }
 
     $entity_type = \Drupal::service('par_data.manager')->getParEntityType('par_data_organisation');
-    $table_mapping = new \Drupal\Core\Entity\Sql\DefaultTableMapping($entity_type, [$storage]);
-    $table_names = $table_mapping->getDedicatedTableNames($storage);
+    $table_mapping = new DefaultTableMapping($entity_type, [$storage]);
+    $table_names = $table_mapping->getDedicatedTableNames();
 
     foreach ($table_names as $table) {
       $query = $db->update($table)
@@ -112,7 +122,7 @@ function par_data_update_8007() {
  */
 function par_data_update_8008() {
   // Change the bundle type.
-  foreach (\Drupal\user\Entity\User::loadMultiple() as $entity) {
+  foreach (User::loadMultiple() as $entity) {
     // Remove the old deprecated roles.
     if ($entity->hasRole('par_coordinator')) {
       $entity->removeRole('par_coordinator');
@@ -144,15 +154,13 @@ function par_data_update_8010() {
     $entities = \Drupal::entityTypeManager()
       ->getStorage('par_data_organisation')
       ->loadByProperties(['type' => 'business']);
-  } catch (\Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException $e) {
-  } catch (\Drupal\Component\Plugin\Exception\PluginNotFoundException $e) {
+  } catch (InvalidPluginDefinitionException|PluginNotFoundException) {
   }
 
   foreach ($entities as $entity) {
     if ($entity->hasField('field_coordinator_number')) {
       $entity->set('coordinator_number', $entity->get('field_coordinator_number')->getString());
     }
-    $entity->type = 'organisation';
     $entity->save();
   }
 
@@ -165,8 +173,8 @@ function par_data_update_8010() {
     }
 
     $entity_type = \Drupal::service('par_data.manager')->getParEntityType('par_data_organisation');
-    $table_mapping = new \Drupal\Core\Entity\Sql\DefaultTableMapping($entity_type, [$storage]);
-    $table_names = $table_mapping->getDedicatedTableNames($storage);
+    $table_mapping = new DefaultTableMapping($entity_type, [$storage]);
+    $table_names = $table_mapping->getDedicatedTableNames();
 
     foreach ($table_names as $table) {
       $db->update($table)
@@ -181,7 +189,7 @@ function par_data_update_8010() {
  */
 function par_data_update_8011() {
   // Change the bundle type.
-  foreach (\Drupal\user\Entity\User::loadMultiple() as $entity) {
+  foreach (User::loadMultiple() as $entity) {
     // Re-save the entity.
     $entity->save();
   }
@@ -204,7 +212,7 @@ function par_data_update_8012() {
  */
 function par_data_update_8013() {
   // Change the bundle type.
-  foreach (\Drupal\user\Entity\User::loadMultiple() as $entity) {
+  foreach (User::loadMultiple() as $entity) {
     // Re-save the entity.
     $entity->save();
   }
@@ -374,8 +382,9 @@ function par_data_update_8023() {
   $par_data_manager = \Drupal::service('par_data.manager');
 
   $people = $par_data_manager->getEntitiesByProperty('par_data_person', 'type', 'business');
+  $reason = 'Entity removed as part of hook cleanup par_data_update_8023';
   foreach ($people as $person) {
-    $person->destroy();
+    $person->destroy($reason);
   }
 }
 
@@ -450,7 +459,7 @@ function par_data_update_8027() {
   foreach ($premises_entities as $entity) {
     // See if we can convert the entity.
     $nation = $entity->get('nation')->getString();
-    if (!empty($nation) && $key = array_search(trim($nation), $allowed)) {
+    if (!empty($nation) && $key = array_search(trim((string) $nation), $allowed)) {
       $entity->setNation($key, TRUE);
       $entity->save();
     }
@@ -459,7 +468,7 @@ function par_data_update_8027() {
   foreach ($organisation_entities as $entity) {
     // See if we can convert the entity.
     $nation = $entity->get('nation')->getString();
-    if (!empty($nation) && $key = array_search(trim($nation), $allowed)) {
+    if (!empty($nation) && $key = array_search(trim((string) $nation), $allowed)) {
       $entity->setNation($key, TRUE);
       $entity->save();
     }
@@ -514,6 +523,7 @@ function par_data_update_8030() {
     ],
   ];
   $par_data_enforcement_notices = $par_data_manager->getEntitiesByQuery('par_data_enforcement_notice', $conditions);
+  $reason = 'Entity removed as part of hook cleanup par_data_update_8030';
 
   foreach ($par_data_enforcement_notices as $par_data_enforcement_notice) {
     if ($par_data_enforcement_notice->getEnforcementActions()) {
@@ -530,7 +540,7 @@ function par_data_update_8030() {
  * Update all block entities to be resuable.
  */
 function par_data_update_8031() {
-  $blocks = \Drupal\block_content\Entity\BlockContent::loadMultiple();
+  $blocks = BlockContent::loadMultiple();
   foreach ($blocks as $block) {
     $block->setReusable();
     $block->save();
@@ -683,7 +693,7 @@ function par_data_update_8034() {
     }
     // Set the issue date.
     $issue_date = $par_data_advice->get('issue_date')->getString();
-    if (empty($issue_date) || !preg_match('/2\d{3}-\d{2}-\d{2}/', $issue_date)) {
+    if (empty($issue_date) || !preg_match('/2\d{3}-\d{2}-\d{2}/', (string) $issue_date)) {
       $timestamp = $par_data_advice->get('created')->value;
       $request_date = DrupalDateTime::createFromTimestamp($timestamp, NULL, ['validate_format' => FALSE]);
       $par_data_advice->set('issue_date', $request_date->format("Y-m-d"));
@@ -755,7 +765,7 @@ function par_data_update_8035() {
     if ($document) {
       /* @var \Drupal\file\Entity\File $document */
       $filename = $document->getFilename();
-      $sanitised = pathinfo($filename, PATHINFO_FILENAME);
+      $sanitised = pathinfo((string) $filename, PATHINFO_FILENAME);
 
       $a->setAdviceTitle($sanitised);
       $a->save();
@@ -891,7 +901,7 @@ function par_data_update_8038() {
     if ($document) {
       /* @var \Drupal\file\Entity\File $document */
       $filename = $document->getFilename();
-      $sanitised = pathinfo($filename, PATHINFO_FILENAME);
+      $sanitised = pathinfo((string) $filename, PATHINFO_FILENAME);
 
       $inspection_plan_entity->setTitle($sanitised);
       $inspection_plan_entity->save();
@@ -1029,7 +1039,7 @@ function par_data_update_8044() {
 
         $field_name = $field->getName();
         // Get all partnerships that have the format issue within the about business field.
-        $query = \Drupal::entityQuery($entity_type_id);
+        $query = \Drupal::entityQuery($entity_type_id)->accessCheck();
         $query->condition($field_name . '__value', ', basic_html', 'CONTAINS');
         $entity_ids = $query->execute();
 
@@ -1138,4 +1148,448 @@ function par_data_update_8048() {
   $count = $query->execute();
 
   return t("$count file entities removed.");
+}
+
+/**
+ * PAR-1737: Base field updates for new member fields on coordinated partnerships.
+ */
+function par_data_update_9001() {
+  $entity_definition_manager = \Drupal::service('entity.definition_update_manager');
+
+  // New fields definitions to be added to the partnership entity.
+  // @see https://www.drupal.org/node/3034742
+  $storage_definitions = [];
+
+  // Partnership Status.
+  $storage_definitions['member_display'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Member list display'))
+    ->setDescription(t('The list display type, one of: internal, external, request.'))
+    ->addConstraint('par_required')
+    ->setRevisionable(TRUE)
+    ->setSettings([
+      'max_length' => 255,
+      'text_processing' => 0,
+    ])
+    ->setDefaultValue('')
+    ->setDisplayOptions('form', [
+      'type' => 'string_textfield',
+      'weight' => 8,
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'weight' => 0,
+    ])
+    ->setDisplayConfigurable('view', TRUE);
+
+  // Number of Members.
+  $storage_definitions['member_number'] = BaseFieldDefinition::create('integer')
+    ->setLabel(t('Number of members'))
+    ->setDescription(t('The number of coordinated members in this partnership.'))
+    ->setRevisionable(TRUE)
+    ->setSettings([
+      'max_length' => 6,
+      'text_processing' => 0,
+    ])
+    ->setDefaultValue('')
+    ->setDisplayOptions('form', [
+      'type' => 'number',
+      'weight' => 8,
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'type' => 'number_integer',
+      'weight' => 0,
+    ])
+    ->setDisplayConfigurable('view', TRUE);
+
+  // Number of Members.
+  $storage_definitions['member_link'] = BaseFieldDefinition::create('link')
+    ->setLabel(t('Member list link'))
+    ->setDescription(t('The link to the publicly available external member list.'))
+    ->setRevisionable(TRUE)
+    ->setSettings([
+      'link_type' => LinkItemInterface::LINK_EXTERNAL,
+      'title' => DRUPAL_DISABLED,
+    ])
+    ->setDefaultValue('')
+    ->setDisplayOptions('form', [
+      'type' => 'link_default',
+      'weight' => 8,
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'type' => 'link',
+      'weight' => 0,
+    ])
+    ->setDisplayConfigurable('view', TRUE);
+
+  foreach ($storage_definitions as $field => $definition) {
+    $entity_definition_manager->installFieldStorageDefinition($field, 'par_data_partnership', 'par_data_partnership', $definition);
+  }
+}
+
+/**
+ * PAR-1737 update new member display fields.
+ *
+ * Migrate the number of members from the organisation to the partnership.
+ * Attempt to set the correct display type for coordinated partnerships.
+ */
+function par_data_update_9002() {
+  /** @var \Drupal\par_data\ParDataManagerInterface $par_data_manager */
+  $par_data_manager = \Drupal::service('par_data.manager');
+
+  $qry = $par_data_manager->getEntityQuery('par_data_partnership');
+  $qry->condition('partnership_type', 'coordinated');
+  $results = $qry->execute();
+
+  foreach ($results as $result) {
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $partnership */
+    $partnership = \Drupal::entityTypeManager()->getStorage('par_data_partnership')->load($result);
+
+    // Get the number of members on the organisation.
+    /** @var \Drupal\par_data\Entity\ParDataOrganisation $organisation */
+    $organisation = $partnership ? $partnership->getOrganisation(true) : NULL;
+    $number_members = $organisation ? $organisation->getMembershipSize() : NULL;
+    if ($number_members) {
+      $partnership->set('member_number', $number_members);
+      $partnership->save();
+    }
+  }
+}
+
+/**
+ * PAR-1780 Install the new Partnership Legal Entity entity.
+ */
+function par_data_update_9003() {
+  // Create the new entity if it isn't already installed.
+  $db = \Drupal::database();
+  if (!$db->schema()->tableExists('par_data_partnership_legal_entities')) {
+    \Drupal::entityTypeManager()->clearCachedDefinitions();
+    \Drupal::entityDefinitionUpdateManager()
+      ->installEntityType(\Drupal::entityTypeManager()->getDefinition('par_data_partnership_le'));
+  }
+}
+
+/**
+ * PAR-1781 Migrate legal entity relationship data from partnership to new partnership_legal_entity data entity.
+ */
+function par_data_update_9004(&$sandbox) {
+  /** @var \Drupal\par_data\ParDataManagerInterface $par_data_manager */
+  $par_data_manager = \Drupal::service('par_data.manager');
+  $batch_size = 100;
+
+  // Initialize some variables during the first pass through.
+  if (!isset($sandbox['total'])) {
+    // Get all partnerships that have legal entities attached.
+    $query = $par_data_manager->getEntityQuery('par_data_partnership')
+      ->condition('field_legal_entity', '', 'IS NOT NULL');
+    $partnerships = array_unique($query->execute());
+
+    // Set default values.
+    $sandbox['partnerships'] = array_chunk($partnerships, $batch_size, true);
+    $sandbox['total'] = count($partnerships);
+    $sandbox['current'] = 0;
+  }
+
+  // Process the partnership updates in chunks to avoid processing timeouts.
+  $chunk = $sandbox['partnerships'][$sandbox['current']];
+  foreach ($chunk as $result) {
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $partnership */
+    $partnership = \Drupal::entityTypeManager()->getStorage('par_data_partnership')->load($result);
+
+    if ($partnership instanceof ParDataEntityInterface) {
+      // Get the legal entities linked to the partnership.
+      $legal_entities = $partnership->get('field_legal_entity')->referencedEntities();
+      if (empty($legal_entities)) {
+        continue;
+      }
+
+      // Process each legal entity.
+      /** @var \Drupal\par_data\Entity\ParDataLegalEntity $legal_entity */
+      foreach ($legal_entities as $legal_entity) {
+        // Create new partnership legal entity instance referencing the legal entity.
+        /** @var \Drupal\par_data\Entity\ParDataPartnershipLegalEntity $partnership_legal_entity */
+        $partnership_legal_entity = ParDataPartnershipLegalEntity::create([]);
+        $partnership_legal_entity->setLegalEntity($legal_entity);
+        $partnership_legal_entity->save();
+
+        // Append new partnership legal entity to list of legal entities covered by this partnership.
+        $partnership->get('field_partnership_legal_entity')->appendItem($partnership_legal_entity);
+      }
+
+      // Remove the values from the old field to prevent circular references.
+      $partnership->set('field_legal_entity', null);
+
+      // Save the partnership with its new partnership_legal_entity references.
+      $partnership->save();
+    }
+  }
+  $sandbox['current']++;
+
+  $results_updated = ($batch_size * $sandbox['current']);
+  $message = "$results_updated partnership legal entities migrated, batch {$sandbox['current']} complete.";
+
+  $sandbox['#finished'] = $sandbox['total'] == 0 ? 1 :
+    ($results_updated / $sandbox['total']);
+
+  return t($message);
+}
+
+/**
+ * PAR-1737: Add computed fields (par_status & par_label) to all PAR entities.
+ */
+function par_data_update_9005() {
+  /** @var \Drupal\par_data\ParDataManagerInterface $par_data_manager */
+  $par_data_manager = \Drupal::service('par_data.manager');
+  $entity_definition_manager = \Drupal::service('entity.definition_update_manager');
+  $entity_types = \Drupal::service('par_data.manager')->getParEntityTypes();
+
+  // New fields definitions to be added to all par entities.
+  // @see https://www.drupal.org/node/3034742
+  $storage_definitions = [];
+
+  // Add the PAR Label computed field.
+  $storage_definitions['par_label'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Label'))
+    ->setDescription(t('The label of the PAR entity.'))
+    ->setComputed(TRUE)
+    ->setClass(ParLabelField::class)
+    ->setRevisionable(TRUE)
+    ->setSettings([
+      'max_length' => 255,
+      'text_processing' => 0,
+    ])
+    ->setDefaultValue('')
+    ->setDisplayOptions('form', [
+      'type' => 'string_textfield',
+      'weight' => 2,
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'weight' => 0,
+    ])
+    ->setDisplayConfigurable('view', TRUE);
+
+  // Add the PAR Status computed field.
+  $storage_definitions['par_status'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Status'))
+    ->setDescription(t('The status of the PAR entity.'))
+    ->setComputed(TRUE)
+    ->setClass(ParStatusField::class)
+    ->setRevisionable(TRUE)
+    ->setSettings([
+      'max_length' => 255,
+      'text_processing' => 0,
+    ])
+    ->setDefaultValue('')
+    ->setDisplayOptions('form', [
+      'type' => 'string_textfield',
+      'weight' => 2,
+    ])
+    ->setDisplayConfigurable('form', FALSE)
+    ->setDisplayOptions('view', [
+      'label' => 'hidden',
+      'region' => 'hidden',
+    ])
+    ->setDisplayConfigurable('view', TRUE);
+
+  foreach($entity_types as $entity_type_id => $entity_type) {
+    // Install each field.
+    foreach ($storage_definitions as $field => $definition) {
+      $entity_definition_manager->installFieldStorageDefinition($field, $entity_type_id, $entity_type_id, $definition);
+    }
+  }
+}
+
+/**
+ * PAR-1800: Updating invalid partnership data for the options property on the member_link field.
+ */
+function par_data_update_9006() {
+  /** @var \Drupal\par_data\ParDataManagerInterface $par_data_manager */
+  $par_data_manager = \Drupal::service('par_data.manager');
+  $query = $par_data_manager->getEntityQuery('par_data_partnership')
+        ->condition('member_link.options', NULL, 'IS NULL');
+  $partnerships = $query->execute();
+
+  foreach ($partnerships as $id) {
+    $partnership = \Drupal::service('entity_type.manager')
+    ->getStorage('par_data_partnership')->load($id);
+    $partnership->set('member_link', NULL);
+    $partnership->save();
+  }
+}
+
+/**
+ * PAR-1943: Add the new registry field to par_data_legal_entity entity.
+ */
+function par_data_update_9007() {
+  // Adding new field definitions to an entity.
+  // @see https://www.drupal.org/node/3034742#comment-14054069
+  $module_name = 'par_data';
+  $entity_type = 'par_data_legal_entity';
+  $fields = [
+    'registry',
+    'organisation',
+  ];
+
+  \Drupal::entityTypeManager()->clearCachedDefinitions();
+
+  $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+  $field_definitions = \Drupal::service('entity_field.manager')
+    ->getFieldDefinitions($entity_type, $entity_type);
+  foreach ($fields as $field_name) {
+    if (!empty($field_definitions[$field_name]) && $field_definitions[$field_name] instanceof FieldStorageDefinitionInterface) {
+      $entity_definition_update_manager
+        ->installFieldStorageDefinition(
+          $field_name,
+          $entity_type,
+          $module_name,
+          $field_definitions[$field_name]);
+    }
+  }
+}
+
+/**
+ * PAR-2038: Add the new status field to par_data_partnership_le entity.
+ */
+function par_data_update_9008() {
+  // Adding new field definitions to an entity.
+  // @see https://www.drupal.org/node/3034742#comment-14054069
+  $module_name = 'par_data';
+  $entity_type = 'par_data_partnership_le';
+  $fields = [
+    'legal_entity_status',
+  ];
+
+  \Drupal::entityTypeManager()->clearCachedDefinitions();
+
+  $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+  $field_definitions = \Drupal::service('entity_field.manager')
+    ->getFieldDefinitions($entity_type, $entity_type);
+  foreach ($fields as $field_name) {
+    if (!empty($field_definitions[$field_name]) && $field_definitions[$field_name] instanceof FieldStorageDefinitionInterface) {
+      $entity_definition_update_manager
+        ->installFieldStorageDefinition(
+          $field_name,
+          $entity_type,
+          $module_name,
+          $field_definitions[$field_name]);
+    }
+  }
+}
+
+/**
+ * PAR-2038 Set partnership legal entity status on existing entity instances to confirmed_rd (Active).
+ */
+function par_data_update_9009(&$sandbox) {
+  /** @var \Drupal\par_data\ParDataManagerInterface $par_data_manager */
+  $par_data_manager = \Drupal::service('par_data.manager');
+  $batch_size = 100;
+
+  // Initialize some variables during the first pass through.
+  if (!isset($sandbox['total'])) {
+    // Get all partnerships that have legal entities attached.
+    $query = $par_data_manager->getEntityQuery('par_data_partnership')
+      ->condition('field_partnership_legal_entity', '', 'IS NOT NULL');
+    $partnerships = array_unique($query->execute());
+
+    // Set default values.
+    $sandbox['partnerships'] = array_chunk($partnerships, $batch_size, true);
+    $sandbox['total'] = count($partnerships);
+    $sandbox['current'] = 0;
+  }
+
+  // Process the partnership updates in chunks to avoid processing timeouts.
+  $chunk = $sandbox['partnerships'][$sandbox['current']];
+  foreach ($chunk as $result) {
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $partnership */
+    $partnership = \Drupal::entityTypeManager()->getStorage('par_data_partnership')->load($result);
+
+    if ($partnership instanceof ParDataEntityInterface) {
+      // If the partnership is active, all legal entities can be set to active.
+      foreach($partnership->getPartnershipLegalEntities(FALSE) as $partnership_legal_entity) {
+        if ($partnership->isRevoked()) {
+          $partnership_legal_entity->set(ParDataEntity::REVOKE_FIELD, TRUE);
+          $partnership_legal_entity->get(ParDataEntity::REVOKE_REASON_FIELD)->setValue([
+            'value' => "Status set by installation hook 9009.",
+            'format' => 'plain_text',
+          ]);
+        } else {
+          $partnership_legal_entity->set('legal_entity_status', $partnership->getRawStatus());
+        }
+
+        // Always revision status changes.
+        $partnership_legal_entity->setNewRevision(TRUE);
+        $partnership_legal_entity->save();
+      }
+    }
+  }
+  $sandbox['current']++;
+
+  $results_updated = ($batch_size * $sandbox['current']);
+  $message = "$results_updated partnership legal entity statuses updated, batch {$sandbox['current']} complete.";
+
+  $sandbox['#finished'] = $sandbox['total'] == 0 ? 1 :
+    ($results_updated / $sandbox['total']);
+
+  return t($message);
+}
+
+/**
+ * PAR-2193: Add the new previous names field to par_data_partnership entities
+ * to record transfers of partnerships.
+ */
+function par_data_update_9010() {
+  // Adding new field definitions to an entity.
+  // @see https://www.drupal.org/node/3034742#comment-14054069
+  $module_name = 'par_data';
+  $entity_type = 'par_data_partnership';
+  $fields = [
+    'previous_names',
+  ];
+
+  \Drupal::entityTypeManager()->clearCachedDefinitions();
+
+  $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+  $field_definitions = \Drupal::service('entity_field.manager')
+    ->getFieldDefinitions($entity_type, $entity_type);
+  foreach ($fields as $field_name) {
+    if (!empty($field_definitions[$field_name]) && $field_definitions[$field_name] instanceof FieldStorageDefinitionInterface) {
+      $entity_definition_update_manager
+        ->installFieldStorageDefinition(
+          $field_name,
+          $entity_type,
+          $module_name,
+          $field_definitions[$field_name]);
+    }
+  }
+}
+
+/**
+ * 3025031: https://www.drupal.org/project/drupal/issues/3025031#comment-12921882
+ */
+function par_data_update_10001() {
+  $old_new_action_id_map = [
+    'node_publish_action' => 'entity:publish_action:node',
+    'node_unpublish_action' => 'entity:unpublish_action:node',
+    'node_save_action' => 'entity:save_action:node',
+    'node_delete_action' => 'entity:delete_action:node',
+    'comment_publish_action' => 'entity:publish_action:comment',
+    'comment_unpublish_action' => 'entity:unpublish_action:comment',
+    'comment_save_action' => 'entity:save_action:comment',
+    'comment_delete_action' => 'entity:delete_action:comment',
+  ];
+
+  /** @var \Drupal\system\Entity\Action[] $actions */
+  $actions = \Drupal::entityTypeManager()->getStorage('action')->loadMultiple();
+  foreach ($actions as $action) {
+    if (isset($old_new_action_id_map[$action->id()])) {
+      $action->setPlugin($old_new_action_id_map[$action->id()]);
+      $action->save();
+    }
+  }
 }

@@ -9,6 +9,7 @@ use Drupal\Core\Render\RendererInterface;
 use Drupal\message\MessageInterface;
 use Drupal\message_notify\Exception\MessageNotifyException;
 use Drupal\message_notify\Plugin\Notifier\MessageNotifierBase;
+use Drupal\par_notification\Event\ParNotificationEvent;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -55,11 +56,12 @@ class PlainEmail extends MessageNotifierBase {
    * @param \Drupal\Core\Mail\MailManagerInterface $mail_manager
    *   The mail manager service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, LoggerChannelInterface $logger, EntityTypeManagerInterface $entity_type_manager, RendererInterface $render, MessageInterface $message = NULL, MailManagerInterface $mail_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, LoggerChannelInterface $logger, EntityTypeManagerInterface $entity_type_manager, RendererInterface $render, MailManagerInterface $mail_manager, MessageInterface $message = NULL) {
     // Set configuration defaults.
     $configuration += [
       'mail' => FALSE,
       'language override' => FALSE,
+      'from' => FALSE,
     ];
 
     parent::__construct($configuration, $plugin_id, $plugin_definition, $logger, $entity_type_manager, $render, $message);
@@ -70,6 +72,7 @@ class PlainEmail extends MessageNotifierBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MessageInterface $message = NULL) {
     return new static(
       $configuration,
@@ -78,14 +81,22 @@ class PlainEmail extends MessageNotifierBase {
       $container->get('logger.channel.message_notify'),
       $container->get('entity_type.manager'),
       $container->get('renderer'),
-      $message,
-      $container->get('plugin.manager.mail')
+      $container->get('plugin.manager.mail'),
+      $message
     );
+  }
+
+  /**
+   * Get the Event Dispatcher service.
+   */
+  public function getEventDispatcher() {
+    return \Drupal::service('event_dispatcher');
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function deliver(array $output = []) {
     /** @var \Drupal\user\UserInterface $account */
     $account = $this->message->getOwner();
@@ -97,6 +108,7 @@ class PlainEmail extends MessageNotifierBase {
     }
 
     $mail = $this->configuration['mail'] ?: $account->getEmail();
+    $from = $this->configuration['from'] ?: NULL;
 
     if (!$this->configuration['language override']) {
       $language = $account->getPreferredLangcode();
@@ -105,9 +117,14 @@ class PlainEmail extends MessageNotifierBase {
       $language = $this->message->language()->getId();
     }
 
+    // Allow the message to be altered and personalised prior to sending.
+    $event = new ParNotificationEvent($this->message, $mail, $output);
+    $this->getEventDispatcher()->dispatch($event, ParNotificationEvent::SEND);
+    $output = $event->getOutput();
+
     // The subject in an email can't be with HTML, so strip it.
-    $output['mail_subject'] = trim(strip_tags($output['mail_subject']));
-    $output['mail_body'] = trim(strip_tags($output['mail_body']));
+    $output['mail_subject'] = trim(strip_tags((string) $output['mail_subject']));
+    $output['mail_body'] = trim(strip_tags((string) $output['mail_body']));
 
     // Pass the message entity along to hook_drupal_mail().
     $output['message_entity'] = $this->message;

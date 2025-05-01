@@ -2,6 +2,7 @@
 
 namespace Drupal\Tests\par_notification\Kernel;
 
+use Drupal\par_notification\ParMessageHandler;
 use Drupal\comment\Entity\Comment;
 use Drupal\message\Entity\MessageTemplate;
 use Drupal\par_data\Entity\ParDataAdvice;
@@ -28,11 +29,12 @@ use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 class ParNotificationTestBase extends ParDataTestBase
 {
 
-  static $modules = [
+  protected static $modules = [
     'user',
     'system',
     'field',
     'text',
+    'link',
     'filter',
     'entity_test',
     'language',
@@ -59,28 +61,36 @@ class ParNotificationTestBase extends ParDataTestBase
   /**
    * Notification types
    */
-  protected $preferences = [
+  protected $message_types = [
+    'approved_enforcement',
+    'inspection_plan_expiry_warning',
+    'revoke_inspection_plan',
+    'new_deviation_response',
     'new_deviation_request',
     'new_enforcement_notification',
-    'new_general_enquiry',
-    'new_inspection_feedback',
-    'new_partnership_notification',
-    'new_deviation_response',
     'new_enquiry_response',
+    'new_general_enquiry',
     'new_inspection_feedback_response',
+    'new_inspection_feedback',
     'new_inspection_plan',
-    'partnership_approved_notificatio',
+    'new_partnership_notification',
     'partnership_confirmed_notificati',
+    'partnership_approved_notificatio',
+    'partnership_deleted_notification',
     'partnership_revocation_notificat',
-    'revoke_inspection_plan',
+    'partnership_nominate',
     'reviewed_deviation_request',
     'reviewed_enforcement',
+    'member_list_stale_warning',
+    'new_response',
+    'subscription_verify_notification',
   ];
 
   /**
    * {@inheritdoc}
    */
-  protected function setUp()
+  #[\Override]
+  protected function setUp(): void
   {
     parent::setUp();
 
@@ -89,10 +99,10 @@ class ParNotificationTestBase extends ParDataTestBase
     $this->installConfig('par_notification');
 
     // Create the entity bundles required for testing.
-    foreach ($this->preferences as $notification_type) {
+    foreach ($this->message_types as $message_type) {
       $type = MessageTemplate::create([
-        'template' => $notification_type,
-        'label' => ucfirst(str_replace('_', ' ', $notification_type)),
+        'template' => $message_type,
+        'label' => ucfirst(str_replace('_', ' ', $message_type)),
       ]);
       $type->save();
     }
@@ -103,83 +113,11 @@ class ParNotificationTestBase extends ParDataTestBase
     // Mock all the par_notification event subscriber services.
     $container = \Drupal::getContainer();
 
-    $this->new_deviation_response_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\NewDeviationRequestReplySubscriber')
-      ->setMethods(['getSubscribedEvents', 'onEvent'])
+    $this->message_handler = $this->getMockBuilder(ParMessageHandler::class)
+      ->onlyMethods(['getSubscribedEvents', 'onEvent'])
       ->disableOriginalConstructor()
       ->getMock();
     $container->set('par_notification.new_deviation_reply_subscriber', $this->new_deviation_response_subscriber);
-
-    $this->new_deviation_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\NewDeviationRequestSubscriber')
-      ->setMethods(['getSubscribedEvents', 'onEvent'])
-      ->disableOriginalConstructor()
-      ->getMock();
-    $container->set('par_notification.new_deviation_request_subscriber', $this->new_deviation_subscriber);
-
-    $this->new_enforcement_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\NewEnforcementSubscriber')
-      ->setMethods(['getSubscribedEvents', 'onEvent'])
-      ->disableOriginalConstructor()
-      ->getMock();
-    $container->set('par_notification.new_enforcement_subscriber', $this->new_enforcement_subscriber);
-
-    $this->new_enquiry_response_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\NewGeneralEnquiryReplySubscriber')
-      ->setMethods(['getSubscribedEvents', 'onEvent'])
-      ->disableOriginalConstructor()
-      ->getMock();
-    $container->set('par_notification.new_enquiry_reply_subscriber', $this->new_enquiry_response_subscriber);
-
-    $this->new_enquiry_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\NewGeneralEnquirySubscriber')
-      ->setMethods(['getSubscribedEvents', 'onEvent'])
-      ->disableOriginalConstructor()
-      ->getMock();
-    $container->set('par_notification.new_general_enquiry_subscriber', $this->new_enquiry_subscriber);
-
-    $this->new_inspection_feedback_response_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\NewInspectionFeedbackReplySubscriber')
-      ->setMethods(['getSubscribedEvents', 'onEvent'])
-      ->disableOriginalConstructor()
-      ->getMock();
-    $container->set('par_notification.new_inspection_feedback_reply_subscriber', $this->new_inspection_feedback_response_subscriber);
-
-    $this->new_inspection_feedback_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\NewInspectionFeedbackSubscriber')
-      ->setMethods(['getSubscribedEvents', 'onEvent'])
-      ->disableOriginalConstructor()
-      ->getMock();
-    $container->set('par_notification.new_inspection_feedback_subscriber', $this->new_inspection_feedback_subscriber);
-
-    $this->new_partnership_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\NewPartnershipSubscriber')
-      ->setMethods(['getSubscribedEvents', 'onEvent'])
-      ->disableOriginalConstructor()
-      ->getMock();
-    $container->set('par_notification.new_partnership_application_subscriber', $this->new_partnership_subscriber);
-
-    $this->partnership_completed_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\PartnershipApplicationCompletedSubscriber')
-      ->setMethods(['getSubscribedEvents', 'onEvent'])
-      ->disableOriginalConstructor()
-      ->getMock();
-    $container->set('par_notification.partnership_application_completed_subscriber', $this->partnership_completed_subscriber);
-
-    $this->partnership_approved_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\PartnershipApprovedSubscriber')
-      ->setMethods(['getSubscribedEvents', 'onEvent'])
-      ->disableOriginalConstructor()
-      ->getMock();
-    $container->set('par_notification.partnership_approved_subscriber', $this->partnership_approved_subscriber);
-
-    $this->partnership_revoked_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\PartnershipRevocationSubscriber')
-      ->setMethods(['getSubscribedEvents', 'onEvent'])
-      ->disableOriginalConstructor()
-      ->getMock();
-    $container->set('par_notification.partnership_revocation_subscriber', $this->partnership_revoked_subscriber);
-
-    $this->deviation_reviewed_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\ReviewedDeviationRequestSubscriber')
-      ->setMethods(['getSubscribedEvents', 'onEvent'])
-      ->disableOriginalConstructor()
-      ->getMock();
-    $container->set('par_notification.reviewed_deviation_request_subscriber', $this->deviation_reviewed_subscriber);
-
-    $this->enforcement_reviewed_subscriber = $this->getMockBuilder('Drupal\par_notification\EventSubscriber\ReviewedEnforcementSubscriber')
-      ->setMethods(['getSubscribedEvents', 'onEvent'])
-      ->disableOriginalConstructor()
-      ->getMock();
-    $container->set('par_notification.reviewed_enforcement_subscriber', $this->enforcement_reviewed_subscriber);
 
     \Drupal::setContainer($container);
   }
@@ -198,10 +136,8 @@ class ParNotificationTestBase extends ParDataTestBase
     // person_2 & person_3 are secondary contacts for the partnership that will be added to the partnership.
     // person_4 & person_5 are members of the authority only, they have no relationship to the partnership.
     $person_2 = ParDataPerson::create(['email' => "person_2@{$name}.com"] + $this->getPersonValues());
-    $person_2->set('field_notification_preferences', $this->preferences);
     $person_3 = ParDataPerson::create(['email' => "person_3@{$name}.com"] + $this->getPersonValues());
     $person_4 = ParDataPerson::create(['email' => "person_4@{$name}.com"] + $this->getPersonValues());
-    $person_4->set('field_notification_preferences', $this->preferences);
     $person_5 = ParDataPerson::create(['email' => "person_5@{$name}.com"] + $this->getPersonValues());
     $person_2->save();
     $person_3->save();
@@ -228,10 +164,8 @@ class ParNotificationTestBase extends ParDataTestBase
     // person_7 & person_8 are secondary contacts for the organisation that will be added to the partnership.
     // person_9 & person_10 are members of the organisation only, they have no relationship to the partnership.
     $person_7 = ParDataPerson::create(['email' => 'person_7@organisation.com'] + $this->getPersonValues());
-    $person_7->set('field_notification_preferences', $this->preferences);
     $person_8 = ParDataPerson::create(['email' => 'person_8@organisation.com'] + $this->getPersonValues());
     $person_9 = ParDataPerson::create(['email' => 'person_9@organisation.com'] + $this->getPersonValues());
-    $person_9->set('field_notification_preferences', $this->preferences);
     $person_10 = ParDataPerson::create(['email' => 'person_10@organisation.com'] + $this->getPersonValues());
     $person_7->save();
     $person_8->save();
@@ -542,7 +476,7 @@ class ParNotificationTestBase extends ParDataTestBase
       'field_name'  => 'messages',
       'uid' => $enforcing_officer->id(),
       'comment_type' => 'par_deviation_request_comments',
-      'subject' => substr($enquiry->label(), 0, 64),
+      'subject' => substr((string) $enquiry->label(), 0, 64),
       'status' => 1,
       'comment_body' => $this->randomString(1000),
     ]);

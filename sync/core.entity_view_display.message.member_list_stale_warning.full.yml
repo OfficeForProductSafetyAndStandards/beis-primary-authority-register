@@ -1,0 +1,28 @@
+uuid: 2aa80528-c906-4e89-acbe-c58db13bb9db
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.full
+    - field.field.message.member_list_stale_warning.field_message_subject
+    - field.field.message.member_list_stale_warning.field_partnership
+    - field.field.message.member_list_stale_warning.field_to
+    - message.template.member_list_stale_warning
+id: message.member_list_stale_warning.full
+targetEntityType: message
+bundle: member_list_stale_warning
+mode: full
+content:
+  partial_0:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_message_subject: true
+  field_partnership: true
+  field_to: true
+  partial_1: true
+  partial_2: true
+  partial_3: true
+  search_api_excerpt: true

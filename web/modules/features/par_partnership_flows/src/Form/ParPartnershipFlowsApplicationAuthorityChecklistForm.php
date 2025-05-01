@@ -26,10 +26,11 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     // Load application type from previous step.
     $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_application_type');
-    $applicationType = ucfirst($this->getFlowDataHandler()->getDefaultValues('application_type', '', $cid));
+    $applicationType = ucfirst((string) $this->getFlowDataHandler()->getDefaultValues('application_type', '', $cid));
 
     // Set page title.
     $this->pageTitle = "{$applicationType} partnership application";
@@ -40,6 +41,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     $this->retrieveEditableValues();
 
@@ -53,10 +55,10 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
 
     if ($applicationType == 'direct') {
       $form['section_one']['header'] = [
-        '#type' => 'markup',
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
         '#markup' => $this->t('Please confirm the following'),
-        '#prefix' => '<h3 class="heading-medium">',
-        '#suffix' => '</h3>',
+        '#attributes' => ['class' => ['govuk-heading-m']],
       ];
 
       $form['section_one']['business_eligible_for_partnership'] = [
@@ -138,10 +140,10 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
     }
     elseif ($applicationType == 'coordinated') {
       $form['section_one']['header'] = [
-        '#type' => 'markup',
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
         '#markup' => $this->t('Please confirm the following'),
-        '#prefix' => '<h3 class="heading-medium">',
-        '#suffix' => '</h3>',
+        '#attributes' => ['class' => ['govuk-heading-m']],
       ];
 
       $form['section_one']['coordinator_local_authority_suitable'] = [
@@ -170,6 +172,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
         '#title' => t("My local authority agrees to the Primary Authority <a href='{$terms_page}' target='_blank'>Terms and Conditions (opens in a new window)</a>."),
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues("terms_local_authority_agreed", FALSE),
         '#return_value' => 'on',
+        '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
       ];
     }
 
@@ -181,6 +184,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
@@ -222,7 +226,7 @@ class ParPartnershipFlowsApplicationAuthorityChecklistForm extends ParBaseForm {
       // All items in section needs to be ticked before they can proceed.
       $form_items = [
         'coordinator_local_authority_suitable' => 'the organisation is eligible',
-        'suitable_nomination' => 'the coordinator is suitable for nomination',
+        'suitable_nomination' => 'the co-ordinator is suitable for nomination',
         'written_summary_agreed' => 'a written summary has been agreed',
         'terms_local_authority_agreed' => 'the local authority agrees to Primary Authority Terms and Conditions',
       ];

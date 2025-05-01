@@ -1,0 +1,32 @@
+uuid: efe422bb-15e8-47d6-bf59-bb460297ac82
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.mail_subject
+    - field.field.message.approved_enforcement.field_enforcement_notice
+    - field.field.message.approved_enforcement.field_message_subject
+    - field.field.message.approved_enforcement.field_to
+    - message.template.approved_enforcement
+id: message.approved_enforcement.mail_subject
+targetEntityType: message
+bundle: approved_enforcement
+mode: mail_subject
+content:
+  field_message_subject:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_enforcement_notice: true
+  field_to: true
+  partial_0: true
+  partial_1: true
+  partial_2: true
+  partial_3: true
+  partial_4: true
+  search_api_excerpt: true

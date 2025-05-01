@@ -43,6 +43,7 @@ class ParFlowLink extends AreaPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function defineOptions() {
     $options = parent::defineOptions();
 
@@ -57,6 +58,7 @@ class ParFlowLink extends AreaPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);
 
@@ -83,7 +85,7 @@ class ParFlowLink extends AreaPluginBase {
 
     $form['class'] = [
       '#title' => 'Link classes',
-      '#description' => 'Enter any additional classes to be added to the link, separated by a comma. By default `btn-link` will be added to all links.',
+      '#description' => 'Enter any additional classes to be added to the link, separated by a comma.',
       '#type' => 'textfield',
       '#default_value' => $this->options['class']  ?: '',
     ];
@@ -92,6 +94,7 @@ class ParFlowLink extends AreaPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validate() {
     $errors = parent::validate();
 
@@ -106,9 +109,10 @@ class ParFlowLink extends AreaPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function render($empty = FALSE) {
     $path = $this->options['link'] ?: '';
-    $classes = explode(',', $this->options['class'] ?: 'btn-link');
+    $classes = explode(',', (string) ($this->options['class'] ?: 'flow-link'));
     $title = trim(strip_tags(Html::decodeEntities($this->options['title'] ?: '')));
     $assistive_text = strip_tags(Html::decodeEntities($this->options['assistive_text'] ?: ''));
 
@@ -144,7 +148,7 @@ class ParFlowLink extends AreaPluginBase {
 
     // Only display if there is a link.
     if (!empty($link) && $url->access() && $url->isRouted()) {
-      $options = NestedArray::mergeDeep(['attributes' => ['class' => ['form-group']]], $options);
+      $options = NestedArray::mergeDeep(['attributes' => ['class' => ['govuk-form-group']]], $options);
       return [
         '#type' => 'link',
         '#title' => $title,

@@ -2,20 +2,29 @@
 
 namespace Drupal\par_forms;
 
+use Drupal;
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\NestedArray;
+use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Routing\UrlGeneratorInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\Url;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParDisplayTrait;
 use Drupal\par_flows\ParFlowDataHandlerInterface;
 use Drupal\par_flows\ParFlowDataHandler;
+use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
 use Drupal\par_flows\ParRedirectTrait;
-use Drupal\par_forms\Annotation\ParForm;
+use Drupal\unique_pager\UniquePagerService;
+use Drupal\Core\Path\PathValidatorInterface;
+use InvalidArgumentException;
 
 /**
  * Provides a base implementation for a ParForm plugin.
@@ -40,73 +49,87 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
    *
    * @see ParEntityMapping
    */
-  protected $entityMapping = [];
+  protected array $entityMapping = [];
 
   /**
-   * Form defaults
+   * Form defaults.
    */
-  protected $formDefaults = [];
+  protected array $formDefaults = [];
 
   /**
    * Wrapper name used to identify this component to users.
    */
-  protected $wrapperName = 'item';
+  protected string $wrapperName = 'item';
 
   /**
    * {@inheritDoc}
    */
-  public function getPluginNamespace() {
+  #[\Override]
+  public function getPluginNamespace(): string {
     return $this->getConfiguration()[ParFormPluginInterface::NAMESPACE_PROPERTY] ?? $this->getPluginId();
   }
 
   /**
-   * {@inheritdoc}
+   * Get the title for the plugin.
    */
   public function getTitle() {
     return $this->pluginDefinition['label'];
   }
 
   /**
-   * {@inheritdoc}
+   * Get the plugin weight.
    */
   public function getWeight() {
     return $this->getConfiguration()['weight'] ?: $this->pluginDefinition['weight'];
   }
 
   /**
-   * {@inheritdoc}
+   * Get the cardinality for this plugin instance.
+   *
    */
   public function getCardinality() {
     return $this->getConfiguration()['cardinality'] ?: $this->pluginDefinition['cardinality'];
   }
 
   /**
-   * {@inheritdoc}
+   * Get any additional plugin configuration elements.
+   *
+   * @return array
    */
-  public function getConfiguration() {
+  #[\Override]
+  public function getConfiguration(): array {
     return array_merge($this->defaultConfiguration(), $this->configuration);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setConfiguration(array $configuration = []) {
+  #[\Override]
+  public function setConfiguration(array $configuration = []): void {
     $this->configuration = $configuration;
   }
 
-  public function getFormDefaults() {
+  /**
+   * Get any default values that may be set.
+   *
+   * @return array
+   */
+  #[\Override]
+  public function getFormDefaults(): array {
     return $this->formDefaults;
   }
 
+  #[\Override]
   public function getFormDefaultByKey($key) {
     $defaults = $this->getFormDefaults();
-    return isset($defaults[$key]) ? $defaults[$key] : FALSE;
+    return $defaults[$key] ?? FALSE;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function defaultConfiguration() {
+  #[\Override]
+  public function defaultConfiguration(): array {
     return [
       'weight' => 0,
       'cardinality' => 1,
@@ -119,8 +142,8 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
    *
    * @return ParFlowNegotiatorInterface
    */
-  public function getFlowNegotiator() {
-    return \Drupal::service('par_flows.negotiator');
+  public function getFlowNegotiator(): ParFlowNegotiatorInterface {
+    return Drupal::service('par_flows.negotiator');
   }
 
   /**
@@ -128,8 +151,8 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
    *
    * @return ParFlowDataHandlerInterface
    */
-  public function getFlowDataHandler() {
-    return \Drupal::service('par_flows.data_handler');
+  public function getFlowDataHandler(): ParFlowDataHandlerInterface {
+    return Drupal::service('par_flows.data_handler');
   }
 
   /**
@@ -137,17 +160,17 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
    *
    * @return ParDataManagerInterface
    */
-  public function getParDataManager() {
-    return \Drupal::service('par_data.manager');
+  public function getParDataManager(): ParDataManagerInterface {
+    return Drupal::service('par_data.manager');
   }
 
   /**
    * Get unique pager service.
    *
-   * @return \Drupal\unique_pager\UniquePagerService
+   * @return UniquePagerService
    */
-  public static function getUniquePager() {
-    return \Drupal::service('unique_pager.unique_pager_service');
+  public static function getUniquePager(): UniquePagerService {
+    return Drupal::service('unique_pager.unique_pager_service');
   }
 
   /**
@@ -155,8 +178,8 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
    *
    * @return UrlGeneratorInterface
    */
-  public function getUrlGenerator() {
-    return \Drupal::service('url_generator');
+  public function getUrlGenerator(): UrlGeneratorInterface {
+    return Drupal::service('url_generator');
   }
 
   /**
@@ -164,17 +187,26 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
    *
    * @return EntityFieldManagerInterface
    */
-  public function getEntityFieldManager() {
-    return \Drupal::service('entity_field.manager');
+  public function getEntityFieldManager(): EntityFieldManagerInterface {
+    return Drupal::service('entity_field.manager');
   }
 
   /**
    * Get the event dispatcher service.
    *
-   * @return \Drupal\Core\Path\PathValidatorInterface
+   * @return PathValidatorInterface
    */
-  public function getPathValidator() {
-    return \Drupal::service('path.validator');
+  public function getPathValidator(): PathValidatorInterface {
+    return Drupal::service('path.validator');
+  }
+
+  /**
+   * Return the date formatter service.
+   *
+   * @return DateFormatterInterface
+   */
+  protected function getDateFormatter(): DateFormatterInterface {
+    return Drupal::service('date.formatter');
   }
 
   /**
@@ -183,162 +215,451 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
    * @return string
    *   Get the logger channel to use.
    */
-  public function getLoggerChannel() {
+  public function getLoggerChannel(): string {
     return 'par';
   }
 
   /**
-   * {@inheritdoc}
+   * Calculate the dependencies.
    */
-  public function calculateDependencies() {
+  public function calculateDependencies(): array {
     return [];
   }
 
   /**
    * Get the route to return to once the journey has been completed.
+   *
+   * @return ?Url
    */
-  public function geFlowEntryURL() {
+  public function geFlowEntryURL(): ?Url {
     // Get the route that we entered on.
     $entry_point = $this->getFlowDataHandler()->getMetaDataValue(ParFlowDataHandler::ENTRY_POINT);
     try {
       $url = $this->getPathValidator()->getUrlIfValid($entry_point);
     }
-    catch (\InvalidArgumentException $e) {
+    catch (InvalidArgumentException) {
 
     }
 
-    if ($url && $url instanceof Url && $url->isRouted()) {
+    if (isset($url) && $url instanceof Url && $url->isRouted()) {
       return $url;
     }
     return NULL;
   }
 
   /**
-   * A Helper function to get the form data cache id for a given form in the flow.
-   *
-   * @param string $form_data_key
-   *   The form data key that maps to a given form id.
-   * @return null|string
+   * {@inheritdoc}
    */
-  public function getFormCid($form_data_key) {
-    $form_data_keys = $this->getFlowNegotiator()->getFlow()->getCurrentStepFormDataKeys();
-    $form_id = isset($form_data_keys[$form_data_key]) ? $form_data_keys[$form_data_key] : NULL;
-
-    return $form_id ? $this->getFlowNegotiator()->getFormKey($form_id) : NULL;
-  }
-
-  /**
-   * Count the cardinality of already submitted values.
-   *
-   * @param mixed $data
-   *   If required the data to be counted can be switched to the form_state values.
-   *
-   * @return integer
-   */
-  public function countItems($data = NULL) {
-    if ($this->getCardinality() !== 1) {
-      $temp_data = (array) $this->getFlowDataHandler()->getTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginNamespace());
-      return isset($data[ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginNamespace()]) ?
-        count($data[ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginNamespace()]) :
-        count($temp_data);
-    }
-
-    return 0;
-  }
-
-  /**
-   * Get the next available cardinality for adding a new item.
-   *
-   * @param mixed $data
-   *   If required the data to be counted can be switched to the form_state values.
-   *
-   * @return integer
-   */
-  public function getNewCardinality($data = NULL) {
-    $count = $this->countItems($data);
-
-    // If there is no add another button don't display an empty item.
-    $actions = $this->getComponentActions([], $count);
-    if ($actions && isset($actions['add_another'])) {
-      $count++;
-    }
-
-    return $count ?: 1;
-  }
-
-  /**
-   * Get the defaults by a replacement form data key.
-   *
-   * @param $key
-   *   The form data key.
-   * @param $cardinality
-   *   The cardinality to get the value for.
-   * @param string $default
-   *   The default value if none found.
-   * @param null $cid
-   *   The cache id.
-   *
-   * @return mixed|null
-   */
-  public function getDefaultValuesByKey($key, $cardinality, $default = '', $cid = NULL) {
-    $element_key = $this->getElementKey($key, $cardinality);
-    return $this->getFlowDataHandler()->getDefaultValues($element_key, $default, $cid);
-  }
-
-  /**
-   * Get the defaults by a replacement form data key.
-   *
-   * @param $key
-   *   The form data key.
-   * @param $cardinality
-   *   The cardinality to get the value for.
-   * @param string $value
-   *   The value to be set.
-   *
-   * @return mixed|null
-   */
-  public function setDefaultValuesByKey($key, $cardinality, $value = '') {
-    $element_key = $this->getElementKey($key, $cardinality);
-    return $this->getFlowDataHandler()->setFormPermValue($element_key, $value);
-  }
-
-  /**
-   * Get's the element key prefix for multiple cardinality forms.
-   */
-  public function getPrefix($cardinality = 1, $force = FALSE) {
-    if ($this->getCardinality() !== 1 || $cardinality !== 1 || $force) {
-      return [ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginNamespace(), $cardinality - 1];
-    }
-
-    return NULL;
-  }
-
-  /**
-   * Get's the element key depending on the cardinality of this plugin.
-   *
-   * @param $element
-   *   The element key.
-   * @param int $cardinality
-   *   The cardinality of this element.
-   *
-   * @return string|array
-   *   The key for this form element.
-   */
-  public function getElementKey($element, $cardinality = 1, $force = FALSE) {
-    if ($key = $this->getPrefix($cardinality, $force)) {
-      foreach ((array) $element as $e) {
-        array_push($key, $e);
-      }
-      return $key;
-    }
-    else {
-      return (array) $element;
-    }
+  #[\Override]
+  public function isMultiple(): bool {
+    return $this->getCardinality() !== 1;
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
+  public function isFlattened(): bool {
+    return !$this->isMultiple();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  #[\Override]
+  public function isFull(array $data = NULL): bool {
+    return $this->getCardinality() !== FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED &&
+      $this->countItems($data) >= $this->getCardinality();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  #[\Override]
+  public function hasData(): bool {
+    return !empty($this->getData());
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  #[\Override]
+  public function getData(): array {
+    // Ensure that at the very
+    $data = (array) $this->getFlowDataHandler()->getPluginTempData($this);
+
+    // Allow plugins to filter
+    $data = $this->filter($data);
+
+    // Always get the data in the correct order.
+    return $this->reindex($data);
+  }
+
+  /**
+   * Get the data from the FormState.
+   *
+   * @return array
+   *   An array of data.
+   */
+  public function getDataFromFormState(FormStateInterface $form_state): array {
+    if (!$this->isFlattened()) {
+      $prefix = [$this->getPrefix()];
+      $values = $form_state->cleanValues()->getValue($prefix);
+    }
+    else {
+      $values = $form_state->cleanValues()->getValues();
+    }
+
+    // Allow plugins to filter
+    $values ??= [];
+    $data = $this->filter($values);
+
+    // Always get the data in the correct order.
+    return $this->reindex($data);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  #[\Override]
+  public function setData(array $data): void {
+    // Allow plugins to filter
+    $data = $this->filter($data);
+
+    // Always reindex the data before saving.
+    $data = $this->reindex($data);
+
+    $this->getFlowDataHandler()->setPluginTempData($this, $data);
+  }
+
+  /**
+   * Get the plugin data for a given cardinality or instance.
+   *
+   * @param int $delta
+   *   The delta of the item to get data for, not the index of the item.
+   *
+   * @return ?array
+   *   An array of data for a given plugin cardinality,
+   *   or null if no data was found for the given cardinality.
+   */
+  public function getDataItem(int $delta): ?array {
+    $data = $this->getData();
+
+    if ($this->isFlattened()) {
+      // Flattened plugins only support a single cardinality.
+      return $delta === 0 ? $data : NULL;
+    }
+    else {
+      return $data[$delta] ?? NULL;
+    }
+  }
+
+  /**
+   * Filter empty data.
+   *
+   * Allows a plugin to filter out incomplete data values, so that only
+   * a complete set of plugin data is submitted.
+   *
+   * @example radio elements that are selected and can't be unselected don't
+   * necessarily form a complete dataset.
+   *
+   * In most cases the form validation ensures that plugin data must be completed,
+   * but there are other submission handlers that don't validate data and require
+   * any incomplete plugin datasets to be discarded (most form actions that submit
+   * the form for processing but don't progress the journey don't require validation).
+   *
+   * Individual plugin instances can extend this behaviour.
+   *
+   * @param array $data
+   *   An array of structured or unstructured data relative to the plugin
+   *   (excluding the plugin prefix).
+   *
+   * @return array
+   *   The filtered data.
+   */
+  public function filter(array $data): array {
+    // Unset component level actions.
+    unset($data['actions']);
+
+    // Handle structured and unstructured data.
+    if ($this->isFlattened()) {
+      return $this->filterItem($data);
+    }
+    else {
+      // Apply filtering to each instance cardinality.
+      foreach ($data as $index => $row) {
+        $data[$index] = $this->filterItem($row);
+      }
+
+      // Ensure that empty plugin instances are ignored.
+      $data = $this->getFlowDataHandler()->filter($data, [ParFlowDataHandler::class, 'filterValues']);
+    }
+
+    return $data;
+  }
+
+  /**
+   * Filter a single item value  for the given plugin.
+   *
+   * @param array $item
+   *
+   * @return array
+   *   A filtered data item.
+   */
+  public function filterItem(array $item): array {
+    // Unset data item level actions.
+    unset($item['actions']);
+
+    // If the data is flattened
+    $item = $this->getFlowDataHandler()->filter($item, [ParFlowDataHandler::class, 'filterValues']);
+
+    $defaults = $this->getFormDefaults();
+    return array_filter($item, function ($value, $key) use ($defaults) {
+      $default_value = $defaults[$key] ?? NULL;
+
+      // If there is no default value
+      if (!$default_value) {
+        return TRUE;
+      }
+
+      return $default_value !== $value;
+    }, ARRAY_FILTER_USE_BOTH);
+  }
+
+  /**
+   * Re-index structured plugin data.
+   *
+   * @return array
+   *   The items re-indexed in a list.
+   */
+  private function reindex($data): array {
+    // Do not re-index unstructured data.
+    if ($this->isFlattened()) {
+      return $data;
+    }
+
+    // Sort the data so that array values are always returned in the same order.
+    ksort($data, SORT_NUMERIC);
+
+    // Return the re-indexed data.
+    return array_values($data);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  #[\Override]
+  public function countItems(array $data = NULL): int {
+    // If data is not passed attempt to retrieve it from the data handler.
+    if (empty($data)) {
+      $data = $this->getData();
+    }
+
+    // If the plugin values are flattened it only supports single values.
+    if ($this->isFlattened()) {
+      return !empty($data) ? 1 : 0;
+    }
+    // Otherwise count the data values.
+    else {
+      return !empty($data) ? count($data) : 0;
+    }
+  }
+
+  /**
+   * Get the next available index for adding a new item.
+   *
+   * The delta is the zero-based key for the data, the index is the 1-based
+   * value for this that is presented to users.
+   *
+   * @param mixed $data
+   *   If required the data to be counted can be switched to the form_state values.
+   *
+   * @return integer
+   */
+  public function getCurrentIndex(array $data = NULL): int {
+    if (!$data) {
+      $data = $this->getData();
+    }
+
+    $data = $this->reindex($data);
+
+    // Count the number of existing items.
+    $count = $this->countItems($data);
+
+    // The current index always starts at 1, even if there are no items yet.
+    return max($count, 1);
+  }
+
+  /**
+   * Get the next available index for adding a new item.
+   *
+   * The delta is the zero-based key for the data, the index is the 1-based
+   * value for this that is presented to users.
+   *
+   * @param mixed $data
+   *   If required the data to be counted can be switched to the form_state values.
+   *
+   * @return integer
+   */
+  public function getNextAvailableIndex(array $data = NULL): int {
+    if (!$data) {
+      $data = $this->getData();
+    }
+    // Get the current index.
+    $current_index = $this->getCurrentIndex($data);
+
+    // Use the component actions to identify if a new item can be added.
+    $actions = $this->getComponentActions([], $data);
+    $add_more = $actions && isset($actions['add_another']);
+
+    // If there is no data then the next index is 1.
+    if ($this->countItems($data) < 1) {
+      return 1;
+    }
+
+    // If more items can be added the next index will be incremented.
+    return $add_more ? $current_index + 1 : $current_index;
+  }
+
+  /**
+   * Get the defaults by a replacement form data key.
+   *
+   * @param mixed $key
+   *   The form data key.
+   * @param $index
+   *   The index to get the value for.
+   * @param mixed $default
+   *   The default value if none found.
+   * @param ?string $cid
+   *   The cache id.
+   *
+   * @return ?mixed
+   */
+  public function getDefaultValuesByKey(mixed $key, int $index, mixed $default = '', $cid = NULL): mixed {
+    $element_key = $this->getElementKey($key, $index);
+    return $this->getFlowDataHandler()->getDefaultValues($element_key, $default, $cid);
+  }
+
+  /**
+   * Set the defaults by a replacement form data key.
+   *
+   * @param $key
+   *   The form data key.
+   * @param $index
+   *   The index to set the value for.
+   * @param mixed $value
+   *   The value to be set.
+   *
+   * @return mixed|null
+   */
+  public function setDefaultValuesByKey(mixed $key, int $index = 1, mixed $value = ''): void {
+    $element_key = $this->getElementKey($key, $index);
+    $this->getFlowDataHandler()->setFormPermValue($element_key, $value);
+  }
+
+  /**
+   * Set the form error.
+   *
+   * @param array $form
+   *   The complete form array.
+   * @param FormStateInterface $form_state
+   *   The form state.
+   * @param array $path
+   *   The full path to the element.
+   * @param string $message
+   *   The error message to display.
+   */
+  protected function setError(array $form, FormStateInterface &$form_state, array $element, string $message) {
+    // Link the message to the element.
+    $id = $element['#id'] ?? NULL;
+    $message = $this->wrapErrorMessage($message, $id);
+
+    $form_state->setError($element, $message);
+  }
+
+  /**
+   * Gets the element key prefix for multiple cardinality forms.
+   *
+   * @return string
+   */
+  public function getPrefix(): string {
+    return ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginNamespace();
+  }
+
+  /**
+   * Gets the form key that metadata will be stored in.
+   */
+  public function getMetaDataKey() {
+    return ['metadata', ParFormBuilder::PAR_COMPONENT_PREFIX . $this->getPluginNamespace()];
+  }
+
+  /**
+   * Gets the element key depending on the cardinality of this plugin.
+   *
+   * @param array $form
+   *   The form that contains the element.
+   * @param mixed $element_path
+   *   The path to the element within the plugin.
+   * @param int $index
+   *   The index of this element.
+   *
+   * @return ?array
+   *   The form element.
+   */
+  public function getElement(array $form, mixed $element_path, int $index): ?array {
+    $path = $this->getElementPath($element_path, $index);
+
+    $key_exists = FALSE;
+    $form_element = NestedArray::getValue($form, $path, $key_exists);
+
+    return $key_exists ? $form_element : NULL;
+  }
+
+  /**
+   * Get the path to the element within the form, this is the full structured path.
+   */
+  public function getElementPath(mixed $element, int $cardinality): array {
+    // The elements are based on a zero-based index, whereas the cardinality starts at 1.
+    $index = $cardinality - 1;
+
+    // Get the default plugin & cardinality prefix.
+    $key = [$this->getPrefix(), $index];
+
+    return array_merge($key, (array) $element);
+  }
+
+  /**
+   * Gets the data key for a given element, depends on the cardinality of this plugin.
+   */
+  public function getElementKey(mixed $element, int $index = 1, $force = FALSE) {
+    // Get the full path to the element.
+    $path = $this->getElementPath((array) $element, $index);
+
+    return $this->getItemKey($path);
+  }
+
+  /**
+   * Gets the data key for a given element within an individual instance of a data item.
+   *
+   * @param array $element
+   *   The element to get the key for.
+   *
+   * @return array
+   *   An array representing the data key for the element within any
+   *   given instance of a plugin data item.
+   */
+  public function getItemKey(array $element): array {
+    // If the plugin data is structured return the full path to the element,
+    // otherwise return the last element representing the flattened path.
+    return !$this->isFlattened() ?
+      $element :
+      (array) end($element);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  #[\Override]
   public function getMapping() {
     return $this->formItems;
   }
@@ -350,54 +671,63 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
     return $this->defaults;
   }
 
-  public function createMappingEntities() {
-    $entities = [];
+  /**
+   * {@inheritdoc}
+   */
+  #[\Override]
+  public function loadData(int $index = 1): void {
+    // To be overridden by individual plugins.
+  }
 
-    foreach ($this->getMapping() as $entity_name => $form_items) {
-      list($type, $bundle) = explode(':', $entity_name . ':');
+  /**
+   * An #after_build callback to set options descriptions for
+   * elements that support #options such as checkboxes and radios.
+   *
+   * This method must be applied as an #after_build callback to any elements that need it.
+   * @code
+   * '#options' => ['First', 'Second', 'Third'],
+   * '#options_descriptions' => ['The first element', 'The second element', 'The third element'],
+   * '#after_build' => [ [$this, 'optionsDescriptions'] ],
+   * @endcode
+   */
+  public static function optionsDescriptions(array $element, FormStateInterface $form_state) {
+    // Only act on input elements that have both the #options and #options_descriptions keys.
+    if (!$element['#options'] || !$element['#options_descriptions']) {
+      return $element;
+    }
 
-      $entity_class = $this->getParDataManager()->getParEntityType($type)->getClass();
-      // If the entity already exists as a data parameter use that.
-      if ($entity = $this->getFlowDataHandler()->getParameter($type)) {
-        $entities[$type] = $entity;
-      }
-      else {
-        $entities[$type] = $entity_class::create([
-          'type' => $this->getParDataManager()->getParBundleEntity($type, $bundle)->id(),
-        ]);
+    foreach (Element::children($element) as $key) {
+      if (isset($element['#options_descriptions'][$key])) {
+        // Set the description.
+        $element[$key]['#description'] = $element['#options_descriptions'][$key];
+
+        // Set the aria-describedby attribute on the element.
+        $element[$key]['#attributes']['aria-describedby'] = "{$element[$key]['#id']}--description";
       }
     }
+
+    return $element;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
-    // @TODO Add automatic loading of data based on the mapping (self::getMapping)
-    // between self::getElements() and self::getFlowDataHandler()->getParameters()
-  }
-
-  public function setData(&$params = []) {
-    // @TODO Add automatic setting of data based on the mapping (self::getMapping)
-    // between self::getElements() and self::getFlowDataHandler()->getParameters()
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+  #[\Override]
+  public function validate(array $form, FormStateInterface &$form_state, $index = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     foreach ($this->createMappedEntities() as $entity) {
-      if ($prefix = $this->getPrefix($cardinality)) {
-        $values = $form_state->getValue($prefix);
+      if (!$this->isFlattened()) {
+        $delta = $index -1;
+        $prefix = [$this->getPrefix(), $delta];
+        $values = $form_state->cleanValues()->getValue($prefix);
       }
       else {
-        $values = $form_state->getValues();
+        $values = $form_state->cleanValues()->getValues();
       }
-      // If there are no values don't validate this cardinality.
-      // This can happen for newly added cardinality blocks.
-      if (empty($values)) {
-        continue;
-      }
+
+      // Filter the values.
+      $values = $this->filterItem($values);
+
+      // Create an
       $this->buildEntity($entity, $values);
 
       // Validate the built entities by field only.
@@ -415,22 +745,29 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
         if ($mapping = $this->getElementByViolation($violation)) {
           switch ($action) {
             case ParFormBuilder::PAR_ERROR_DISPLAY:
-              $key = $this->getElementKey($mapping->getElement(), $cardinality);
-              $element = $this->getElementKey($mapping->getElement(), $cardinality, TRUE);
-              $name = $this->getElementName($key);
-              $id = $this->getElementId($element, $form);
-
-              $message = $this->getViolationMessage($violation, $mapping, $id);
-              $form_state->setErrorByName($name, $message);
+              try {
+                $element = $this->getElement($form, $mapping->getElement(), $index);
+                $message = $mapping->getErrorMessage($violation->getMessage());
+                $this->setError($form, $form_state, $element, $message);
+              }
+              catch (ParFlowException|\TypeError) {
+                // The element could not be found.
+              }
 
               break;
 
             case ParFormBuilder::PAR_ERROR_CLEAR:
-              if ($prefix = $this->getPrefix($cardinality)) {
+              // If the plugin contains structured data erase just the plugin cardinality.
+              if (!$this->isFlattened()) {
+                $prefix = [$this->getPrefix(), $index];
                 $form_state->unsetValue($prefix);
               }
+              // Otherwise erase all data within the submitted form.
               else {
                 foreach ($form_state->getValues() as $key => $value) {
+                  // @TODO this seems a bit brutal and will erase data set by
+                  // other single cardinality forms on that page, there should
+                  // be a better way to erase just the data set by this plugin.
                   $form_state->unsetValue($key);
                 }
               }
@@ -446,19 +783,27 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   /**
    * {@inheritdoc}
    */
-  public function save($cardinality = 1) {
+  #[\Override]
+  public function save($index = 1) {
     // @see ParEntityValidationMappingTrait::buildEntity to build and save the values to an entity.
   }
 
   /**
-   * Get the fieldset wrapper for this component.
+   * Get the container wrapper for this component.
    */
   public function getWrapper() {
+    // If this form component supports multiple items then #tree will be set
+    // on the wrapper and the data returned will not be flattened on submission.
     return [
       '#type' => 'container',
       '#weight' => $this->getWeight(),
-      '#tree' => $this->getCardinality() === 1 ? FALSE : TRUE,
-      '#attributes' => ['class' => [Html::cleanCssIdentifier('component-' . $this->getPluginId())]]
+      '#tree' => $this->isMultiple(),
+      '#attributes' => [
+        'class' => [
+          Html::cleanCssIdentifier('component-' . $this->getPluginId()),
+          'govuk-form-group'
+        ]
+      ]
     ];
   }
 
@@ -470,7 +815,7 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
-   * Get the fieldset wrapper for this component.
+   * Get the container wrapper for this component.
    */
   public function getElementWrapper($cardinality = 1) {
     return [
@@ -480,47 +825,84 @@ abstract class ParFormPluginBase extends PluginBase implements ParFormPluginInte
   }
 
   /**
-   * Get the fieldset wrapper for this component.
+   * Get the container wrapper for this component.
    */
-  public function getElementActions($cardinality = 1, $actions = []) {
-    $count = $this->getNewCardinality();
+  public function getElementActions($index = 1, $actions = []) {
+    // The delta value for the data is a zero-based index.
+    $delta = $index - 1;
 
-    if ($this->getCardinality() !== 1 && $cardinality !== $count) {
-      $actions['remove'] = [
+    // Items can only be removed if the cardinality supports multiple values,
+    // and data has already been submitted for this index.
+    if ($this->isMultiple() && $this->getDataItem($delta)) {
+      // Items can only be changed if the plugin supports the Summary List format.
+      if ($this->isMultiple() && $this instanceof ParSummaryListInterface) {
+        $actions['change'] = [
           '#type' => 'submit',
-          '#name' => "remove:{$this->getPluginId()}:{$cardinality}",
+          '#name' => "change:{$this->getPluginId()}:$index",
           '#weight' => 100,
-          '#submit' => ['::removeItem'],
-          '#value' => $this->t("Remove"),
+          '#value' => $this->t("Change"),
+          '#submit' => ['::changeItem'],
+          '#validate' => ['::validateCancelForm'],
+          '#limit_validation_errors' => [],
           '#attributes' => [
-            'class' => ['btn-link'],
-            'aria-label' => "Remove {$this->getWrapperName()} $cardinality",
+            'class' => ['govuk-button', 'govuk-button--secondary', 'change-action'],
+            'aria-label' => "Change {$this->getWrapperName()} $index",
+            'data-prevent-double-click' => 'true',
+            'data-module' => 'govuk-button',
           ],
-      ];
-    }
+        ];
+      }
 
-    return $actions;
-  }
-
-  /**
-   * Get the fieldset wrapper for this component.
-   */
-  public function getComponentActions($actions = [], $count = NULL) {
-    $count = isset($count) ? $count : $this->getNewCardinality();
-
-    if ($this->getCardinality() === -1
-      || ($this->getCardinality() > 1 && $this->getCardinality() > $count)) {
-      $actions['add_another'] = [
+      $actions['remove'] = [
         '#type' => 'submit',
-        '#name' => 'add_another',
-        '#submit' => ['::multipleItemActionsSubmit'],
-        '#value' => $this->t('Add another'),
+        '#name' => "remove:{$this->getPluginId()}:$index",
+        '#weight' => 100,
+        '#value' => $this->t("Remove"),
+        '#submit' => ['::removeItem'],
+        '#validate' => ['::validateCancelForm'],
+        '#limit_validation_errors' => [],
         '#attributes' => [
-          'class' => ['btn-link'],
+          'class' => ['govuk-button', 'govuk-button--secondary', 'remove-action'],
+          'aria-label' => "Remove {$this->getWrapperName()} $index",
+          'data-prevent-double-click' => 'true',
+          'data-module' => 'govuk-button',
         ],
       ];
     }
 
-    return $actions;
+    if (!empty($actions)) {
+      $actions['#type'] = 'actions';
+      return $actions;
+    }
+    else {
+      return NULL;
+    }
+  }
+
+  /**
+   * Get the container wrapper for this component.
+   */
+  public function getComponentActions(array $actions = [], array $data = NULL): ?array {
+    if ($this->isMultiple() && !$this->isFull($data)) {
+      $actions['add_another'] = [
+        '#type' => 'submit',
+        '#name' => 'add_another',
+        '#submit' => ['::addAnother'],
+        '#value' => $this->t('Add another'),
+        '#attributes' => [
+          'class' => ['govuk-button', 'govuk-button--secondary', 'add-action'],
+          'data-prevent-double-click' => 'true',
+          'data-module' => 'govuk-button',
+        ],
+      ];
+    }
+
+    if (!empty($actions)) {
+      $actions['#type'] = 'actions';
+      return $actions;
+    }
+    else {
+      return NULL;
+    }
   }
 }

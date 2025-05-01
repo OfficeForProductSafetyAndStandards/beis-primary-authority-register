@@ -32,6 +32,9 @@ default:
   archived:
     -
       value: false
+  par_status:
+    -
+      value: active
   function_name:
     -
       value: 'Cookie control'

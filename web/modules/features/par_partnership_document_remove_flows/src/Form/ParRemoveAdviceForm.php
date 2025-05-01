@@ -22,6 +22,7 @@ class ParRemoveAdviceForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_advice = $this->getFlowDataHandler()->getParameter('par_data_advice');
@@ -43,6 +44,7 @@ class ParRemoveAdviceForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $par_data_advice = NULL) {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_advice = $this->getFlowDataHandler()->getParameter('par_data_advice');
@@ -64,7 +66,7 @@ class ParRemoveAdviceForm extends ParBaseForm {
       '#type' => 'html_tag',
       '#tag' => 'p',
       '#value' => $this->t('Are you sure you want to remove the advice @advice from the @partnership?', ['@advice' => $par_data_advice->getAdviceTitle(), '@partnership' => $par_data_partnership->label()]),
-      '#attributes' => ['class' => ['remove-advice', 'form-group']],
+      '#attributes' => ['class' => ['remove-advice', 'govuk-form-group']],
     ];
 
     if (!empty($documents)) {
@@ -78,7 +80,7 @@ class ParRemoveAdviceForm extends ParBaseForm {
         '#type' => 'html_tag',
         '#tag' => 'div',
         '#value' => $this->getRenderer()->render($documents),
-        '#attributes' => ['class' => ['document-summary', 'form-group']],
+        '#attributes' => ['class' => ['document-summary', 'govuk-form-group']],
       ];
     }
 
@@ -87,6 +89,7 @@ class ParRemoveAdviceForm extends ParBaseForm {
       '#title' => $this->t('Enter the reason you are removing this advice'),
       '#type' => 'textarea',
       '#rows' => 5,
+      '#required' => TRUE,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('remove_reason', FALSE),
     ];
 
@@ -107,8 +110,8 @@ class ParRemoveAdviceForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
-
     parent::validateForm($form, $form_state);
 
     if (!$form_state->getValue('remove_reason')) {
@@ -119,6 +122,7 @@ class ParRemoveAdviceForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
@@ -130,18 +134,17 @@ class ParRemoveAdviceForm extends ParBaseForm {
     try {
       if (isset($delta)) {
         $par_data_partnership->get('field_advice')->removeItem($delta);
+
+        // Set the reason as the revision message.
+        // Which allows it to be recorded by the logger.
         $remove_reason = $this->getFlowDataHandler()->getDefaultValues('remove_reason', '');
-        $revision_message = $this->t(
-          "The advice '@advice' was removed from the partnership. The reason given was:" . PHP_EOL . "@reason",
-          ['@advice' => $par_data_advice->getAdviceTitle(), '@reason' => $remove_reason]
-        );
-        $par_data_partnership->setNewRevision(TRUE, $revision_message);
+        $par_data_partnership->setNewRevision(TRUE, $remove_reason);
       }
       else {
         throw new \InvalidArgumentException('No field delta has been provided.');
       }
     }
-    catch (\InvalidArgumentException $e) {
+    catch (\InvalidArgumentException) {
 
     }
 

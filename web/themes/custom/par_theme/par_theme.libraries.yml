@@ -1,46 +1,25 @@
-par-kour:
-  version: 1.1.0
-  js:
-    javascript/par.js: {}
+framework:
+  version: 2.x
   css:
     theme:
-      css/par.css: {}
-      css/govuk-template-print.css: { media: print }
-      assets/fonts/fonts.css: {}
-  dependencies:
-    - core/jquery
-    - par_theme/par-conditionals
-    - par_theme/par-vendor
-
-par-conditionals:
-  version: 1.0
+      node_modules/govuk-frontend/dist/govuk/govuk-frontend.min.css: { weight: 0 }
+      css/style.css: {}
   js:
-    javascript/ie.js: { browsers: { IE: 'lt IE 9', '!IE': false }}
-  css:
-    theme:
-      css/govuk-template-ie6.css: { browsers: { IE: 'IE 6', '!IE': false } }
-      css/govuk-template-ie7.css: { browsers: { IE: 'IE 8', '!IE': false } }
-      css/govuk-template-ie8.css: { browsers: { IE: 'IE 7', '!IE': false } }
-      assets/fonts/fonts-ie8.css: { browsers: { IE: 'lt IE 9', '!IE': false } }
-
-par-vendor:
-  version: 1.0
-  js:
-    javascript/vendor/console.log-wrapper/consolelog.min.js: {}
-    javascript/vendor/console.log-wrapper/consolelog.detailprint.min.js: {}
-    javascript/vendor/govuk/show-hide-content.js: {}
+    node_modules/govuk-frontend/dist/govuk/all.bundle.js: { weight: 0 }
+    js/govuk.js: {}
   dependencies:
     - core/jquery
     - core/drupal.ajax
     - core/drupal
     - core/drupalSettings
-    - core/jquery.once
-    - core/jquery.ui
-    - core/jquery.ui.tabs
+    - core/once
+    - jquery_ui_tabs/tabs
 
-tota11y:
-  remote: https://khan.github.io/tota11y
-  version: VERSION
-  license: MIT
+webform:
+  version: 2.x
   js:
-    https://cdn.rawgit.com/Khan/tota11y/master/build/tota11y.min.js: { type: external, minified: true }
+    js/webform.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal

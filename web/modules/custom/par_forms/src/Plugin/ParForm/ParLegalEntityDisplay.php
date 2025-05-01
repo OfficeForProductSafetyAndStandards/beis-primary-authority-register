@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -25,7 +26,8 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  #[\Override]
+  public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
 
@@ -35,18 +37,19 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
     else if ($par_data_organisation instanceof ParDataEntityInterface) {
       $legal_entities = $par_data_organisation->getLegalEntity();
     }
-    if (isset($legal_entities) && !empty ($legal_entities)) {
-      $this->setDefaultValuesByKey("legal_entities", $cardinality, $legal_entities);
+    if (isset($legal_entities) && !empty($legal_entities)) {
+      $this->setDefaultValuesByKey("legal_entities", $index, $legal_entities);
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
-    $legal_entities = $this->getDefaultValuesByKey('legal_entities', $cardinality, []);
+  #[\Override]
+  public function getElements(array $form = [], int $index = 1) {
+    $legal_entities = $this->getDefaultValuesByKey('legal_entities', $index, []);
 
     // Generate the link to add a legal entity.
     try {
@@ -65,27 +68,33 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
 
     // Display the legal entities.
     $form['legal_entities'] = [
-      '#type' => 'fieldset',
-      '#title' => 'Legal entities',
-      '#attributes' => ['class' => ['form-group']],
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => $this->t('Legal entities'),
+      ],
+      '#attributes' => ['class' => ['govuk-form-group']],
       'legal_entity' => [
         '#type' => 'container',
-        '#attributes' => ['class' => ['grid-row']],
+        '#attributes' => ['class' => ['govuk-grid-row']],
       ],
     ];
 
     foreach ($legal_entities as $delta => $legal_entity) {
       $legal_entity_view_builder = $this->getParDataManager()->getViewBuilder('par_data_legal_entity');
       $legal_entity_summary = $legal_entity_view_builder->view($legal_entity, 'summary');
+      $classes = ['legal-entity'];
 
       $form['legal_entities']['legal_entity'][$delta] = [
         '#type' => 'container',
-        '#attributes' => ['class' => 'column-full'],
+        '#attributes' => ['class' => 'govuk-grid-column-full'],
         'name' => [
           '#type' => 'html_tag',
           '#tag' => 'div',
           '#value' => $this->getRenderer()->render($legal_entity_summary),
-          '#attributes' => ['class' => 'legal-entity'],
+          '#attributes' => ['class' => $classes],
         ],
       ];
 
@@ -94,7 +103,7 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
       try {
         // Edit the legal entity.
         $params['par_data_legal_entity'] = $legal_entity->id();
-        $options = ['attributes' => ['aria-label' => $this->t("Edit the legal entity @label", ['@label' => strtolower($legal_entity->label())])]];
+        $options = ['attributes' => ['aria-label' => $this->t("Edit the legal entity @label", ['@label' => strtolower((string) $legal_entity->label())])]];
         $operations['edit'] = $this->getFlowNegotiator()->getFlow()
           ->getOperationLink('edit_field_legal_entity', 'edit legal entity', $params, $options);
       }
@@ -104,7 +113,7 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
       try {
         // Remove the legal entity.
         $params['par_data_legal_entity'] = $legal_entity->id();
-        $options = ['attributes' => ['aria-label' => $this->t("Remove the legal entity @label", ['@label' => strtolower($legal_entity->label())])]];
+        $options = ['attributes' => ['aria-label' => $this->t("Remove the legal entity @label", ['@label' => strtolower((string) $legal_entity->label())])]];
         $operations['remove'] = $this->getFlowNegotiator()->getFlow()
           ->getOperationLink('remove_field_legal_entity', 'remove legal entity', $params, $options);
       }
@@ -116,14 +125,14 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
       if (!empty(array_filter($operations))) {
         $form['legal_entities']['legal_entity'][$delta]['operations'] = [
           '#type' => 'container',
-          '#attributes' => ['class' => ['grid-row']],
+          '#attributes' => ['class' => ['govuk-grid-row']],
         ];
         if (isset($operations['edit']) && $operations['edit'] instanceof Link) {
           $form['legal_entities']['legal_entity'][$delta]['operations']['edit'] = [
             '#type' => 'html_tag',
             '#tag' => 'p',
             '#value' => $operations['edit']->toString(),
-            '#attributes' => ['class' => ['edit-legal-entity', 'column-one-third']],
+            '#attributes' => ['class' => ['edit-legal-entity', 'govuk-grid-column-one-third']],
           ];
         }
         if (isset($operations['remove']) && $operations['remove'] instanceof Link) {
@@ -131,7 +140,7 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
             '#type' => 'html_tag',
             '#tag' => 'p',
             '#value' => $operations['remove']->setText("remove legal entity")->toString(),
-            '#attributes' => ['class' => ['remove-legal-entity', 'column-one-third']],
+            '#attributes' => ['class' => ['remove-legal-entity', 'govuk-grid-column-one-third']],
           ];
         }
       }
@@ -155,14 +164,16 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
-  public function getElementActions($cardinality = 1, $actions = []) {
+  #[\Override]
+  public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
 
   /**
    * Return no actions for this plugin.
    */
-  public function getComponentActions($actions = [], $count = NULL) {
+  #[\Override]
+  public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }
 }

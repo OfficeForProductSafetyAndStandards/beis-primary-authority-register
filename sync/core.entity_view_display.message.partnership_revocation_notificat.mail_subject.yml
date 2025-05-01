@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.message.mail_subject
     - field.field.message.partnership_revocation_notificat.field_message_subject
     - field.field.message.partnership_revocation_notificat.field_partnership
+    - field.field.message.partnership_revocation_notificat.field_to
     - message.template.partnership_revocation_notificat
 id: message.partnership_revocation_notificat.mail_subject
 targetEntityType: message
@@ -14,13 +15,16 @@ mode: mail_subject
 content:
   field_message_subject:
     type: string
-    weight: 0
-    region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   field_partnership: true
+  field_to: true
   partial_0: true
   partial_1: true
+  partial_2: true
+  search_api_excerpt: true

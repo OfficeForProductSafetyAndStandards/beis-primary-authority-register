@@ -1,85 +1,85 @@
+_core:
+  default_config_hash: ZxtqDRLnhh4NHGSvlv_On712qgz4AWz1on0rYI6m9a4
 langcode: en
 default_config:
-  quantity: 9
   display: pages
   display_restriction: 2
   prefix_display: false
   suffix_display: false
-  separator_display: false
   first_link: never
   previous_link: never
   next_link: never
   last_link: never
+  quantity: 9
+  separator_display: false
   tags:
     page_separator: '|'
     pages:
       prefix_label: Page
       suffix_label: 'of @total'
       page_current: '@number'
+      page_current_title: 'Current page'
+      page_current_reader: 'Current page'
+      first: «
+      first_title: 'Go to first page'
+      first_reader: 'First page'
+      previous: ‹
+      previous_title: 'Go to previous page'
+      previous_reader: 'Previous page'
+      next: ›
+      next_title: 'Go to next page'
+      next_reader: 'Next page'
+      last: »
+      last_title: 'Go to last page'
+      last_reader: 'Last page'
+      pageset_empty: 'No pages to display.'
       page_previous: '@number'
       page_next: '@number'
-      first: «
-      previous: ‹
-      next: ›
-      last: »
-      pageset_empty: 'No pages to display.'
-      page_current_title: 'Current page'
       page_title: 'Go to page @number'
-      first_title: 'Go to first page'
-      previous_title: 'Go to previous page'
-      next_title: 'Go to next page'
-      last_title: 'Go to last page'
-      page_current_reader: 'Current page'
       page_reader: Page
-      first_reader: 'First page'
-      previous_reader: 'Previous page'
-      next_reader: 'Next page'
-      last_reader: 'Last page'
     items:
       prefix_label: Item
       suffix_label: 'of @total_items'
       page_current: '@item'
+      page_current_title: 'Current items'
+      page_current_reader: 'Current items'
+      first: «
+      first_title: 'Go to first item'
+      first_reader: 'First item'
+      previous: ‹
+      previous_title: 'Go to previous items'
+      previous_reader: 'Previous items'
+      next: ›
+      next_title: 'Go to next items'
+      next_reader: 'Next items'
+      last: »
+      last_title: 'Go to last item'
+      last_reader: 'Last item'
+      pageset_empty: 'No items to display.'
       page_previous: '@item'
       page_next: '@item'
-      first: «
-      previous: ‹
-      next: ›
-      last: »
-      pageset_empty: 'No items to display.'
-      page_current_title: 'Current items'
       page_title: 'Go to item @item'
-      first_title: 'Go to first item'
-      previous_title: 'Go to previous items'
-      next_title: 'Go to next items'
-      last_title: 'Go to last item'
-      page_current_reader: 'Current items'
       page_reader: Item
-      first_reader: 'First item'
-      previous_reader: 'Previous items'
-      next_reader: 'Next items'
-      last_reader: 'Last item'
     item_ranges:
       prefix_label: Items
       suffix_label: 'of @total_items'
       page_current: '@item_low-@item_high'
+      page_current_title: 'Current items'
+      page_current_reader: 'Current items'
+      first: «
+      first_title: 'Go to first items'
+      first_reader: 'First items'
+      previous: ‹
+      previous_title: 'Go to previous items'
+      previous_reader: 'Previous items'
+      next: ›
+      next_title: 'Go to next items'
+      next_reader: 'Next items'
+      last: »
+      last_title: 'Go to last items'
+      last_reader: 'Last items'
+      pageset_empty: 'No items to display.'
       page_previous: '@item_low-@item_high'
       page_next: '@item_low-@item_high'
-      first: «
-      previous: ‹
-      next: ›
-      last: »
-      pageset_empty: 'No items to display.'
-      page_current_title: 'Current items'
       page_title: 'Go to items @item_low-@item_high'
-      first_title: 'Go to first items'
-      previous_title: 'Go to previous items'
-      next_title: 'Go to next items'
-      last_title: 'Go to last items'
-      page_current_reader: 'Current items'
       page_reader: Items
-      first_reader: 'First items'
-      previous_reader: 'Previous items'
-      next_reader: 'Next items'
-      last_reader: 'Last items'
-_core:
-  default_config_hash: ZxtqDRLnhh4NHGSvlv_On712qgz4AWz1on0rYI6m9a4

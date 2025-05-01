@@ -1,0 +1,5 @@
+par_govuk_cookies.settings_form:
+  title: 'PAR GOVUK Cookies'
+  parent: system.admin_config_system
+  description: 'Configure cookie compliance settings.'
+  route_name: par_govuk_cookies.settings_form

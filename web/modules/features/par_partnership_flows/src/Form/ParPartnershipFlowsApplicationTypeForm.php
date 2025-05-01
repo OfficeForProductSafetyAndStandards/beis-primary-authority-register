@@ -34,20 +34,20 @@ class ParPartnershipFlowsApplicationTypeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     $this->retrieveEditableValues();
     $partnership_bundle = $this->getParDataManager()->getParBundleEntity('par_data_partnership');
 
     $form['application_type_fieldset'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      '#type' => 'container',
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
 
     $form['application_type_fieldset']['application_type'] = [
-      '#title' => 'Choose a type of partnership',
       '#type' => 'radios',
+      '#title' => 'Choose a type of partnership',
+      '#title_tag' => 'h2',
       '#options' => $partnership_bundle->getAllowedValues('partnership_type'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('application_type'),
     ];
@@ -58,6 +58,7 @@ class ParPartnershipFlowsApplicationTypeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
     if (!$form_state->getValue('application_type')) {

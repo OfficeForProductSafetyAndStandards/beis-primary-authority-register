@@ -22,6 +22,7 @@ class ParSubscriptionManageForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     return 'Help Desk | Manage a subscription list';
   }
@@ -37,6 +38,7 @@ class ParSubscriptionManageForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, $list = NULL) {
     $methods = [
       self::METHOD_INSERT => 'Insert new emails into the list, without removing any.',
@@ -45,12 +47,13 @@ class ParSubscriptionManageForm extends ParBaseForm {
     ];
     $form['method'] = [
       '#type' => 'radios',
-      '#attributes' => [
-        'class' => ['form-group'],
-      ],
       '#title' => $this->t('Update method'),
+      '#title_tag' => 'h2',
       '#options' => $methods,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('method', self::METHOD_INSERT),
+      '#attributes' => [
+        'class' => ['govuk-form-group'],
+      ],
     ];
 
     $form['list'] = [
@@ -71,6 +74,7 @@ class ParSubscriptionManageForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
@@ -79,7 +83,7 @@ class ParSubscriptionManageForm extends ParBaseForm {
 
     // Process email addresses.
     if ($raw = $this->getFlowDataHandler()->getTempDataValue('emails')) {
-      $emails = explode(PHP_EOL, $raw);
+      $emails = explode(PHP_EOL, (string) $raw);
       $chars = " ,.\n\r\t\v\0";
 
       // Validate each row.
@@ -150,6 +154,7 @@ class ParSubscriptionManageForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
   }

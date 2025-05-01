@@ -35,13 +35,13 @@ class NewEnquirySubscriberTest extends ParNotificationTestBase {
   public function testNewEnquirySubscribers() {
     // Set up the entity events.
     $this->entityEvent = $this->getMockBuilder('Drupal\Core\Entity\EntityEvent')
-      ->setMethods(['getEntity'])
+      ->onlyMethods(['getEntity'])
       ->disableOriginalConstructor()
       ->getMock();
     $this->entityEvent
       ->expects($this->any())
       ->method('getEntity')
-      ->will($this->returnCallback([$this, 'getEntity']));
+      ->will($this->returnCallback($this->getEntity(...)));
     $recipients = $this->new_enquiry_subscriber->getRecipients($this->entityEvent);
 
     // There should be three primary contacts and 1 contact who has opted in to receive all notifications.
@@ -61,7 +61,7 @@ class NewEnquirySubscriberTest extends ParNotificationTestBase {
 //  public function testEnquiryResponseSubscribers() {
 //    // Set up the entity events.
 //    $this->entityEvent = $this->getMockBuilder('Drupal\Core\Entity\EntityEvent')
-//      ->setMethods(['getEntity'])
+//      ->onlyMethods(['getEntity'])
 //      ->disableOriginalConstructor()
 //      ->getMock();
 //    $this->entityEvent

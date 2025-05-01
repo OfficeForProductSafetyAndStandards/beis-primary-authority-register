@@ -19,7 +19,7 @@ command:
         ordered-dump: true
         structure-tables-key: common
         skip-tables-key: common
-        extra: '-O -x -w'
+        extra-dump: '-O -x -w'
     sanitize:
       options:
         sanitize-password: 'TestPassword'
@@ -41,6 +41,23 @@ sql:
       - 'sessions'
       - 'watchdog'
       - 'flood'
+    full:
+      - cache
+      - 'cache_*'
+      - history
+      - 'search_*'
+      - 'sessions'
+      - 'watchdog'
+      - 'flood'
+      - audit_log
+      - 'par_*'
+      - comment
+      - 'comment_*'
+      - 'file_*'
+      - 'media_*'
+      - invite
+      - 'invite_*'
+      - 'messages_*'
   skip-tables:
     common:
       - 'migration_*'

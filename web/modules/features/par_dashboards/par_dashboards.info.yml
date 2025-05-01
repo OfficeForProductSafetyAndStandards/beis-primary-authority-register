@@ -1,8 +1,7 @@
 name: 'PAR Dashboards'
 type: module
 description: 'Provides utilities and customisations to PAR dashboards.'
-core: 8.x
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^9 || ^10 || ^11
 package: PAR
 dependencies:
   - login_destination

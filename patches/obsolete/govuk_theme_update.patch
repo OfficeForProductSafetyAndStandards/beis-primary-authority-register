@@ -1,0 +1,773 @@
+diff --git a/config/install/govuk.settings.yml b/config/install/govuk.settings.yml
+index 88a2c4b..a85c197 100755
+--- a/config/install/govuk.settings.yml
++++ b/config/install/govuk.settings.yml
+@@ -2,6 +2,8 @@ govuk_breadcrumb: 1
+ search_box: 1
+ govuk_cookie: 1
+ govuk_phase_banner: alpha
++govuk_team: ''
++govuk_team_link: ''
+ phase_banner_message:
+   format: full_html
+   value: 'This is a new service – your <a class="govuk-link" href="/contact/feedback">feedback</a> will help us to improve it.'
+diff --git a/govuk.info.yml b/govuk.info.yml
+index 7ce2876..c4d5e18 100755
+--- a/govuk.info.yml
++++ b/govuk.info.yml
+@@ -20,3 +20,6 @@ regions:
+   page_top: 'Page top'
+   sidebar_first: 'First sidebar'
+   footer: 'Footer'
++  footer_left: 'Footer Left'
++  footer_right: 'Footer Right'
++
+diff --git a/govuk.libraries.yml b/govuk.libraries.yml
+index 42ec639..e8dbde8 100755
+--- a/govuk.libraries.yml
++++ b/govuk.libraries.yml
+@@ -3,7 +3,6 @@ framework:
+   css:
+     theme:
+       css/style.css: {}
+-      'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css': { type: external }
+   js:
+     node_modules/govuk-frontend/govuk/all.js: {weight: 0}
+     js/govuk.js: {}
+@@ -11,7 +10,7 @@ framework:
+     - core/jquery
+     - core/jquery.once
+     - core/drupal
+-    
++
+ webform:
+   version: 1.x
+   js:
+@@ -19,4 +18,4 @@ webform:
+   dependencies:
+     - core/jquery
+     - core/jquery.once
+-    - core/drupal
+\ No newline at end of file
++    - core/drupal
+diff --git a/govuk.theme b/govuk.theme
+index 3633671..aad631a 100755
+--- a/govuk.theme
++++ b/govuk.theme
+@@ -54,7 +54,10 @@ function govuk_theme() {
+       'template' => 'components/header'
+     ],
+     'govuk_footer' => [
+-      'variables' => [],
++      'variables' => [
++        'govuk_team' => _govuk_theme_get_setting('govuk_team'),
++        'govuk_team_link' => _govuk_theme_get_setting('govuk_team_link'),
++      ],
+       'template' => 'components/footer'
+     ],
+     'govuk_meta' => [
+@@ -401,6 +404,17 @@ function govuk_form_system_theme_settings_alter(&$form, FormStateInterface &$for
+     '#format' => $setting['format'],
+     '#default_value' => $setting['value'],
+   ];
++
++  $form['banners']['govuk_team'] = array(
++    '#type' => 'textfield',
++    '#title' => t('The name of the owning department'),
++    '#default_value' => theme_get_setting('govuk_team'),
++  );
++  $form['banners']['govuk_team_link'] = array(
++    '#type' => 'textfield',
++    '#title' => t('The URL of the owning department.'),
++    '#default_value' => theme_get_setting('govuk_team_link'),
++  );
+ }
+ 
+ function _govuk_theme_get_setting($name, $default = NULL) {
+@@ -421,6 +435,7 @@ function _govuk_theme_get_setting($name, $default = NULL) {
+  * Implements hook_form_alter().
+  */
+ function govuk_form_alter(array &$form, FormStateInterface $form_state, $form_id) {
++  $form['#attributes']['novalidate'] = 'novalidate';
+   if (strpos($form_id, 'webform') !== FALSE) {
+     $form['#attached']['library'][] = 'govuk/webform';
+   }
+@@ -433,3 +448,5 @@ function govuk_preprocess(&$variables) {
+   $handler = \Drupal::service('theme_handler');
+   $variables['govuk_directory'] = base_path() . $handler->getTheme('govuk')->getPath();
+ }
++
++
+diff --git a/js/govuk.js b/js/govuk.js
+index df70c90..8b13789 100755
+--- a/js/govuk.js
++++ b/js/govuk.js
+@@ -1,13 +1 @@
+-function toggleMobileMenu() {
+-  if (!jQuery("#mobile-menu").html()) {
+-    let content = jQuery(".govuk-header__navigation").parent(".app-navigation").html();
+-    let html = "<div id='mobile-menu-content'>" + content + "</div>";
+-    jQuery("#mobile-menu").html(html);
+-  }
+-  if (!jQuery("#mobile-menu-content").is(":visible")) {
+-    jQuery("#mobile-menu-content").slideDown();
+-  }
+-  else {
+-    jQuery("#mobile-menu-content").slideUp();
+-  }
+-}
++
+diff --git a/package.json b/package.json
+index 6382825..21a2b56 100755
+--- a/package.json
++++ b/package.json
+@@ -13,12 +13,12 @@
+     "node": "^10.0.0"
+   },
+   "dependencies": {
+-    "govuk-frontend": "^3.0.0",
++    "govuk-frontend": "^4.5.0",
+     "gulp-cli": "^2.2.0",
+     "gulp-sass": "^4.0.1",
+     "gulp-sass-variables": "^1.2.0",
+     "gulp-sourcemaps": "^2.6.4",
+-    "yargs": ">=15.0.0"
++    "yargs": "~14.2.0"
+   },
+   "scripts": {
+     "gulp": "gulp"
+diff --git a/sass/_typography.scss b/sass/_typography.scss
+index 190366d..fbf49b0 100755
+--- a/sass/_typography.scss
++++ b/sass/_typography.scss
+@@ -40,4 +40,9 @@ ol {
+ }
+ p {
+   @extend .govuk-body;
+-}
+\ No newline at end of file
++}
++
++div {
++  @include govuk-typography-common;
++  @include govuk-font(16);
++}
+diff --git a/sass/style.scss b/sass/style.scss
+index 1615801..ad91236 100755
+--- a/sass/style.scss
++++ b/sass/style.scss
+@@ -5,11 +5,12 @@ $govuk-compatibility-govukelements: false !default;
+ $govuk-compatibility-govuktemplate: false !default;
+ $govuk-compatibility-govukfrontendtoolkit: false !default;
+ $govuk-use-legacy-palette: false !default;
++$govuk-suppressed-warnings: "compatibility-mode";
+ 
+-@import "govuk-frontend/govuk/all";
++@import "node_modules/govuk-frontend/govuk/all";
+ @import "typography";
+ @import "overrides";
+ @import "search";
+-@import "mobile-menu";
++@import "tables";
++@import "footer";
+ @import "related-items";
+-
+diff --git a/templates/components/cookie.html.twig b/templates/components/cookie.html.twig
+index 502d2b6..e3a44f1 100755
+--- a/templates/components/cookie.html.twig
++++ b/templates/components/cookie.html.twig
+@@ -28,9 +28,9 @@
+           <p>We use some essential cookies to make this service work.</p>
+ 
+           {% if type == 'analytics' %}
+-            <p>We’d also like to use analytics cookies so we can understand how you use the service and make improvements.</p>
++            <p>We'd also like to use analytics cookies so we can understand how you use the service and make improvements.</p>
+           {% elseif type == 'additional' %}
+-            <p>We’d like to set additional cookies so we can remember your settings, understand how people use the service and make improvements.</p>
++            <p>We'd like to set additional cookies so we can remember your settings, understand how people use the service and make improvements.</p>
+           {% endif %}
+         </div>
+       </div>
+@@ -45,12 +45,12 @@
+           Reject {{ type }} cookies
+         </button>
+       {% endif %}
+-      <a class="govuk-link" href="/cookies">View cookies</a>
+       {% if not type %}
+         <button value="hide" type="button" class="govuk-button hide" data-module="govuk-button">
+           Hide this message
+         </button>
+       {% endif %}
++      <a class="govuk-link" href="/cookies">View cookies</a>
+     </div>
+   </div>
+ 
+@@ -59,7 +59,7 @@
+       <div class="govuk-grid-column-two-thirds">
+ 
+         <div class="govuk-cookie-banner__content">
+-          <p>You’ve accepted {{ type }} cookies. You can <a href="/cookies">change your cookie settings</a> at any time.</p>
++          <p>You've accepted {{ type }} cookies. You can <a href="/cookies">change your cookie settings</a> at any time.</p>
+         </div>
+       </div>
+     </div>
+@@ -76,7 +76,7 @@
+       <div class="govuk-grid-column-two-thirds">
+ 
+         <div class="govuk-cookie-banner__content">
+-          <p>You’ve rejected {{ type }} cookies. You can <a href="/cookies">change your cookie settings</a> at any time.</p>
++          <p>You've rejected {{ type }} cookies. You can <a href="/cookies">change your cookie settings</a> at any time.</p>
+         </div>
+       </div>
+     </div>
+diff --git a/templates/components/footer.html.twig b/templates/components/footer.html.twig
+index 0f36a62..da957d2 100755
+--- a/templates/components/footer.html.twig
++++ b/templates/components/footer.html.twig
+@@ -1,7 +1,31 @@
+-<svg role="presentation" focusable="false" class="govuk-footer__licence-logo" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 483.2 195.7" height="17" width="41">
+-  <path fill="currentColor" d="M421.5 142.8V.1l-50.7 32.3v161.1h112.4v-50.7zm-122.3-9.6A47.12 47.12 0 0 1 221 97.8c0-26 21.1-47.1 47.1-47.1 16.7 0 31.4 8.7 39.7 21.8l42.7-27.2A97.63 97.63 0 0 0 268.1 0c-36.5 0-68.3 20.1-85.1 49.7A98 98 0 0 0 97.8 0C43.9 0 0 43.9 0 97.8s43.9 97.8 97.8 97.8c36.5 0 68.3-20.1 85.1-49.7a97.76 97.76 0 0 0 149.6 25.4l19.4 22.2h3v-87.8h-80l24.3 27.5zM97.8 145c-26 0-47.1-21.1-47.1-47.1s21.1-47.1 47.1-47.1 47.2 21 47.2 47S123.8 145 97.8 145" />
++{% if govuk_team %}
++<div class="govuk-footer__meta-custom">
++  Built by
++  {% if govuk_team_link %}
++    <a href="{{ govuk_team_link }}" class="govuk-footer__link">{{ govuk_team }}</a>
++  {% else %}
++    {{ govuk_team }}
++  {% endif %}
++</div>
++{% endif %}
++
++<svg
++  aria-hidden="true"
++  focusable="false"
++  class="govuk-footer__licence-logo"
++  xmlns="http://www.w3.org/2000/svg"
++  viewBox="0 0 483.2 195.7"
++  height="17"
++  width="41">
++  <path
++    fill="currentColor"
++    d="M421.5 142.8V.1l-50.7 32.3v161.1h112.4v-50.7zm-122.3-9.6A47.12 47.12 0 0 1 221 97.8c0-26 21.1-47.1 47.1-47.1 16.7 0 31.4 8.7 39.7 21.8l42.7-27.2A97.63 97.63 0 0 0 268.1 0c-36.5 0-68.3 20.1-85.1 49.7A98 98 0 0 0 97.8 0C43.9 0 0 43.9 0 97.8s43.9 97.8 97.8 97.8c36.5 0 68.3-20.1 85.1-49.7a97.76 97.76 0 0 0 149.6 25.4l19.4 22.2h3v-87.8h-80l24.3 27.5zM97.8 145c-26 0-47.1-21.1-47.1-47.1s21.1-47.1 47.1-47.1 47.2 21 47.2 47S123.8 145 97.8 145" />
+ </svg>
++
+ <span class="govuk-footer__licence-description">
+   All content is available under the
+-  <a class="govuk-footer__link" href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/" rel="license" title="Licence">Open Government Licence v3.0</a>, except where otherwise stated
+-</span>
+\ No newline at end of file
++  <a
++    class="govuk-footer__link"
++    href="https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/"
++    rel="license">Open Government Licence v3.0</a>, except where otherwise stated
++</span>
+diff --git a/templates/components/header.html.twig b/templates/components/header.html.twig
+index 323890f..d318f98 100755
+--- a/templates/components/header.html.twig
++++ b/templates/components/header.html.twig
+@@ -1,17 +1,26 @@
+ <div class="govuk-header__logo">
+-  <a href="/" class="govuk-header__link govuk-header__link--homepage" title="Home">
++  <a href="{{ path('<front>') }}" class="govuk-header__link govuk-header__link--homepage">
+     <span class="govuk-header__logotype">
+-      <svg role="presentation" focusable="false" class="govuk-header__logotype-crown" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 132 97" height="30" width="36">
+-        <path fill="currentColor" fill-rule="evenodd" d="M25 30.2c3.5 1.5 7.7-.2 9.1-3.7 1.5-3.6-.2-7.8-3.9-9.2-3.6-1.4-7.6.3-9.1 3.9-1.4 3.5.3 7.5 3.9 9zM9 39.5c3.6 1.5 7.8-.2 9.2-3.7 1.5-3.6-.2-7.8-3.9-9.1-3.6-1.5-7.6.2-9.1 3.8-1.4 3.5.3 7.5 3.8 9zM4.4 57.2c3.5 1.5 7.7-.2 9.1-3.8 1.5-3.6-.2-7.7-3.9-9.1-3.5-1.5-7.6.3-9.1 3.8-1.4 3.5.3 7.6 3.9 9.1zm38.3-21.4c3.5 1.5 7.7-.2 9.1-3.8 1.5-3.6-.2-7.7-3.9-9.1-3.6-1.5-7.6.3-9.1 3.8-1.3 3.6.4 7.7 3.9 9.1zm64.4-5.6c-3.6 1.5-7.8-.2-9.1-3.7-1.5-3.6.2-7.8 3.8-9.2 3.6-1.4 7.7.3 9.2 3.9 1.3 3.5-.4 7.5-3.9 9zm15.9 9.3c-3.6 1.5-7.7-.2-9.1-3.7-1.5-3.6.2-7.8 3.7-9.1 3.6-1.5 7.7.2 9.2 3.8 1.5 3.5-.3 7.5-3.8 9zm4.7 17.7c-3.6 1.5-7.8-.2-9.2-3.8-1.5-3.6.2-7.7 3.9-9.1 3.6-1.5 7.7.3 9.2 3.8 1.3 3.5-.4 7.6-3.9 9.1zM89.3 35.8c-3.6 1.5-7.8-.2-9.2-3.8-1.4-3.6.2-7.7 3.9-9.1 3.6-1.5 7.7.3 9.2 3.8 1.4 3.6-.3 7.7-3.9 9.1zM69.7 17.7l8.9 4.7V9.3l-8.9 2.8c-.2-.3-.5-.6-.9-.9L72.4 0H59.6l3.5 11.2c-.3.3-.6.5-.9.9l-8.8-2.8v13.1l8.8-4.7c.3.3.6.7.9.9l-5 15.4v.1c-.2.8-.4 1.6-.4 2.4 0 4.1 3.1 7.5 7 8.1h.2c.3 0 .7.1 1 .1.4 0 .7 0 1-.1h.2c4-.6 7.1-4.1 7.1-8.1 0-.8-.1-1.7-.4-2.4V34l-5.1-15.4c.4-.2.7-.6 1-.9zM66 92.8c16.9 0 32.8 1.1 47.1 3.2 4-16.9 8.9-26.7 14-33.5l-9.6-3.4c1 4.9 1.1 7.2 0 10.2-1.5-1.4-3-4.3-4.2-8.7L108.6 76c2.8-2 5-3.2 7.5-3.3-4.4 9.4-10 11.9-13.6 11.2-4.3-.8-6.3-4.6-5.6-7.9 1-4.7 5.7-5.9 8-.5 4.3-8.7-3-11.4-7.6-8.8 7.1-7.2 7.9-13.5 2.1-21.1-8 6.1-8.1 12.3-4.5 20.8-4.7-5.4-12.1-2.5-9.5 6.2 3.4-5.2 7.9-2 7.2 3.1-.6 4.3-6.4 7.8-13.5 7.2-10.3-.9-10.9-8-11.2-13.8 2.5-.5 7.1 1.8 11 7.3L80.2 60c-4.1 4.4-8 5.3-12.3 5.4 1.4-4.4 8-11.6 8-11.6H55.5s6.4 7.2 7.9 11.6c-4.2-.1-8-1-12.3-5.4l1.4 16.4c3.9-5.5 8.5-7.7 10.9-7.3-.3 5.8-.9 12.8-11.1 13.8-7.2.6-12.9-2.9-13.5-7.2-.7-5 3.8-8.3 7.1-3.1 2.7-8.7-4.6-11.6-9.4-6.2 3.7-8.5 3.6-14.7-4.6-20.8-5.8 7.6-5 13.9 2.2 21.1-4.7-2.6-11.9.1-7.7 8.8 2.3-5.5 7.1-4.2 8.1.5.7 3.3-1.3 7.1-5.7 7.9-3.5.7-9-1.8-13.5-11.2 2.5.1 4.7 1.3 7.5 3.3l-4.7-15.4c-1.2 4.4-2.7 7.2-4.3 8.7-1.1-3-.9-5.3 0-10.2l-9.5 3.4c5 6.9 9.9 16.7 14 33.5 14.8-2.1 30.8-3.2 47.7-3.2z"></path>
+-        <image src="/assets/images/govuk-logotype-crown.png" xlink:href="" class="govuk-header__logotype-crown-fallback-image" width="36" height="32" alt="Crown"></image>
++      <!--[if gt IE 8]><!-->
++      <svg
++        aria-hidden="true"
++        focusable="false"
++        class="govuk-header__logotype-crown"
++        xmlns="http://www.w3.org/2000/svg"
++        viewBox="0 0 132 97"
++        height="30"
++        width="36">
++        <path
++          fill="currentColor" fill-rule="evenodd"
++          d="M25 30.2c3.5 1.5 7.7-.2 9.1-3.7 1.5-3.6-.2-7.8-3.9-9.2-3.6-1.4-7.6.3-9.1 3.9-1.4 3.5.3 7.5 3.9 9zM9 39.5c3.6 1.5 7.8-.2 9.2-3.7 1.5-3.6-.2-7.8-3.9-9.1-3.6-1.5-7.6.2-9.1 3.8-1.4 3.5.3 7.5 3.8 9zM4.4 57.2c3.5 1.5 7.7-.2 9.1-3.8 1.5-3.6-.2-7.7-3.9-9.1-3.5-1.5-7.6.3-9.1 3.8-1.4 3.5.3 7.6 3.9 9.1zm38.3-21.4c3.5 1.5 7.7-.2 9.1-3.8 1.5-3.6-.2-7.7-3.9-9.1-3.6-1.5-7.6.3-9.1 3.8-1.3 3.6.4 7.7 3.9 9.1zm64.4-5.6c-3.6 1.5-7.8-.2-9.1-3.7-1.5-3.6.2-7.8 3.8-9.2 3.6-1.4 7.7.3 9.2 3.9 1.3 3.5-.4 7.5-3.9 9zm15.9 9.3c-3.6 1.5-7.7-.2-9.1-3.7-1.5-3.6.2-7.8 3.7-9.1 3.6-1.5 7.7.2 9.2 3.8 1.5 3.5-.3 7.5-3.8 9zm4.7 17.7c-3.6 1.5-7.8-.2-9.2-3.8-1.5-3.6.2-7.7 3.9-9.1 3.6-1.5 7.7.3 9.2 3.8 1.3 3.5-.4 7.6-3.9 9.1zM89.3 35.8c-3.6 1.5-7.8-.2-9.2-3.8-1.4-3.6.2-7.7 3.9-9.1 3.6-1.5 7.7.3 9.2 3.8 1.4 3.6-.3 7.7-3.9 9.1zM69.7 17.7l8.9 4.7V9.3l-8.9 2.8c-.2-.3-.5-.6-.9-.9L72.4 0H59.6l3.5 11.2c-.3.3-.6.5-.9.9l-8.8-2.8v13.1l8.8-4.7c.3.3.6.7.9.9l-5 15.4v.1c-.2.8-.4 1.6-.4 2.4 0 4.1 3.1 7.5 7 8.1h.2c.3 0 .7.1 1 .1.4 0 .7 0 1-.1h.2c4-.6 7.1-4.1 7.1-8.1 0-.8-.1-1.7-.4-2.4V34l-5.1-15.4c.4-.2.7-.6 1-.9zM66 92.8c16.9 0 32.8 1.1 47.1 3.2 4-16.9 8.9-26.7 14-33.5l-9.6-3.4c1 4.9 1.1 7.2 0 10.2-1.5-1.4-3-4.3-4.2-8.7L108.6 76c2.8-2 5-3.2 7.5-3.3-4.4 9.4-10 11.9-13.6 11.2-4.3-.8-6.3-4.6-5.6-7.9 1-4.7 5.7-5.9 8-.5 4.3-8.7-3-11.4-7.6-8.8 7.1-7.2 7.9-13.5 2.1-21.1-8 6.1-8.1 12.3-4.5 20.8-4.7-5.4-12.1-2.5-9.5 6.2 3.4-5.2 7.9-2 7.2 3.1-.6 4.3-6.4 7.8-13.5 7.2-10.3-.9-10.9-8-11.2-13.8 2.5-.5 7.1 1.8 11 7.3L80.2 60c-4.1 4.4-8 5.3-12.3 5.4 1.4-4.4 8-11.6 8-11.6H55.5s6.4 7.2 7.9 11.6c-4.2-.1-8-1-12.3-5.4l1.4 16.4c3.9-5.5 8.5-7.7 10.9-7.3-.3 5.8-.9 12.8-11.1 13.8-7.2.6-12.9-2.9-13.5-7.2-.7-5 3.8-8.3 7.1-3.1 2.7-8.7-4.6-11.6-9.4-6.2 3.7-8.5 3.6-14.7-4.6-20.8-5.8 7.6-5 13.9 2.2 21.1-4.7-2.6-11.9.1-7.7 8.8 2.3-5.5 7.1-4.2 8.1.5.7 3.3-1.3 7.1-5.7 7.9-3.5.7-9-1.8-13.5-11.2 2.5.1 4.7 1.3 7.5 3.3l-4.7-15.4c-1.2 4.4-2.7 7.2-4.3 8.7-1.1-3-.9-5.3 0-10.2l-9.5 3.4c5 6.9 9.9 16.7 14 33.5 14.8-2.1 30.8-3.2 47.7-3.2z"></path>
+       </svg>
++      <!--<![endif]-->
++      <!--[if IE 8]>
++      <img src="/{{ directory }}/assets/images/govuk-logotype-crown.png" class="govuk-header__logotype-crown-fallback-image" width="36" height="32">
++      <![endif]-->
+       <span class="govuk-header__logotype-text">
+-        {{ site_name }}
++        GOV.UK
+       </span>
+-      {% if site_slogan %}
+-        <span class="govuk-header__product-name">{{ site_slogan }}</span>
+-      {% endif %}
+     </span>
+   </a>
+ </div>
+-    
+diff --git a/templates/components/phase-banner.html.twig b/templates/components/phase-banner.html.twig
+index 9e4eeed..56660ff 100755
+--- a/templates/components/phase-banner.html.twig
++++ b/templates/components/phase-banner.html.twig
+@@ -1,7 +1,8 @@
+ <div class="govuk-phase-banner">
+-  <p class="govuk-phase-banner__content"><strong class="govuk-tag govuk-phase-banner__content__tag ">
+-  {{ phase }}
+-</strong>
++  <p class="govuk-phase-banner__content">
++    <strong class="govuk-tag govuk-phase-banner__content__tag ">
++      {{ phase }}
++    </strong>
+     <span class="govuk-phase-banner__text">
+       {{ message }}
+     </span>
+diff --git a/templates/form/fieldset.html.twig b/templates/form/fieldset.html.twig
+index 5b96567..0780985 100755
+--- a/templates/form/fieldset.html.twig
++++ b/templates/form/fieldset.html.twig
+@@ -7,6 +7,9 @@
+     'govuk-fieldset',
+   ]
+ %}
++
++{% set error_id = attributes.id ~ '--status-message' %}
++
+ <div class="govuk-form-group{% if errors %} govuk-form-group--error{% endif %}">
+   <fieldset{{ attributes.addClass(classes) }}>
+     {%
+@@ -25,8 +28,8 @@
+         <div{{ description.attributes.addClass('govuk-hint') }}>{{ description.content }}</div>
+       {% endif %}
+       {% if errors %}
+-        <span class="govuk-error-message">
+-          {{ errors }}
++        <span class="error-message govuk-error-message" id="{{ error_id }}">
++          {{ errors | striptags('<p>') }}
+         </span>
+       {% endif %}
+       {% if prefix %}
+diff --git a/templates/form/form-element.html.twig b/templates/form/form-element.html.twig
+index ea37587..aadcf9a 100755
+--- a/templates/form/form-element.html.twig
++++ b/templates/form/form-element.html.twig
+@@ -71,6 +71,8 @@
+   ]
+ %}
+ 
++{% set error_id = 'edit-' ~ name|clean_class ~ '--status-message' %}
++
+ {% if description_display == 'outside' and description.content and errors is empty %}
+   <div{{ description.attributes.addClass(description_classes) }}>
+       {{ description.content }}
+@@ -83,7 +85,7 @@
+   {% endif %}
+ 
+   {% if errors and type not in ['radio', 'checkbox'] %}
+-    <span class="error-message govuk-error-message">
++    <span class="error-message govuk-error-message" id="{{ error_id }}">
+       {{ errors | striptags('<p>') }}
+     </span>
+   {% endif %}
+diff --git a/templates/form/input--textfield.html.twig b/templates/form/input--textfield.html.twig
+index 11dad12..cff7a63 100755
+--- a/templates/form/input--textfield.html.twig
++++ b/templates/form/input--textfield.html.twig
+@@ -19,5 +19,8 @@
+   ]
+ %}
+ 
++{% if attributes.placeholder is not empty %}
+ <span class="form-hint govuk-hint">{{ attributes.placeholder }}</span>
++{% endif %}
++
+ <input{{ attributes.addClass(classes).removeAttribute('placeholder') }} />{{ children }}
+diff --git a/templates/layout/html.html.twig b/templates/layout/html.html.twig
+index d3d78af..8230a53 100755
+--- a/templates/layout/html.html.twig
++++ b/templates/layout/html.html.twig
+@@ -45,7 +45,7 @@
+ 
+     <meta property="og:image" content="{{ govuk_directory }}/assets/images/govuk-opengraph-image.png">
+   </head>
+-<body {{ attributes.addClass('govuk-template__body') }}>
++<body {{ attributes.addClass('govuk-template__body govuk__body') }}>
+     <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
+     {{ page_top }}
+     {{ page }}
+diff --git a/templates/layout/item-list.html.twig b/templates/layout/item-list.html.twig
+index ff80ab7..77a7d83 100755
+--- a/templates/layout/item-list.html.twig
++++ b/templates/layout/item-list.html.twig
+@@ -19,15 +19,26 @@
+  * @see template_preprocess_item_list()
+  */
+ #}
+-{% if context.list_style %}
++{% if context.list_style == 'govuk-error-summary__list' %}
++{% set attributes = attributes.addClass('govuk-list govuk-error-summary__list') %}
++{% elseif context.list_style %}
+   {%- set attributes = attributes.addClass('item-list__' ~ context.list_style) %}
+ {% endif %}
+ 
++{% if list_header_tag %}
++  {% set header_tag = list_header_tag %}
++{% else %}
++  {% set header_tag == 'h3' %}
++{% endif %}
++
++{% set list_header_tag_attributes = 'govuk-heading-s' %}
++
+ {%- set attributes = attributes.addClass('list') %}
+ 
+ {% if items or empty %}
++
+   {%- if title is not empty -%}
+-    <h3>{{ title }}</h3>
++    <{{ header_tag }} class="{{ list_header_tag_attributes }}">{{ title }}</{{ header_tag }}>
+   {%- endif -%}
+ 
+   {%- if items -%}
+diff --git a/templates/layout/maintenance-page.html.twig b/templates/layout/maintenance-page.html.twig
+index 75f66b9..29b1fb6 100755
+--- a/templates/layout/maintenance-page.html.twig
++++ b/templates/layout/maintenance-page.html.twig
+@@ -48,30 +48,27 @@
+ <!-- page template -->
+ <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
+ 
+-<div id="skiplink-container">
+-  <div>
+-    <a href="#main-content" class="skiplink govuk-skip-link">Skip to main content</a>
+-  </div>
+-</div>
+ {% if govuk_cookie %}
+-  {{  govuk_cookie }}
++  {{ govuk_cookie }}
+ {% endif %}
+-<header class="govuk-header " role="banner" data-module="govuk-header">
++
++<a href="#content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
++
++<header class="govuk-header" role="banner" data-module="govuk-header">
+   <div class="govuk-header__container govuk-width-container">
+     {{ govuk_header }}
+-    {% if page.navigation %}
+-      <div class="hamburger icon" onclick="toggleMobileMenu();">
+-        <i class="fa fa-bars"></i>
+-      </div>
+-      {{ page.navigation }}
+-    {% endif %}
+-    {% if search_box %}
+-      {{ search_box }}
+-    {% endif %}
++    <div class="govuk-header__content">
++      <a href="{{ path('<front>') }}" class="govuk-header__link govuk-header__service-name">
++        {{ site_name }}
++      </a>
++      {% if page.navigation %}
++        {{ page.navigation }}
++      {% endif %}
++    </div>
+   </div>
+-  <div id="mobile-menu"></div>
+ </header>
+-<div class="govuk-width-container">
++
++<div class="govuk-width-container app-width-container">
+   {% if govuk_phase_banner %}
+     {{  govuk_phase_banner }}
+   {% endif %}
+@@ -82,17 +79,35 @@
+     {{ page.content }}
+   </main>
+ </div>
+-<footer class="govuk-footer " role="contentinfo">
+-    <div class="govuk-width-container ">
+-      <div class="govuk-footer__meta">
+-        <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+-          {% if page.footer %}
+-            {{ page.footer }}
+-          {% endif %}
+-          {{ govuk_footer }}
+-        </div>
+-        {{ govuk_meta }}
++
++<footer class="govuk-footer" role="contentinfo">
++  <div class="govuk-width-container">
++
++    {% if (page.footer_left or page.footer_right) %}
++      <div class="govuk-footer__navigation">
++        {% if page.footer_left %}
++          <div class="govuk-footer__section {{ footer_left_class }}">
++            {{ page.footer_left }}
++          </div>
++        {% endif %}
++        {% if page.footer_right %}
++          <div class="govuk-footer__section {{ footer_right_class }}">
++            {{ page.footer_right }}
++          </div>
++        {% endif %}
++      </div>
++      <hr class="govuk-footer__section-break">
++    {% endif %}
++
++    <div class="govuk-footer__meta">
++      <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
++        {% if page.footer %}
++          {{ page.footer }}
++        {% endif %}
++        {{ govuk_footer }}
+       </div>
++      {{ govuk_meta }}
+     </div>
+-  </footer>
+-<!-- ends page template -->
++  </div>
++
++</footer>
+diff --git a/templates/layout/page--404.html.twig b/templates/layout/page--404.html.twig
+index dc61b73..7c50939 100755
+--- a/templates/layout/page--404.html.twig
++++ b/templates/layout/page--404.html.twig
+@@ -48,30 +48,27 @@
+ <!-- page template -->
+ <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
+ 
+-<div id="skiplink-container">
+-  <div>
+-    <a href="#main-content" class="skiplink govuk-skip-link">Skip to main content</a>
+-  </div>
+-</div>
+ {% if govuk_cookie %}
+-  {{  govuk_cookie }}
++  {{ govuk_cookie }}
+ {% endif %}
+-<header class="govuk-header " role="banner" data-module="govuk-header">
++
++<a href="#content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
++
++<header class="govuk-header" role="banner" data-module="govuk-header">
+   <div class="govuk-header__container govuk-width-container">
+     {{ govuk_header }}
+-    {% if page.navigation %}
+-      <div class="hamburger icon" onclick="toggleMobileMenu();">
+-        <i class="fa fa-bars"></i>
+-      </div>
+-      {{ page.navigation }}
+-    {% endif %}
+-    {% if search_box %}
+-      {{ search_box }}
+-    {% endif %}
++    <div class="govuk-header__content">
++      <a href="{{ path('<front>') }}" class="govuk-header__link govuk-header__service-name">
++        {{ site_name }}
++      </a>
++      {% if page.navigation %}
++        {{ page.navigation }}
++      {% endif %}
++    </div>
+   </div>
+-  <div id="mobile-menu"></div>
+ </header>
+-<div class="govuk-width-container">
++
++<div class="govuk-width-container app-width-container">
+   {% if govuk_phase_banner %}
+     {{  govuk_phase_banner }}
+   {% endif %}
+@@ -85,17 +82,35 @@
+     <p>If the web address is correct or you selected a link or button, <a href="/contact">contact the {{ site_name}} {{site_slogan}} Helpline</a> if you need to speak to someone about this service.</p>
+   </main>
+ </div>
+-<footer class="govuk-footer " role="contentinfo">
+-    <div class="govuk-width-container ">
+-      <div class="govuk-footer__meta">
+-        <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+-          {% if page.footer %}
+-            {{ page.footer }}
+-          {% endif %}
+-          {{ govuk_footer }}
+-        </div>
+-        {{ govuk_meta }}
++
++<footer class="govuk-footer" role="contentinfo">
++  <div class="govuk-width-container">
++
++    {% if (page.footer_left or page.footer_right) %}
++      <div class="govuk-footer__navigation">
++        {% if page.footer_left %}
++          <div class="govuk-footer__section {{ footer_left_class }}">
++            {{ page.footer_left }}
++          </div>
++        {% endif %}
++        {% if page.footer_right %}
++          <div class="govuk-footer__section {{ footer_right_class }}">
++            {{ page.footer_right }}
++          </div>
++        {% endif %}
++      </div>
++      <hr class="govuk-footer__section-break">
++    {% endif %}
++
++    <div class="govuk-footer__meta">
++      <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
++        {% if page.footer %}
++          {{ page.footer }}
++        {% endif %}
++        {{ govuk_footer }}
+       </div>
++      {{ govuk_meta }}
+     </div>
+-  </footer>
+-<!-- ends page template -->
++  </div>
++
++</footer>
+diff --git a/templates/layout/page.html.twig b/templates/layout/page.html.twig
+index 2f753fe..4b202dc 100755
+--- a/templates/layout/page.html.twig
++++ b/templates/layout/page.html.twig
+@@ -54,28 +54,28 @@
+   {{ govuk_cookie }}
+ {% endif %}
+ 
+-<div id="skiplink-container">
+-  <div>
+-    <a href="#main-content" class="skiplink govuk-skip-link" title="Skip to main content">Skip to main content</a>
+-  </div>
+-</div>
++<a href="#content" class="govuk-skip-link" data-module="govuk-skip-link">Skip to main content</a>
+ 
+ <header class="govuk-header" role="banner" data-module="govuk-header">
+   <div class="govuk-header__container govuk-width-container">
+     {{ govuk_header }}
+-    {% if page.navigation %}
+-      <div class="hamburger icon" onclick="toggleMobileMenu();">
+-        <i class="fa fa-bars"></i>
+-      </div>
+-      {{ page.navigation }}
+-    {% endif %}
+-    {% if search_box %}
+-      {{ search_box }}
+-    {% endif %}
++    <div class="govuk-header__content">
++      <a href="{{ path('<front>') }}" class="govuk-header__link govuk-header__service-name">
++        {{ site_name }}
++      </a>
++      {% if page.navigation %}
++        {{ page.navigation }}
++      {% endif %}
++    </div>
+   </div>
+-  <div id="mobile-menu"></div>
+ </header>
+-<div class="govuk-width-container">
++
++<div class="govuk-width-container app-width-container">
++
++  {% if search_box %}
++    {{ search_box }}
++  {% endif %}
++
+   {% if govuk_phase_banner %}
+     {{  govuk_phase_banner }}
+   {% endif %}
+@@ -86,7 +86,7 @@
+     set main_classes = [
+       'govuk-main-wrapper',
+       show_breadcrumb ? 'has-breadcrumb',
+-      page.content.govuk_local_tasks ? 'has-local-tasks'
++      page.content.govuk_local_tasks|render|striptags|trim is not empty ? 'has-local-tasks'
+     ]
+   %}
+   <main {{ attributes.addClass(main_classes) }} id="main-content" role="main">
+@@ -106,17 +106,35 @@
+     </div>
+   </main>
+ </div>
+-<footer class="govuk-footer " role="contentinfo">
+-    <div class="govuk-width-container ">
+-      <div class="govuk-footer__meta">
+-        <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
+-          {% if page.footer %}
+-            {{ page.footer }}
+-          {% endif %}
+-          {{ govuk_footer }}
+-        </div>
+-        {{ govuk_meta }}
++
++<footer class="govuk-footer" role="contentinfo">
++  <div class="govuk-width-container">
++
++    {% if (page.footer_left or page.footer_right) %}
++      <div class="govuk-footer__navigation">
++        {% if page.footer_left %}
++          <div class="govuk-footer__section {{ footer_left_class }}">
++            {{ page.footer_left }}
++          </div>
++        {% endif %}
++        {% if page.footer_right %}
++          <div class="govuk-footer__section {{ footer_right_class }}">
++            {{ page.footer_right }}
++          </div>
++        {% endif %}
+       </div>
++      <hr class="govuk-footer__section-break">
++    {% endif %}
++
++    <div class="govuk-footer__meta">
++      <div class="govuk-footer__meta-item govuk-footer__meta-item--grow">
++        {% if page.footer %}
++          {{ page.footer }}
++        {% endif %}
++        {{ govuk_footer }}
++      </div>
++      {{ govuk_meta }}
+     </div>
+-  </footer>
+-<!-- ends page template -->
++  </div>
++
++</footer>
+diff --git a/templates/menu/menu--region--navigation.html.twig b/templates/menu/menu--region--navigation.html.twig
+index 200198a..6582173 100755
+--- a/templates/menu/menu--region--navigation.html.twig
++++ b/templates/menu/menu--region--navigation.html.twig
+@@ -30,7 +30,7 @@
+   {% import _self as menus %}
+   {% if items %}
+     {% if menu_level == 0 %}
+-      <ul{{ attributes.addClass("govuk-header__navigation") }}>
++      <ul{{ attributes.addClass("govuk-header__navigation-list") }}>
+     {% else %}
+       <ul class="app-navigation__list govuk-header__navigation">
+     {% endif %}
+diff --git a/templates/misc/status-messages.html.twig b/templates/misc/status-messages.html.twig
+index 7bfe975..6e85262 100755
+--- a/templates/misc/status-messages.html.twig
++++ b/templates/misc/status-messages.html.twig
+@@ -46,12 +46,20 @@
+       </div>
+     {% endfor %}
+   {% elseif type == 'status' %}
+-    {% for message in messages %}
+-      <div class="govuk-panel govuk-panel--confirmation">
+-        <div class="govuk-panel__body">
+-          {{ message }}
+-        </div>
++
++    <div class="govuk-notification-banner govuk-notification-banner--success" role="alert"
++         aria-labelledby="govuk-notification-banner-title"
++         data-module="govuk-notification-banner">
++      <div class="govuk-notification-banner__header">
++        <h2 class="govuk-notification-banner__title" id="govuk-notification-banner-title">
++          {{ 'Success'|t }}
++        </h2>
+       </div>
+-    {% endfor %}
++      {% for message in messages %}
++      <div class="govuk-notification-banner__content">
++        {{ message }}
++      </div>
++      {% endfor %}
++    </div>
+   {% endif %}
+-{% endfor %}
+\ No newline at end of file
++{% endfor %}

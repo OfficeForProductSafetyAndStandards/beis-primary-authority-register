@@ -7,6 +7,7 @@ dependencies:
     - field.field.message.new_inspection_feedback_response.field_comment
     - field.field.message.new_inspection_feedback_response.field_inspection_feedback
     - field.field.message.new_inspection_feedback_response.field_message_subject
+    - field.field.message.new_inspection_feedback_response.field_to
     - message.template.new_inspection_feedback_response
 id: message.new_inspection_feedback_response.mail_body
 targetEntityType: message
@@ -14,10 +15,10 @@ bundle: new_inspection_feedback_response
 mode: mail_body
 content:
   partial_0:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
   partial_1:
     weight: 0
     region: content
@@ -25,3 +26,4 @@ hidden:
   field_comment: true
   field_inspection_feedback: true
   field_message_subject: true
+  field_to: true

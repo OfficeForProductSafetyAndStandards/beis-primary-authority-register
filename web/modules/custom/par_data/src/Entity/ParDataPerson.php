@@ -4,6 +4,7 @@ namespace Drupal\par_data\Entity;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Component\Utility\Xss;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Link;
@@ -82,17 +83,14 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
   /**
    * {@inheritdoc}
    */
-  public function filterRelationshipsByAction($relationship, $action) {
-    switch ($action) {
-      case 'manage':
-        // Only follow relationships to authorities and organisations.
-        // This is the very core of how membership is granted within PAR.
-        return (bool) ($relationship->getEntity()->getEntityTypeId() === 'par_data_organisation'
-          || $relationship->getEntity()->getEntityTypeId() === 'par_data_authority');
-
-    }
-
-    return parent::filterRelationshipsByAction($relationship, $action);
+  #[\Override]
+  public function filterRelationshipsByAction($relationship, $action)
+  {
+      return match ($action) {
+          'manage' => (bool) ($relationship->getEntity()->getEntityTypeId() === 'par_data_organisation'
+            || $relationship->getEntity()->getEntityTypeId() === 'par_data_authority'),
+          default => parent::filterRelationshipsByAction($relationship, $action),
+      };
   }
 
   /**
@@ -111,7 +109,8 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
   /**
    * {@inheritdoc}
    */
-  public function lookupUserAccount() {
+  #[\Override]
+  public function lookupUserAccount(): ?UserInterface {
     $entities = \Drupal::entityTypeManager()
       ->getStorage('user')
       ->loadByProperties(['mail' => $this->get('email')->getString()]);
@@ -140,26 +139,30 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
    * {@inheritdoc}
    *
    * A person can be matched to a user account if:
-   * a) the user id is set on the field_user_account
    * b) the user account is not set (as above) but the email matches the user account email
+   * a) the user id is set on the field_user_account
+   *
    * @see ParDataManager::getUserPeople()
    */
-  public function getUserAccount() {
-    return $this->hasUserAccount() ?
-      $this->retrieveUserAccount() : $this->lookupUserAccount();
+  #[\Override]
+  public function getUserAccount(): ?UserInterface {
+    return $this->lookupUserAccount() ??
+      $this->hasUserAccount() ? $this->retrieveUserAccount() : NULL;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setUserAccount($account) {
+  #[\Override]
+  public function setUserAccount(mixed $account) {
     $this->set('field_user_account', $account);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getSimilarPeople($link_up = TRUE) {
+  #[\Override]
+  public function getSimilarPeople(bool $link_up = TRUE): array {
     $account = $this->getUserAccount();
 
     // Link this entity to the Drupal User if one exists.
@@ -174,7 +177,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
     // Get the entity query.
     $query = $this->entityTypeManager()
       ->getStorage($this->getEntityTypeId())
-      ->getQuery('OR');
+      ->getQuery('OR')->accessCheck();
 
     $query->condition('email', $email, '=');
 
@@ -200,13 +203,14 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
       return FALSE;
     });
 
-    return isset($people) ? $people : [];
+    return $people ?? [];
   }
 
   /**
    * {@inheritdoc}
    */
-  public function linkAccounts(UserInterface $account = NULL) {
+  #[\Override]
+  public function linkAccounts(UserInterface $account = NULL): ?UserInterface {
     $saved = FALSE;
     if (!$account) {
       $account = $this->lookupUserAccount();
@@ -219,7 +223,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
       $saved = $this->save();
     }
 
-    return $saved ? $account : NULL;
+    return !$saved ? NULL : $account;
   }
 
   /**
@@ -227,32 +231,138 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
    *
    * @param string $email
    *   The email address to update.
-   * @param User $account
+   * @param ?User $account
    */
-  public function updateEmail($email, User &$account = NULL) {
+  public function updateEmail(string $email, User &$account = NULL): void {
     $this->set('email', $email);
 
-    if (!$account) {
-      $account = $this->lookupUserAccount();
-    }
     if ($account) {
       $account->setEmail($email);
+      $account->setUsername($email);
     }
+  }
+
+  /**
+   * Update this person's memberships.
+   *
+   * This will add and remove memberships as appropriate.
+   *
+   * Tasks:
+   *   - Add this person to all the membership entities provided.
+   *   - Remove all the memberships this person has that aren't provided.
+   *      - Condition: If the user doesn't have permission to assign all
+   *        memberships, then only remove the memberships they have permission on.
+   *
+   * @param ParDataMembershipInterface[] $memberships
+   *   A list of IDs to save.
+   * @param ?string $type
+   *   If an institution type is provided only update the memberships for that type.
+   *
+   * @return ParDataMembershipInterface[]
+   *   An array of updated institutions.
+   */
+  public function updateMemberships(array $memberships, string $type = NULL): array {
+    $current_user = \Drupal::currentUser()->isAuthenticated() ?
+      User::load(\Drupal::currentUser()->id()) : NULL;
+    // Fail silently if no user.
+    if (!$current_user) {
+      return [];
+    }
+
+    // Filter out all institutions that don't match the type, if supplied.
+    if ($type) {
+      $memberships = array_filter($memberships, fn($membership) => $type === $membership->getEntityTypeId());
+    }
+
+    // Get this person's current memberships.
+    $current_memberships = iterator_to_array($this->getInstitutions($type));
+
+    // Get the memberships to remove, the current memberships that are not being updated.
+    $remove_memberships = array_diff_uassoc($current_memberships, $memberships, fn($a, $b) => $a instanceof ParDataMembershipInterface && $b instanceof ParDataMembershipInterface &&
+    $a->uuid() === $b->uuid() ? 0 : -1);
+
+    // Users without the 'bypass par_data membership' permission can only manage their own institutions.
+    if (!$current_user->hasPermission('bypass par_data membership')) {
+      $current_user_memberships = iterator_to_array($this->getParRoleManager()->getInstitutions($current_user));
+
+      // Filter memberships.
+      $memberships = array_intersect_uassoc($current_user_memberships, $memberships, fn($a, $b) => $a instanceof ParDataMembershipInterface && $b instanceof ParDataMembershipInterface &&
+      $a->uuid() === $b->uuid() ? 0 : -1);
+
+      // Filter remove memberships.
+      $remove_memberships = array_intersect_uassoc($current_user_memberships, $remove_memberships, fn($a, $b) => $a instanceof ParDataMembershipInterface && $b instanceof ParDataMembershipInterface &&
+      $a->uuid() === $b->uuid() ? 0 : -1);
+    }
+
+    // Add.
+    $memberships = $this->addMemberships($memberships);
+
+    // Remove.
+    $remove_memberships = $this->removeMemberships($remove_memberships);
+
+    // Return all memberships that have changed, and ignore the rest.
+    return array_merge($memberships, $remove_memberships);
+  }
+
+  /**
+   * Add this person to the correct institutions.
+   *
+   * @param ParDataMembershipInterface[] $memberships
+   *   A list of IDs to save.
+   *
+   * @return ParDataMembershipInterface[]
+   *   An array of updated institutions.
+   */
+  public function addMemberships(array $memberships): array {
+    foreach ($memberships as &$membership) {
+      if (!$membership instanceof ParDataMembershipInterface) {
+        continue;
+      }
+
+      $membership->addPerson($this);
+    }
+
+    return $memberships;
+  }
+
+  /**
+   * Remove this person from the supplied institutions.
+   *
+   * @param ParDataMembershipInterface[] $memberships
+   *   A list of IDs to save.
+   *
+   * @return ParDataMembershipInterface[]
+   *   An array of updated institutions.
+   */
+  public function removeMemberships(array $memberships): array {
+    foreach ($memberships as &$membership) {
+      if (!$membership instanceof ParDataMembershipInterface) {
+        continue;
+      }
+
+      $membership->removePerson($this);
+    }
+
+    return $memberships;
   }
 
   /**
    * A helper function to save this person to the correct authorities.
    *
-   * @param $authorities
+   * @param $ids
    *   A list of authority IDs to save.
    * @param bool $save
    *
    * @return array
    *   An array of updated authorities.
    */
-  public function updateAuthorityMemberships($authorities, $save = FALSE) {
-    $authorities = NestedArray::filter((array) $authorities);
-    $unset = [];
+  public function updateAuthorityMemberships($ids, $save = FALSE) {
+    $ids = NestedArray::filter((array) $ids);
+    $par_data_authorities = [];
+    $unset_ids = [];
+
+    // Ensure $authorities is defined before using it
+    $authorities ??= []; // Initialize to an empty array if not set
 
     $user = User::load(\Drupal::currentUser()->id());
     $relationships = $this->getRelationships('par_data_authority');
@@ -261,8 +371,8 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
         $id = $relationship->getEntity()->id();
 
         // Unset any relationships that are not selected.
-        if (!array_search($id, $authorities)) {
-          $unset[] = $id;
+        if (!array_search($id, $ids)) {
+          $unset_ids[] = $id;
         }
       }
     }
@@ -277,20 +387,20 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
 
         // Any existing relationships that the current user is
         // not allowed to update should not be removed.
-        if (!isset($user_authorities_ids[$id]) && !array_search($id, $authorities)) {
-          $authorities[] = $id;
+        if (!isset($user_authorities_ids[$id]) && !array_search($id, $ids)) {
+          $par_data_authorities[] = $id;
         }
         // Any existing relationships that the current user is
         // allowed to update but that have been excluded should be removed.
-        if (isset($user_authorities_ids[$id]) && !array_search($id, $authorities)) {
-          $unset[] = $id;
+        if (isset($user_authorities_ids[$id]) && !array_search($id, $ids)) {
+          $unset_ids[] = $id;
         }
       }
     }
 
     // Add this person to any authorities.
-    $authorities = ParDataAuthority::loadMultiple(array_unique($authorities));
-    foreach ($authorities as $authority) {
+    $par_data_authorities = ParDataAuthority::loadMultiple(array_unique($ids));
+    foreach ($par_data_authorities as $authority) {
       $referenced_ids = array_column($authority->get('field_person')->getValue(), 'target_id');
       // Check that we're not adding a duplicate.
       $search = array_search($this->id(), $referenced_ids);
@@ -306,23 +416,22 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
     }
 
     // Remove this person from any authorities.
-    if ($save) {
-      $removed_authorities = isset($unset) ? ParDataAuthority::loadMultiple(array_unique($unset)) : [];
-      foreach ($removed_authorities as $authority) {
-        $referenced_ids = array_column($authority->get('field_person')->getValue(), 'target_id');
-        // For some insanely annoying reason the field re-counts the index
-        // on removing an item so performing this in reverse ensures none
-        // of the remaining keys queued for deletion will get re-counted.
-        $keys = array_reverse(array_keys($referenced_ids, $this->id()));
-        if ($keys) {
-          foreach ($keys as $key) {
-            if ($authority->get('field_person')->offsetExists($key)) {
-              $authority->get('field_person')->removeItem($key);
-            }
+    $removed_authorities = isset($unset) ? ParDataAuthority::loadMultiple(array_unique($unset)) : [];
+    foreach ($removed_authorities as $authority) {
+      $referenced_ids = array_column($authority->get('field_person')->getValue(), 'target_id');
+      // For some insanely annoying reason the field re-counts the index
+      // on removing an item so performing this in reverse ensures none
+      // of the remaining keys queued for deletion will get re-counted.
+      $keys = array_reverse(array_keys($referenced_ids, $this->id()));
+      if ($keys) {
+        foreach ($keys as $key) {
+          if ($authority->get('field_person')->offsetExists($key)) {
+            $authority->get('field_person')->removeItem($key);
           }
+        }
+        if ($save) {
           $authority->save();
         }
-
       }
     }
 
@@ -418,12 +527,10 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
   }
 
   /**
-   * Get PAR Person's full name.
-   *
-   * @return string
-   *   Their full name including title/salutation field.
+   * {@inheritDoc}
    */
-  public function getFullName() {
+  #[\Override]
+  public function getFullName(): string {
     return implode(" ", [
       $this->get('salutation')->getString(),
       $this->getFirstName(),
@@ -480,7 +587,8 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
   /**
    * {@inheritdoc}
    */
-  public function getEmail() {
+  #[\Override]
+  public function getEmail(): ?string {
     return $this->get('email')->getString();
   }
 
@@ -525,10 +633,9 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
    *   Pseudo field value.
    */
   public function getCommunicationFieldText($text, $preference_field) {
-    if ($preference_message = $this->getCommunicationPreferredText($preference_field)) {
-      return "{$text} ({$preference_message})";
+    if ($preference_message = $this->getCommunicationPreferredText($preference_field) && (!empty($text))) {
+      return "{$text} (preferred)";
     }
-
     return $text;
   }
 
@@ -545,52 +652,32 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
       $preference_message = "preferred";
     }
 
-    return isset($preference_message) ? $preference_message : null;
+    return $preference_message ?? null;
   }
 
   /**
-   * Get the notification preferences as a string/id.
-   *
-   * @return string[]
-   *   Whether or not the person has choosen to receive additional notifications.
+   * @return iterable<EntityInterface>
    */
-  public function getNotificationPreferences() {
-    if (!$this->get('field_notification_preferences')->isEmpty()) {
-      $notification_preference_templates = $this->get('field_notification_preferences')->referencedEntities();
+   #[\Override]
+   public function getInstitutions(string $type = NULL): iterable {
+    $relationships = $this->getRelationships(NULL, NULL, TRUE);
 
-      $notification_preferences = array_map(
-        function ($m) { return $m->id(); },
-        $notification_preference_templates
-      );
+    // Get all the relationships that reference this person.
+    $relationships = array_filter($relationships, fn($relationship) => ParDataRelationship::DIRECTION_REVERSE === $relationship->getRelationshipDirection() &&
+      ($relationship->getEntity() instanceof ParDataMembershipInterface));
 
-      return $notification_preferences;
+    if ($type) {
+      $relationships = array_filter($relationships, fn($relationship) => $type === $relationship->getEntity()->getEntityTypeId());
     }
 
-    return NULL;
+    foreach ($relationships as $relationship) {
+      yield $relationship->getEntity();
+    }
   }
 
-  /**
-   * Whether the user has a specific notification preference.
-   *
-   * @param string $notification_type
-   *   The \Drupal\message\Entity\MessageTemplate::id() that indicates the notification type.
-   *
-   * @return bool
-   *   Whether or not the person has chosen to receive additional notifications.
-   */
-  public function hasNotificationPreference($notification_type) {
-    $notification_preferences = $this->getNotificationPreferences();
-
-    if ($notification_preferences) {
-      $notification_preferences = array_filter($notification_preferences, function ($preference) use ($notification_type) {
-        return ($notification_type === $preference);
-      });
-    }
-    else {
-      $notification_preferences = NULL;
-    }
-
-    return (!empty($notification_preferences));
+  public function hasInstitutions(string $type = NULL) {
+    $institutions = $this->getInstitutions($type);
+    return (bool) $institutions->current();
   }
 
   public function getReferencedLocations() {
@@ -598,9 +685,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
     $relationships = $this->getRelationships(NULL, NULL, TRUE);
 
     // Get all the relationships that reference this person.
-    $relationships = array_filter($relationships, function ($relationship) {
-      return (ParDataRelationship::DIRECTION_REVERSE === $relationship->getRelationshipDirection());
-    });
+    $relationships = array_filter($relationships, fn($relationship) => ParDataRelationship::DIRECTION_REVERSE === $relationship->getRelationshipDirection());
 
     foreach ($relationships as $relationship) {
       $label = '';
@@ -656,6 +741,7 @@ class ParDataPerson extends ParDataEntity implements ParDataPersonInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 

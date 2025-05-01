@@ -24,7 +24,7 @@ use Drupal\par_data\ParDataException;
  *     singular = "@count coordinated business",
  *     plural = "@count coordinated businesses"
  *   ),
- *   bundle_label = @Translation("PAR Coordinated Business type"),
+ *   bundle_label = @Translation("PAR Coordinated Business Type"),
  *   handlers = {
  *     "storage" = "Drupal\par_data\ParDataStorage",
  *     "storage_schema" = "Drupal\trance\TranceStorageSchema",
@@ -78,6 +78,7 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function filterRelationshipsByAction($relationship, $action) {
     switch ($action) {
       case 'manage':
@@ -150,16 +151,17 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
-  public function destroy() {
+  #[\Override]
+  public function destroy($reason = '') {
     // Freeze memberships that have active enforcement notices.
     $enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
     foreach ($enforcement_notices as $uuid => $relationship) {
-      if ($relationship->getEntity()->isLiving()) {
-        return;
+      if ($relationship->getEntity()->isActive()) {
+        return Null;
       }
     }
 
-    return parent::destroy();
+    return parent::destroy($reason);
   }
 
   /**
@@ -252,6 +254,7 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 

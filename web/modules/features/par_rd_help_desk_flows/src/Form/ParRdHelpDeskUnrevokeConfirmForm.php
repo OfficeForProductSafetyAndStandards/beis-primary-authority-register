@@ -22,6 +22,7 @@ class ParRdHelpDeskUnrevokeConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     return 'Confirmation | Restore a partnership';
   }
@@ -29,16 +30,17 @@ class ParRdHelpDeskUnrevokeConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL) {
+  #[\Override]
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL): AccessResult {
     try {
-      // Get a new flow negotiator that points the the route being checked for access.
+      // Get a new flow negotiator that points the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException $e) {
+    } catch (ParFlowException) {
 
     }
 
-    // If partnership has been revoked, we should not be able to re-revoke it.
-    if (!$par_data_partnership->isRevoked()) {
+    // If partnership can not be restored.
+    if (!$par_data_partnership->isRestorable()) {
       $this->accessResult = AccessResult::forbidden('The partnership needs to be revoked to be restorable.');
     }
 
@@ -48,18 +50,22 @@ class ParRdHelpDeskUnrevokeConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $form['partnership_info'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Restore the partnership'),
-      '#attributes' => ['class' => 'form-group'],
-    ];
-
-    $form['partnership_info']['partnership_text'] = [
-      '#type' => 'markup',
-      '#markup' => $par_data_partnership->label(),
-      '#prefix' => '<p>',
-      '#suffix' => '</p>',
+      '#type' => 'container',
+      '#attributes' => ['class' => 'govuk-form-group'],
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => $this->t('Restore the partnership'),
+      ],
+      'text' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $par_data_partnership->label(),
+      ],
     ];
 
     return parent::buildForm($form, $form_state);
@@ -68,21 +74,31 @@ class ParRdHelpDeskUnrevokeConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
+
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+
+    if (!$par_data_partnership->isRestorable()) {
+      $id = $this->getElementId('partnership_info', $form);
+      $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('This partnership cannot be restored.', $id));
+    }
+
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     // We only want to update the status of active partnerships.
-    if ($par_data_partnership->isRevoked()) {
+    if ($par_data_partnership->isRestorable()) {
       $restored = $par_data_partnership->unrevoke();
 
       if ($restored) {

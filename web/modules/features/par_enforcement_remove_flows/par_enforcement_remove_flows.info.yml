@@ -1,0 +1,9 @@
+name: PAR Enforcement Notice Removal Flows
+type: module
+description: Creates the flows required to removes an enforcement notice.
+core_version_requirement: ^9 || ^10 || ^11
+package: PAR
+dependencies:
+  - par_data
+  - par_flows
+  - par_forms

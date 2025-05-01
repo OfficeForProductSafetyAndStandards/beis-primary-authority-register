@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -39,113 +40,110 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
    *
    * @see \Drupal\Core\Security\DoTrustedCallbackTrait::doTrustedCallback()
    */
+  #[\Override]
   public static function trustedCallbacks() {
     return [
       'getContactLocations',
     ];
   }
 
-  /**
-   * @return DateFormatterInterface
-   */
-  protected function getDateFormatter() {
-    return \Drupal::service('date.formatter');
-  }
-
-  public function getPerson($cardinality = 1) {
+  public function getPerson($index = 1) {
     $contacts = $this->getFlowDataHandler()->getParameter('contacts');
     $contacts = !empty($contacts) ? array_values($contacts) : [];
 
     // Cardinality is not a zero-based index like the stored fields deltas.
-    return isset($contacts[$cardinality-1]) ? $contacts[$cardinality-1] : NULL;
+    return $contacts[$index-1] ?? NULL;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
-    $contact = $this->getPerson($cardinality);
+  #[\Override]
+  public function loadData(int $index = 1): void {
+    /** @var ParDataPersonInterface $contact */
+    $contact = $this->getPerson($index);
     if ($contact instanceof ParDataEntityInterface) {
-      $this->setDefaultValuesByKey("name", $cardinality, $contact->getFullName());
-      $this->setDefaultValuesByKey("email", $cardinality, $contact->getEmail());
-      $this->setDefaultValuesByKey("email_preferences", $cardinality, $contact->getEmailWithPreferences());
-      $this->setDefaultValuesByKey("work_phone", $cardinality, $contact->getWorkPhone());
-      $this->setDefaultValuesByKey("mobile_phone", $cardinality, $contact->getMobilePhone());
+      $this->setDefaultValuesByKey("name", $index, $contact->getFullName());
+      $this->setDefaultValuesByKey("email", $index, $contact->getEmail());
+      $this->setDefaultValuesByKey("email_preferences", $index, $contact->getEmailWithPreferences());
+      $this->setDefaultValuesByKey("work_phone", $index, $contact->getWorkPhone());
+      $this->setDefaultValuesByKey("mobile_phone", $index, $contact->getMobilePhone());
 
-      $this->setDefaultValuesByKey("person_id", $cardinality, $contact->id());
+      $this->setDefaultValuesByKey("person_id", $index, $contact->id());
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
-    if ($cardinality === 1) {
+  #[\Override]
+  public function getElements(array $form = [], int $index = 1) {
+    if ($index === 1) {
       $form['message_intro'] = [
-        '#type' => 'fieldset',
-        'title' => [
+        '#type' => 'container',
+        'heading' => [
           '#type' => 'html_tag',
           '#tag' => 'h2',
           '#value' => $this->t('Contacts'),
-          '#attributes' => ['class' => ['heading-large']],
+          '#attributes' => ['class' => ['govuk-heading-l']],
         ],
         'info' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#value' => 'It is possible for a person to have different contact details depending on the position they hold within an authority or organisation.',
         ],
-        '#attributes' => ['class' => ['form-group']],
+        '#attributes' => ['class' => ['govuk-form-group']],
       ];
     }
 
-    if ($this->getDefaultValuesByKey('email', $cardinality, NULL)) {
+    if ($this->getDefaultValuesByKey('email', $index, NULL)) {
       try {
-        $params = ['par_data_person' => $this->getDefaultValuesByKey('person_id', $cardinality, NULL)];
-        $title = 'Update ' . $this->getDefaultValuesByKey('name', $cardinality, 'person');
+        $params = ['par_data_person' => $this->getDefaultValuesByKey('person_id', $index, NULL)];
+        $title = 'Update ' . $this->getDefaultValuesByKey('name', $index, 'person');
         $update_flow = ParFlow::load('person_update');
         $link = $update_flow ?
           $update_flow->getStartLink(1, $title, $params) : NULL;
         $actions = t('@link', [
           '@link' => $link ? $link->toString() : '',
         ]);
-      } catch (ParFlowException $e) {
+      } catch (ParFlowException) {
 
       }
 
       $form['contact'] = [
-        '#type' => 'fieldset',
+        '#type' => 'container',
         '#weight' => 1,
-        '#attributes' => ['class' => ['grid-row', 'form-group', 'contact-details']],
+        '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group', 'contact-details']],
         'name' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => $this->getDefaultValuesByKey('name', $cardinality, NULL),
-          '#attributes' => ['class' => ['column-two-thirds']],
+          '#value' => $this->getDefaultValuesByKey('name', $index, NULL),
+          '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
         ],
         'actions' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => isset($actions) ? $actions : 'Update contact details',
-          '#attributes' => ['class' => ['column-one-third']],
+          '#value' => $actions ?? 'Update contact details',
+          '#attributes' => ['class' => ['govuk-grid-column-one-third']],
         ],
         'email' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#value' => $this->getDefaultValuesByKey('email_preferences', $cardinality, NULL),
-          '#attributes' => ['class' => ['column-two-thirds']],
+          '#value' => $this->getDefaultValuesByKey('email_preferences', $index, NULL),
+          '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
         ],
         'phone' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#attributes' => ['class' => ['column-one-third']],
-          '#value' => $this->getDefaultValuesByKey('work_phone', $cardinality, NULL) . '<br>' . $this->getDefaultValuesByKey('mobile_phone', $cardinality, NULL),
+          '#attributes' => ['class' => ['govuk-grid-column-one-third']],
+          '#value' => $this->getDefaultValuesByKey('work_phone', $index, NULL) . '<br>' . $this->getDefaultValuesByKey('mobile_phone', $index, NULL),
         ],
         'locations' => [
           '#lazy_builder' => [
             static::class . '::getContactLocations',
-            [$this->getDefaultValuesByKey('person_id', $cardinality, NULL), $cardinality]
+            [$this->getDefaultValuesByKey('person_id', $index, NULL), $index]
           ],
           '#create_placeholder' => TRUE
         ],
@@ -153,8 +151,8 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
     }
     else {
       $form['contact'] = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => ['form-group']],
+        '#type' => 'container',
+        '#attributes' => ['class' => ['govuk-form-group']],
         'title' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
@@ -171,47 +169,49 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
    *
    * This lookup can take too long to process for users with multiple contacts.
    */
-  public static function getContactLocations($id, $cardinality) {
+  public static function getContactLocations($id, $index) {
     $contact = $id ? ParDataPerson::load($id) : NULL;
     $locations = $contact instanceof ParDataEntityInterface ?
       $contact->getReferencedLocations() : NULL;
 
-    $details = [
-      '#type' => 'html_tag',
-      '#tag' => 'details',
-      '#attributes' => ['class' => ['column-full', 'contact-locations'], 'role' => 'group'],
-      'summary' => [
-        '#type' => 'html_tag',
-        '#tag' => 'summary',
-        '#attributes' => ['class' => ['form-group'], 'role' => 'button', 'aria-controls' => "contact-detail-locations-$cardinality"],
-        '#value' => '<span class="summary">More information on where this contact is used</span>',
-      ],
+    return [
       'details' => [
         '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#attributes' => ['class' => ['form-group'], 'id' => "contact-detail-locations-$cardinality"],
-        '#value' => !empty($locations) ? implode('<br>', $locations) : '',
+        '#tag' => 'details',
+        '#attributes' => ['class' => ['govuk-grid-column-full', 'govuk-details', 'contact-locations'], 'role' => 'group'],
+        'summary' => [
+          '#type' => 'html_tag',
+          '#tag' => 'summary',
+          '#attributes' => ['class' => ['govuk-details__summary'], 'role' => 'button', 'aria-controls' => "contact-detail-locations-$index"],
+          '#value' => '<span class="govuk-details__summary-text">More information on where this contact is used</span>',
+        ],
+        'details' => [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#attributes' => ['class' => ['govuk-details__text'], 'id' => "contact-detail-locations-$index"],
+          'list' => [
+            '#theme' => 'item_list',
+            '#items' => $locations,
+            '#attributes' => ['class' => ['govuk-list', 'govuk-list--bullet']],
+          ],
+        ],
       ],
-    ];
-
-
-    return $build = [
-      '#type' => 'markup',
-      '#markup' => \Drupal::service('renderer')->render($details),
     ];
   }
 
   /**
    * Return no actions for this plugin.
    */
-  public function getElementActions($cardinality = 1, $actions = []) {
+  #[\Override]
+  public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
 
   /**
    * Return no actions for this plugin.
    */
-  public function getComponentActions($actions = [], $count = NULL) {
+  #[\Override]
+  public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     $contacts = $this->getFlowDataHandler()->getParameter('contacts');
 
     try {

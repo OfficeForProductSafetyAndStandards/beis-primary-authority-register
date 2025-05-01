@@ -4,6 +4,7 @@ namespace Drupal\par_data\Entity;
 
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\user\UserInterface;
 
 /**
  * Defines the par_data_authority entity.
@@ -67,16 +68,69 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   field_ui_base_route = "entity.par_data_authority_type.edit_form"
  * )
  */
-class ParDataAuthority extends ParDataEntity {
+class ParDataAuthority extends ParDataEntity implements ParDataMembershipInterface {
 
   /**
-   * Get the contacts for this Authority.
+   * {@inheritdoc}
    */
-  public function getPerson($primary = FALSE) {
+  #[\Override]
+  public function getMembers(): array {
+    /** @var ParDataPersonInterface[] $people */
+    $people = $this->getPerson();
+    $users = [];
+
+    foreach ($people as $person) {
+      $user = $person->getUserAccount();
+      if ($user instanceof UserInterface) {
+        $users[$user->getEmail()] = $user;
+      }
+    }
+
+    return $users;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  #[\Override]
+  public function getPerson(bool $primary = FALSE): mixed {
     $people = $this->get('field_person')->referencedEntities();
     $person = !empty($people) ? current($people) : NULL;
 
     return $primary ? $person : $people;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  #[\Override]
+  public function addPerson(ParDataPersonInterface $person): void {
+    if (!$this->hasPerson($person)) {
+      $this->get('field_person')->appendItem($person->id());
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  #[\Override]
+  public function removePerson(ParDataPersonInterface $person): void {
+    foreach ($this->getPerson() as $index => $existing_person) {
+      if ($existing_person->id() === $person->id()) {
+        $this->get('field_person')->removeItem($index);
+      }
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  #[\Override]
+  public function hasPerson(ParDataPersonInterface $person): bool {
+    $existing_people = $this->getPerson();
+    $exists = array_filter($existing_people, fn($existing_person) => $existing_person->id() === $person->id());
+
+    return !empty($exists);
   }
 
   /**
@@ -122,6 +176,7 @@ class ParDataAuthority extends ParDataEntity {
     return $authority_bundle->getAllowedFieldlabel('authority_type', $this->get('authority_type')->getString());
   }
 
+  #[\Override]
   public function getName() {
     return $this->get('authority_name')->getString();
   }
@@ -129,6 +184,7 @@ class ParDataAuthority extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
@@ -158,6 +214,7 @@ class ParDataAuthority extends ParDataEntity {
     $fields['authority_type'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Authority Type'))
       ->setDescription(t('The type of authority.'))
+      ->setRequired(TRUE)
       ->addConstraint('par_required')
       ->setRevisionable(TRUE)
       ->setSettings([

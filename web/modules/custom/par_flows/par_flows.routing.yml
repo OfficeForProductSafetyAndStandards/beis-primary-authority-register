@@ -1,6 +1,14 @@
+par_flows.par_index:
+  path: '/admin/config/flows'
+  defaults:
+    _controller: '\Drupal\par_flows\Controller\ParFlowConfigPage::build'
+    _title: 'PAR User Journeys'
+  requirements:
+    _permission: 'administer par flows'
+
 # PAR Flow entity routes
 entity.par_flow.collection:
-  path: '/admin/config/flows'
+  path: '/admin/config/flows/list'
   defaults:
     _entity_list: 'par_flow'
     _title: 'PAR flows'

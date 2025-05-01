@@ -27,13 +27,13 @@ class NewEnforcementSubscriberTest extends ParNotificationTestBase {
   public function testNewEnforcementSubscribers() {
     // Set up the entity events.
     $this->entityEvent = $this->getMockBuilder('Drupal\Core\Entity\EntityEvent')
-      ->setMethods(['getEntity'])
+      ->onlyMethods(['getEntity'])
       ->disableOriginalConstructor()
       ->getMock();
     $this->entityEvent
       ->expects($this->any())
       ->method('getEntity')
-      ->will($this->returnCallback([$this, 'getEntity']));
+      ->will($this->returnCallback($this->getEntity(...)));
     $recipients = $this->new_enforcement_subscriber->getRecipients($this->entityEvent);
 
     // There should be three primary contacts and 1 contact who has opted in to receive all notifications.
@@ -52,14 +52,14 @@ class NewEnforcementSubscriberTest extends ParNotificationTestBase {
    */
   public function testReviewedEnforcementSubscribers() {
     // Set up the entity events.
-    $this->parDataEvent = $this->getMockBuilder('Drupal\par_data\Event\ParDataEventInterface')
-      ->setMethods(['getEntity'])
+    $this->parDataEvent = $this->getMockBuilder('Drupal\par_data\Event\ParNotificationEventInterface')
+      ->onlyMethods(['getEntity'])
       ->disableOriginalConstructor()
       ->getMock();
     $this->parDataEvent
       ->expects($this->any())
       ->method('getEntity')
-      ->will($this->returnCallback([$this, 'getEntity']));
+      ->will($this->returnCallback($this->getEntity(...)));
     $recipients = $this->enforcement_reviewed_subscriber->getRecipients($this->parDataEvent);
 
     // There should be one primary contact (the enforcement officer) and 2 contacts who have opted in to receive all notifications.

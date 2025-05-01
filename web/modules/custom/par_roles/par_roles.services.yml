@@ -1,0 +1,4 @@
+services:
+  par_roles.role_manager:
+    class: Drupal\par_roles\ParRoleManager
+    arguments: ['@entity_type.manager', '@current_user']

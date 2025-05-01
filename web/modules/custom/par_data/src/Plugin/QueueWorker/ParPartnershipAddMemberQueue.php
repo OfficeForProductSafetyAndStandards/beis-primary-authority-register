@@ -29,6 +29,7 @@ class ParPartnershipAddMemberQueue extends QueueWorkerBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function processItem($data) {
     $par_data_partnership = ParDataPartnership::load($data['partnership']);
     $member = $data['row'];
@@ -102,7 +103,7 @@ class ParPartnershipAddMemberQueue extends QueueWorkerBase {
   public function createMemberEntities($member) {
     $entities = [];
     foreach ($member as $type => $fields) {
-      list($entity_type_name, $entity_bundle_name) = explode(':', $type . ':');
+      [$entity_type_name, $entity_bundle_name] = explode(':', $type . ':');
       $entity_type = $this->getParDataManager()->getParEntityType($entity_type_name);
       $entity_storage = $this->getParDataManager()->getEntityTypeStorage($entity_type->id());
       $entity_bundle = $this->getParDataManager()->getParBundleEntity($entity_type->id(), $entity_bundle_name);
@@ -114,7 +115,7 @@ class ParPartnershipAddMemberQueue extends QueueWorkerBase {
 
       $entity_values = [];
       foreach ($fields as $field => $properties) {
-        $field_definition = $this->getParDataManager()->getFieldDefinition($entity_type->id(), $entity_bundle->id(), $field);
+        $field_definition = $this->getParDataManager()->getFieldDefinition($entity_type->id(), $field, $entity_bundle->id());
 
         if (is_array($properties)) {
           $entity_values[$field] = [];

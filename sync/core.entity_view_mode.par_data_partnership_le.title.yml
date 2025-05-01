@@ -1,0 +1,11 @@
+uuid: 4c939866-1a91-4e1e-ae11-6763c91cadba
+langcode: en
+status: true
+dependencies:
+  module:
+    - par_data
+id: par_data_partnership_le.title
+label: Title
+description: ''
+targetEntityType: par_data_partnership_le
+cache: true

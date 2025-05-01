@@ -19,6 +19,7 @@ class ParRdHelpDeskRevokeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     return "Help Desk | Partnership revoked";
   }
@@ -34,15 +35,19 @@ class ParRdHelpDeskRevokeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
     $form['partnership_info'] =[
-      '#type' => 'fieldset',
-      '#title' => $this->t('The following partnership has been revoked'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => $this->t('The following partnership has been revoked'),
+      ],
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
 
     $form['partnership_info']['partnership_between'] = [
@@ -61,6 +66,7 @@ class ParRdHelpDeskRevokeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
   }

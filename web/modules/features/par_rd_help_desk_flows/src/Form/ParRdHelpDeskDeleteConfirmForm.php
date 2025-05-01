@@ -27,6 +27,7 @@ class ParRdHelpDeskDeleteConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     return 'Help Desk | Delete a partnership';
   }
@@ -34,27 +35,13 @@ class ParRdHelpDeskDeleteConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL) {
+  #[\Override]
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL): AccessResult {
     try {
-      // Get a new flow negotiator that points the the route being checked for access.
+      // Get a new flow negotiator that points the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException $e) {
+    } catch (ParFlowException) {
 
-    }
-
-    // If partnership has been deleted, we should not be able to re-delete it.
-    if ($par_data_partnership->isDeleted()) {
-     $this->accessResult = AccessResult::forbidden('The partnership is deleted.');
-    }
-
-    // If partnership has been revoked, we should not be able to delete it.
-    if ($par_data_partnership->isRevoked()) {
-      $this->accessResult = AccessResult::forbidden('The partnership is revoked.');
-    }
-
-    // If the partnership is in active it can't be deleted.
-    if ($par_data_partnership->isActive()) {
-      $this->accessResult = AccessResult::forbidden('The partnership is active.');
     }
 
     // If the partnership is not deletable.
@@ -76,36 +63,31 @@ class ParRdHelpDeskDeleteConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
-    if ($par_data_partnership && $par_data_partnership->isActive()) {
-      $form['partnership_info'] = [
-        '#type' => 'markup',
-        '#title' => $this->t('Deletion denied'),
-        '#markup' => $this->t('This partnership cannot be deleted because it is active. Please use the revoke process instead.'),
-      ];
-
-      return parent::buildForm($form, $form_state);
-    }
-
     $form['partnership_info'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Delete the partnership'),
-      '#attributes' => ['class' => 'form-group'],
-    ];
-
-    $form['partnership_info']['partnership_text'] = [
-      '#type' => 'markup',
-      '#markup' => $par_data_partnership->label(),
-      '#prefix' => '<p>',
-      '#suffix' => '</p>',
+      '#type' => 'container',
+      '#attributes' => ['class' => 'govuk-form-group'],
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => $this->t('Delete the partnership'),
+        '#attributes' => ['class' => ['govuk-heading-m']],
+      ],
+      'text' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $par_data_partnership->label(),
+      ],
     ];
 
     // Enter the deletion reason.
     $form['deletion_reason'] = [
-      '#title' => $this->t('Enter the reason you are deleting this partnership application'),
       '#type' => 'textarea',
+      '#title' => $this->t('Enter the reason you are deleting this partnership application'),
+      '#title_tag' => 'h2',
       '#rows' => 5,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('revocation_reason', FALSE),
     ];
@@ -119,26 +101,34 @@ class ParRdHelpDeskDeleteConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
-    // No validation yet.
     parent::validateForm($form, $form_state);
+
+    $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
+
+    if (!$par_data_partnership->isDeletable()) {
+      $id = $this->getElementId('deletion_reason', $form);
+      $form_state->setErrorByName($this->getElementName(['deletion_reason']), $this->wrapErrorMessage('This partnership cannot be deleted.', $id));
+    }
 
     if (!$form_state->getValue('deletion_reason')) {
       $id = $this->getElementId('deletion_reason', $form);
-      $form_state->setErrorByName($this->getElementName(['confirm']), $this->wrapErrorMessage('Please supply the reason for cancelling this partnership.', $id));
+      $form_state->setErrorByName($this->getElementName(['deletion_reason']), $this->wrapErrorMessage('Please supply the reason for cancelling this partnership.', $id));
     }
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
-    // We only want to update the status of none active partnerships.
-    if ($par_data_partnership->inProgress()) {
+    // Check the partnership can be deleted before progressing.
+    if ($par_data_partnership->isDeletable()) {
       $deleted = $par_data_partnership->delete($this->getFlowDataHandler()->getTempDataValue('deletion_reason'));
 
       if ($deleted) {

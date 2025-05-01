@@ -19,6 +19,7 @@ class ParSubscriptionReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     return 'Help Desk | Review changes';
   }
@@ -30,6 +31,7 @@ class ParSubscriptionReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Determine which subscriptions need to be subscribed or unsubscribed.
     $cid = $this->getFlowNegotiator()->getFormKey('manage_subscriptions');
@@ -41,13 +43,14 @@ class ParSubscriptionReviewForm extends ParBaseForm {
       $form['subscribe'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Subscriptions to be added (@count)', ['@count' => count($subscribe)]),
-        '#attributes' => ['class' => 'form-group'],
+        '#title_tag' => 'h2',
+        '#attributes' => ['class' => 'govuk-form-group'],
         'new' => [
           '#type' => 'markup',
           '#markup' => "$subscribe_list",
           '#prefix' => '<p>',
           '#suffix' => '</p>',
-        ]
+        ],
       ];
     }
     if (!empty($unsubscribe)) {
@@ -55,13 +58,13 @@ class ParSubscriptionReviewForm extends ParBaseForm {
       $form['unsubscribe'] = [
         '#type' => 'fieldset',
         '#title' => $this->t('Subscriptions to be removed (@count)', ['@count' => count($unsubscribe)]),
-        '#attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => 'govuk-form-group'],
         'new' => [
           '#type' => 'markup',
           '#markup' => "$unsubscribe_list",
           '#prefix' => '<p>',
           '#suffix' => '</p>',
-        ]
+        ],
       ];
     }
 
@@ -75,6 +78,7 @@ class ParSubscriptionReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
   }
@@ -82,13 +86,14 @@ class ParSubscriptionReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
     // Determine which subscriptions need to be subscribed or unsubscribed.
     $cid = $this->getFlowNegotiator()->getFormKey('manage_subscriptions');
-    $subscribe = $this->getFlowDataHandler()->getTempDataValue('subscribe', $cid);
-    $unsubscribe = $this->getFlowDataHandler()->getTempDataValue('unsubscribe', $cid);
+    $subscribe = $this->getFlowDataHandler()->getTempDataValue('subscribe', $cid) ?? [];
+    $unsubscribe = $this->getFlowDataHandler()->getTempDataValue('unsubscribe', $cid) ?? [];
 
     $list = $this->getFlowDataHandler()->getTempDataValue('list', $cid);
 

@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -25,7 +26,8 @@ class ParTradingNameDisplay extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  #[\Override]
+  public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
     if (!$par_data_organisation && $par_data_partnership instanceof ParDataEntityInterface) {
@@ -34,17 +36,18 @@ class ParTradingNameDisplay extends ParFormPluginBase {
     if ($par_data_organisation) {
       // Get the trading names.
       $trading_names = $par_data_organisation->extractValues('trading_name');
-      $this->setDefaultValuesByKey("trading_names", $cardinality, $trading_names);
+      $this->setDefaultValuesByKey("trading_names", $index, $trading_names);
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
-    $trading_names = $this->getDefaultValuesByKey('trading_names', $cardinality, []);
+  #[\Override]
+  public function getElements(array $form = [], int $index = 1) {
+    $trading_names = $this->getDefaultValuesByKey('trading_names', $index, []);
 
     // Generate the add a trading name link.
     try {
@@ -63,22 +66,27 @@ class ParTradingNameDisplay extends ParFormPluginBase {
 
     // Display the trading_names.
     $form['trading_names'] = [
-      '#type' => 'fieldset',
-      '#title' => 'Trading names',
-      '#attributes' => ['class' => ['form-group']],
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => $this->t('Trading names'),
+      ],
+      '#attributes' => ['class' => ['govuk-form-group']],
       'trading_name' => [
         '#type' => 'container',
-        '#attributes' => ['class' => ['grid-row']],
+        '#attributes' => ['class' => ['govuk-grid-row']],
       ],
     ];
 
     foreach ($trading_names as $delta => $trading_name) {
       $form['trading_names']['trading_name'][$delta] = [
         '#type' => 'container',
-        '#attributes' => ['class' => 'column-full'],
+        '#attributes' => ['class' => 'govuk-grid-column-full'],
         'name' => [
           '#type' => 'html_tag',
-          '#tag' => 'div',
+          '#tag' => 'p',
           '#value' => $trading_name,
           '#attributes' => ['class' => 'trading-name'],
         ],
@@ -89,20 +97,9 @@ class ParTradingNameDisplay extends ParFormPluginBase {
       try {
         // Edit the trading name.
         $params['trading_name_delta'] = $delta;
-        $options = ['attributes' => ['aria-label' => $this->t("Edit the trading name @label", ['@label' => strtolower($trading_name)])]];
+        $options = ['attributes' => ['aria-label' => $this->t("Edit the trading name @label", ['@label' => strtolower((string) $trading_name)])]];
         $operations['edit'] = $this->getFlowNegotiator()->getFlow()
           ->getOperationLink('edit_trading_name', 'edit trading name', $params, $options);
-      }
-      catch (ParFlowException $e) {
-        $this->getLogger($this->getLoggerChannel())->notice($e);
-      }
-      try {
-        // Remove the trading name.
-        $params['trading_name_delta'] = $delta;
-        $options = ['attributes' => ['aria-label' => $this->t("Remove the trading name @label", ['@label' => strtolower($trading_name)])]];
-        $operations['remove'] = $this->getFlowNegotiator()->getFlow()
-          ->getOperationLink('remove_trading_name', 'remove trading name', $params, $options);
-
       }
       catch (ParFlowException $e) {
         $this->getLogger($this->getLoggerChannel())->notice($e);
@@ -112,14 +109,14 @@ class ParTradingNameDisplay extends ParFormPluginBase {
       if (!empty(array_filter($operations))) {
         $form['trading_names']['trading_name'][$delta]['operations'] = [
           '#type' => 'container',
-          '#attributes' => ['class' => ['grid-row']],
+          '#attributes' => ['class' => ['govuk-grid-row']],
         ];
         if (isset($operations['edit']) && $operations['edit'] instanceof Link) {
           $form['trading_names']['trading_name'][$delta]['operations']['edit'] = [
             '#type' => 'html_tag',
             '#tag' => 'p',
             '#value' => $operations['edit']->toString(),
-            '#attributes' => ['class' => ['edit-trading-name', 'column-one-third']],
+            '#attributes' => ['class' => ['edit-trading-name', 'govuk-grid-column-one-third']],
           ];
         }
         if (isset($operations['remove']) && $operations['remove'] instanceof Link) {
@@ -127,7 +124,7 @@ class ParTradingNameDisplay extends ParFormPluginBase {
             '#type' => 'html_tag',
             '#tag' => 'p',
             '#value' => $operations['remove']->toString(),
-            '#attributes' => ['class' => ['remove-trading-name', 'column-one-third']],
+            '#attributes' => ['class' => ['remove-trading-name', 'govuk-grid-column-one-third']],
           ];
         }
       }
@@ -151,14 +148,16 @@ class ParTradingNameDisplay extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
-  public function getElementActions($cardinality = 1, $actions = []) {
+  #[\Override]
+  public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
 
   /**
    * Return no actions for this plugin.
    */
-  public function getComponentActions($actions = [], $count = NULL) {
+  #[\Override]
+  public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }
 }

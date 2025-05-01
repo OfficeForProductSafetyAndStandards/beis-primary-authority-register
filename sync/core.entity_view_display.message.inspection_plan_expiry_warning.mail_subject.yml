@@ -6,6 +6,7 @@ dependencies:
     - core.entity_view_mode.message.mail_subject
     - field.field.message.inspection_plan_expiry_warning.field_inspection_plan
     - field.field.message.inspection_plan_expiry_warning.field_message_subject
+    - field.field.message.inspection_plan_expiry_warning.field_to
     - message.template.inspection_plan_expiry_warning
 id: message.inspection_plan_expiry_warning.mail_subject
 targetEntityType: message
@@ -14,13 +15,17 @@ mode: mail_subject
 content:
   field_message_subject:
     type: string
-    weight: 0
-    region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   field_inspection_plan: true
+  field_to: true
   partial_0: true
   partial_1: true
+  partial_2: true
+  partial_3: true
+  search_api_excerpt: true

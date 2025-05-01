@@ -2,42 +2,38 @@
 
 namespace Drupal\par_data\Entity;
 
-use Drupal\Component\Utility\Random;
 use Drupal\Core\Cache\Cache;
-use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Entity\EntityEvent;
-use Drupal\Core\Entity\EntityEvents;
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityPublishedTrait;
-use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\RevisionLogEntityTrait;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
-use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Mail\MailFormatHelper;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\par_data\Event\ParDataEvent;
+use Drupal\datetime\Plugin\Field\FieldType\DateTimeItem;
 use Drupal\par_data\ParDataException;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_data\ParDataRelationship;
+use Drupal\par_data\Plugin\Field\FieldType\ParStatusChangedField;
+use Drupal\par_data\Plugin\Field\FieldType\ParStatusField;
+use Drupal\par_roles\ParRoleManagerInterface;
 use Drupal\trance\Trance;
-use Drupal\Component\Datetime\TimeInterface;
+use Drupal\par_data\Plugin\Field\FieldType\ParLabelField;
 
 /**
  * Defines the PAR entities.
  *
  * @ingroup par_data
  */
-class ParDataEntity extends Trance implements ParDataEntityInterface {
+class ParDataEntity extends Trance implements ParDataEntityInterface, \Stringable {
 
   use LoggerChannelTrait;
   use StringTranslationTrait;
   use RevisionLogEntityTrait;
 
   const PAR_LOGGER_CHANNEL = 'par';
-  const DELETE_FIELD = 'deleted';
+  const STATUS_FIELD = 'par_status';
+  const STATUS_DEFAULT = 'active';
   const REVOKE_FIELD = 'revoked';
   const ARCHIVE_FIELD = 'archived';
   const DELETE_REASON_FIELD = 'deleted_reason';
@@ -45,6 +41,18 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   const ARCHIVE_REASON_FIELD = 'archive_reason';
 
   const DEFAULT_RELATIONSHIP = 'default';
+
+  /**
+   * Render the string version of this entity.
+   */
+  #[\Override]
+  public function __toString(): string{
+    return $this->t("@type: @label (@id)", [
+      '@type' => mb_strtoupper((string) $this->getTypeEntity()->label()),
+      '@label' => $this->label(),
+      '@id' => $this->id(),
+    ])->render();
+  }
 
   /**
    * Returns the logger channel specific to errors logged by PAR Forms.
@@ -66,12 +74,30 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
+   * Simple getter to inject the PAR Role Manager service.
+   *
+   * @return ParRoleManagerInterface
+   */
+  public function getParRoleManager(): ParRoleManagerInterface {
+    return \Drupal::service('par_roles.role_manager');
+  }
+
+  /**
    * Simple getter to inject the date formatter service.
    *
-   * @return DateFormatterInterface
+   * @return \Drupal\Core\Datetime\DateFormatterInterface
    */
   public function getDateFormatter() {
     return \Drupal::service('date.formatter');
+  }
+
+  /**
+   * Simple getter to inject the messenger service.
+   *
+   * @return \Drupal\Core\Messenger\MessengerInterface
+   */
+  public function getMessenger() {
+    return \Drupal::service('messenger');
   }
 
   /**
@@ -86,6 +112,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * Get the type entity.
    */
+  #[\Override]
   public function getTypeEntity() {
     return $this->type->entity;
   }
@@ -93,6 +120,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getViewBuilder() {
     return \Drupal::entityTypeManager()->getViewBuilder($this->getEntityTypeId());
   }
@@ -100,8 +128,8 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function label() {
-
     //PAR-988 prevent the page crashing when NULL is returned by getTypeEntity() on the current entity.
     if (is_object($this->getTypeEntity())) {
       $label_fields = $this->getTypeEntity()->getConfigurationElementByType('entity', 'label_fields');
@@ -123,7 +151,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   protected function getLabelValue($value) {
-    list($field_name, $property_name) = explode(':', $value . ':');
+    [$field_name, $property_name] = explode(':', $value . ':');
 
     if ($this->hasField($field_name)) {
       if ($this->get($field_name)->isEmpty()) {
@@ -156,147 +184,172 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   }
 
   /**
-   * Will return true if the entity is allowed to exist within the system.
-   * Or false if it has been soft-removed.
-   *
-   * @return bool
-   */
-  public function isLiving() {
-    return !$this->isDeleted() && $this->isTransitioned() && $this->getBoolean('status');
-  }
-
-  /**
    * Whether this entity is deleted.
    *
    * @return bool
    */
   public function isDeleted() {
-    if ($this->getTypeEntity()->isDeletable() && $this->getBoolean(self::DELETE_FIELD)) {
-      return TRUE;
-    }
-
+    // @DEPRECATED This function will be removed in a future release.
     return FALSE;
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function isRevoked() {
-    if ($this->getTypeEntity()->isRevokable() && $this->getBoolean(self::REVOKE_FIELD)) {
-      return TRUE;
-    }
-
-    return FALSE;
+    return $this->getTypeEntity()->isRevokable() && $this->getBoolean(self::REVOKE_FIELD);
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function isArchived() {
-    if ($this->getTypeEntity()->isArchivable() && $this->getBoolean(self::ARCHIVE_FIELD)) {
-      return TRUE;
-    }
-
-    return FALSE;
-  }
-
-  /*
-   * Whether the entity was transitioned from the old
-   * PAR2 system on 1 October 2017.
-   */
-  public function isTransitioned() {
-    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
-
-    if (isset($field_name) && $this->hasField($field_name) && !$this->get($field_name)->isEmpty() && $this->get($field_name)->getString() === 'n/a') {
-      return FALSE;
-    }
-    return TRUE;
-  }
-
-  /**
-   * Invalidate entities so that they are not transitioned to PAR3.
-   */
-  public function invalidate() {
-    // Only three entities can be transitioned.
-    if (!in_array($this->getEntityTypeId(), ['par_data_partnership', 'par_data_advice', 'par_data_inspection_plan'])) {
-      return FALSE;
-    }
-    if (!$this->isNew() && $this->isTransitioned()) {
-      // Set the status to unpublished to make filtering from display easier.
-      $this->delete();
-
-      $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
-
-      if (isset($field_name) && $this->hasField($field_name) && !$this->get($field_name)->isEmpty() && $this->get($field_name)->getString() === 'n/a') {
-        return $this->set($field_name, 'n/a')->save();
-      }
-      elseif ($this->hasField('obsolete')) {
-        return $this->set('obsolete', FALSE)->save();
-      }
-    }
-    return FALSE;
-  }
-
-  /**
-   * Destroy and entity, and completely remove.
-   */
-  public function destroy() {
-    if ($this->isDeletable()) {
-      parent::delete();
-
-      return TRUE;
-    }
-
-    return FALSE;
+    return $this->getTypeEntity()->isArchivable() && $this->getBoolean(self::ARCHIVE_FIELD);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function annihilate() {
-    return $this->entityTypeManager()->getStorage($this->entityTypeId)->destroy([$this->id() => $this]);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
+  #[\Override]
   public function isDeletable() {
     // Only some PAR entities can be deleted.
-    if (!$this->getTypeEntity()->isDeletable()) {
+    return $this->getTypeEntity()->isDeletable() &&
+      !$this->isRevoked() &&
+      !$this->isArchived();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isRevocable() {
+    // Only some PAR entities can be revoked.
+    return $this->getTypeEntity()->isRevokable() &&
+      !$this->isRevoked();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isArchivable() {
+    // Only some PAR entities can be archived.
+    return $this->getTypeEntity()->isArchivable() &&
+      !$this->isArchived();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isRestorable() {
+    return $this->isRevoked() || $this->isArchived();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  #[\Override]
+  public function hasDependencies() {
+    // Identify if there are any other entities which depend
+    // on this one, which may impact whether this can be deleted.
+    return (bool) $this->getRequiredRelationships(TRUE);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  #[\Override]
+  public function delete($reason = '', $deletable = FALSE) {
+    // Do not allow removal if the entity is not a deletable entity type
+    if (!$this->isDeletable() && !$deletable) {
       return FALSE;
     }
 
-    // If there are any relationships whereby another entity requires this one
-    // then this entity should not be deleted.
-    $relationships = $this->getRequiredRelationships(TRUE);
-    return $relationships ? FALSE : TRUE;
-  }
+    // Do not allow removal if it has other entities which depend on it.
+    if ($this->hasDependencies()) {
+      // Alert the user why this entity could not be deleted.
+      $dependencies = [];
+      $required_relationships = $this->getRequiredRelationships();
+      foreach ($required_relationships as $dependency) {
+        // Get a string version of this dependent entity.
+        $dependencies[] = $dependency->getEntity() instanceof ParDataEntityInterface ?
+          (string) $dependency->getEntity() :
+          $dependency->getEntity()->label();
 
-  /**
-   * {@inheritdoc}
-   */
-  public function delete($reason = '') {
-    if (!$this->isDeleted()) {
-      // PAR-1507: We are moving away from soft-delete options.
-      return $this->destroy();
+        // Do not show more than 3 dependencies.
+        if (count($dependencies) >= 3) {
+          $dependencies[] = $this->t("... there are %count more...", [
+            '%count' => count($required_relationships) - 3
+          ]);
+        }
+      }
+      // Set a message to indicate that deletion failed.
+      $message = $this->t("Deletion of %entity failed because there are some entities which depend on it:". "<br>" ."@dependencies", [
+        '%entity' => $this->label(),
+        '@dependencies' => implode('<br>', $dependencies)
+      ]);
+      $this->getMessenger()->addWarning($message);
+
+      return FALSE;
     }
 
-    return FALSE;
+    if (!$this->hasDependencies()) {
+
+      // PAR-1744: Set the reason so that loggers can make use of it.
+      $this->get(ParDataEntity::DELETE_REASON_FIELD)->setValue([
+        'value' => $reason,
+        'format' => 'plain_text',
+      ]);
+
+      parent::delete();
+      return TRUE;
+    }
+
+    // Default fallback
+    else {
+      return FALSE;
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  #[\Override]
+  public function destroy($reason = '') {
+    return $this->delete($reason, TRUE);
+  }
+
+  /**
+   * Destroy and entity, and completely remove from the system without checking
+   * whether the entity can be deleted. Use with caution.
+   *
+   * NOTE: Not to be exposed to end users.
+   */
+  public function annihilate() {
+    // Set the reason so that loggers can make use of it.
+    $this->get(ParDataEntity::DELETE_REASON_FIELD)->setValue([
+      'value' => "This entity was permanently removed (annihilated) by administrators.",
+      'format' => 'plain_text',
+    ]);
+
+    return parent::delete();
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function revoke($save = TRUE, $reason = '') {
     if ($this->isNew()) {
       $save = FALSE;
     }
 
-    if (!$this->inProgress() && $this->getTypeEntity()->isRevokable() && !$this->isRevoked()) {
+    if ($this->isRevocable()) {
       $this->set(ParDataEntity::REVOKE_FIELD, TRUE);
 
       // Always revision status changes.
       $this->setNewRevision(TRUE);
+
       $this->get(ParDataEntity::REVOKE_REASON_FIELD)->setValue([
         'value' => $reason,
         'format' => 'plain_text',
@@ -304,35 +357,28 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
       return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
+
     return FALSE;
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function unrevoke($save = TRUE) {
-    if ($this->isNew()) {
-      $save = FALSE;
-    }
-
-    if ($this->getTypeEntity()->isRevokable() && $this->isRevoked()) {
-      $this->set(ParDataEntity::REVOKE_FIELD, FALSE);
-      $this->set(ParDataEntity::REVOKE_REASON_FIELD, NULL);
-
-      return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
-    }
-    return FALSE;
+    return $this->restore($save);
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function archive($save = TRUE, $reason = '') {
     if ($this->isNew()) {
       $save = FALSE;
     }
 
-    if (!$this->inProgress() && $this->getTypeEntity()->isArchivable() && !$this->isArchived()) {
+    if ($this->isArchivable()) {
 
       $this->set(ParDataEntity::ARCHIVE_FIELD, TRUE);
 
@@ -353,14 +399,29 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function restore($save = TRUE) {
+    // Stop recursive loops for new entities.
     if ($this->isNew()) {
       $save = FALSE;
     }
 
-    if ($this->getTypeEntity()->isRevokable() && $this->isArchived()) {
+    // Updated revoked and archived fields.
+    $changed = FALSE;
+    if ($this->isRevoked()) {
+      $this->set(ParDataEntity::REVOKE_FIELD, FALSE);
+      $this->set(ParDataEntity::REVOKE_REASON_FIELD, NULL);
+      $changed = TRUE;
+    }
+    if ($this->isArchived()) {
       $this->set(ParDataEntity::ARCHIVE_FIELD, FALSE);
       $this->set(ParDataEntity::ARCHIVE_REASON_FIELD, NULL);
+      $changed = TRUE;
+    }
+
+    if ($changed) {
+      // Always revision status changes.
+      $this->setNewRevision(TRUE);
 
       return $save ? ($this->save() === SAVED_UPDATED || $this->save() === SAVED_NEW) : TRUE;
     }
@@ -370,6 +431,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function inProgress() {
     // By default there are no conditions by which an entity is frozen.
     return FALSE;
@@ -378,65 +440,65 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function isActive() {
-    if ($this->isDeleted() || $this->isRevoked() || $this->isArchived() || !$this->isTransitioned()) {
-      return FALSE;
-    }
-
-    return TRUE;
+    return !$this->isRevoked() && !$this->isArchived();
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
+  public function hasStatus(): bool {
+    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
+
+    return ($field_name && $this->hasField($field_name));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  #[\Override]
   public function getRawStatus() {
-    if ($this->isDeleted()) {
-      return 'deleted';
-    }
     if ($this->isRevoked()) {
-      return 'revoked';
+      return self::REVOKE_FIELD;
     }
     if ($this->isArchived()) {
-      return 'archived';
-    }
-    if (!$this->isTransitioned()) {
-      return 'n/a';
+      return self::ARCHIVE_FIELD;
     }
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
 
-    if (isset($field_name) && $this->hasField($field_name)) {
+    if ($this->hasStatus() && !$this->get($field_name)->isEmpty()) {
       $status = $this->get($field_name)->getString();
     }
 
-    return isset($status) ? $status : NULL;
+    return $status ?? NULL;
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getParStatus() {
-    if ($this->isDeleted()) {
-      return 'Deleted';
-    }
-    if ($this->isRevoked()) {
+    $raw_status = $this->getRawStatus();
+
+    if ($raw_status === self::REVOKE_FIELD) {
       return 'Revoked';
     }
-    if ($this->isArchived()) {
+    if ($raw_status === self::ARCHIVE_FIELD) {
       return 'Archived';
-    }
-    if (!$this->isTransitioned()) {
-      return 'Not transitioned from PAR2';
     }
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
-    $raw_status = $this->getRawStatus();
-    return $field_name && $raw_status ? $this->getTypeEntity()->getAllowedFieldlabel($field_name, $raw_status) : '';
+
+    return $raw_status ? $this->getTypeEntity()->getAllowedFieldlabel($field_name, $raw_status) : '';
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function setParStatus($value, $ignore_transition_check = FALSE) {
     // Determine whether we can change the value based on the current status.
     if (!$this->canTransition($value) && !$ignore_transition_check) {
@@ -446,17 +508,12 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
     $allowed_values = $this->getTypeEntity()->getAllowedValues($field_name);
-    if (isset($allowed_values[$value]) && $this->get($field_name)->getString() !== $value) {
+    if ($this->hasStatus() && isset($allowed_values[$value])
+      && $this->get($field_name)->getString() !== $value) {
       $this->set($field_name, $value);
 
       // Always revision status changes.
       $this->setNewRevision(TRUE);
-
-      // Dispatch a par event.
-      // @TODO We can't dispatch this event until the entity is saved, we may end up with repeat calls.
-      $event = new ParDataEvent($this);
-      $dispatcher = \Drupal::service('event_dispatcher');
-      $dispatcher->dispatch(ParDataEvent::statusChange($this->getEntityTypeId(), $value), $event);
     }
   }
 
@@ -471,34 +528,41 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       return $status_revision;
     }
 
+    if (!$this->hasStatus() || !$status) {
+      return NULL;
+    }
+
     $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
 
-    // Loop through all statuses and perform custom checks to
-    // find the most recent change the the specified status.
-    $check_status_query = $this->entityTypeManager()->getStorage($this->getEntityTypeId())->getQuery();
+    // Loop through all statuses to find the revision when the status was changed.
+    $check_status_query = $this->entityTypeManager()->getStorage($this->getEntityTypeId())->getQuery()->accessCheck();
     $check_status_query->allRevisions()
       ->condition('id', $this->id())
-      ->sort('revision_timestamp', 'ASC');
+      ->sort('revision_timestamp', 'DESC');
     $results = $check_status_query->execute();
 
-    $status_revision = NULL;
+    $previous_revision = NULL;
     if (!empty($results)) {
-      foreach ($results as $revision_id => $r) {
+      foreach ($results as $revision_id => $rev) {
         $revision = $this->entityTypeManager()->getStorage($this->getEntityTypeId())->loadRevision($revision_id);
-
-        // If the status matches then we can save this as the status.
-        if ($revision && $revision->get($field_name)->getString() === $status) {
-          $status_revision = $revision;
+        if (!$revision) {
+          continue;
         }
-        // If we have already found an appropriate revision and the status
-        // has changed then don't go any further.
-        if ($status_revision && $revision->get($field_name)->getString() !== $status) {
+
+        // Stop looking for previous revisions if one has already been found
+        // and the current revision doesn't match the status that is being searched for.
+        if ($previous_revision && $status !== $revision->getRawStatus()) {
           break;
+        }
+
+        // Set the revision.
+        if ($status === $revision->getRawStatus()) {
+          $previous_revision = $revision;
         }
       }
     }
 
-    return $status_revision;
+    return $previous_revision;
   }
 
   /**
@@ -507,7 +571,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   public function getStatusTime($status) {
     $revision = $this->getStatusChanged($status);
 
-    return $revision ? $revision->get('revision_timestamp')->value : NULL;
+    return $revision?->get('revision_timestamp')->value;
   }
 
   /**
@@ -516,7 +580,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   public function getStatusAuthor($status) {
     $revision = $this->getStatusChanged($status);
 
-    return $revision ? $revision->get('revision_uid')->entity : NULL;
+    return $revision?->get('revision_uid')->entity;
   }
 
   /**
@@ -543,7 +607,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
       $label = isset($label) ? $label . $time_string : $time_string;
     }
 
-    return isset($label) ? ucfirst($label): NULL;
+    return isset($label) ? ucfirst($label) : NULL;
   }
 
   /**
@@ -576,8 +640,24 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     $referencedEntities = $this->get($field_name)->referencedEntities();
 
     $ids = [];
-    foreach ($referencedEntities as $id => $entity) {
-      $ids[] = $entity->id();
+    foreach ($referencedEntities as $delta => $entity) {
+      $ids[] = (int) $entity->id();
+    }
+
+    return $ids;
+  }
+
+  /**
+   * Get the reference field entities keyed by Id.
+   *
+   * @return array
+   */
+  public function retrieveEntitiesKeyedById($field_name) {
+    $referencedEntities = $this->get($field_name)->referencedEntities();
+
+    $ids = [];
+    foreach ($referencedEntities as $delta => $entity) {
+      $ids[$entity->id()] = $entity;
     }
 
     return $ids;
@@ -662,9 +742,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     // As a general rule, any entities that reference this entity
     // should stop this entity being deleted.
     $relationships = $this->getRelationships(NULL, 'dependents', $reset);
-    $relationships = array_filter($relationships, function ($relationship) {
-      return ($relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_REVERSE);
-    });
+    $relationships = array_filter($relationships, fn($relationship) => $relationship->getRelationshipDirection() === ParDataRelationship::DIRECTION_REVERSE);
 
     return $relationships;
   }
@@ -686,8 +764,8 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
     // Enable in memory caching for repeated entity lookups.
     $unique_function_id = __FUNCTION__ . ':'
       . $this->uuid() . ':'
-      . (isset($target) ? $target : 'null') . ':'
-      . (isset($action) ? $action : 'null');
+      . ($target ?? 'null') . ':'
+      . ($action ?? 'null');
     $relationships = &drupal_static($unique_function_id);
     if (!$reset && isset($relationships)) {
       return $relationships;
@@ -752,16 +830,12 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
 
     // Return only permitted relationships for a given action
     if ($target) {
-      $relationships = array_filter($relationships, function ($relationship) use ($target) {
-        return $this->filterRelationshipsByTarget($relationship, $target);
-      });
+      $relationships = array_filter($relationships, fn($relationship) => $this->filterRelationshipsByTarget($relationship, $target));
     }
 
     // Return only permitted relationships for a given action
     if ($action) {
-      $relationships = array_filter($relationships, function ($relationship) use ($action) {
-        return $this->filterRelationshipsByAction($relationship, $action);
-      });
+      $relationships = array_filter($relationships, fn($relationship) => $this->filterRelationshipsByAction($relationship, $action));
     }
 
     return $relationships;
@@ -978,6 +1052,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getCompletionPercentage($include_deltas = FALSE) {
     $total = 0;
     $completed = 0;
@@ -1003,6 +1078,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function setNewRevision($value = TRUE, $message = NULL) {
     parent::setNewRevision($value);
 
@@ -1040,6 +1116,7 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getPlain($field) {
     if (!$this->hasField($field) || $this->get($field)->isEmpty()) {
       return;
@@ -1057,14 +1134,38 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 
-    $fields['name'] = $fields['name']->setDefaultValueCallback(__CLASS__ . '::setDefaultTitle')
+    $fields['name'] = $fields['name']->setDefaultValueCallback(self::class . '::setDefaultTitle')
       ->setSettings([
         'max_length' => 255,
         'text_processing' => 0,
       ]);
+
+    // Compute the label as a field value.
+    $fields['par_label'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Label'))
+      ->setDescription(t('The label of the PAR entity.'))
+      ->setComputed(TRUE)
+      ->setClass(ParLabelField::class)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 2,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
 
     // We will apply action state fields to all par entities for consistency
     // but will only use certain actions on certain entities.
@@ -1179,6 +1280,45 @@ class ParDataEntity extends Trance implements ParDataEntityInterface {
         'weight' => 0,
       ])
       ->setDisplayConfigurable('view', TRUE);
+
+    $fields['par_status'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Status'))
+      ->setDescription(t('The status of the PAR entity.'))
+      ->setComputed(TRUE)
+      ->setClass(ParStatusField::class)
+      ->setRevisionable(TRUE)
+      ->setSettings([
+        'max_length' => 255,
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 2,
+      ])
+      ->setDisplayConfigurable('form', FALSE)
+      ->setDisplayOptions('view', [
+        'label' => 'hidden',
+        'region' => 'hidden',
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['par_status_date'] = BaseFieldDefinition::create('datetime')
+      ->setName('par_status_date')
+      ->setLabel(t('Status Date'))
+      ->setComputed(TRUE)
+      ->setClass(ParStatusChangedField::class)
+      ->setSettings([
+        'datetime_type' => DateTimeItem::DATETIME_TYPE_DATE
+      ])
+      ->setDisplayOptions('view', [
+        'type' => 'datetime_default',
+        'label' => 'hidden',
+        'region' => 'hidden',
+        'weight' => 3,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
     return $fields;
   }
 }

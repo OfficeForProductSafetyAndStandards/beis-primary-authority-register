@@ -29,3 +29,4 @@ services:
       - { name: cache.bin, lifecycle: persistent }
     factory: cache_factory:get
     arguments: [ par_data ]
+  # Cache bin for registered organisations.

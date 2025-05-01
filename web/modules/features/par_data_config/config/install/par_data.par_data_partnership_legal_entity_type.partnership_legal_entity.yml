@@ -1,0 +1,34 @@
+langcode: en
+status: true
+dependencies: {  }
+id: partnership_legal_entity
+label: 'Partnership Legal Entity'
+description: 'A partnership legal entity meta data entity.'
+help: ''
+isDeletable: true
+isRevokable: true
+isArchivable: false
+configuration:
+  entity:
+    label_fields:
+      - field_legal_entity
+    status_field: legal_entity_status
+    status_transitions:
+      awaiting_review:
+        - default
+        - confirmed_authority
+        - confirmed_business
+      confirmed_authority:
+        - awaiting_review
+      confirmed_business:
+        - confirmed_authority
+      confirmed_rd:
+        - awaiting_review
+        - confirmed_authority
+        - confirmed_business
+  legal_entity_status:
+    allowed_values:
+      awaiting_review: 'Awaiting Review'
+      confirmed_authority: 'Confirmed by the Authority'
+      confirmed_business: 'Confirmed by the Organisation'
+      confirmed_rd: Active

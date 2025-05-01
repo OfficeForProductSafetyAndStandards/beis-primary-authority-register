@@ -23,12 +23,23 @@ class ParContactForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
+    $account = $this->getFlowDataHandler()->getParameter('user');
+
     $cid_person_select = $this->getFlowNegotiator()->getFormKey('par_choose_person');
     $person = $this->getFlowDataHandler()->getDefaultValues('user_person', '', $cid_person_select);
-    if ($par_data_person = ParDataPerson::load($person)) {
-      $this->getFlowDataHandler()->setParameter('par_data_person', $par_data_person);
+    $par_data_person = !empty($person) ? ParDataPerson::load($person) : NULL;
+
+    // If no profile record could be found then create a new one based from the user account.
+    if (!$par_data_person instanceof ParDataPerson) {
+      $par_data_person = ParDataPerson::create([
+        'type' => 'person',
+      ]);
+      $par_data_person->updateEmail($account?->getEmail());
     }
+
+    $this->getFlowDataHandler()->setParameter('par_data_person', $par_data_person);
 
     parent::loadData();
   }

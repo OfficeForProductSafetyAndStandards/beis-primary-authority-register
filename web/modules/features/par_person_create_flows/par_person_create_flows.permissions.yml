@@ -1,4 +1,4 @@
-create par person:
+create person:
   title: 'Create people'
   description: 'Allow users to create new people and invite them to create a user account.'
   restrict access: TRUE

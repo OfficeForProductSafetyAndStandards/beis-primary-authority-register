@@ -68,6 +68,7 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getConfiguration() {
     return !empty($this->configuration) ? $this->configuration : [];
   }
@@ -75,14 +76,16 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getConfigurationElement($element) {
     $config = $this->getConfiguration();
-    return isset($config[$element]) ? $config[$element] : [];
+    return $config[$element] ?? [];
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getConfigurationByType($type) {
     $elements = [];
     foreach ($this->getConfiguration() as $element => $configurations) {
@@ -97,19 +100,29 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getConfigurationElementByType($element, $type) {
+    // @see PAR-1805: The true status field assumes the configuration from the status field.
+    if ($element !== 'entity' && $type !== 'status_field') {
+      $status_field = $this->getConfigurationElementByType('entity', 'status_field');
+      if ($status_field && $element === ParDataEntity::STATUS_FIELD) {
+        $element = $status_field;
+      }
+    }
+
     $element_configuration = $this->getConfigurationElement($element);
-    return isset($element_configuration[$type]) ? $element_configuration[$type] : NULL;
+    return $element_configuration[$type] ?? NULL;
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getCompletionFields($include_required = FALSE) {
     // Get the names of any fields needed for completion.
     $completed_fields = $this->getConfigurationElementByType('entity', 'completed_fields');
     $fields = array_diff($completed_fields, $this->excludedFields());
-    return $fields ? $fields : [];
+    return $fields ?: [];
   }
 
   /**
@@ -144,6 +157,20 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
   }
 
   /**
+   * Get the fields that make up an entity's label.
+   */
+  public function getLabelFields() {
+    $label_fields = (array) $this->getConfigurationElementByType('entity', 'label_fields') ?? [];
+
+    $entity_field_manager = \Drupal::service('entity_field.manager');
+    $field_map = $entity_field_manager->getFieldMap();
+
+    $entity_type_id = $this->getEntityType()->getBundleOf();
+
+    return array_filter($label_fields, fn($label_field) => isset($field_map[$entity_type_id][$label_field]));
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function getRequiredFields() {
@@ -154,7 +181,7 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
     }
 
     $fields = array_diff($required_fields, $this->excludedFields());
-    return $fields ? $fields : [];
+    return $fields ?: [];
   }
 
   /**
@@ -168,39 +195,81 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
     return isset($status_field) && !empty($allowed_statuses) ? key($allowed_statuses) : NULL;
   }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function getBooleanFieldLabel($field_name, bool $value = FALSE) {
-    $boolean_values = $this->getConfigurationElementByType($field_name, 'boolean_values');
-    $key = $value ? 'on' : 'off';
-    return isset($boolean_values[$key]) ? $boolean_values[$key] : FALSE;
+  public function getFieldLabel($field_name, $value): ?string {
+    // If the field is configured with allowed values.
+    if (!empty($this->getAllowedValues($field_name))) {
+      return $this->getAllowedFieldlabel($field_name, $value);
+    }
+    // If the field is configured with boolean values.
+    elseif (!empty($this->getBooleanValues($field_name))) {
+      return $this->getBooleanFieldLabel($field_name, $value);
+    }
+
+    return $value;
   }
 
   /**
    * {@inheritdoc}
    */
+  public function getBooleanValues($field_name) {
+    return $this->getConfigurationElementByType($field_name, 'boolean_values');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  #[\Override]
+  public function getBooleanFieldLabel($field_name, bool $value = FALSE) {
+    $boolean_values = $this->getBooleanValues($field_name);
+    $key = $value ? 'on' : 'off';
+    return $boolean_values[$key] ?? FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  #[\Override]
   public function getAllowedValues($field_name) {
     $allowed_values = $this->getConfigurationElementByType($field_name, 'allowed_values');
-    return $allowed_values ? $allowed_values : [];
+
+    // @see PAR-1805: The computed true status values include the default statuses.
+    if ($field_name === ParDataEntity::STATUS_FIELD) {
+      // If there are no allowed values set then the default status value is 'active'.
+      if (empty($allowed_values)) {
+        $allowed_values[ParDataEntity::STATUS_FIELD] = 'Active';
+      }
+
+      // If this entity is revokable.
+      if ($this->isRevokable()) {
+        $allowed_values[ParDataEntity::REVOKE_FIELD] = 'Revoked';
+      }
+
+      // If this entity is archivable.
+      if ($this->isArchivable()) {
+        $allowed_values[ParDataEntity::ARCHIVE_FIELD] = 'Archived';
+      }
+    }
+
+    return $allowed_values ?? [];
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getAllowedFieldlabel($field_name, $value = FALSE) {
-    $allowed_values = $this->getConfigurationElementByType($field_name, 'allowed_values');
-    return isset($allowed_values[$value]) ? $allowed_values[$value] : FALSE;
+    $allowed_values = $this->getAllowedValues($field_name);
+    return $allowed_values[$value] ?? FALSE;
   }
 
   /**
    * {@inheritdoc}
    */
   public function getAllowedValueBylabel($field_name, $label, $fuzzy = FALSE) {
-    $allowed_values = $this->getConfigurationElementByType($field_name, 'allowed_values');
+    $allowed_values = $this->getAllowedValues($field_name);
 
     $key = $fuzzy ?
-      array_search(strtolower($label), array_map('strtolower', $allowed_values)) :
+      array_search(strtolower((string) $label), array_map('strtolower', $allowed_values)) :
       array_search($label, $allowed_values);
 
     return $key !== FALSE ? $key : FALSE;

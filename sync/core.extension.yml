@@ -1,24 +1,27 @@
+_core:
+  default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc
 module:
   address: 0
+  admin_toolbar: 0
+  admin_toolbar_tools: 0
   audit_log: 0
   automated_cron: 0
   better_exposed_filters: 0
+  big_pipe: 0
   block: 0
+  block_classes: 0
   block_content: 0
   breakpoint: 0
-  chosen: 0
-  chosen_lib: 0
-  ckeditor: 0
-  color: 0
+  cacheexclude: 0
   comment: 0
   config: 0
   config_filter: 0
-  config_readonly: 0
   config_split: 0
   config_translation: 0
   config_update: 0
   content_translation: 0
   contextual: 0
+  core_event_dispatcher: 0
   csv_serialization: 0
   ctools: 0
   datetime: 0
@@ -34,14 +37,14 @@ module:
   field_ui: 0
   file: 0
   filter: 0
+  flood_control: 0
   flysystem: 0
   flysystem_s3: 0
-  google_analytics: 0
-  govuk_cookies: 0
+  google_tag: 0
   govuk_notify: 0
-  hal: 0
   health_check: 0
   help: 0
+  hook_event_dispatcher: 0
   http_response_headers: 0
   image: 0
   inline_entity_form: 0
@@ -52,24 +55,25 @@ module:
   jquery_ui_button: 0
   jquery_ui_checkboxradio: 0
   jquery_ui_controlgroup: 0
+  jquery_ui_datepicker: 0
   jquery_ui_slider: 0
+  jquery_ui_tabs: 0
+  jquery_ui_touch_punch: 0
   language: 0
   link: 0
   locale: 0
   login_destination: 0
-  masquerade: 0
   media: 0
   media_library: 0
   menu_link_attributes: 0
   menu_ui: 0
   message: 0
+  message_expire: 0
   message_notify: 0
   migrate: 0
   migrate_drupal: 0
-  migrate_file_to_media: 0
   migrate_plus: 0
   migrate_tools: 0
-  no_autocomplete: 0
   node: 0
   options: 0
   page_cache: 0
@@ -78,8 +82,6 @@ module:
   par_authority_add_flows: 0
   par_authority_update_flows: 0
   par_cache: 0
-  par_ckeditor: 0
-  par_cookies: 0
   par_dashboards: 0
   par_data: 0
   par_data_config: 0
@@ -87,6 +89,7 @@ module:
   par_deviation_review_flows: 0
   par_deviation_view_flows: 0
   par_enforcement_raise_flows: 0
+  par_enforcement_remove_flows: 0
   par_enforcement_review_flows: 0
   par_enforcement_send_flows: 0
   par_enquiry_send_flows: 0
@@ -94,6 +97,7 @@ module:
   par_error_handling: 0
   par_flows: 0
   par_forms: 0
+  par_govuk_cookies: 0
   par_header: 0
   par_inspection_feedback_flows: 0
   par_inspection_feedback_view_flows: 0
@@ -104,12 +108,16 @@ module:
   par_manage_subscription_list_flows: 0
   par_member_add_flows: 0
   par_member_cease_flows: 0
+  par_member_list_update_flows: 0
   par_member_unlock_flows: 0
   par_member_update_flows: 0
   par_member_upload_flows: 0
   par_migrate_files: 0
   par_notification: 0
   par_organisation_update_flows: 0
+  par_partnership_amend_confirm_flows: 0
+  par_partnership_amend_flows: 0
+  par_partnership_amend_nominate_flows: 0
   par_partnership_application_flows: 0
   par_partnership_confirmation_flows: 0
   par_partnership_contact_add_flows: 0
@@ -118,6 +126,7 @@ module:
   par_partnership_document_remove_flows: 0
   par_partnership_flows: 0
   par_person_create_flows: 0
+  par_person_membership_flows: 0
   par_person_merge_flows: 0
   par_person_update_flows: 0
   par_profile_update_flows: 0
@@ -128,21 +137,29 @@ module:
   par_roles: 0
   par_search_partnership_flows: 0
   par_subscriptions: 0
+  par_transfer_partnerships_flows: 0
   par_user_block_flows: 0
+  par_user_role_flows: 0
   par_validation: 0
   password_policy: 0
   password_policy_character_types: 0
   password_policy_characters: 0
   password_policy_length: 0
-  password_strength: 0
   path: 0
   path_alias: 0
+  pgsql: 0
+  phpass: 0
   queue_ui: 0
   raven: 0
-  rdf: 0
   redis: 0
+  registered_organisations: 0
   rest: 0
   robotstxt: 0
+  role_delegation: 0
+  search_api: 0
+  search_api_db: 0
+  search_api_opensearch: 0
+  seckit: 0
   serialization: 0
   shortcut: 0
   syslog: 0
@@ -166,11 +183,7 @@ module:
   views: 10
   standard: 1000
 theme:
-  bartik: 0
-  seven: 0
+  claro: 0
   par_theme: 0
   govuk: 0
-  govuk_par: 0
 profile: standard
-_core:
-  default_config_hash: R4IF-ClDHXxblLcG0L7MgsLvfBIMAvi_skumNFQwkDc

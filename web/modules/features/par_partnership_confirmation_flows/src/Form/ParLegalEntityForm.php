@@ -24,14 +24,16 @@ class ParLegalEntityForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     // Must tell the component plugin where to get data for the selection screen.
     $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_select_legal_entities');
-    $this->getFlowDataHandler()->setParameter('select_legal_entity_cid', $cid);
+//    $this->getFlowDataHandler()->setParameter('select_legal_entity_cid', $cid);
 
     parent::loadData();
   }
 
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $existing_legal_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_select_legal_entities');
     $existing_legal_entities = $this->getFlowDataHandler()->getTempDataValue('field_legal_entity', $existing_legal_cid) ?: [];

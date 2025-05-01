@@ -8,5 +8,6 @@ _core:
   default_config_hash: eEQcxzstlVaC3ok1-l7smepW2j0s-rz9A0IcBv4W_ME
 id: par_data_legal_entity.full
 label: Full
+description: ''
 targetEntityType: par_data_legal_entity
 cache: true

@@ -20,44 +20,44 @@ bundle: organisation
 mode: default
 content:
   comments:
+    type: text_default
     label: hidden
-    weight: 2
-    region: content
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 2
+    region: content
   employees_band:
     type: par_list_formatter
-    weight: 1
-    region: content
     label: hidden
     settings:
       display_original_value: true
     third_party_settings: {  }
+    weight: 1
+    region: content
   field_legal_entity:
-    weight: 3
+    type: entity_reference_label
     label: hidden
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 3
     region: content
   field_premises:
-    weight: 4
+    type: entity_reference_label
     label: hidden
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 4
     region: content
   organisation_name:
+    type: string
     label: hidden
-    region: content
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
     weight: 0
+    region: content
 hidden:
   archive_reason: true
   coordinator_number: true

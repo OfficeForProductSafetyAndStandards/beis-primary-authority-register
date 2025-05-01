@@ -33,6 +33,7 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_application_organisation');
     $searchQuery = $this->getFlowDataHandler()->getDefaultValues('organisation_name', '', $cid);
@@ -64,7 +65,7 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
           'organisation_name' => 'summary',
           'field_premises' => 'summary',
         ], ['edit-entity'], FALSE, TRUE);
-        $radio_options[$organisation->id()] = render($label);
+        $radio_options[$organisation->id()] = \Drupal::service('renderer')->render($label);
       }
     }
 
@@ -80,6 +81,7 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
     $form['par_data_organisation_id'] = [
       '#type' => 'radios',
       '#title' => t('Choose an existing organisation or create a new organisation'),
+      '#title_tag' => 'h2',
       '#options' => $radio_options + ['new' => "no, the organisation is not currently in a partnership with any other primary authority"],
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id', 'new'),
     ];
@@ -93,6 +95,7 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
@@ -101,6 +104,7 @@ class ParPartnershipFlowsOrganisationSuggestionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

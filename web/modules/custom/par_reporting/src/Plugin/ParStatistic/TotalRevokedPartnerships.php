@@ -9,14 +9,15 @@ use Drupal\par_reporting\ParStatisticBase;
  *
  * @ParStatistic(
  *   id = "total_revoked_partnerships",
- *   title = @Translation("Revoked partnerships."),
+ *   title = @Translation("Revoked partnership applications."),
  *   description = @Translation("The total number of partnerships that have been revoked."),
  *   status = TRUE,
  * )
  */
 class TotalRevokedPartnerships extends ParStatisticBase {
 
-  public function getStat() {
+  #[\Override]
+  public function getStat(): int {
     $query = $this->getParDataManager()->getEntityQuery('par_data_partnership')
       ->condition('revoked', 1);
 

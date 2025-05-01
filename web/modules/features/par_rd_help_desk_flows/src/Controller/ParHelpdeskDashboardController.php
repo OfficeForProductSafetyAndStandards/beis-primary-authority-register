@@ -5,12 +5,16 @@ namespace Drupal\par_rd_help_desk_flows\Controller;
 use Drupal\Core\Cache\RefinableCacheableDependencyTrait;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Link;
 use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\ParDataManagerInterface;
+use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_flows\ParControllerTrait;
 use Drupal\par_flows\ParDisplayTrait;
+use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParRedirectTrait;
 use Drupal\par_rd_help_desk_flows\ParFlowAccessTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -26,32 +30,32 @@ class ParHelpdeskDashboardController extends ControllerBase {
   use ParControllerTrait;
 
   /**
-   * The response cache kill switch.
-   */
-  protected $killSwitch;
-
-  /**
    * Constructs a \Drupal\par_flows\Form\ParBaseForm.
    *
-   * @param \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $flow_storage
+   * @param \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $flowStorage
    *   The flow entity storage handler.
    * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
    *   The current user object.
    * @param \Drupal\Core\Session\AccountInterface $current_user
    *   The current user object.
-   * @param \Drupal\Core\PageCache\ResponsePolicy\KillSwitch $kill_switch
+   * @param \Drupal\Core\PageCache\ResponsePolicy\KillSwitch $killSwitch
    *   The page cache kill switch.
    */
-  public function __construct(ConfigEntityStorageInterface $flow_storage, ParDataManagerInterface $par_data_manager, AccountInterface $current_user, KillSwitch $kill_switch) {
-    $this->flowStorage = $flow_storage;
+  public function __construct(/**
+   * The flow negotiator.
+   */
+  protected ConfigEntityStorageInterface $flowStorage, ParDataManagerInterface $par_data_manager, AccountInterface $current_user, /**
+   * The response cache kill switch.
+   */
+  protected KillSwitch $killSwitch) {
     $this->parDataManager = $par_data_manager;
-    $this->killSwitch = $kill_switch;
     $this->setCurrentUser($current_user);
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container) {
     $entity_type_manager = $container->get('entity_type.manager');
     return new static(
@@ -79,10 +83,8 @@ class ParHelpdeskDashboardController extends ControllerBase {
 
     // Manage partnerships.
     $build['statistics'] = [
-      '#type' => 'fieldset',
-      '#attributes' => ['class' => ['grid-row', 'form-group']],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      '#type' => 'container',
+      '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group']],
       '#cache' => ['contexts' => ['user.par_memberships:authority']],
     ];
     $build['statistics']['active_partnerships'] = [
@@ -102,61 +104,57 @@ class ParHelpdeskDashboardController extends ControllerBase {
       $build['statistics']['view_all'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#attributes' => ['class' => 'column-full'],
+        '#attributes' => ['class' => 'govuk-grid-column-full'],
         '#value' => !empty($statistics_link) ? $statistics_link->setText('View all statistics')->toString() : '',
       ];
     }
 
-    $manage_partnerships = $this->getLinkByRoute('view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page');
-    $manage_link = $manage_partnerships->setText('Manage partnerships')->toString();
-    $build['partnerships']['manage'] = [
-      '#type' => 'markup',
-      '#markup' => "<p>{$manage_link}</p>",
+    $log = $this->getLinkByRoute('view.par_log.log_page');
+    $log_link = $log->setText('View log of notable actions')->toString();
+    $build['log'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group']],
+    ];
+    $build['log']['view'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#attributes' => ['class' => 'govuk-grid-column-full'],
+      '#value' => $log_link,
+
     ];
 
     // Manage partnerships.
     $build['partnerships'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Partnerships'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      '#type' => 'container',
+      '#attributes' => ['class' => 'govuk-form-group'],
+      'title' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => $this->t('Partnerships'),
+        '#attributes' => ['class' => ['govuk-heading-m']],
+      ],
       '#cache' => ['contexts' => ['user.par_memberships:authority']]
     ];
 
-    $manage_partnerships = $this->getLinkByRoute('view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page');
-    $manage_link = $manage_partnerships->setText('Manage partnerships')->toString();
-    $build['partnerships']['manage'] = [
+    $manage_partnerships = $this->getLinkByRoute('view.advanced_partnership_search.advanced_search');
+    $manage_link = $manage_partnerships->setText('Search partnerships')->toString();
+    $build['partnerships']['search'] = [
       '#type' => 'markup',
       '#markup' => "<p>{$manage_link}</p>",
     ];
 
-    $partnership_report = $this->getLinkByRoute('view.helpdesk_dashboard.helpdesk_csv');
-    $partnership_report_link = $partnership_report->setText('Download CSV partnership report')->toString();
-    $build['partnerships']['report'] = [
-      '#type' => 'markup',
-      '#markup' => "<p>{$partnership_report_link}</p>",
-    ];
-
-    // Partnerships search link.
-    $search_partnerships = $this->getLinkByRoute('view.partnership_search.enforcment_flow_search_partnerships');
-    $search_link = $search_partnerships->setText('Search for a partnership')->toString();
-    $build['partnerships']['link'] = [
-      '#type' => 'markup',
-      '#markup' => "<p>{$search_link}</p>",
-      '#pre' => "<p>Search for active partnerships to check advice and raise notice of enforcement action.</p>",
-    ];
-
-
     // Manage authorities and organisations.
     $build['institutions'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Authorities & Organisations'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      '#type' => 'container',
+      'title' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => $this->t('Authorities & Organisations'),
+        '#attributes' => ['class' => ['govuk-heading-m']],
+      ],
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
-    $manage_authorities_link = $this->getLinkByRoute('view.helpdesk_authorities.par_helpdesk_authority_page');
+    $manage_authorities_link = $this->getLinkByRoute('view.helpdesk_authorities.authority_page');
     if ($manage_authorities_link) {
       $build['institutions']['authorities'] = [
         '#type' => 'markup',
@@ -171,15 +169,16 @@ class ParHelpdeskDashboardController extends ControllerBase {
       ];
     }
 
-
-
     // Manage users.
     $build['people'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('People'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      '#type' => 'container',
+      '#attributes' => ['class' => 'govuk-form-group'],
+      'title' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => $this->t('People'),
+        '#attributes' => ['class' => ['govuk-heading-m']],
+      ],
       '#cache' => ['contexts' => ['user.par_memberships:authority']]
     ];
 
@@ -201,11 +200,14 @@ class ParHelpdeskDashboardController extends ControllerBase {
 
     // Manage enforcements.
     $build['enforcements'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Enforcements'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      '#type' => 'container',
+      '#attributes' => ['class' => 'govuk-form-group'],
+      'title' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => $this->t('Enforcements'),
+        '#attributes' => ['class' => ['govuk-heading-m']],
+      ],
       '#cache' => ['contexts' => ['user.par_memberships:authority']]
     ];
     $link = $this->getLinkByRoute('view.par_user_enforcements.enforcement_notices_page')
@@ -234,11 +236,14 @@ class ParHelpdeskDashboardController extends ControllerBase {
 
     // Manage enquiries.
     $build['enquiries'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Enquiries'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      '#type' => 'container',
+      '#attributes' => ['class' => 'govuk-form-group'],
+      'title' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => $this->t('Enquiries'),
+        '#attributes' => ['class' => ['govuk-heading-m']],
+      ],
       '#cache' => ['contexts' => ['user.par_memberships:authority']]
     ];
 
@@ -249,6 +254,36 @@ class ParHelpdeskDashboardController extends ControllerBase {
       '#type' => 'markup',
       '#markup' => "<p>{$general_enquiries_link}</p>",
     ];
+
+    $build['user'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => 'govuk-form-group'],
+      'title' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => $this->t('Your account'),
+        '#attributes' => ['class' => ['govuk-heading-m']],
+      ],
+    ];
+
+    // Profile management link.
+    try {
+      $params = ['user' => $this->getCurrentUser()->id()];
+      $manage_profile_flow = ParFlow::load('profile_update');
+      $manage_profile_link = $manage_profile_flow?->getStartLink(1, 'Manage your profile details', $params);
+    } catch (ParFlowException) {
+
+    }
+
+    if ($manage_profile_link instanceof Link) {
+      $build['user']['profile'] = [
+        '#type' => 'link',
+        '#title' => $manage_profile_link->getText(),
+        '#url' => $manage_profile_link->getUrl(),
+        '#options' => $manage_profile_link->getUrl()->getOptions(),
+      ];
+    }
+
 
     return $build;
   }

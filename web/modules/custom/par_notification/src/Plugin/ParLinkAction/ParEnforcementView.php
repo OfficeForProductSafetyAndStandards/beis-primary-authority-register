@@ -4,6 +4,8 @@ namespace Drupal\par_notification\Plugin\ParLinkAction;
 
 use Drupal\Core\Url;
 use Drupal\message\MessageInterface;
+use Drupal\par_data\Entity\ParDataEnforcementNotice;
+use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_notification\ParLinkActionBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -16,23 +18,38 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *   status = TRUE,
  *   weight = 2,
  *   notification = {
+ *     "approved_enforcement",
  *     "new_enforcement_notification",
  *     "reviewed_enforcement",
- *   }
+ *   },
+ *   field = "field_enforcement_notice",
  * )
  */
 class ParEnforcementView extends ParLinkActionBase {
 
-  public function receive(MessageInterface $message) {
-    if ($message->hasField('field_enforcement_notice') && !$message->get('field_enforcement_notice')->isEmpty()) {
-      $par_data_enforcement_notice = current($message->get('field_enforcement_notice')->referencedEntities());
+  /**
+   * {@inheritdoc}
+   */
+  protected string $actionText = 'View the notification of enforcement action';
+
+  /**
+   * {@inheritDoc}
+   */
+  public function getUrl(MessageInterface $message): ?Url {
+    if ($message->hasField($this->getPrimaryField()) && !$message->get($this->getPrimaryField())->isEmpty()) {
+      $par_data_enforcement_notice = current($message->get($this->getPrimaryField())->referencedEntities());
 
       // The route for viewing enforcement notices.
-      $destination = Url::fromRoute('par_enforcement_send_flows.send_enforcement', ['par_data_enforcement_notice' => $par_data_enforcement_notice->id()]);
+      if ($par_data_enforcement_notice instanceof ParDataEntityInterface) {
+        $destination = Url::fromRoute('par_enforcement_send_flows.send_enforcement', ['par_data_enforcement_notice' => $par_data_enforcement_notice->id()]);
 
-      if (!$par_data_enforcement_notice->inProgress() && $destination->access($this->user)) {
-        return new RedirectResponse($destination->toString());
+        return $destination instanceof Url &&
+          !$par_data_enforcement_notice->inProgress() ?
+            $destination :
+            NULL;
       }
     }
+
+    return NULL;
   }
 }

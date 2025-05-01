@@ -9,11 +9,14 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\message\Entity\Message;
+use Drupal\message\MessageInterface;
 use Drupal\par_dashboards\ParFlowAccessTrait;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParControllerTrait;
 use Drupal\par_flows\ParDisplayTrait;
 use Drupal\par_flows\ParFlowException;
+use Drupal\par_flows\ParFlowNegotiatorInterface;
 use Drupal\par_flows\ParRedirectTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Route;
@@ -29,32 +32,32 @@ class ParDashboardsDashboardController extends ControllerBase {
   use ParControllerTrait;
 
   /**
-   * The response cache kill switch.
-   */
-  protected $killSwitch;
-
-  /**
-   * Constructs a \Drupal\par_flows\Form\ParBaseForm.
+   * Constructs a Par Form.
    *
-   * @param \Drupal\Core\Config\Entity\ConfigEntityStorageInterface $flow_storage
+   * @param ConfigEntityStorageInterface $flowStorage
    *   The flow entity storage handler.
-   * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
+   * @param ParDataManagerInterface $par_data_manager
    *   The current user object.
-   * @param \Drupal\Core\Session\AccountInterface $current_user
+   * @param AccountInterface $current_user
    *   The current user object.
-   * @param \Drupal\Core\PageCache\ResponsePolicy\KillSwitch $kill_switch
+   * @param KillSwitch $killSwitch
    *   The page cache kill switch.
    */
-  public function __construct(ConfigEntityStorageInterface $flow_storage, ParDataManagerInterface $par_data_manager, AccountInterface $current_user, KillSwitch $kill_switch) {
-    $this->flowStorage = $flow_storage;
+  public function __construct(/**
+   * The flow negotiator.
+   */
+  protected ConfigEntityStorageInterface $flowStorage, ParDataManagerInterface $par_data_manager, AccountInterface $current_user, /**
+   * The response cache kill switch.
+   */
+  protected KillSwitch $killSwitch) {
     $this->parDataManager = $par_data_manager;
-    $this->killSwitch = $kill_switch;
     $this->setCurrentUser($current_user);
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container) {
     $entity_type_manager = $container->get('entity_type.manager');
     return new static(
@@ -102,17 +105,21 @@ class ParDashboardsDashboardController extends ControllerBase {
     $build = [];
 
     $build['welcome'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Welcome'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      '#type' => 'container',
+      '#attributes' => ['class' => 'govuk-form-group'],
+      'title' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => $this->t('Welcome'),
+        '#attributes' => ['class' => ['govuk-heading-m']],
+      ],
       [
         '#type' => 'markup',
         '#markup' => "<p>Hello! Welcome to the Primary Authority Register.</p>",
       ],
     ];
 
+    // Get the permissions for managing partnerships.
     $can_manage_partnerships = $this->getCurrentUser()->hasPermission('confirm partnership') ||
       $this->getCurrentUser()->hasPermission('update partnership authority details') ||
       $this->getCurrentUser()->hasPermission('update partnership organisation details');
@@ -172,7 +179,7 @@ class ParDashboardsDashboardController extends ControllerBase {
 //    }
 
     // User management
-    if ($this->getCurrentUser()->hasPermission('manage par profile')) {
+    if ($this->getCurrentUser()->hasPermission('manage people')) {
       $build['people'] = [
         '#lazy_builder' => [
           'par_dashboards.components:manageUsersComponent',
@@ -183,7 +190,7 @@ class ParDashboardsDashboardController extends ControllerBase {
     }
 
     // User controls.
-    if ($this->getCurrentUser()->hasPermission('manage par profile')) {
+    if ($this->getCurrentUser()->hasPermission('manage own profile')) {
       $build['user'] = [
         '#lazy_builder' => [
           'par_dashboards.components:manageProfileComponent',

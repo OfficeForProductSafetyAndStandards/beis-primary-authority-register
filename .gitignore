@@ -53,17 +53,25 @@ web/themes/custom/par_theme/assets/vendor/
 # Ignore backups directory used to store a local back of the database.
 /backups/
 
+# Ignore data directory used to store local opensearch data.
+/data/
+
 # Exclude configuration for developer only modules.
 /sync/devel.*
 /sync/simpletest.*
 /sync/par_data_test.*
 /sync/config_inspector.*
+phpcs.xml
+phpunit.xml
+/.phpunit.result.cache
 
 # Exclude test reports
 web/sites/simpletest
 
 # Exclude project files.
 /.idea/
+/.docksal
+/.ddev
 *.DS_Store
 .buildpath
 .project
@@ -79,7 +87,6 @@ package.box
 
 # Exclude local environment settings
 .env
-.env.*
 
 auth.json
 /.csslintrc

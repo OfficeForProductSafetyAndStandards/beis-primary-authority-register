@@ -25,6 +25,7 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     if ($par_data_partnership) {
@@ -41,6 +42,7 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     // Save the partnership so that it can be retrieved for review.
     $par_data_partnership = $this->savePartnership($form, $form_state);
@@ -72,6 +74,7 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
         '#title' => $this->t('I confirm I have reviewed the information above'),
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues("partnership_info_agreed_authority"),
         '#return_value' => 'on',
+        '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
       ];
     }
     else {
@@ -92,6 +95,7 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
@@ -105,6 +109,7 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
@@ -121,7 +126,7 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
       try {
         $par_data_partnership->setParStatus('confirmed_authority');
       }
-      catch (ParDataException $e) {
+      catch (ParDataException) {
         // If the status could not be updated we want to log this but continue.
         $message = $this->t("This status could not be updated to 'Approved by the Authority' for the %label");
         $replacements = [

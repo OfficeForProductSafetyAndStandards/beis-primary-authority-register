@@ -4,6 +4,7 @@ namespace Drupal\par_notification\Plugin\ParLinkAction;
 
 use Drupal\Core\Url;
 use Drupal\message\MessageInterface;
+use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_notification\ParLinkActionBase;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -19,20 +20,34 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  *     "new_deviation_request",
  *     "reviewed_deviation_request",
  *     "new_deviation_response",
- *   }
+ *   },
+ *   field = "field_deviation_request",
  * )
  */
 class ParDeviationRequestView extends ParLinkActionBase {
 
-  public function receive(MessageInterface $message) {
-    if ($message->hasField('field_deviation_request') && !$message->get('field_deviation_request')->isEmpty()) {
-      $par_data_deviation_request = current($message->get('field_deviation_request')->referencedEntities());
+  /**
+   * {@inheritdoc}
+   */
+  protected string $actionText = 'View the deviation request';
 
-      $destination = Url::fromRoute('par_deviation_view_flows.view_deviation', ['par_data_deviation_request' => $par_data_deviation_request->id()]);
+  /**
+   * {@inheritDoc}
+   */
+  public function getUrl(MessageInterface $message): ?Url {
+    if ($message->hasField($this->getPrimaryField()) && !$message->get($this->getPrimaryField())->isEmpty()) {
+      $par_data_deviation_request = current($message->get($this->getPrimaryField())->referencedEntities());
 
-      if (!$par_data_deviation_request->isAwaitingApproval() && $destination->access($this->user)) {
-        return new RedirectResponse($destination->toString());
+      if ($par_data_deviation_request instanceof ParDataEntityInterface) {
+        $destination = Url::fromRoute('par_deviation_view_flows.view_deviation', ['par_data_deviation_request' => $par_data_deviation_request->id()]);
+
+        return $destination instanceof Url &&
+          !$par_data_deviation_request->isAwaitingApproval() ?
+            $destination :
+            NULL;
       }
     }
+
+    return NULL;
   }
 }

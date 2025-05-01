@@ -1,0 +1,4 @@
+update member list:
+  title: 'Update member list'
+  description: 'Allow users to update the details for the membership list or change the type of list.'
+  restrict access: TRUE

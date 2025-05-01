@@ -1,0 +1,9 @@
+//
+// SCSS for the tabs component to allow links to go new page
+//
+
+.govuk-tabs__list-item {
+  a {
+    @include govuk-link-style-text;
+  }
+}

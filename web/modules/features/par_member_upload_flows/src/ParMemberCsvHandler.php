@@ -2,42 +2,39 @@
 
 namespace Drupal\par_member_upload_flows;
 
-use CommerceGuys\Addressing\Exception\UnknownCountryException;
-use Drupal\Component\Datetime\DateTimePlus;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Ajax\AfterCommand;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\RedirectCommand;
+use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityStorageException;
+use Drupal\Core\File\Exception\FileException;
+use Drupal\Core\File\Exception\InvalidStreamWrapperException;
+use Drupal\Core\File\FileExists;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Logger\LoggerChannelTrait;
+use Drupal\address\Repository\CountryRepository;
 use Drupal\file\FileInterface;
+use Drupal\file\FileRepositoryInterface;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
-use Drupal\par_data\Entity\ParDataCoordinatedBusinessType;
 use Drupal\par_data\Entity\ParDataLegalEntity;
-use Drupal\par_data\Entity\ParDataLegalEntityType;
 use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataOrganisationType;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPersonType;
 use Drupal\par_data\Entity\ParDataPremises;
-use Drupal\par_data\Entity\ParDataPremisesType;
 use Drupal\par_data\ParDataException;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParFlowDataHandlerInterface;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
 use Drupal\par_validation\Plugin\Validation\Constraint\FutureDate;
 use Drupal\par_validation\Plugin\Validation\Constraint\PastDate;
-use Drupal\par_validation\Plugin\Validation\Constraint\PastDateValidator;
+use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Exception\UnexpectedValueException;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Constraints\Choice;
-use Symfony\Component\Validator\Constraints\LessThanOrEqual;
-use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
@@ -75,34 +72,13 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   const DATETIME_FORMAT = 'Y-m-d';
 
   /**
-   * The symfony serializer.
+   * The directory to write csv files to.
    *
-   * @var \Symfony\Component\Serializer\Serializer
+   * @var string
    */
-  protected $seriailzer;
+  protected string $directory = 's3private://member-csv/';
 
-  /**
-   * The PAR data manager for acting upon PAR Data.
-   *
-   * @var \Drupal\par_data\ParDataManagerInterface
-   */
-  protected $parDataManager;
-
-  /**
-   * The flow negotiator.
-   *
-   * @var \Drupal\par_flows\ParFlowNegotiatorInterface
-   */
-  protected $negotiator;
-
-  /**
-   * The flow data manager.
-   *
-   * @var \Drupal\par_flows\ParFlowDataHandlerInterface
-   */
-  protected $flowDataHandler;
-
-  public function getMappings() {
+  public function getMappings(): array {
     $mappings = [
       'partnership_id' => 'Partnership id',
       'organisation_name' => 'Organisation name',
@@ -139,36 +115,65 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   /**
    * Constructs a ParFlowNegotiator instance.
    *
-   * @param \Symfony\Component\Serializer\Serializer $serializer
+   * @param \Symfony\Component\Serializer\Serializer $seriailzer
    *   The entity type manager.
-   * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
+   * @param \Drupal\par_data\ParDataManagerInterface $parDataManager
    *   The par data manager.
-   * @param \Drupal\par_flows\ParFlowNegotiatorInterface $negotiation
+   * @param \Drupal\par_flows\ParFlowNegotiatorInterface $negotiator
    *   The flow negotiator.
-   * @param \Drupal\par_flows\ParFlowDataHandlerInterface $data_handler
+   * @param \Drupal\par_flows\ParFlowDataHandlerInterface $flowDataHandler
    *   The flow data handler.
    */
-  public function __construct(Serializer $serializer, ParDataManagerInterface $par_data_manager, ParFlowNegotiatorInterface $negotiator, ParFlowDataHandlerInterface $data_handler) {
-    $this->seriailzer = $serializer;
-    $this->parDataManager = $par_data_manager;
-    $this->negotiator = $negotiator;
-    $this->flowDataHandler = $data_handler;
+  public function __construct(
+    /**
+     * The symfony serializer.
+     */
+    protected Serializer $seriailzer,
+    /**
+     * The PAR data manager for acting upon PAR Data.
+     */
+    protected ParDataManagerInterface $parDataManager,
+    /**
+     * The flow negotiator.
+     */
+    protected ParFlowNegotiatorInterface $negotiator,
+    /**
+     * The flow data manager.
+     */
+    protected ParFlowDataHandlerInterface $flowDataHandler,
+  ) {
+    // Prepare the member-csv directory for reads and writes.
+    $this->getFileSystem()->prepareDirectory($this->directory);
   }
 
-  protected function getDateFormatter() {
+  protected function getDateFormatter(): DateFormatterInterface {
     return \Drupal::service('date.formatter');
+  }
+
+  /**
+   * @return \Drupal\file\FileRepositoryInterface
+   */
+  protected function getFileRepository(): FileRepositoryInterface {
+    return \Drupal::service('file.repository');
+  }
+
+  /**
+   * @return \Drupal\Core\File\FileSystemInterface
+   */
+  protected function getFileSystem(): FileSystemInterface {
+    return \Drupal::service('file_system');
   }
 
   /**
    * Allows non-static methods to be called statically from within the batch.
    *
-   * @param $method
+   * @param mixed $method
    *   The static method being called.
-   * @param $args
-   *   The arguments to be passed to the called method
+   * @param mixed $args
+   *   The arguments to be passed to the called method.
    */
   public static function __callStatic($method, $args) {
-    if (strpos($method, 'batch__') === 0) {
+    if (str_starts_with((string) $method, 'batch__')) {
       $csv_handler = \Drupal::service('par_member_upload_flows.csv_handler');
 
       sleep(3);
@@ -189,52 +194,52 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   /**
    * Get serializer.
    *
-   * @return Serializer
+   * @return \Symfony\Component\Serializer\Serializer
    */
-  public function getSerializer() {
+  public function getSerializer(): Serializer {
     return $this->seriailzer;
   }
 
   /**
-   * Get serializer.
+   * Get data manager.
    *
-   * @return ParDataManagerInterface
+   * @return \Drupal\par_data\ParDataManagerInterface
    */
-  public function getParDataManager() {
+  public function getParDataManager(): ParDataManagerInterface {
     return $this->parDataManager;
   }
 
   /**
    * Get the flow negotiator.
    *
-   * @return ParFlowNegotiatorInterface
+   * @return \Drupal\par_flows\ParFlowNegotiatorInterface
    */
-  public function getFlowNegotiator() {
+  public function getFlowNegotiator(): ParFlowNegotiatorInterface {
     return $this->negotiator;
   }
 
   /**
    * Get the flow data handler.
    *
-   * @return ParFlowDataHandlerInterface
+   * @return \Drupal\par_flows\ParFlowDataHandlerInterface
    */
-  public function getFlowDataHandler() {
+  public function getFlowDataHandler(): ParFlowDataHandlerInterface {
     return $this->flowDataHandler;
   }
 
   /**
    * Get the country repository from the address module.
    */
-  public function getCountryRepository() {
+  public function getCountryRepository(): CountryRepository {
     return \Drupal::service('address.country_repository');
   }
 
   public function getMapping($key) {
     $mappings = $this->getMappings();
-    return isset($mappings[$key]) ? $mappings[$key] : NULL;
+    return $mappings[$key] ?? NULL;
   }
 
-  public function getMappingByHeading($heading) {
+  public function getMappingByHeading($heading): int|string|null {
     $mappings = $this->getMappings();
     $key = array_search($heading, $mappings, TRUE);
     return $key !== FALSE ? $key : NULL;
@@ -242,7 +247,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
   public function getValue($row, $key, $default = NULL) {
     $column = $this->getMapping($key);
-    return $column && isset($row[$column]) ? $row[$column] : $default;
+    return $row[$column] ?? $default;
   }
 
   /**
@@ -253,17 +258,17 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
    *
    * @return \Drupal\Core\Datetime\DrupalDateTime|null
    */
-  public function stringToDate($string, $format = self::DATETIME_FORMAT) {
-    if (isset($string) && !empty($string)) {
+  public function stringToDate($string, string $format = self::DATETIME_FORMAT): ?DrupalDateTime {
+    if (!empty($string)) {
       try {
-        $date = DrupalDateTime::createFromFormat($format . " H:i:s", $string . " 23:59:59", NULL);
+        $date = DrupalDateTime::createFromFormat($format . " H:i:s", $string . " 23:59:59");
         if (empty($date)) {
           throw new \Exception('The date entered cannot be converted to a valid date.');
         }
 
         return $date;
       }
-      catch (\Exception $e) {
+      catch (\Exception) {
         $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning('The date entered cannot be converted to a valid date.');
       }
     }
@@ -271,70 +276,72 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     return NULL;
   }
 
-  protected function getConstraints($row) {
-    /** @var ParDataPremisesType $par_data_premises_type */
+  protected function getConstraints($row): array {
+    /** @var \Drupal\par_data\Entity\ParDataPremisesType $par_data_premises_type */
     $par_data_premises_type = $this->getParDataManager()->getParBundleEntity('par_data_premises');
     $par_data_legal_entity_type = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
 
     // The end date must be greater than the start date @see PAR-1477, however,
     // the start date must first be converted to a valid DateTime string.
-    $start_date_input = isset($row[$this->getMapping('membership_start')]) ? $row[$this->getMapping('membership_start')] : '';
+    $start_date_input = $row[$this->getMapping('membership_start')] ?? '';
     if ($start_date_input) {
       try {
         $date = \DateTime::createFromFormat(self::DATE_FORMAT . " H:i:s", $start_date_input . " 23:59:59");
         if (empty($date) || !$date instanceof \DateTimeInterface) {
-          throw new \Exception('The start date cannot be used to compare the end date.');
+          throw new \Exception('The start date is not valid.');
         }
         $start_date = $date->format(\DateTimeInterface::ATOM);
       }
-      catch (\Exception $e) {
+      catch (\Exception) {
         $start_date = NULL;
       }
     }
 
     $legal_entity_options = $par_data_legal_entity_type->getAllowedValues('legal_entity_type');
-    $country_options = $this->getCountryRepository()->getList(NULL) + $par_data_premises_type->getAllowedValues('nation');
+    $country_options = $this->getCountryRepository()->getList() + $par_data_premises_type->getAllowedValues('nation');
     $boolean_options = ['Yes', 'No', 'Y', 'N'];
     return [
       'organisation_name' => [
         new Length(['max' => 500]),
         new NotBlank([
-          'message' => 'The value could not be found.',
+          'message' => "The value for the column '{$this->getMapping('organisation_name')}' is not set.",
         ]),
       ],
       'email' => [
         new Length(['max' => 500]),
         new Email(),
         new NotBlank([
-          'message' => 'The value could not be found.',
+          'message' => "The value for the column '{$this->getMapping('email')}' is not set.",
         ]),
       ],
       'membership_start' => [
         new DateTime(['format' => self::DATE_FORMAT]),
         new NotBlank([
-          'message' => 'The value could not be found.',
+          'message' => "The value for the column '{$this->getMapping('membership_start')}' is not set.",
         ]),
         new PastDate(['value' => 'tomorrow']),
       ],
       'membership_end' => [
         new DateTime(['format' => self::DATE_FORMAT]),
         new FutureDate([
-          'value' => isset($start_date) ? $start_date : 'today',
+          'value' => $start_date ?? 'today',
           'message' => 'The membership end date should be after the start date.',
         ]),
       ],
       'legal_entity_name_first' => [
         new NotBlank([
-          'message' => 'The value could not be found.',
+          'message' => "The value for the column '{$this->getMapping('legal_entity_name_first')}' is not set.",
         ]),
       ],
       'address_line_1' => [
         new NotBlank([
-          'message' => 'The value could not be found.',
+          'message' => "The value for the column '{$this->getMapping('address_line_1')}' is not set.",
         ]),
       ],
       'nation' => [
-        new NotBlank(),
+        new NotBlank([
+          'message' => "The value for the column '{$this->getMapping('nation')}' is not set.",
+        ]),
         new Choice([
           'choices' => array_map('strtolower', $country_options),
           'message' => 'The value you entered is not a valid selection, please see the Member Guidance Page for a full list of available country codes.',
@@ -348,7 +355,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       ],
       'legal_entity_type_first' => [
         new NotBlank([
-          'message' => 'The value could not be found.',
+          'message' => "The value for the column '{$this->getMapping('legal_entity_type_first')}' is not set.",
         ]),
         new Choice([
           'choices' => array_map('strtolower', $legal_entity_options),
@@ -373,7 +380,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   /**
    * Extract the individual entities from the member.
    */
-  public function extract(ParDataCoordinatedBusiness $member) {
+  public function extract(ParDataCoordinatedBusiness $member): array {
     $organisation = $member->getOrganisation(TRUE);
     $premises = $organisation ? $organisation->getPremises(TRUE) : NULL;
     $person = $organisation ? $organisation->getPerson(TRUE) : NULL;
@@ -388,94 +395,94 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     ];
   }
 
-  public function transform($row) {
+  public function transform($row): array {
     $data = [];
 
     foreach ($row as $column => $value) {
       // Don't process empty values.
-      if (empty($row[$column])) {
+      if (empty($value)) {
         continue;
       }
 
       $key = $this->getMappingByHeading($column);
       switch ($key) {
-          case 'partnership_id':
-            $par_data_partnership = ParDataPartnership::load($value);
-            if ($par_data_partnership) {
-              $data[$column] = $par_data_partnership;
-            }
-            break;
+        case 'partnership_id':
+          $par_data_partnership = ParDataPartnership::load($value);
+          if ($par_data_partnership) {
+            $data[$column] = $par_data_partnership;
+          }
+          break;
 
-          case 'nation':
-            $country_codes = $this->getCountryRepository()->getList();
-            $country_key = array_search($value, $country_codes);
+        case 'nation':
+          $country_codes = $this->getCountryRepository()->getList();
+          $country_key = array_search($value, $country_codes);
 
-            /** @var ParDataPremisesType $par_data_premises_type */
-            $par_data_premises_type = $this->getParDataManager()->getParBundleEntity('par_data_premises');
+          /** @var \Drupal\par_data\Entity\ParDataPremisesType $par_data_premises_type */
+          $par_data_premises_type = $this->getParDataManager()->getParBundleEntity('par_data_premises');
 
-            // If the nation is a country of the UK.
-            if ($system_value = $par_data_premises_type->getAllowedValueBylabel('nation', $value, TRUE)) {
-              $data[$column] = $system_value;
-              $data[$this->getMapping('country_code')] = 'GB';
-            }
-            // If the nation is an international country.
-            elseif ($country_key !== FALSE) {
-              $data[$this->getMapping('country_code')] = $country_key;
-            }
-            break;
+          // If the nation is a country of the UK.
+          if ($system_value = $par_data_premises_type->getAllowedValueBylabel('nation', $value, TRUE)) {
+            $data[$column] = $system_value;
+            $data[$this->getMapping('country_code')] = 'GB';
+          }
+          // If the nation is an international country.
+          elseif ($country_key !== FALSE) {
+            $data[$this->getMapping('country_code')] = $country_key;
+          }
+          break;
 
-          case 'email':
-            $data[$column] = strtolower($value);
-            break;
+        case 'email':
+          $data[$column] = strtolower((string) $value);
+          break;
 
-          case 'membership_start':
-            try {
-              $date = DrupalDateTime::createFromFormat(self::DATE_FORMAT, $value, NULL, ['validate_format' => FALSE]);
-              $data[$column] = $date->format(self::DATETIME_FORMAT);
-            }
-            catch (\Exception $e) {
+        case 'membership_start':
+          try {
+            $date = DrupalDateTime::createFromFormat(self::DATE_FORMAT, $value, NULL, ['validate_format' => FALSE]);
+            $data[$column] = $date->format(self::DATETIME_FORMAT);
+          }
+          catch (\Exception) {
 
-            }
+          }
 
-            break;
+          break;
 
-          case 'membership_end':
-            try {
-              // Create the date, setting the time to the last possible time in the day.
-              $cease_date = DrupalDateTime::createFromFormat(self::DATE_FORMAT . " H:i:s", $value . " 23:59:59", NULL, ['validate_format' => FALSE]);
-              $data[$column] = $cease_date->format(self::DATETIME_FORMAT);
-            }
-            catch (\Exception $e) {
+        case 'membership_end':
+          try {
+            // Create the date, setting the time to the last possible time in the day.
+            $cease_date = DrupalDateTime::createFromFormat(self::DATE_FORMAT . " H:i:s", $value . " 23:59:59", NULL, ['validate_format' => FALSE]);
+            $data[$column] = $cease_date->format(self::DATETIME_FORMAT);
+          }
+          catch (\Exception) {
 
-            }
+          }
 
-            $current_date = new DrupalDateTime();
+          $current_date = new DrupalDateTime();
 
-            // Only cease the membership if the expiry date is in the past.
-            if ($cease_date < $current_date) {
-              $data[$this->getMapping('ceased')] = TRUE;
-            }
+          // Only cease the membership if the expiry date is in the past.
+          if (isset($cease_date) && $cease_date < $current_date) {
+            $data[$this->getMapping('ceased')] = TRUE;
+          }
 
-            break;
+          break;
 
-          case 'covered':
-            $data[$column] = strtolower($value) === 'no' || strtolower($value) === 'n' ? FALSE : TRUE;
-            break;
+        case 'covered':
+          $data[$column] = !(strtolower((string) $value) === 'no' || strtolower((string) $value) === 'n');
+          break;
 
-          case 'legal_entity_type_first':
-          case 'legal_entity_type_second':
-          case 'legal_entity_type_third':
-            /** @var ParDataLegalEntityType $par_data_legal_entity_type */
-            $par_data_legal_entity_type = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
+        case 'legal_entity_type_first':
+        case 'legal_entity_type_second':
+        case 'legal_entity_type_third':
+          /** @var \Drupal\par_data\Entity\ParDataLegalEntityType $par_data_legal_entity_type */
+          $par_data_legal_entity_type = $this->getParDataManager()->getParBundleEntity('par_data_legal_entity');
 
-            // If user entered value matches an allowed .
-            if ($system_value = $par_data_legal_entity_type->getAllowedValueBylabel('legal_entity_type', $value, TRUE)) {
-              $data[$column] = $system_value;
-            }
-            break;
+          // If user entered value matches an allowed .
+          if ($system_value = $par_data_legal_entity_type->getAllowedValueBylabel('legal_entity_type', $value, TRUE)) {
+            $data[$column] = $system_value;
+          }
+          break;
 
-          default:
-            $data[$column] = $value;
+        default:
+          $data[$column] = $value;
       }
     }
 
@@ -488,16 +495,16 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
    * @param array $row
    *   The row of data to build the entity from.
    *
-   * @return []
+   * @return array
    *   The generated member entities.
    */
-  public function normalize(array $row) {
+  public function normalize(array $row): array {
     // We need to get the bundle information to transform bundles into labels.
-    /** @var ParDataCoordinatedBusinessType $par_data_coordinated_business_type */
-    /** @var ParDataOrganisationType $par_data_organisation_type */
-    /** @var ParDataPremisesType $par_data_premises_type */
-    /** @var ParDataPersonType $par_data_person_type */
-    /** @var ParDataLegalEntityType $par_data_legal_entity_type */
+    /** @var \Drupal\par_data\Entity\ParDataCoordinatedBusinessType $par_data_coordinated_business_type */
+    /** @var \Drupal\par_data\Entity\ParDataOrganisationType $par_data_organisation_type */
+    /** @var \Drupal\par_data\Entity\ParDataPremisesType $par_data_premises_type */
+    /** @var \Drupal\par_data\Entity\ParDataPersonType $par_data_person_type */
+    /** @var \Drupal\par_data\Entity\ParDataLegalEntityType $par_data_legal_entity_type */
     $par_data_coordinated_business_type = $this->getParDataManager()->getParBundleEntity('par_data_coordinated_business');
     $par_data_organisation_type = $this->getParDataManager()->getParBundleEntity('par_data_organisation');
     $par_data_premises_type = $this->getParDataManager()->getParBundleEntity('par_data_premises');
@@ -514,9 +521,10 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
         'matching' => [
           'AND' => [
             ['field_organisation.entity.organisation_name', $this->getValue($data, 'organisation_name'), '='],
-          ]
+          ],
         ],
       ];
+      /** @var \Drupal\par_data\Entity\ParDataCoordinatedBusiness[] $matching_members */
       $matching_members = $this->getParDataManager()
         ->getEntitiesByQuery('par_data_coordinated_business', $conditions);
 
@@ -534,8 +542,8 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
           $legal_entity = $organisation ? $organisation->getLegalEntity(TRUE) : NULL;
 
           if ($legal_entity
-              && $this->getValue($data, 'legal_entity_name_first')
-              && $legal_entity->get('registered_name')->getString() !== $this->getValue($data, 'legal_entity_name_first')) {
+            && $this->getValue($data, 'legal_entity_name_first')
+            && $legal_entity->get('registered_name')->getString() !== $this->getValue($data, 'legal_entity_name_first')) {
             continue;
           }
 
@@ -558,10 +566,10 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       ];
       // Secondary legal entities are optional.
       if ($this->getValue($data, 'legal_entity_name_second')) {
-        $normalized['par_data_legal_entity'][] = ParDataLegalEntity::create();
+        $normalized['par_data_legal_entity'][1] = ParDataLegalEntity::create();
       }
       if ($this->getValue($data, 'legal_entity_name_third')) {
-        $normalized['par_data_legal_entity'][] = ParDataLegalEntity::create();
+        $normalized['par_data_legal_entity'][2] = ParDataLegalEntity::create();
       }
     }
 
@@ -618,7 +626,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     }
     // Set the third legal entity.
     if ($this->getValue($data, 'legal_entity_name_third')) {
-      if (!isset($normalized['par_data_legal_entity'][21])) {
+      if (!isset($normalized['par_data_legal_entity'][2])) {
         $normalized['par_data_legal_entity'][2] = ParDataLegalEntity::create();
       }
       $normalized['par_data_legal_entity'][2]->set('registered_name', $this->getValue($data, 'legal_entity_name_third'));
@@ -626,37 +634,42 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       $normalized['par_data_legal_entity'][2]->set('legal_entity_type', $this->getValue($data, 'legal_entity_type_third'));
     }
 
+    // Set the trading names.
+    $normalized['par_data_organisation']->set('trading_name', $this->getValue($data, 'organisation_name'));
+
     return $normalized;
   }
 
   /**
    * De-normalize this member into an array of data.
    *
-   * @param ParDataCoordinatedBusiness $member
+   * @param \Drupal\par_data\Entity\ParDataCoordinatedBusiness $member
    *
    * @return array
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
-  protected function denormalize(ParDataCoordinatedBusiness $member) {
+  protected function denormalize(ParDataCoordinatedBusiness $member): array {
     $entities = $this->extract($member);
 
     // We need to get the bundle information to transform bundles into labels.
-    /** @var ParDataCoordinatedBusinessType $par_data_coordinated_business_type */
-    /** @var ParDataOrganisationType $par_data_organisation_type */
-    /** @var ParDataPremisesType $par_data_premises_type */
-    /** @var ParDataPersonType $par_data_person_type */
-    /** @var ParDataLegalEntityType $par_data_legal_entity_type */
+    /** @var \Drupal\par_data\Entity\ParDataCoordinatedBusinessType $par_data_coordinated_business_type */
+    /** @var \Drupal\par_data\Entity\ParDataOrganisationType $par_data_organisation_type */
+    /** @var \Drupal\par_data\Entity\ParDataPremisesType $par_data_premises_type */
+    /** @var \Drupal\par_data\Entity\ParDataPersonType $par_data_person_type */
+    /** @var \Drupal\par_data\Entity\ParDataLegalEntityType $par_data_legal_entity_type */
     foreach ($entities as $entity_type => $entity) {
       ${$entity_type . "_type"} = $this->getParDataManager()->getParBundleEntity($entity_type);
     }
 
-    /** @var ParDataCoordinatedBusiness $par_data_coordinated_business */
-    /** @var ParDataOrganisation $par_data_organisation */
-    /** @var ParDataPremises $par_data_premises */
-    /** @var ParDataPerson $par_data_person */
-    /** @var ParDataLegalEntity[] $par_data_legal_entity */
+    /** @var \Drupal\par_data\Entity\ParDataCoordinatedBusiness $par_data_coordinated_business */
+    /** @var \Drupal\par_data\Entity\ParDataOrganisation $par_data_organisation */
+    /** @var \Drupal\par_data\Entity\ParDataPremises $par_data_premises */
+    /** @var \Drupal\par_data\Entity\ParDataPerson $par_data_person */
+    /** @var \Drupal\par_data\Entity\ParDataLegalEntity[] $par_data_legal_entity */
     extract($entities);
 
-    $address = $par_data_premises ? $par_data_premises->get('address')->first() : NULL;
+    $address = $par_data_premises?->get('address')->first();
 
     return [
       $this->getMapping('organisation_name') => $par_data_organisation ? $par_data_organisation->get('organisation_name')->getString() : '',
@@ -689,39 +702,33 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   /**
    * {@inheritdoc}
    */
-  public function loadFile(FileInterface $file, array &$rows = []) {
-    // Need to set auto_detect_line_endings to deal with Mac line endings.
-    // @see http://php.net/manual/en/function.fgetcsv.php
-    ini_set('auto_detect_line_endings', TRUE);
-
+  #[\Override]
+  public function loadFile(FileInterface $file, array &$rows = []): void {
     try {
       $csv = file_get_contents($file->getFileUri());
-      $data = $this->sanitize($this->getSerializer()->decode($csv, 'csv'));
+      $data = $this->getSerializer()->decode($csv, 'csv', [CsvEncoder::AS_COLLECTION_KEY => TRUE]);
 
-      // We have a limit of that we can process to, this limit
-      // is tested with and anything over cannot be supported.
-      if (count($data) < 2 || count($data) > self::MAX_ROW_LIMIT) {
-        throw new ParDataException('There are too many or too few rows in this CSV file.');
+      // Must have at least one data row.
+      if (count($data) < 1) {
+        throw new ParDataException('There are too few rows in this CSV file. There must be at lest one data row after the header row');
       }
 
-      // It is important to add the partnership ID to each row for later processing.
+      // We have a limit of that we can process to, this limit
+      // is tested and anything over cannot be supported.
+      if (count($data) > self::MAX_ROW_LIMIT) {
+        throw new ParDataException('There are too many rows in this CSV file. The limit is ' . self::MAX_ROW_LIMIT . '.');
+      }
+
+      // Add the partnership ID to each row for later processing.
+      if (!$partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership')) {
+        throw new ParDataException('The partnership can\'t be identified.');
+      }
       foreach ($data as $column => $row) {
-        $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-        if ($partnership) {
-          $data[$column]['partnership id'] = $this->getFlowDataHandler()->getParameter('par_data_partnership')->id();
-        }
-        else {
-          throw new ParDataException('The partnership can\'t be identified.');
-        }
+        $data[$column]['partnership id'] = $partnership->id();
       }
     }
     catch (UnexpectedValueException $exception) {
-      $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
-      return $exception->getMessage();
-    }
-    catch (ParDataException $exception) {
-      $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
-      return $exception->getMessage();
+      throw new ParDataException($exception->getMessage(), $exception->getCode());
     }
 
     $rows = array_merge($rows, $data);
@@ -730,32 +737,58 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   /**
    * Save data to a CSV file.
    *
+   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
+   *   The partnership to generate the name for.
    * @param array $rows
    *   An array to add processed rows to.
-   * @param $par_data_partnership
-   *   The partnership to generate the name for.
    *
-   * @return bool
+   * @return bool|FileInterface
+   *   Return the file if successfully saved, otherwise return false.
    */
-  public function saveFile(array $rows = [], $par_data_partnership) {
+  #[\Override]
+  public function saveFile(ParDataPartnership $par_data_partnership, array $rows = []): bool|FileInterface {
     $data = $this->getSerializer()->encode($rows, 'csv');
 
-    $directory = 's3private://member-csv/';
     $name = str_replace(' ', '_', "Member list for " . lcfirst($par_data_partnership->label()));
-    return file_save_data($data, $directory . $name . '.' . self::FILE_EXTENSION, FileSystemInterface::EXISTS_REPLACE);
+    $file_repository = $this->getFileRepository();
+
+    try {
+      $file = $file_repository->writeData($data, $this->directory . $name . '.' . self::FILE_EXTENSION, FileExists::Replace);
+    }
+    catch (FileException | InvalidStreamWrapperException | EntityStorageException) {
+      return FALSE;
+    }
+
+    return $file;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getColumns() {
-    return array_values($this->getMappings());
+  #[\Override]
+  public function getColumns($processed = TRUE): array {
+    $mappings = $this->getMappings();
+
+    // These mappings contain processed values.
+    $processed_properties = [
+      'partnership_id',
+      'country_code',
+      'ceased',
+    ];
+
+    // Exclude processed properties if not requested.
+    if (!$processed) {
+      $mappings = array_filter($mappings, fn($key) => !in_array($key, $processed_properties), ARRAY_FILTER_USE_KEY);
+    }
+
+    return array_values($mappings);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function lock(ParDataPartnership $par_data_partnership) {
+  #[\Override]
+  public function lock(ParDataPartnership $par_data_partnership): void {
     if (!$par_data_partnership->lockMembership()) {
       throw new ParCsvProcessingException('The membership list could not be locked, processing cannot continue.');
     }
@@ -764,14 +797,15 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   /**
    * {@inheritdoc}
    */
-  public function unlock(ParDataPartnership $par_data_partnership) {
+  #[\Override]
+  public function unlock(ParDataPartnership $par_data_partnership): void {
     $par_data_partnership->unlockMembership();
   }
 
   /**
    * Santizie all csv rows.
    */
-  protected function sanitize(array $rows) {
+  protected function sanitize(array $rows): array {
     $data = [];
 
     foreach ($rows as $index => $row) {
@@ -783,7 +817,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       // Ignore empty rows.
       if (!empty($row)) {
         foreach ($row as $column => $value) {
-          $data[$index][strtolower($column)] = Xss::filter(trim($value));
+          $data[$index][strtolower($column)] = Xss::filter(trim((string) $value));
         }
       }
     }
@@ -792,34 +826,69 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   }
 
   /**
+   * Case insensitive compare.
+   */
+  protected function caseInsensitiveCompare($value, $comparison): bool {
+    return !empty($value) && (strtolower((string) $value) === strtolower((string) $comparison));
+  }
+
+  /**
    * {@inheritdoc}
    */
-  public function validate(array $rows) {
+  #[\Override]
+  public function validate(array $rows): ?array {
     $errors = [];
 
-    foreach ($rows as $index => $row) {
-      // Check that all headings are supported.
-      $diff_keys = array_diff_key($row, $this->getColumns());
-      if (!empty($diff_Keys)) {
-        $errors[] = new ParCsvViolation($index+2, NULL, 'The column headings are incorrect or missing.');
-      }
+    // Use the headings from the first row.
+    $headings = array_keys($rows[0]);
+    // Get all the columns we want to validate.
+    $columns = $this->getColumns(FALSE);
+
+    // Use the first row to check that all headings in the csv are supported.
+    $unknown_keys = array_filter(array_udiff($headings, $this->getColumns(), 'strcasecmp'));
+    $unknown_keys_string = implode(', ', $unknown_keys);
+    if (!empty($unknown_keys)) {
+      $errors['headers_unknown'] = new ParCsvViolation(
+        1,
+        NULL,
+        "Some unidentified columns were found in the csv, these columns will not be imported: $unknown_keys_string",
+        FALSE,
+      );
+    }
+
+    // Use the first row to check that all headers are present.
+    $missing_keys = array_udiff($columns, $headings, 'strcasecmp');
+    $missing_keys_string = implode(', ', $missing_keys);
+    if (!empty($missing_keys)) {
+      $errors['headers_missing'] = new ParCsvViolation(
+        1,
+        NULL,
+        "There are some columns missing from your csv, see the Member Guidance Page for all headings: $missing_keys_string",
+        FALSE,
+      );
+    }
+
+    // Rows must be sanitised before validating.
+    foreach ($this->sanitize($rows) as $index => $row) {
+      // Get the validation constraints.
+      $constraints = $this->getConstraints($row);
 
       $validator = Validation::createValidator();
-      foreach ($this->getConstraints($row) as $key => $constraints) {
+      foreach ($constraints as $key => $constraint) {
         $column = $this->getMapping($key);
 
         // Ensure case insensitive validation.
-        $value = isset($row[$column]) ? $row[$column] : NULL;
+        $value = $row[$column] ?? NULL;
 
-        if (NULL !== $constraints) {
+        if (NULL !== $constraint) {
           // Ensure all strings are validated as case insensitive values.
           $value = is_string($value) ? strtolower($value) : $value;
 
           // Validate constraints.
-          $violations = $validator->validate($value, $constraints);
+          $violations = $validator->validate($value, $constraint);
 
           foreach ($violations as $violation) {
-            $errors[] = new ParCsvViolation($index+2, $column, $violation->getMessage());
+            $errors[] = new ParCsvViolation($index + 2, $column, $violation->getMessage());
           }
         }
       }
@@ -828,19 +897,25 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     return !empty($errors) ? $errors : NULL;
   }
 
-  public function backup(ParDataPartnership $par_data_partnership) {
-    $existing_members = $par_data_partnership->getCoordinatedMember();
+  /**
+   * Filter the errors returning only the fatal errors that should stop the upload.
+   *
+   * @param array $errors
+   *
+   * @return array
+   */
+  public function filterFatalErrors(array $errors): array {
+    return array_filter($errors, fn($error) => $error instanceof ParCsvViolation && $error->isFatal());
+  }
 
-    return $existing_members;
+  public function backup(ParDataPartnership $par_data_partnership) {
+    return $par_data_partnership->getCoordinatedMember();
   }
 
   /**
    * {@inheritdoc}
-   *
-   * The headings are defined once here (for compilation)
-   * and once on the self::getMappings() method for validation.
    */
-  public function generate(array $members) {
+  public function generate(array $members): array {
     $rows = [];
 
     foreach ($members as $index => $par_data_coordinated_business) {
@@ -851,51 +926,63 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   }
 
   /**
-   * AJAX helper form generating the downloaded member file.
+   * Helper form generating the members download file.
    *
-   * @return mixed
+   * @param \Drupal\par_data\Entity\ParDataPartnership
+   *
+   * @return \Drupal\File\FileInterface|void
    */
   public function download(ParDataPartnership $par_data_partnership) {
     $existing_members = $par_data_partnership->getCoordinatedMember();
 
     // Generate and save member list.
     $data = $this->generate($existing_members);
-    $file = $this->saveFile($data, $par_data_partnership);
+    $file = $this->saveFile($par_data_partnership, $data);
 
     // Redirect to saved file.
-    if ($file) {
+    if ($file instanceof FileInterface) {
       return $file;
     }
   }
 
   /**
    * @param $data
-   * @param ParDataPartnership $par_data_partnership
    *
    *
    * @return array
    *   An array of members that were processed and saved.
    */
-  public function process($data, ParDataPartnership $par_data_partnership) {
+  public function process($data): array {
     $new_members = [];
 
-    foreach ($data as $index => $row) {
+    // Sanitise data at the latest possible point to improve validation.
+    $data = $this->sanitize($data);
+
+    foreach ($data as $row) {
       $member = $this->normalize($row);
 
       if ($member) {
-        /** @var ParDataCoordinatedBusiness $par_data_coordinated_business */
-        /** @var ParDataOrganisation $par_data_organisation */
-        /** @var ParDataPremises $par_data_premises */
-        /** @var ParDataPerson $par_data_person */
-        /** @var ParDataLegalEntity[] $par_data_legal_entity */
-        extract($member);
+        /** @var \Drupal\par_data\Entity\ParDataCoordinatedBusiness $par_data_coordinated_business */
+        $par_data_coordinated_business = $member['par_data_coordinated_business'];
+
+        /** @var \Drupal\par_data\Entity\ParDataOrganisation $par_data_organisation */
+        $par_data_organisation = $member['par_data_organisation'];
+
+        /** @var \Drupal\par_data\Entity\ParDataPremises $par_data_premises */
+        $par_data_premises = $member['par_data_premises'];
+
+        /** @var \Drupal\par_data\Entity\ParDataPerson $par_data_person */
+        $par_data_person = $member['par_data_person'];
+
+        /** @var \Drupal\par_data\Entity\ParDataLegalEntity[] $par_data_legal_entities */
+        $par_data_legal_entities = $member['par_data_legal_entity'];
 
         // Try to save the address.
         try {
           $par_data_premises->save();
         }
         catch (EntityStorageException $exception) {
-            $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
+          $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
         }
 
         // Try to save the person.
@@ -906,16 +993,6 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
           $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
         }
 
-        foreach ($par_data_legal_entity as $e) {
-          // Try to save the legal entity.
-          try {
-            $e->save();
-          }
-          catch (EntityStorageException $exception) {
-            $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
-          }
-        }
-
         // Add the references to the organisation.
         if ($par_data_premises->id()) {
           $par_data_organisation->set('field_premises', $par_data_premises);
@@ -923,8 +1000,15 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
         if ($par_data_person->id()) {
           $par_data_organisation->set('field_person', $par_data_person);
         }
-        if (current($par_data_legal_entity)->id()) {
-          $par_data_organisation->set('field_legal_entity', $par_data_legal_entity);
+
+        foreach ($par_data_legal_entities as $legal_entity) {
+          // Try to save the legal entity.
+          try {
+            $par_data_organisation->addLegalEntity($legal_entity);
+          }
+          catch (EntityStorageException $exception) {
+            $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
+          }
         }
 
         // Try to save the organisation.
@@ -935,7 +1019,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
           $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
         }
 
-        if (isset($saved) && !empty($saved)) {
+        if ($saved) {
           $par_data_coordinated_business->set('field_organisation', $par_data_organisation);
 
           // Try to save the coordinated member.
@@ -954,10 +1038,13 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     return $new_members;
   }
 
-  public function update(ParDataPartnership $par_data_partnership, $members) {
-    $new_members = array_filter($members, function($v) {
-      return ($v instanceof ParDataCoordinatedBusiness);
-    });
+  /**
+   * Update a partnership with a set of members.
+   *
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   */
+  public function update(ParDataPartnership $par_data_partnership, $members): ?int {
+    $new_members = array_filter($members, fn($v) => $v instanceof ParDataCoordinatedBusiness);
 
     $par_data_partnership->set('field_coordinated_business', array_values($new_members));
     return $par_data_partnership->save();
@@ -966,16 +1053,16 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   /**
    * Whether the member can be deleted, only appropriate for CSV upload.
    *
-   * @param ParDataCoordinatedBusiness $member
+   * @param \Drupal\par_data\Entity\ParDataCoordinatedBusiness $member
    *
    * @return bool
    *   Whether the member can be deleted.
    */
-  public function canDestroyMember(ParDataCoordinatedBusiness $member) {
+  public function canDestroyMember(ParDataCoordinatedBusiness $member): bool {
     if ($par_data_organisation = $member->getOrganisation(TRUE)) {
       $par_data_enforcement_notices = $par_data_organisation->getRelationships('par_data_enforcement_notice');
-      foreach ($par_data_enforcement_notices as $uuid => $relationship) {
-        if ($relationship->getEntity()->isLiving()) {
+      foreach ($par_data_enforcement_notices as $relationship) {
+        if ($relationship->getEntity()->isActive()) {
           return FALSE;
         }
       }
@@ -984,10 +1071,8 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     return TRUE;
   }
 
-  public function clean($old, $new, $par_data_partnership) {
-    $diff = array_udiff($old, $new, function ($a, $b) {
-        return $a->id() - $b->id();
-      }
+  public function clean($old, $new, $par_data_partnership): void {
+    $diff = array_udiff($old, $new, fn($a, $b) => $a->id() - $b->id()
     );
 
     // Re-load the partnership to get any updates perforced during batch processes.
@@ -1010,9 +1095,12 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   /**
    * AJAX helper form generating the downloaded member file.
    *
-   * @return mixed
+   * @param array $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *
+   * @return \Drupal\Core\Ajax\AjaxResponse
    */
-  public static function _ajaxDownload(array &$form, FormStateInterface $form_state) {
+  public static function _ajaxDownload(array &$form, FormStateInterface $form_state): AjaxResponse {
     $response = new AjaxResponse();
     $csv_handler = \Drupal::service('par_member_upload_flows.csv_handler');
     $par_data_partnership = ParDataPartnership::load($form_state->getValue('par_data_partnership'));
@@ -1027,11 +1115,11 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     }
     else {
       $element = [
-        '#markup' => '<p class="error">There has been an error generating the member list, please contact pa@beis.gov.uk for assistance</p>',
+        '#markup' => '<p class="error">There has been an error generating the member list, please contact pa@businessandtrade.gov.uk for assistance</p>',
       ];
       $renderer = \Drupal::service('renderer');
       $id = $form_state->getTriggeringElement()['#attributes']['id'];
-      $response->addCommand(new AfterCommand('#'.$id, $renderer->render($element)));
+      $response->addCommand(new AfterCommand('#' . $id, $renderer->render($element)));
     }
 
     // Remove all messages in the messenger bag for ajax callbacks.
@@ -1044,12 +1132,14 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
   /**
    * Batch download helper.
    *
-   * @param $par_data_partnership
+   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
    *   The partnership whose member list if being generated.
    * @param $cid
    *   The cache id that any output needs to be saved to.
+   *
+   * @throws \ReflectionException
    */
-  public function batchGenerate($par_data_partnership, $cid) {
+  public function batchGenerate(ParDataPartnership $par_data_partnership, $cid): void {
     $csv_handler = \Drupal::service('par_member_upload_flows.csv_handler');
     $csv_handler_class = (new \ReflectionClass($csv_handler))->getName();
 
@@ -1068,24 +1158,24 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     foreach ($chunks as $chunk) {
       $batch['operations'][] = [
         [$csv_handler_class, 'bactch_generate'],
-        [$members]
+        [$members],
       ];
     }
 
     // 2: Save the list of members.
     $batch['operations'][] = [
       [$csv_handler_class, 'batchSaveFile'],
-      [$par_data_partnership, $cid]
+      [$par_data_partnership, $cid],
     ];
 
     batch_set($batch);
   }
 
-  public function upload($data, $par_data_partnership) {
+  public function upload($data, $par_data_partnership): bool {
     try {
       // 1. Lock the member list.
       try {
-        $locked = $this->lock($par_data_partnership);
+        $this->lock($par_data_partnership);
       }
       catch (ParCsvProcessingException $exception) {
         $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
@@ -1096,7 +1186,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
       $old_members = $this->backup($par_data_partnership);
 
       // 3. Process the new members self::process().
-      $members = $this->process($data, $par_data_partnership);
+      $members = $this->process($data);
 
       // 4. Replace old members with new members.
       $updated = $this->update($par_data_partnership, $members);
@@ -1109,13 +1199,18 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
       return (bool) $updated;
     }
-    catch (ParCsvProcessingException $exception) {
+    catch (ParCsvProcessingException | EntityStorageException $exception) {
       $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
       return FALSE;
     }
   }
 
-  public function batchUpload($data, $par_data_partnership) {
+  /**
+   * Upload data as a batch.
+   *
+   * @throws \ReflectionException
+   */
+  public function batchUpload($data, $par_data_partnership): bool {
     $csv_handler = \Drupal::service('par_member_upload_flows.csv_handler');
     $csv_handler_class = (new \ReflectionClass($csv_handler))->getName();
 
@@ -1131,7 +1226,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
     // 1. Lock the member list.
     try {
-      $locked = $this->lock($par_data_partnership);
+      $this->lock($par_data_partnership);
     }
     catch (ParCsvProcessingException $exception) {
       $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
@@ -1146,26 +1241,26 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     foreach ($chunks as $d) {
       $batch['operations'][] = [
         [$csv_handler_class, 'batch__process'],
-        [$d, $par_data_partnership]
+        [$d, $par_data_partnership],
       ];
     }
 
     // 4. Replace old members with new members.
     $batch['operations'][] = [
       [$csv_handler_class, 'batch__update'],
-      [$par_data_partnership]
+      [$par_data_partnership],
     ];
 
     // 5. Remove old members that are not in the current list.
     $batch['operations'][] = [
       [$csv_handler_class, 'batch__clean'],
-      [$old_members, $par_data_partnership]
+      [$old_members, $par_data_partnership],
     ];
 
     // 6. Unlock the member list.
     $batch['operations'][] = [
       [$csv_handler_class, 'batch__unlock'],
-      [$par_data_partnership]
+      [$par_data_partnership],
     ];
 
     batch_set($batch);
@@ -1173,7 +1268,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     return TRUE;
   }
 
-  public static function batch__process($data, ParDataPartnership $par_data_partnership, &$context) {
+  public static function batch__process($data, ParDataPartnership $par_data_partnership, &$context): void {
     $csv_handler = \Drupal::service('par_member_upload_flows.csv_handler');
     $context['message'] = 'Processing new members.';
 
@@ -1184,7 +1279,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     }
   }
 
-  public static function batch__update(ParDataPartnership $par_data_partnership, &$context) {
+  public static function batch__update(ParDataPartnership $par_data_partnership, &$context): void {
     $csv_handler = \Drupal::service('par_member_upload_flows.csv_handler');
     $context['message'] = 'Updating the member list.';
 
@@ -1196,7 +1291,7 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     }
   }
 
-  public static function batch__clean($old_members, $par_data_partnership, &$context) {
+  public static function batch__clean($old_members, $par_data_partnership, &$context): void {
     $csv_handler = \Drupal::service('par_member_upload_flows.csv_handler');
     $context['message'] = 'Cleaning up old members.';
 

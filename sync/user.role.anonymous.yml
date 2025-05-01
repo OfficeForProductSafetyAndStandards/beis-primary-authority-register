@@ -1,7 +1,18 @@
 uuid: dd06f0df-c3e4-4239-bd80-aa9e3ca1698f
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.restricted_html
+  module:
+    - comment
+    - filter
+    - media
+    - par_data
+    - par_notification
+    - par_roles
+    - par_subscriptions
+    - system
 _core:
   default_config_hash: j5zLMOdJBqC0bMvSdth5UebkprJB8g_2FXHqhfpJzow
 id: anonymous
@@ -12,12 +23,8 @@ permissions:
   - 'access comments'
   - 'access content'
   - 'access par_data_regulatory_function entities'
-  - 'access site-wide contact form'
-  - 'administer par_data_partnership entity types'
   - 'receive subscription_verify_notification notification'
-  - 'search content'
   - 'search public register'
   - 'subscribe to par_news'
   - 'use text format restricted_html'
-  - 'view files'
   - 'view media'

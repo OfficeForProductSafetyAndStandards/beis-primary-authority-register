@@ -30,6 +30,7 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     $this->pageTitle = 'Information about the new partnership';
 
@@ -53,13 +54,15 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
     // Business details.
     $form['about_partnership'] = [
       '#type' => 'textarea',
-      '#title' => $this->t('Provide information about the Partnership'),
+      '#title' => $this->t('Provide information about the partnership'),
+      '#title_tag' => 'h2',
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('about_partnership'),
       '#description' => '<p>Use this section to give a brief overview of the partnership. Include any information you feel may be useful to enforcing authorities.</p>',
     ];
@@ -73,6 +76,7 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

@@ -23,16 +23,16 @@ trait ParFlowAccessTrait {
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPerson $par_data_person = NULL, User $user = NULL) {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPerson $par_data_person = NULL, User $user = NULL): AccessResult {
     try {
-      // Get a new flow negotiator that points the the route being checked for access.
+      // Get a new flow negotiator that points the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException $e) {
+    } catch (ParFlowException) {
 
     }
 
     if ($par_data_person) {
-      $user = $user ?? $par_data_person->getUserAccount();
+      $user ??= $par_data_person->getUserAccount();
     }
 
     if (!$user) {
@@ -44,23 +44,11 @@ trait ParFlowAccessTrait {
       $this->accessResult = AccessResult::forbidden('This user is already blocked.');
     }
 
-    // Disable blocking of last user in an authority/organisation.
-    try {
-      $isLastSurvingAuthorityMember = !$this->getParDataManager()
-        ->isRoleInAllMemberAuthorities($user, ['par_authority']);
-    }
-    catch (ParDataException $e) {
-      $isLastSurvingAuthorityMember = FALSE;
-    }
-    try {
-      $isLastSurvingOrganisationMember = !$this->getParDataManager()
-        ->isRoleInAllMemberOrganisations($user, ['par_organisation']);
-    }
-    catch (ParDataException $e) {
-      $isLastSurvingOrganisationMember = FALSE;
-    }
+    /** @var \Drupal\par_roles\ParRoleManagerInterface $par_role_manager */
+    $par_role_manager = \Drupal::service('par_roles.role_manager');
 
-    if ($access_route_negotiator->getFlowName() === 'block_user' && ($isLastSurvingAuthorityMember || $isLastSurvingOrganisationMember)) {
+    // Disable blocking of last user in an authority/organisation.
+    if ($access_route_negotiator->getFlowName() === 'block_user' && !$par_role_manager->blockable($user)) {
       $this->accessResult = AccessResult::forbidden('This user is the only member of their authority or organisation.');
     }
 

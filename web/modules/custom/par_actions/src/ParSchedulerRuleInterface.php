@@ -15,6 +15,11 @@ use Drupal\Component\Plugin\PluginInspectionInterface;
 interface ParSchedulerRuleInterface extends PluginInspectionInterface {
 
   /**
+   * The query to build to select the runable items.
+   */
+  public function query();
+
+  /**
    * Adds items to the queue.
    */
   public function getItems();

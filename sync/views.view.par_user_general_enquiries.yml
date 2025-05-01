@@ -16,102 +16,12 @@ base_table: par_general_enquiry_field_data
 base_field: id
 display:
   default:
-    display_plugin: default
     id: default
     display_title: Master
+    display_plugin: default
     position: 0
     display_options:
-      access:
-        type: perm
-        options:
-          perm: 'view general enquiry'
-      cache:
-        type: none
-        options: {  }
-      query:
-        type: views_query
-        options:
-          disable_sql_rewrite: false
-          distinct: false
-          replica: false
-          query_comment: ''
-          query_tags: {  }
-          contextual_filters_or: false
-      exposed_form:
-        type: basic
-        options:
-          submit_button: Apply
-          reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-      pager:
-        type: pagerer
-        options:
-          preset: gds_list_pagination
-          items_per_page: 10
-          offset: 0
-          id: '0'
-          total_pages: ''
-          expose:
-            items_per_page: 0
-            items_per_page_label: 'Items per page'
-            items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: 0
-            items_per_page_options_all_label: '- All -'
-            offset: 0
-            offset_label: Offset
-      style:
-        type: table
-        options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: true
-          override: true
-          sticky: false
-          caption: Enquiries
-          summary: ''
-          description: ''
-          columns:
-            id: id
-            par_label: par_label
-            request_date: request_date
-            par_flow_link: par_flow_link
-          info:
-            id:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            par_label:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            request_date:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            par_flow_link:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-          default: '-1'
-          empty_table: false
-      row:
-        type: fields
+      title: 'General Enquiries'
       fields:
         id:
           id: id
@@ -120,6 +30,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_general_enquiry
+          entity_field: id
+          plugin_id: field
           label: ID
           exclude: true
           alter:
@@ -174,9 +87,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_general_enquiry
-          entity_field: id
-          plugin_id: field
         par_label:
           id: par_label
           table: par_general_enquiry_field_data
@@ -184,6 +94,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_general_enquiry
+          plugin_id: par_data_label
           label: 'General enquiry about'
           exclude: false
           alter:
@@ -225,8 +137,6 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          entity_type: par_data_general_enquiry
-          plugin_id: par_data_label
         request_date:
           id: request_date
           table: par_general_enquiry_field_data
@@ -234,6 +144,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_general_enquiry
+          entity_field: request_date
+          plugin_id: field
           label: 'Enquiry Date'
           exclude: false
           alter:
@@ -290,9 +203,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: par_data_general_enquiry
-          entity_field: request_date
-          plugin_id: field
         comment_count:
           id: comment_count
           table: comment_entity_statistics
@@ -300,6 +210,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: numeric
           label: Messages
           exclude: false
           alter:
@@ -349,7 +260,6 @@ display:
           format_plural_string: !!binary MSByZXBseQNAY291bnQgcmVwbGllcw==
           prefix: ''
           suffix: ' '
-          plugin_id: numeric
         par_flow_link:
           id: par_flow_link
           table: par_general_enquiry_field_data
@@ -357,6 +267,8 @@ display:
           relationship: none
           group_type: group
           admin_label: 'View general enquiries link'
+          entity_type: par_data_general_enquiry
+          plugin_id: par_flow_link
           label: Actions
           exclude: false
           alter:
@@ -402,8 +314,69 @@ display:
           assistive_text: ''
           link: '/general-enquiry/{{ id }}/view'
           hidden: 0
+      pager:
+        type: pagerer
+        options:
+          offset: 0
+          items_per_page: 10
+          preset: gds_list_pagination
+          id: '0'
+          total_pages: ''
+          expose:
+            items_per_page: 0
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: 0
+            items_per_page_options_all_label: '- All -'
+            offset: 0
+            offset_label: Offset
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      access:
+        type: perm
+        options:
+          perm: 'view general enquiry'
+      cache:
+        type: none
+        options: {  }
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text_custom
+          empty: true
+          content: '<p>Sorry, there are no enquiries related to your authorities.</p>'
+          tokenize: false
+      sorts:
+        created:
+          id: created
+          table: par_general_enquiry_field_data
+          field: created
+          relationship: none
+          group_type: group
+          admin_label: ''
           entity_type: par_data_general_enquiry
-          plugin_id: par_flow_link
+          entity_field: created
+          plugin_id: date
+          order: DESC
+          expose:
+            label: ''
+            field_identifier: created
+          exposed: false
+          granularity: second
+      arguments: {  }
       filters:
         id_filter:
           id: id_filter
@@ -412,6 +385,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_general_enquiry
+          plugin_id: par_member
           operator: '='
           value: ''
           group: 1
@@ -422,14 +397,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -442,8 +417,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: par_data_general_enquiry
-          plugin_id: par_member
         deleted:
           id: deleted
           table: par_general_enquiry_field_data
@@ -451,6 +424,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: par_data_general_enquiry
+          entity_field: deleted
+          plugin_id: boolean
           operator: '!='
           value: '1'
           group: 1
@@ -461,14 +437,14 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -481,26 +457,66 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: par_data_general_enquiry
-          entity_field: deleted
-          plugin_id: boolean
-      sorts:
-        created:
-          id: created
-          table: par_general_enquiry_field_data
-          field: created
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: DESC
-          exposed: false
-          expose:
-            label: ''
-          granularity: second
-          entity_type: par_data_general_enquiry
-          entity_field: created
-          plugin_id: date
-      title: 'General Enquiries'
+      style:
+        type: table
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+          columns:
+            id: id
+            par_label: par_label
+            request_date: request_date
+            par_flow_link: par_flow_link
+          default: '-1'
+          info:
+            id:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            par_label:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            request_date:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            par_flow_link:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          override: true
+          sticky: false
+          summary: ''
+          empty_table: false
+          caption: Enquiries
+          description: ''
+      row:
+        type: fields
+      query:
+        type: views_query
+        options:
+          query_comment: ''
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_tags: {  }
+          contextual_filters_or: false
+      relationships: {  }
+      group_by: false
       header:
         area_text_custom:
           id: area_text_custom
@@ -509,10 +525,10 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          empty: true
-          tokenize: false
-          content: '<p>To submit an enquiry please <a href="/search/partnerships">search for the partnership</a> this relates to and submit your enquiry there.</p>'
           plugin_id: text_custom
+          empty: true
+          content: '<p>To submit an enquiry please <a href="/search/partnerships">search for the partnership</a> this relates to and submit your enquiry there.</p>'
+          tokenize: false
       footer:
         par_flow_link:
           id: par_flow_link
@@ -521,12 +537,12 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: par_flow_link
           empty: true
           title: 'back to dashboard'
           assistive_text: ''
           link: /dashboard
-          class: link-back
-          plugin_id: par_flow_link
+          class: govuk-back-link
         par_flow_link_1:
           id: par_flow_link_1
           table: views
@@ -534,28 +550,13 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: par_flow_link
           empty: true
           title: 'back to dashboard'
           assistive_text: ''
           link: /helpdesk
-          class: link-back
-          plugin_id: par_flow_link
-      empty:
-        area_text_custom:
-          id: area_text_custom
-          table: views
-          field: area_text_custom
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: true
-          tokenize: false
-          content: '<p>Sorry, there are no enquiries related to your authorities.</p>'
-          plugin_id: text_custom
-      relationships: {  }
-      arguments: {  }
+          class: govuk-back-link
       display_extenders: {  }
-      group_by: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -565,9 +566,9 @@ display:
         - user.permissions
       tags: {  }
   general_enquiries_page:
-    display_plugin: page
     id: general_enquiries_page
     display_title: Page
+    display_plugin: page
     position: 1
     display_options:
       display_extenders: {  }

@@ -25,6 +25,7 @@ class ParPartnershipFlowsPartnershipConfirmationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     if ($par_data_partnership) {
@@ -41,6 +42,7 @@ class ParPartnershipFlowsPartnershipConfirmationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     if ($par_data_partnership) {
       $form['partnership_id'] = [
@@ -66,7 +68,7 @@ class ParPartnershipFlowsPartnershipConfirmationForm extends ParBaseForm {
       $form['number_employees'] = $this->renderSection('Number of employees at the organisation', $par_data_organisation, ['employees_band' => 'detailed']);
 
       // Display legal entities.
-      $form['legal_entities'] = $this->renderSection('Legal entities', $par_data_partnership, ['field_legal_entity' => 'detailed']);
+      $form['legal_entities'] = $this->renderSection('Legal entities', $par_data_partnership, ['field_partnership_legal_entity' => 'summary']);
 
       $form['partnership_info_agreed_business'] = [
         '#type' => 'checkbox',
@@ -74,6 +76,7 @@ class ParPartnershipFlowsPartnershipConfirmationForm extends ParBaseForm {
         '#disabled' => $par_data_partnership->get('partnership_info_agreed_business')->getString(),
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues("partnership_info_agreed_business"),
         '#return_value' => 'on',
+        '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
       ];
     }
     else {
@@ -94,6 +97,7 @@ class ParPartnershipFlowsPartnershipConfirmationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
@@ -107,6 +111,7 @@ class ParPartnershipFlowsPartnershipConfirmationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
@@ -123,7 +128,7 @@ class ParPartnershipFlowsPartnershipConfirmationForm extends ParBaseForm {
       try {
         $par_data_partnership->setParStatus('confirmed_business');
       }
-      catch (ParDataException $e) {
+      catch (ParDataException) {
         // If the status could not be updated we want to log this but continue.
         $message = $this->t("This status could not be updated to 'Approved by the Organisation' for the %label");
         $replacements = [

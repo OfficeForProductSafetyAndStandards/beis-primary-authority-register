@@ -4,16 +4,13 @@ namespace Drupal\par_flows;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\SessionManagerInterface;
 use Drupal\Core\TempStore\PrivateTempStoreFactory;
 use Drupal\Core\TempStore\PrivateTempStore;
 use Drupal\par_data\ParDataManagerInterface;
-use Drupal\par_flows\Entity\ParFlowInterface;
 use Drupal\par_forms\ParFormPluginInterface;
-use Drupal\user\Entity\User;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 class ParFlowDataHandler implements ParFlowDataHandlerInterface {
 
@@ -24,41 +21,13 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   const ENTRY_POINT = 'entry_point';
 
   /**
-   * The PAR Flow Negotiator.
-   *
-   * @var \Drupal\par_flows\ParFlowNegotiatorInterface
-   */
-  public $negotiator;
-
-  /**
-   * The PAR data manager for acting upon PAR Data.
-   *
-   * @var \Drupal\par_data\ParDataManagerInterface
-   */
-  protected $parDataManager;
-
-  /**
-   * The PAR data manager for acting upon PAR Data.
-   *
-   * @var \Drupal\Core\Session\SessionManagerInterface
-   */
-  protected $sessionManager;
-
-  /**
-   * The current user account.
-   *
-   * @var \Drupal\Core\Session\AccountInterface
-   */
-  protected $account;
-
-  /**
-   * The private temporary storage for persisting multi-step form data.
+   * The private temporary storage for persisting multistep form data.
    *
    * Each key (form) will last 1 week since it was last updated.
    *
-   * @var \Drupal\Core\TempStore\PrivateTempStore
+   * @var PrivateTempStore $store
    */
-  protected $store;
+  protected PrivateTempStore $store;
 
   /**
    * The data parameters loaded from the route.
@@ -66,44 +35,52 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
    * Enables route variables to be fetched, but also overridden
    * by the implementing form/controller.
    *
-   * @var \Symfony\Component\HttpFoundation\ParameterBag
+   * @var array|ParameterBag $parameters
    */
-  protected $parameters = [];
+  protected iterable $parameters = [];
 
   /**
    * The raw data parameters.
    *
-   * @var \Symfony\Component\HttpFoundation\ParameterBag
+   * @var array|ParameterBag $parameters
    */
-  protected $rawParameters = [];
+  protected iterable $rawParameters = [];
 
   /**
    * Caches data loaded from the permanent store.
    *
-   * @var array
+   * @var array $data
    */
-  protected $data = [];
+  protected array $data = [];
 
   /**
    * Constructs a ParFlowDataHandler instance.
    *
-   * @param \Drupal\Core\TempStore\PrivateTempStoreFactory $temp_store_factory
+   * @param PrivateTempStoreFactory $temp_store_factory
    *   The private temporary store.
-   * @param \Drupal\par_flows\ParFlowNegotiatorInterface $entity_type_manager
-   *   The entity type manager.
-   * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
+   * @param ParFlowNegotiatorInterface $negotiator
+   *   The flow negotiator.
+   * @param ParDataManagerInterface $parDataManager
    *   The par data manager.
-   * @param \Drupal\Core\Session\SessionManagerInterface $session_manager
+   * @param SessionManagerInterface $sessionManager
    *   The session manager.
-   * @param \Drupal\Core\Session\AccountInterface $current_user
+   * @param AccountInterface $account
    *   The entity bundle info service.
    */
-  public function __construct(PrivateTempStoreFactory $temp_store_factory, ParFlowNegotiatorInterface $negotiator, ParDataManagerInterface $par_data_manager, SessionManagerInterface $session_manager, AccountInterface $current_user) {
+  public function __construct(PrivateTempStoreFactory $temp_store_factory, /**
+   * The PAR Flow Negotiator.
+   */
+  public ParFlowNegotiatorInterface $negotiator, /**
+   * The PAR data manager for acting upon PAR Data.
+   */
+  protected ParDataManagerInterface $parDataManager, /**
+   * The PAR data manager for acting upon PAR Data.
+   */
+  protected SessionManagerInterface $sessionManager, /**
+   * The current user account.
+   */
+  protected AccountInterface $account) {
     $this->store = $temp_store_factory->get('par_flows_flows');
-    $this->negotiator = $negotiator;
-    $this->parDataManager = $par_data_manager;
-    $this->sessionManager = $session_manager;
-    $this->account = $current_user;
 
     $this->reset();
   }
@@ -140,6 +117,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getDefaultValues($key, $default = '', $cid = NULL) {
     $value = $this->getTempDataValue($key, $cid);
 
@@ -157,6 +135,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getTempDataValue($key, $cid = NULL) {
     $tmp_data = $this->getFormTempData($cid);
 
@@ -168,6 +147,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function setTempDataValue($key, $value, $cid = NULL) {
     $data = $this->getFormTempData($cid);
     NestedArray::setValue($data, (array) $key, $value, TRUE);
@@ -177,6 +157,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getFormTempData($cid = NULL) {
     $cid = empty($cid) ? $this->negotiator->getFlowKey() : $cid;
 
@@ -190,6 +171,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function setFormTempData(array $data, $cid = NULL) {
     $cid = empty($cid) ? $this->negotiator->getFlowKey() : $cid;
 
@@ -206,6 +188,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function deleteFormTempData($cid = NULL) {
     $cid = empty($cid) ? $this->negotiator->getFlowKey() : $cid;
 
@@ -216,8 +199,37 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   }
 
   /**
+   * Get the data submitted by a given plugin.
+   *
+   * If the plugin allows multiple values this data will be structured and the
+   * resulting array will be an array of plugin data keyed by cardinality values.
+   */
+  public function getPluginTempData(ParFormPluginInterface $plugin, $cid = NULL) {
+    // If the plugin data is flattened return all the form data,
+    // otherwise return just the data found for the given plugin prefix.
+    return $plugin->isFlattened() ?
+      $this->getFormTempData($cid) :
+      $this->getTempDataValue($plugin->getPrefix(), $cid);
+  }
+
+  /**
+   * Set the data for a given plugin.
+   *
+   * If the plugin allows multiple values this data will be structured and the
+   * resulting array will be an array of plugin data keyed by cardinality values.
+   */
+  public function setPluginTempData(ParFormPluginInterface $plugin, array $data, $cid = NULL) {
+    // If the plugin data is flattened set all the form data,
+    // otherwise set just the data found for the given plugin prefix.
+    $plugin->isFlattened() ?
+      $this->setFormTempData($data, $cid) :
+      $this->setTempDataValue($plugin->getPrefix(), $data, $cid);
+  }
+
+  /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getAllTempData() {
     $data = [];
 
@@ -233,6 +245,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getMetaDataValue($key, $cid = NULL) {
     $meta_data = $this->getFlowMetaData($cid);
     $value = NestedArray::getValue($meta_data, (array) $key, $exists);
@@ -242,6 +255,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function setMetaDataValue($key, $value, $cid = NULL) {
     $meta_data = $this->getFlowMetaData($cid);
     NestedArray::setValue($meta_data, (array) $key, $value, TRUE);
@@ -251,6 +265,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getFlowMetaData($cid = NULL) {
     $cid = empty($cid) ? $this->negotiator->getFlowStateKey() : $cid;
 
@@ -264,6 +279,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function setFlowMetaData(array $meta_data, $cid = NULL) {
     $cid = empty($cid) ? $this->negotiator->getFlowStateKey() : $cid;
 
@@ -280,6 +296,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function deleteFlowMetaData($cid = NULL) {
     $cid = empty($cid) ? $this->negotiator->getFlowStateKey() : $cid;
 
@@ -292,6 +309,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function deleteStore() {
     $data = [];
 
@@ -310,6 +328,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getParameter($parameter) {
     return $this->parameters->get($parameter);
   }
@@ -326,6 +345,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
    *
    * @return array
    */
+  #[\Override]
   public function getParameters() {
     return $this->parameters->all();
   }
@@ -345,6 +365,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
    * @param $parameter
    * @param $value
    */
+  #[\Override]
   public function setParameter($parameter, $value) {
     $this->parameters->set($parameter, $value);
 
@@ -364,6 +385,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
    *
    * @param $params
    */
+  #[\Override]
   public function setParameters($params) {
     foreach ($params as $key => $param) {
       $this->setParameter($key, $param);
@@ -373,6 +395,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getFormPermValue($key, ParFormPluginInterface $plugin = NULL) {
     $key = (array) $key;
 
@@ -387,6 +410,7 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function setFormPermValue($key, $value, ParFormPluginInterface $plugin = NULL) {
     $key = (array) $key;
     // Allow the plugin namespace to be used as a prefix if a plugin is passed in.
@@ -405,5 +429,50 @@ class ParFlowDataHandler implements ParFlowDataHandlerInterface {
       $_SESSION['session_started'] = TRUE;
       $this->sessionManager->start();
     }
+  }
+
+  /**
+   * Filters a nested array recursively.
+   *
+   * This is a copy of NestedArray::filter() with the changes made to filter
+   * multidimensional arrays correctly.
+   * @see https://www.drupal.org/project/drupal/issues/3381640
+   *
+   * @param array $array
+   *   The filtered nested array.
+   * @param ?callable $callable
+   *   The callable to apply for filtering.
+   *
+   * @return array
+   *   The filtered array.
+   */
+  public function filter(array $array, callable $callable = NULL) {
+    foreach ($array as &$element) {
+      if (is_array($element)) {
+        $element = static::filter($element, $callable);
+      }
+    }
+
+    // Filter the parents after the child elements.
+    return is_callable($callable) ? array_filter($array, $callable) : array_filter($array);
+  }
+
+  /**
+   * A custom method to filter submitted values.
+   *
+   * Values that should be treated as empty:
+   * - NULL
+   * - "" or empty strings
+   *
+   * Values that should not be treated as empty:
+   * - False
+   * - 0
+   *
+   *
+   * @return bool
+   */
+  public static function filterValues(mixed $value): bool {
+    // Exclude bool and numeric values from the filtering.
+    return !empty($value) || is_numeric($value) || is_bool($value);
   }
 }

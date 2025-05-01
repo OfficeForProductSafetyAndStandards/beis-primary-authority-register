@@ -1,0 +1,41 @@
+uuid: c1cffe7c-1ede-4e8a-97fa-26b0c8d2ff7a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.message.member_list_stale_warning.field_message_subject
+    - field.field.message.member_list_stale_warning.field_partnership
+    - field.field.message.member_list_stale_warning.field_to
+    - message.template.member_list_stale_warning
+id: message.member_list_stale_warning.default
+targetEntityType: message
+bundle: member_list_stale_warning
+mode: default
+content:
+  field_message_subject:
+    type: string_textfield
+    weight: 2
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_partnership:
+    type: entity_reference_autocomplete
+    weight: 0
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_to:
+    type: email_default
+    weight: 1
+    region: content
+    settings:
+      placeholder: ''
+      size: 60
+    third_party_settings: {  }
+hidden: {  }

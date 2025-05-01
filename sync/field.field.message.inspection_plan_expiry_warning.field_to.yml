@@ -1,0 +1,19 @@
+uuid: a42f4d6d-d0fe-4cb3-85b1-033944633937
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_to
+    - message.template.inspection_plan_expiry_warning
+id: message.inspection_plan_expiry_warning.field_to
+field_name: field_to
+entity_type: message
+bundle: inspection_plan_expiry_warning
+label: To
+description: 'The email address of the message recipient.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: email

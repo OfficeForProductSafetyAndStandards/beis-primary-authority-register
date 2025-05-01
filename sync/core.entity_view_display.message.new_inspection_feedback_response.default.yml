@@ -6,34 +6,31 @@ dependencies:
     - field.field.message.new_inspection_feedback_response.field_comment
     - field.field.message.new_inspection_feedback_response.field_inspection_feedback
     - field.field.message.new_inspection_feedback_response.field_message_subject
+    - field.field.message.new_inspection_feedback_response.field_to
     - message.template.new_inspection_feedback_response
 id: message.new_inspection_feedback_response.default
 targetEntityType: message
 bundle: new_inspection_feedback_response
 mode: default
 content:
-  field_comment:
-    weight: 1
-    label: hidden
-    settings:
-      view_mode: full
-      link: false
-    third_party_settings: {  }
-    type: entity_reference_entity_view
-    region: content
   field_inspection_feedback:
-    weight: 2
+    type: entity_reference_label
     label: hidden
     settings:
-      view_mode: title
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 1
     region: content
   partial_0:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
+  field_comment: true
   field_message_subject: true
+  field_to: true
+  partial_1: true
+  partial_2: true
+  partial_3: true
+  search_api_excerpt: true

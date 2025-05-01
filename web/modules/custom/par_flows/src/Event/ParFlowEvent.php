@@ -4,7 +4,7 @@ namespace Drupal\par_flows\Event;
 
 use Drupal\Component\Utility\NestedArray;
 use Drupal\par_flows\Event\ParFlowEvents;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 use Drupal\par_flows\Entity\ParFlowInterface;
@@ -27,13 +27,6 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
    * @var int
    */
   protected $currentRoute;
-
-  /**
-   * The current operation.
-   *
-   * @var string
-   */
-  protected $currentOperation;
 
   /**
    * The url to redirect to.
@@ -71,22 +64,25 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
    *   The flow the event was triggered on.
    * @param RouteMatchInterface $route
    *   The current route.
-   * @param string $operation
+   * @param string $currentOperation
    *   The operation being performed.
    * @param array $params
    *   An array of additional data for use determining the route.
    */
-  public function __construct(ParFlowInterface $flow, RouteMatchInterface $current_route, $operation, array $params = []) {
+  public function __construct(ParFlowInterface $flow, RouteMatchInterface $current_route, /**
+   * The current operation.
+   */
+  protected $currentOperation, array $params = []) {
     $this->flow = $flow;
     $this->currentRoute = $current_route;
     $this->currentStep = $flow->getStepByRoute($current_route->getRouteName());
-    $this->currentOperation = $operation;
     $this->params = $params;
   }
 
   /**
    * Get the flow.
    */
+  #[\Override]
   public function getFlow() {
     return $this->flow;
   }
@@ -94,6 +90,7 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
   /**
    * Get the route.
    */
+  #[\Override]
   public function getCurrentRoute() {
     return $this->currentRoute;
   }
@@ -101,6 +98,7 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
   /**
    * Get the current step.
    */
+  #[\Override]
   public function getCurrentStep() {
     return $this->currentStep;
   }
@@ -108,6 +106,7 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
   /**
    * Get the operation.
    */
+  #[\Override]
   public function getOperation() {
     return $this->currentOperation;
   }
@@ -117,6 +116,7 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
    *
    * @return \Drupal\Core\Url
    */
+  #[\Override]
   public function getUrl() {
     $url = $this->proceedingUrl;
     return isset($url) && $url instanceof Url ? $url : NULL;
@@ -128,6 +128,7 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
    * @param Url $url
    *   A url object to redirect to.
    */
+  #[\Override]
   public function setUrl(Url $url) {
     // The URL should only be set if it is accessible.
     if (!$url->access() || !$url->isRouted()) {
@@ -141,6 +142,7 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
   /**
    * Get the additional data parameters.
    */
+  #[\Override]
   public function getParams() {
     return (array) $this->params;
   }
@@ -148,6 +150,7 @@ class ParFlowEvent extends Event implements ParFlowEventInterface {
   /**
    * Get the additional data parameters.
    */
+  #[\Override]
   public function setRouteOptions(array $options = []) {
     $this->options = NestedArray::mergeDeep($this->options, $options);
   }

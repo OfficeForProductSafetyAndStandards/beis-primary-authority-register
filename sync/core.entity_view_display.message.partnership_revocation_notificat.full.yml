@@ -6,24 +6,26 @@ dependencies:
     - core.entity_view_mode.message.full
     - field.field.message.partnership_revocation_notificat.field_message_subject
     - field.field.message.partnership_revocation_notificat.field_partnership
+    - field.field.message.partnership_revocation_notificat.field_to
     - message.template.partnership_revocation_notificat
 id: message.partnership_revocation_notificat.full
 targetEntityType: message
 bundle: partnership_revocation_notificat
 mode: full
 content:
-  field_message_subject:
-    weight: 1
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-    region: content
   partial_0:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
+  partial_1:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
+  field_message_subject: true
   field_partnership: true
+  field_to: true
+  partial_2: true
+  search_api_excerpt: true

@@ -5,24 +5,33 @@ dependencies:
   config:
     - field.field.message.partnership_deleted_notification.field_message_subject
     - field.field.message.partnership_deleted_notification.field_partnership
+    - field.field.message.partnership_deleted_notification.field_to
     - message.template.partnership_deleted_notification
 id: message.partnership_deleted_notification.default
 targetEntityType: message
 bundle: partnership_deleted_notification
 mode: default
 content:
-  field_message_subject:
-    weight: 1
-    label: hidden
+  field_partnership:
+    type: entity_reference_label
+    label: above
     settings:
-      link_to_entity: false
+      link: true
     third_party_settings: {  }
-    type: string
+    weight: 1
     region: content
   partial_0:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
+  partial_1:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
-  field_partnership: true
+  field_message_subject: true
+  field_to: true
+  partial_2: true
+  search_api_excerpt: true

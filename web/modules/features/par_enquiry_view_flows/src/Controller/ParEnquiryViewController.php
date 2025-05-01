@@ -11,6 +11,7 @@ use Drupal\par_flows\Controller\ParBaseController;
 use Drupal\Core\Access\AccessResult;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParFormBuilder;
+use Drupal\par_forms\ParFormPluginInterface;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -25,6 +26,7 @@ class ParEnquiryViewController extends ParBaseController {
    */
   protected $pageTitle = 'View enquiry';
 
+  #[\Override]
   public function loadData() {
     $par_data_general_enquiry = $this->getFlowDataHandler()->getParameter('par_data_general_enquiry');
 
@@ -34,12 +36,25 @@ class ParEnquiryViewController extends ParBaseController {
 
     if ($par_data_general_enquiry && $replies = $par_data_general_enquiry->getReplies()) {
       $this->getFlowDataHandler()->setParameter('comments', $replies);
-      $this->getFlowDataHandler()->setTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'message_detail', $replies);
+
+      // In order to display multiple cardinality the message_detail plugin needs
+      // to know how many instances of data to display, it doesn't use this data
+      // other than to know how many instances of data to display. The actual
+      // displayed data comes from the comments parameter set above.
+      $action_detail_component = $this->getComponent('message_detail');
+      if ($action_detail_component instanceof ParFormPluginInterface) {
+        $values = [];
+        foreach ($replies as $reply) {
+          $values[] = ['comment_title' => $reply->label()];
+        }
+        $this->getFlowDataHandler()->setPluginTempData($action_detail_component, $values);
+      }
     }
 
     parent::loadData();
   }
 
+  #[\Override]
   public function build($build = []) {
     $par_data_general_enquiry = $this->getFlowDataHandler()->getParameter('par_data_general_enquiry');
     if ($par_data_general_enquiry) {

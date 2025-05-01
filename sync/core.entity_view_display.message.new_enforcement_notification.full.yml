@@ -6,24 +6,27 @@ dependencies:
     - core.entity_view_mode.message.full
     - field.field.message.new_enforcement_notification.field_enforcement_notice
     - field.field.message.new_enforcement_notification.field_message_subject
+    - field.field.message.new_enforcement_notification.field_to
     - message.template.new_enforcement_notification
 id: message.new_enforcement_notification.full
 targetEntityType: message
 bundle: new_enforcement_notification
 mode: full
 content:
-  field_enforcement_notice:
-    weight: 1
-    label: hidden
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
   partial_0:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
+  partial_1:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
+  field_enforcement_notice: true
   field_message_subject: true
+  field_to: true
+  partial_2: true
+  partial_3: true
+  search_api_excerpt: true

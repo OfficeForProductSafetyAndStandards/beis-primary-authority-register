@@ -1,0 +1,20 @@
+uuid: 29011da1-a4cc-4e8c-ad89-3da51013f31e
+langcode: en
+status: true
+dependencies: {  }
+_core:
+  default_config_hash: d5amE9f7YtUN8b3UPx5lvGWwryh8UyntvDNBfJtqcIo
+id: person_membership_remove
+label: 'Person Remove Membership Flow'
+default_title: null
+default_section_title: 'Remove user memberships'
+description: ''
+save_method: end
+states:
+  - user
+final_routes:
+  - par_profile_view_flows.profile
+steps:
+  1:
+    route: par_person_membership_flows.remove_membership
+    form_id: par_membership_remove

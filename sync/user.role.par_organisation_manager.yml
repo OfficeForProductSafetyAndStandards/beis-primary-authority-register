@@ -1,0 +1,144 @@
+uuid: 0d187da4-08fb-4edf-aac0-10569eb4bd05
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.basic_html
+  module:
+    - filter
+    - invite
+    - par_data
+    - par_enforcement_send_flows
+    - par_invite_user_flows
+    - par_member_add_flows
+    - par_member_cease_flows
+    - par_member_list_update_flows
+    - par_member_update_flows
+    - par_member_upload_flows
+    - par_notification
+    - par_organisation_update_flows
+    - par_partnership_amend_confirm_flows
+    - par_partnership_confirmation_flows
+    - par_partnership_contact_add_flows
+    - par_partnership_contact_remove_flows
+    - par_partnership_contact_update_flows
+    - par_partnership_flows
+    - par_person_create_flows
+    - par_person_membership_flows
+    - par_person_update_flows
+    - par_roles
+    - par_user_role_flows
+    - role_delegation
+id: par_organisation_manager
+label: 'Organisation Manager'
+weight: -4
+is_admin: null
+permissions:
+  - 'access par dashboard'
+  - 'access par_data_advice entities'
+  - 'access par_data_authority entities'
+  - 'access par_data_coordinated_business entities'
+  - 'access par_data_deviation_request entities'
+  - 'access par_data_enforcement_action entities'
+  - 'access par_data_enforcement_notice entities'
+  - 'access par_data_general_enquiry entities'
+  - 'access par_data_information_referral entities'
+  - 'access par_data_inspection_feedback entities'
+  - 'access par_data_inspection_plan entities'
+  - 'access par_data_legal_entity entities'
+  - 'access par_data_organisation entities'
+  - 'access par_data_partnership entities'
+  - 'access par_data_partnership_le entities'
+  - 'access par_data_person entities'
+  - 'access par_data_premises entities'
+  - 'access par_data_regulatory_function entities'
+  - 'access par_data_sic_code entities'
+  - 'access user partnerships'
+  - 'add coordinated member'
+  - 'add par_data_advice entities'
+  - 'add par_data_authority entities'
+  - 'add par_data_coordinated_business entities'
+  - 'add par_data_deviation_request entities'
+  - 'add par_data_enforcement_action entities'
+  - 'add par_data_enforcement_notice entities'
+  - 'add par_data_general_enquiry entities'
+  - 'add par_data_information_referral entities'
+  - 'add par_data_inspection_feedback entities'
+  - 'add par_data_inspection_plan entities'
+  - 'add par_data_legal_entity entities'
+  - 'add par_data_organisation entities'
+  - 'add par_data_partnership entities'
+  - 'add par_data_partnership_le entities'
+  - 'add par_data_person entities'
+  - 'add par_data_premises entities'
+  - 'add par_data_regulatory_function entities'
+  - 'add par_data_sic_code entities'
+  - 'add partnership organisation contact'
+  - 'assign par_organisation role'
+  - 'assign par_organisation_manager role'
+  - 'cease coordinated member'
+  - 'change user role'
+  - 'confirm partnership'
+  - 'confirm partnership amendments'
+  - 'create organisation user'
+  - 'create person'
+  - 'edit par_data_advice entities'
+  - 'edit par_data_authority entities'
+  - 'edit par_data_coordinated_business entities'
+  - 'edit par_data_deviation_request entities'
+  - 'edit par_data_enforcement_action entities'
+  - 'edit par_data_enforcement_notice entities'
+  - 'edit par_data_general_enquiry entities'
+  - 'edit par_data_information_referral entities'
+  - 'edit par_data_inspection_feedback entities'
+  - 'edit par_data_inspection_plan entities'
+  - 'edit par_data_legal_entity entities'
+  - 'edit par_data_organisation entities'
+  - 'edit par_data_partnership entities'
+  - 'edit par_data_partnership_le entities'
+  - 'edit par_data_person entities'
+  - 'edit par_data_premises entities'
+  - 'edit par_data_regulatory_function entities'
+  - 'edit par_data_sic_code entities'
+  - 'invite user'
+  - invite_type_invite_organisation_manager
+  - invite_type_invite_organisation_member
+  - 'manage institution membership'
+  - 'manage own organisation'
+  - 'manage people'
+  - 'receive new_inspection_plan notification'
+  - 'receive new_partnership_amendment notification'
+  - 'receive new_partnership_notification notification'
+  - 'receive partnership_amendment_nominated notification'
+  - 'receive partnership_approved_notificatio notification'
+  - 'receive partnership_confirmed_notificati notification'
+  - 'receive partnership_deleted_notification notification'
+  - 'receive partnership_revocation_notificat notification'
+  - 'receive revoke_inspection_plan notification'
+  - 'remove partnership organisation contact'
+  - 'update coordinated member'
+  - 'update member list'
+  - 'update partnership organisation contact'
+  - 'update partnership organisation details'
+  - 'upload coordinated member'
+  - 'use text format basic_html'
+  - 'view enforcement notice'
+  - 'view unpublished par_data_advice entities'
+  - 'view unpublished par_data_authority entities'
+  - 'view unpublished par_data_coordinated_business entities'
+  - 'view unpublished par_data_deviation_request entities'
+  - 'view unpublished par_data_enforcement_action entities'
+  - 'view unpublished par_data_enforcement_notice entities'
+  - 'view unpublished par_data_general_enquiry entities'
+  - 'view unpublished par_data_information_referral entities'
+  - 'view unpublished par_data_inspection_feedback entities'
+  - 'view unpublished par_data_inspection_plan entities'
+  - 'view unpublished par_data_legal_entity entities'
+  - 'view unpublished par_data_organisation entities'
+  - 'view unpublished par_data_partnership entities'
+  - 'view unpublished par_data_partnership_le entities'
+  - 'view unpublished par_data_person entities'
+  - 'view unpublished par_data_premises entities'
+  - 'view unpublished par_data_regulatory_function entities'
+  - 'view unpublished par_data_sic_code entities'
+  - 'view user fields'

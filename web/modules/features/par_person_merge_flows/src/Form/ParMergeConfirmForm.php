@@ -27,6 +27,7 @@ class ParMergeConfirmForm extends ParBaseForm {
   /**
    * @return DateFormatterInterface
    */
+  #[\Override]
   protected function getDateFormatter() {
     return \Drupal::service('date.formatter');
   }
@@ -36,6 +37,7 @@ class ParMergeConfirmForm extends ParBaseForm {
    */
   protected $pageTitle = "Merge contact records";
 
+  #[\Override]
   public function loadData() {
     $cid = $this->getFlowNegotiator()->getFormKey('merge');
     $merge_ids = $this->getFlowDataHandler()->getDefaultValues("contacts", [], $cid);
@@ -49,13 +51,14 @@ class ParMergeConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPerson $par_data_person = NULL, User $user = NULL) {
     // Add a message to explain the action being taken.
     $form['info'] = [
       '#type' => 'html_tag',
       '#tag' => 'p',
       '#value' => "You are about to merge {$this->getFlowDataHandler()->getDefaultValues('number_contacts', '0')} contacts, do you want to proceed?",
-      '#attributes' => ['class' => 'form-group'],
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
 
     if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
@@ -71,6 +74,7 @@ class ParMergeConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\comment\CommentInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Datetime\DateFormatterInterface;
@@ -25,7 +26,8 @@ class ParPartnershipDocuments extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  #[\Override]
+  public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     $advice_document_count = $par_data_partnership->countReferencedEntity('field_advice', FALSE);
@@ -43,46 +45,50 @@ class ParPartnershipDocuments extends ParFormPluginBase {
     $show_advice_documents = isset($this->getConfiguration()['advice_documents']) ? (bool) $this->getConfiguration()['advice_documents'] : TRUE;
     $this->getFlowDataHandler()->setFormPermValue("show_advice_documents", $show_advice_documents);
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  #[\Override]
+  public function getElements(array $form = [], int $index = 1) {
     // Partnership Documents - component.
     if ($this->getFlowDataHandler()->getFormPermValue("show_title")) {
       $form['documents'] = [
         '#type' => 'html_tag',
         '#tag' => 'h2',
         '#value' => "Documents",
-        '#attributes' => ['class' => 'heading-large'],
+        '#attributes' => ['class' => 'govuk-heading-l'],
       ];
     }
 
     $form['details'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['grid-row', 'form-group']],
+      '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group']],
     ];
 
     // Inspection plan link.
     if ($this->getFlowDataHandler()->getFormPermValue("show_inspection_plans")) {
       $form['details']['inspection_plans'] = [
-        '#type' => 'fieldset',
-        '#title' => t('Inspection plans'),
-        '#attributes' => ['class' => ['column-one-half']],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
+        '#type' => 'container',
+        'heading' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h3',
+          '#attributes' => ['class' => ['govuk-heading-m']],
+          '#value' => $this->t('Inspection plans'),
+        ],
+        '#attributes' => ['class' => ['govuk-grid-column-one-half']]
       ];
 
       // Add the inspection plan link safely with access checks.
       try {
         $add_inspection_list_link = $this->getFlowNegotiator()->getFlow()->getFlowLink('inspection_plans', 'See all Inspection Plans');
-      } catch (ParFlowException $e) {
+      } catch (ParFlowException) {
 
       }
       if (isset($add_inspection_list_link) && $add_inspection_list_link instanceof Link) {
-        $isp_count = $this->getDefaultValuesByKey('isp_count', $cardinality, '0');
+        $isp_count = $this->getDefaultValuesByKey('isp_count', $index, '0');
 
         $form['details']['inspection_plans']['document_count'] = [
           '#type' => 'html_tag',
@@ -104,20 +110,23 @@ class ParPartnershipDocuments extends ParFormPluginBase {
     // Add the advice link safely with access checks.
     if ($this->getFlowDataHandler()->getFormPermValue("show_advice_documents")) {
       $form['details']['advice'] = [
-        '#type' => 'fieldset',
-        '#title' => t('Advice and Documents'),
-        '#attributes' => ['class' => ['column-one-half']],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
+        '#type' => 'container',
+        'heading' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h3',
+          '#attributes' => ['class' => ['govuk-heading-m']],
+          '#value' => $this->t('Advice and Documents'),
+        ],
+        '#attributes' => ['class' => ['govuk-grid-column-one-half']]
       ];
 
       try {
         $add_advice_list_link = $this->getFlowNegotiator()->getFlow()->getFlowLink('advice', 'See all Advice');
-      } catch (ParFlowException $e) {
+      } catch (ParFlowException) {
 
       }
       if (isset($add_advice_list_link) && $add_advice_list_link instanceof Link) {
-        $count = $this->getDefaultValuesByKey('advice_count', $cardinality, '0');
+        $count = $this->getDefaultValuesByKey('advice_count', $index, '0');
 
         $form['details']['advice']['document_count'] = [
           '#type' => 'html_tag',
@@ -142,14 +151,16 @@ class ParPartnershipDocuments extends ParFormPluginBase {
   /**
    * Return no actions for this plugin.
    */
-  public function getElementActions($cardinality = 1, $actions = []) {
+  #[\Override]
+  public function getElementActions($index = 1, $actions = []) {
     return $actions;
   }
 
   /**
    * Return no actions for this plugin.
    */
-  public function getComponentActions($actions = [], $count = NULL) {
+  #[\Override]
+  public function getComponentActions(array $actions = [], array $data = NULL): ?array {
     return $actions;
   }
 }

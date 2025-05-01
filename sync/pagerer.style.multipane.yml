@@ -1,4 +1,5 @@
-langcode: en
+_core:
+  default_config_hash: '-rL0nDexAHYtF5mmC-u-onXnyho8G__xNLvoGDHOvhM'
 default_config:
   panes:
     left:
@@ -10,5 +11,3 @@ default_config:
     right:
       style: none
       config: {  }
-_core:
-  default_config_hash: '-rL0nDexAHYtF5mmC-u-onXnyho8G__xNLvoGDHOvhM'

@@ -4,9 +4,13 @@ namespace Drupal\par_notification;
 
 use Drupal\Component\Plugin\PluginBase;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Link;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
+use Drupal\message\MessageInterface;
 use Drupal\par_data\ParDataManagerInterface;
 use RapidWeb\UkBankHolidays\Factories\UkBankHolidayFactory;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Provides a base implementation for a Par Link Action plugin.
@@ -23,13 +27,18 @@ abstract class ParLinkActionBase extends PluginBase implements ParLinkActionInte
    *
    * @var \Drupal\Core\Session\AccountInterface
    */
-  protected $user;
+  protected AccountInterface $user;
+
+  /**
+   * The link text for link action plugin.
+   */
+  protected string $actionText = 'View the notification';
 
   /**
    * The return query used if an action is sequential,
    * as in it is not the final action.
    */
-  protected $returnQuery;
+  protected array $returnQuery = [];
 
   /**
    * {@inheritdoc}
@@ -55,6 +64,13 @@ abstract class ParLinkActionBase extends PluginBase implements ParLinkActionInte
   /**
    * {@inheritdoc}
    */
+  public function getNotifications() {
+    return $this->pluginDefinition['notification'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getDestination() {
     return $this->pluginDefinition['destination'];
   }
@@ -67,19 +83,62 @@ abstract class ParLinkActionBase extends PluginBase implements ParLinkActionInte
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function getPrimaryField(): ?string {
+    return $this->pluginDefinition['field'] ?? NULL;
+  }
+
+  /**
    * Simple getter to access the current user.
    *
    * @return AccountInterface
    */
-  public function getUser() {
+  public function getUser(): AccountInterface {
     return $this->user;
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function setUser(AccountInterface $user) {
     $this->user = $user;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  #[\Override]
+  public function receive(MessageInterface $message): ?RedirectResponse {
+    $destination = $this->getUrl($message);
+
+    return $destination instanceof Url
+      && $destination->access($this->user) ?
+        new RedirectResponse($destination->toString()) :
+        NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  #[\Override]
+  public function getLink(MessageInterface $message): ?Link {
+    $destination = $this->getUrl($message);
+
+    // Do not create links if the page couldn't be found,
+    // these pages are only for catching failed redirections.
+    $ignore_urls = ['par_notification.link_not_found'];
+    if ($destination instanceof Url &&
+        $destination->isRouted() &&
+        in_array($destination->getRouteName(), $ignore_urls)) {
+      return NULL;
+    }
+
+    return $destination instanceof Url
+      && !empty($this->actionText) ?
+        Link::fromTextAndUrl($this->actionText, $destination) :
+        NULL;
   }
 
   /**
@@ -94,6 +153,7 @@ abstract class ParLinkActionBase extends PluginBase implements ParLinkActionInte
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function setReturnQuery($query) {
     $this->returnQuery = $query;
   }

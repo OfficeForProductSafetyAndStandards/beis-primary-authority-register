@@ -1,0 +1,14 @@
+uuid: 0bf6fa33-16ee-4f10-9c07-9161bbcb9808
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.national_regulator
+  module:
+    - user
+id: user_add_role_action.national_regulator
+label: 'Add the National Regulator role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: national_regulator

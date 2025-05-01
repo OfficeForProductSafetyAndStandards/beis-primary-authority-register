@@ -27,18 +27,21 @@ class ParSendExpiryNotice extends ActionBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function execute($entity = NULL) {
     if ($entity instanceof ParDataEntityInterface) {
       // Dispatch a PAR custom event.
       $event = new ParDataEvent($entity);
       $dispatcher = \Drupal::service('event_dispatcher');
-      $dispatcher->dispatch(ParDataEvent::customAction($entity->getEntityTypeId(), 'expiry_notification'), $event);
+
+      $dispatcher->dispatch(ParDataEvent::customAction($event, $entity->getEntityTypeId()));
     }
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
     // @TODO Implement entity/action checks
     $result = AccessResult::allowed();

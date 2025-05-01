@@ -21,6 +21,7 @@ class ParPartnershipFlowsAdvicePageController extends ParBaseController {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
 
     $par_data_partnership_advice = $this->getFlowDataHandler()->getParameter('par_data_advice');
@@ -34,20 +35,19 @@ class ParPartnershipFlowsAdvicePageController extends ParBaseController {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function build($build = [], ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
 
     if ($par_data_advice->isArchived()) {
       $build['advice_details'] = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => 'form-group'],
-        '#collapsible' => FALSE,
-        '#collapsed' => FALSE,
+        '#type' => 'container',
+        '#attributes' => ['class' => 'govuk-form-group'],
       ];
       $build['advice_details']['archived'] = [
-        '#type' => 'markup',
-        '#markup' => 'Archived advice',
-        '#prefix' => '<h2>',
-        '#suffix' => '</h2>',
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => 'Archived advice',
+        '#attributes' => ['class' => 'govuk-heading-m'],
       ];
     }
 

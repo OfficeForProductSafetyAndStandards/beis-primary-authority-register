@@ -35,6 +35,7 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
 
     // Only set the state for the temp cache if we are passing a partnership object via the route.
@@ -76,6 +77,7 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
     $form['par_data_authority_id'] = [
       '#type' => 'radios',
       '#title' => t('Choose a Primary Authority'),
+      '#title_tag' => 'h2',
       '#options' => $authority_options,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("par_data_authority_id", NULL),
     ];
@@ -90,6 +92,7 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
     if (!$form_state->getValue('par_data_authority_id')) {

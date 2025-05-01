@@ -32,6 +32,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
@@ -45,6 +46,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $form['partnership_id'] = [
       '#type' => 'hidden',
@@ -173,21 +175,43 @@ class ParConfirmationReviewForm extends ParBaseForm {
       ]),
     ];
 
-    $url_address = 'https://www.gov.uk/government/publications/primary-authority-terms-and-conditions';
-    $url = Url::fromUri($url_address, ['attributes' => ['target' => '_blank']]);
-    $terms_link = Link::fromTextAndUrl(t('terms & conditions (opens in a new window)'), $url);
     $form['terms_organisation_agreed'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('I have read and agree to the @terms.', ['@terms' => $terms_link->toString()]),
+      '#title' => $this->t('I have read and agree to the terms and conditions.'),
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("terms_organisation_agreed"),
       '#return_value' => 'on',
+      '#wrapper_attributes' => ['class' => ['govuk-!-margin-top-4']],
     ];
 
+    // Terms & conditions.
+    $url_address = 'https://www.gov.uk/government/publications/primary-authority-terms-and-conditions';
+    $url = Url::fromUri($url_address, ['attributes' => ['target' => '_blank']]);
+    $terms_link = Link::fromTextAndUrl(t('Terms & conditions (opens in a new window)'), $url);
+    $form['terms_link'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      [
+        '#type' => 'link',
+        '#title' => $terms_link->getText(),
+        '#url' => $terms_link->getUrl(),
+        '#options' => $terms_link->getUrl()->getOptions(),
+      ],
+      '#attributes' => ['class' => ['govuk-!-margin-bottom-4']],
+    ];
+
+    // Helptext.
     $form['help_text'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'p',
+      '#value' => $this->t('You won\'t be able to change these details after you save them. Please check everything is correct.'),
+      '#attributes' => ['class' => ['govuk-form-group']],
+    ];
+
+    $form['warning_text'] = [
       '#type' => 'markup',
-      '#markup' => $this->t('You won\'t be able to change these details after you save them. Please check everything is correct.'),
-      '#prefix' => '<p>',
-      '#suffix' => '</p>',
+      '#markup' => $this->t('ATTENTION: Please ensure all information has been completed and checked to the best of your ability. If this information is incorrect, the application will be rejected, and a new submission will be required.'),
+      '#prefix' => '<div class="govuk-warning-text"><span class="govuk-warning-text__icon" aria-hidden="true">!</span><strong class="govuk-warning-text__text"><span class="govuk-visually-hidden">Warning</span>',
+      '#suffix' => '</strong></div>',
     ];
 
     return parent::buildForm($form, $form_state);
@@ -196,12 +220,13 @@ class ParConfirmationReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
     // Make sure the terms and conditions have been agreed.
     if (!$form_state->getValue('terms_organisation_agreed')) {
-      $message = $this->wrapErrorMessage('Please confirm you have read the terms & conditions.', $this->getElementId('terms_organisation_agreed', $form));
+      $message = $this->wrapErrorMessage('Please confirm you have read the terms and conditions.', $this->getElementId('terms_organisation_agreed', $form));
       $form_state->setErrorByName($this->getElementName('terms_organisation_agreed'), $message);
     }
 
@@ -274,16 +299,24 @@ class ParConfirmationReviewForm extends ParBaseForm {
     $par_data_person->set('communication_mobile', $mobile_phone_preference_value);
 
     // Set the data for the legal entities.
-    $legal_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_add_legal_entity');
-    $legal_entities = $this->getFlowDataHandler()->getTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $legal_cid) ?: [];
+    $legal_entity_prefix = ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity';
+    $legal_cid = $this->getFlowNegotiator()->getFormKey('legal_entity_add');
+    $legal_entities = $this->getFlowDataHandler()->getTempDataValue($legal_entity_prefix, $legal_cid) ?: [];
     $par_data_legal_entities = [];
-    foreach ($this->getFlowDataHandler()->getTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $legal_cid) as $delta => $legal_entity) {
-      // These ones need to be saved fresh.
+    // Loop through all stored values and create the legal entity.
+    foreach ($legal_entities as $delta => $legal_entity) {
+      // Creating the legal entity and using ParDataLegalEntity::lookup() allows
+      // information to be retrieved from a registered source like Companies House.
       $par_data_legal_entities[$delta] = ParDataLegalEntity::create([
-        'registered_name' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $delta, 'registered_name'], $legal_cid),
-        'registered_number' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $delta, 'registered_number'], $legal_cid),
-        'legal_entity_type' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $delta, 'legal_entity_type'], $legal_cid),
+        'registry' => $this->getFlowDataHandler()->getTempDataValue([$legal_entity_prefix, $delta, 'registry'], $legal_cid),
+        'registered_name' => $this->getFlowDataHandler()->getTempDataValue([$legal_entity_prefix, $delta, 'unregistered', 'legal_entity_name'], $legal_cid),
+        'registered_number' => $this->getFlowDataHandler()->getTempDataValue([$legal_entity_prefix, $delta, 'registered', 'legal_entity_number'], $legal_cid),
+        'legal_entity_type' => $this->getFlowDataHandler()->getTempDataValue([ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity', $delta, 'unregistered', 'legal_entity_type'], $legal_cid),
       ]);
+      $par_data_legal_entities[$delta]->lookup();
+
+      // Ensure they are ordered correctly.
+      ksort($par_data_legal_entities);
     }
 
     $existing_legal_cid = $this->getFlowNegotiator()->getFormKey('par_partnership_confirmation_select_legal_entities');
@@ -291,7 +324,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
     $par_data_legal_entities_existing = [];
     foreach ($existing_legal_entities as $delta => $existing_legal_entity) {
       if ($existing = ParDataLegalEntity::load($existing_legal_entity)) {
-        $par_data_legal_entities_existing[$delta] = ParDataLegalEntity::load($existing_legal_entity);
+        $par_data_legal_entities_existing[$delta] = $existing;
       }
     }
 
@@ -326,6 +359,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
@@ -348,10 +382,11 @@ class ParConfirmationReviewForm extends ParBaseForm {
     foreach ($par_data_legal_entities_existing + $par_data_legal_entities as $key => $legal_entity) {
       // Save the new legal entities and add to the organisation.
       if ($legal_entity->isNew()) {
+        $legal_entity = $legal_entity->deduplicate();
         $legal_entity->save();
-        $par_data_organisation->get('field_legal_entity')->appendItem($legal_entity);
+        $par_data_organisation->addLegalEntity($legal_entity);
       }
-      $par_data_partnership->get('field_legal_entity')->appendItem($legal_entity);
+      $par_data_partnership->addLegalEntity($legal_entity);
     }
     if ($par_data_premises->save() && !$par_data_organisation->getPremises(TRUE)) {
       $par_data_organisation->get('field_premises')->set(0, $par_data_premises);
@@ -370,7 +405,7 @@ class ParConfirmationReviewForm extends ParBaseForm {
       try {
         $par_data_partnership->setParStatus('confirmed_business');
       }
-      catch (ParDataException $e) {
+      catch (ParDataException) {
         // If the status could not be updated we want to log this but continue.
         $message = $this->t("This status could not be updated to 'Approved by the Organisation' for the %label");
         $replacements = [

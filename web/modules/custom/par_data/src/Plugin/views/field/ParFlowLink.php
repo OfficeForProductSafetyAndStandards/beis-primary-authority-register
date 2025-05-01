@@ -36,6 +36,7 @@ class ParFlowLink extends FieldPluginBase {
   /**
    * @{inheritdoc}
    */
+  #[\Override]
   public function query() {
     // Leave empty to avoid a query on this field.
   }
@@ -43,6 +44,7 @@ class ParFlowLink extends FieldPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function defineOptions() {
     $options = parent::defineOptions();
 
@@ -57,6 +59,7 @@ class ParFlowLink extends FieldPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);
 
@@ -96,28 +99,23 @@ class ParFlowLink extends FieldPluginBase {
    *
    * @return string $documentation_completion
    */
+  #[\Override]
   public function render(ResultRow $values) {
-    $entity = $values->_entity;
+    $tokens = $this->getRenderTokens([]);
 
-    if ($entity instanceof ParDataEntityInterface) {
-      $tokens = $this->getRenderTokens([]);
+    $path = strip_tags(Html::decodeEntities($this->viewsTokenReplace($this->options['link'] ?: '', $tokens)));
+    $title = strip_tags(Html::decodeEntities($this->viewsTokenReplace($this->options['title'] ?: '', $tokens)));
+    $assistive_text = strip_tags(Html::decodeEntities($this->viewsTokenReplace($this->options['assistive_text'] ?: '', $tokens)));
 
-      $path = strip_tags(Html::decodeEntities($this->viewsTokenReplace($this->options['link'] ?: '', $tokens)));
-      $title = strip_tags(Html::decodeEntities($this->viewsTokenReplace($this->options['title'] ?: '', $tokens)));
-      $assistive_text = strip_tags(Html::decodeEntities($this->viewsTokenReplace($this->options['assistive_text'] ?: '', $tokens)));
+    $text = !empty(trim($title)) ? t($title) : 'Continue';
+    $options = !empty($assistive_text) ? ['attributes' => ['aria-label' => $assistive_text]] : [];
+    $url = !empty($path) ? Url::fromUserInput($path, $options) : NULL;
 
-      $text = !empty(trim($title)) ? t($title) : 'Continue';
-      $options = !empty($assistive_text) ? ['attributes' => ['aria-label' => $assistive_text]] : [];
-      $url = !empty($path) ? Url::fromUserInput($path, $options) : NULL;
+    $link = $url ? Link::fromTextAndUrl($text, $url)->toRenderable() : NULL;
 
-      $link = $url ? Link::fromTextAndUrl($text, $url)->toRenderable() : NULL;
+    // Hide the link
+    $text = empty($this->options['hidden']) ? $text : '';
 
-      // Hide the link
-      $text = empty($this->options['hidden']) ? $text : '';
-
-      return !empty($link) && $url->access() && $url->isRouted() ? render($link) : $text;
-    }
-
-    return '';
+    return !empty($link) && $url->access() && $url->isRouted() ? \Drupal::service('renderer')->render($link) : $text;
   }
 }

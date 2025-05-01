@@ -25,6 +25,7 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     return 'Confirmation | Are you authorised to approve this partnership?';
   }
@@ -32,11 +33,12 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL) {
+  #[\Override]
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL): AccessResult {
     try {
       // Get a new flow negotiator that points the the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException $e) {
+    } catch (ParFlowException) {
 
     }
 
@@ -70,6 +72,7 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
 
     $par_data_organisation = current($par_data_partnership->getOrganisation());
@@ -79,9 +82,14 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
 
     // Present partnership info.
     $form['partnership_info'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Partnership between'),
-      '#attributes' => ['class' => 'form-group'],
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => $this->t('Partnership between'),
+      ],
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
 
     $form['partnership_info']['partnership_text'] = [
@@ -95,12 +103,14 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
     $form['partnership_approve'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Please confirm you are authorised to approve this partnership'),
-      '#attributes' => ['class' => 'form-group'],
+      '#title_tag' => 'h2',
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
 
     $form['partnership_approve']['confirm_authorisation_select'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Yes, I am authorised to approve this partnership'),
+      '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-4']],
     ];
 
     return parent::buildForm($form, $form_state);
@@ -109,6 +119,7 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // Validate that the authorisation confirmation has been checked.
     if (empty($form_state->getValue('confirm_authorisation_select'))) {

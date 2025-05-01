@@ -1,0 +1,34 @@
+langcode: en
+status: true
+dependencies: {  }
+id: remove_enforcement
+label: 'Remove Enforcement Notice'
+default_title: null
+default_section_title: 'Enforcement Notice'
+description: 'The removal operations for an enforcement notice.'
+save_method: end
+states:
+  - par_data_enforcement_notice
+final_routes:
+  - view.par_user_enforcements.enforcement_notices_page
+steps:
+  1:
+    route: par_enforcement_remove_flows.remove_enforcement
+    form_id: par_enforcement_remove
+    components:
+      enforcement_removal_conditions: {}
+      removal_reason:
+        item: "Enforcement notice"
+        reasons:
+          requested: "The enforcing authority has requested this enforcement be removed"
+          error: "This enforcement was created in error"
+          duplicate: "This is a duplicate enforcement"
+  2:
+    route: par_enforcement_remove_flows.confirm_removal
+    form_id: par_enforcement_remove_confirm
+    components:
+      confirm_removal:
+        item: "Enforcement notice"
+      notification_followup: {}
+    form_data:
+      reason: par_enforcement_remove

@@ -2,11 +2,7 @@
 
 namespace Drupal\Tests\par_data\Kernel\Entity;
 
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
-use Drupal\par_data\Entity\ParDataEnforcementNoticeType;
-use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 
 /**
@@ -22,7 +18,7 @@ class EntityParEnforcementNoticeTest extends ParDataTestBase {
   public function testEntityValidate() {
     $entity = ParDataEnforcementNotice::create($this->getEnforcementNoticeValues());
     $violations = $entity->validate();
-    $this->assertEqual(count($violations->getFieldNames()), 0, 'No violations when validating a default Par Enforcement Notice entity.');
+    $this->assertEquals(0, count($violations->getFieldNames()), 'No violations when validating a default Par Enforcement Notice entity.');
   }
 
   /**
@@ -41,15 +37,26 @@ class EntityParEnforcementNoticeTest extends ParDataTestBase {
    * Test to validate an authority entity.
    */
   public function testEnforcementNoticeRequiredFields() {
+    // List of fields that have the addConstraint() applied.
     $values = [
-      'notice_type' => '',
+      // @see ParDataEntity::baseFieldDefinitions()
+      'archive_reason' => '',
+      // @see ParDataEnforcementNotice::baseFieldDefinitions()
       'notice_date' => '',
       'legal_entity_name' => '',
+      'summary' => '',
     ];
 
     $entity = ParDataEnforcementNotice::create($values + $this->getEnforcementNoticeValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
-    $this->assertEqual(count($violations->getFieldNames()), count($values), t('Field values are required for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
+    $this->assertEquals(
+      count($values),
+      count($violations->getFieldNames()),
+      t(
+        'Violations are reported for fields @fields.',
+        ['@fields' => implode(', ', $violations->getFieldNames())]
+      )->render()
+    );
   }
 
   /**
@@ -63,7 +70,7 @@ class EntityParEnforcementNoticeTest extends ParDataTestBase {
 
     $entity = ParDataEnforcementNotice::create($values + $this->getEnforcementNoticeValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
-    $this->assertEqual(count($violations->getFieldNames()), count($values), t('Field values cannot be longer than their allowed lengths for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
+    $this->assertEquals(count($values), count($violations->getFieldNames()), t('Field values cannot be longer than their allowed lengths for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
   }
 
   /**
@@ -74,4 +81,5 @@ class EntityParEnforcementNoticeTest extends ParDataTestBase {
     $entity = ParDataEnforcementNotice::create($this->getEnforcementNoticeValues());
     $this->assertTrue($entity->save() === SAVED_NEW, 'Par Enforcement Notice entity saved correctly.');
   }
+
 }

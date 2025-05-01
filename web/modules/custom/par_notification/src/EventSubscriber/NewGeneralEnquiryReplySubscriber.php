@@ -2,17 +2,14 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
+use Drupal\par_data\Event\ParDataEvent;
 use Drupal\comment\CommentInterface;
-use Drupal\Core\Entity\EntityEvent;
-use Drupal\Core\Entity\EntityEvents;
-use Drupal\message\Entity\Message;
-use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\core_event_dispatcher\Event\Entity\EntityInsertEvent;
 use Drupal\par_data\Entity\ParDataGeneralEnquiry;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_notification\ParNotificationException;
-use Drupal\par_notification\ParNotificationSubscriberBase;
+use Drupal\par_data\Entity\ParDataPartnership;
+use Drupal\par_notification\ParEventSubscriberBase;
 
-class NewGeneralEnquiryReplySubscriber extends ParNotificationSubscriberBase {
+class NewGeneralEnquiryReplySubscriber extends ParEventSubscriberBase {
 
   /**
    * The message template ID created for this notification.
@@ -26,116 +23,40 @@ class NewGeneralEnquiryReplySubscriber extends ParNotificationSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
-    $events[EntityEvents::insert('comment')][] = ['onEvent', 800];
+  #[\Override]
+  static function getSubscribedEvents(): array {
+    $events = [];
+    if (class_exists(ParDataEvent::class)) {
+      $events[EntityInsertEvent::class][] = ['onEvent', 800];
+    }
 
     return $events;
   }
 
   /**
-   * Get all the recipients for this notification.
-   *
-   * @param $event
-   *
-   * @return ParDataPerson[]
+   * @param EntityInsertEvent $event
    */
-  public function getRecipients(EntityEvent $event) {
-    $contacts = [];
+  public function onEvent(EntityInsertEvent $event) {
+    if ($event->getEntity() instanceof ParDataGeneralEnquiry) {
+      $this->setEvent($event);
 
-    /** @var CommentInterface $comment */
-    $comment = $event->getEntity();
-    /** @var ParDataEntityInterface $entity */
-    $entity = $comment->getCommentedEntity();
+      /** @var CommentInterface $entity */
+      $entity = $event->getEntity();
+      /** @var ParDataGeneralEnquiry $commented_entity */
+      $commented_entity = $entity->getCommentedEntity();
+      $par_data_partnership = $commented_entity?->getPartnership(TRUE);
 
-    // Always notify the primary authority contact.
-    if ($primary_authority_contacts = $entity->getPrimaryAuthorityContacts()) {
-      foreach ($primary_authority_contacts as $contact) {
-        if (!isset($contacts[$contact->id()])) {
-          $contacts[$contact->id()] = $contact;
-        }
-      }
-    }
-    // Always notify the enforcing officer.
-    if ($enforcing_authority_contact = $entity->getEnforcingPerson(TRUE)) {
-      $contacts[$enforcing_authority_contact->id()] = $enforcing_authority_contact;
-    }
-
-    // Notify secondary contacts if they've opted-in.
-    $secondary_primary_authority_contacts = $entity->getAllPrimaryAuthorityContacts();
-    $secondary_enforcing_authority_contacts = $entity->getEnforcingAuthorityContacts();
-    if ($secondary_contacts = $entity->combineContacts($secondary_primary_authority_contacts, $secondary_enforcing_authority_contacts)) {
-      foreach ($secondary_contacts as $contact) {
-        if (!isset($contacts[$contact->id()]) && $contact->hasNotificationPreference(self::MESSAGE_ID)) {
-          $contacts[$contact->id()] = $contact;
-        }
-      }
-    }
-
-    // Remove the contact if they are they created this response.
-    for ($i = 0; $i > count($contacts); $i++) {
-      $contact = &$contacts[$i];
-      $account = $contact->lookupUserAccount();
-      if ($account && $account->id() !== $comment->getOwnerId()) {
-
-        unset($contact);
-      }
-    }
-
-    return array_filter($contacts);
-  }
-
-  /**
-   * @param EntityEvent $event
-   */
-  public function onEvent(EntityEvent $event) {
-    /** @var CommentInterface $comment */
-    $comment = $event->getEntity();
-    /** @var ParDataEntityInterface $entity */
-    $par_data_entity = $comment->getCommentedEntity();
-    $par_data_partnership = $par_data_entity ? $par_data_entity->getPartnership(TRUE) : NULL;
-
-    // If the commented entity is not a general enquiry do not process this event.
-    if (!$par_data_entity instanceof ParDataGeneralEnquiry) {
-      return;
-    }
-
-    $contacts = $this->getRecipients($event);
-    foreach ($contacts as $contact) {
-      if (!isset($this->recipients[$contact->getEmail()])) {
-        // Record the recipient so that we don't send them the message twice.
-        $this->recipients[$contact->getEmail] = $contact;
-        // Try and get the user account associated with this contact.
-        $account = $contact->getUserAccount();
-
-        try {
-          /** @var Message $message */
-          $message = $this->createMessage();
-        }
-        catch (ParNotificationException $e) {
-          break;
-        }
-
-        // Add contextual information to this message.
-        if ($message->hasField('field_comment')) {
-          $message->set('field_comment', $comment);
-        }
-        if ($message->hasField('field_general_enquiry')) {
-          $message->set('field_general_enquiry', $par_data_entity);
-        }
-
-        // Add some custom arguments to this message.
-        $message->setArguments([
-          '@first_name' => $contact->getFirstName(),
-          '@partnership_label' => $par_data_partnership ? strtolower($par_data_partnership->label()) : 'partnership',
-        ]);
-
-        // The owner is the user who this message belongs to.
-        if ($account) {
-          $message->setOwnerId($account->id());
-        }
+      // Only send messages for active general enquiries.
+      if ($commented_entity instanceof ParDataGeneralEnquiry &&
+        $par_data_partnership instanceof ParDataPartnership &&
+        $commented_entity->isActive()) {
 
         // Send the message.
-        $this->sendMessage($message, $contact->getEmail());
+        $arguments = [
+          '@partnership_label' => strtolower($par_data_partnership->label()),
+        ];
+        $additional_parameters = ['field_general_enquiry' => $commented_entity];
+        $this->sendMessage($arguments, $additional_parameters);
       }
     }
   }

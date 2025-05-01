@@ -1,0 +1,5 @@
+par_govuk_cookies:
+  js:
+    js/par_govuk_cookies.js: {}
+  dependencies:
+    - core/drupal

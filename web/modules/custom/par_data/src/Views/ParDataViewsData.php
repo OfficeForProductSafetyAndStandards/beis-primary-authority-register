@@ -18,6 +18,7 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getViewsData() {
     $data = parent::getViewsData();
 
@@ -33,20 +34,17 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
     }
 
     // Document Completion as a %.
-    $data['par_partnerships_revision']['document_completion'] = array(
+    $data['par_partnerships_revision']['document_completion'] = ['title' => t('Documents Completion Percentage'), 'field' => [
       'title' => t('Documents Completion Percentage'),
-      'field' => [
-        'title' => t('Documents Completion Percentage'),
-        'help' => t('Completion percentage for partnership required documents'),
-        'id' => 'par_partnership_revision_documents_completion_percentage',
-      ],
-    );
+      'help' => t('Completion percentage for partnership required documents'),
+      'id' => 'par_partnership_revision_documents_completion_percentage',
+    ]];
 
     // PAR Status Filter.
     // This will always get the allowed statuses from the first bundle.
     // @TODO Get the list of bundles which the view supports and use these.
     $par_entity = $this->getParDataManager()->getParEntityType($this->entityType->id());
-    $entity_bundle = $this->getParDataManager()->getParBundleEntity($this->entityType->id());
+    $entity_bundle = $par_entity ? $this->getParDataManager()->getParBundleEntity($this->entityType->id()) : NULL;
     if (isset($par_entity) && isset($entity_bundle) && $entity_bundle instanceof ParDataTypeInterface) {
       $status_field = $entity_bundle->getConfigurationElementByType('entity', 'status_field');
     }
@@ -116,17 +114,6 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
       ],
     ];
 
-    // PAR Partnership Flow Link.
-    // @deprecated
-    $data[$this->entityType->getDataTable()]['par_partnership_flow_link'] = [
-      'title' => t('PAR Partnership Flow Link'),
-      'field' => [
-        'title' => t('PAR Partnership Flow Link'),
-        'help' => t('Provides a link to the relevant partnership journey determined by the partnership status.'),
-        'id' => 'par_partnership_flow_link',
-      ],
-    ];
-
     // Custom filter for Par Membership checks.
     $data[$this->entityType->getDataTable()]['id_filter'] = [
       'title' => t('Membership Filter'),
@@ -157,6 +144,28 @@ class ParDataViewsData extends EntityViewsData implements EntityViewsDataInterfa
         'id' => 'par_flow_link',
       ],
     ];
+
+    // @see PAR-1750 Enable the membership last updated date.
+    if ($this->entityType->id() === 'par_data_partnership') {
+      $data[$this->entityType->getDataTable()]['par_data_member_number']  = [
+        'title' => t('PAR Membership Number'),
+        'field' => [
+          'title' => t('PAR Membership Number'),
+          'help' => t('Provides a field for the number of members.'),
+          'id' => 'par_data_member_number',
+        ],
+      ];
+
+      $data[$this->entityType->getDataTable()]['par_data_members_last_updated']  = [
+        'title' => t('PAR Membership Last Updated'),
+        'field' => [
+          'title' => t('PAR Membership Last Updated'),
+          'help' => t('Provides a field to display when the membership list was last updated.'),
+          'id' => 'par_data_members_last_updated',
+        ],
+      ];
+
+    }
 
     return $data;
   }

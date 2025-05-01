@@ -21,44 +21,44 @@ mode: summary
 content:
   details:
     type: text_default
-    weight: 3
-    region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 3
+    region: content
   document:
-    weight: 6
+    type: file_default
     label: above
     settings:
       use_description_as_link_text: true
     third_party_settings: {  }
-    type: file_default
+    weight: 6
     region: content
   field_regulatory_function:
     type: entity_reference_entity_view
-    weight: 2
-    region: content
     label: hidden
     settings:
       view_mode: title
       link: false
     third_party_settings: {  }
+    weight: 2
+    region: content
   primary_authority_status:
     type: par_list_formatter
-    weight: 1
-    region: content
     label: hidden
     settings:
       display_original_value: false
     third_party_settings: {  }
+    weight: 1
+    region: content
   title:
     type: string
-    weight: 0
-    region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   action_referral: true
   archive_reason: true

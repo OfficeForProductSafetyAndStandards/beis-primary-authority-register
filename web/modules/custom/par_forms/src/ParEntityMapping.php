@@ -12,7 +12,6 @@ class ParEntityMapping {
   protected $fieldDefinition;
   protected $delta;
   protected $property;
-  protected $elementKey;
   protected $errorMessageOverrides = [];
 
   /**
@@ -37,8 +36,8 @@ class ParEntityMapping {
    *   An array of message replacements where the key is the original
    *   entity violation message and the value is the replacement.
    */
-  public function __construct($elementKey, string $entityType, string $field, string $property = NULL, string $bundle = NULL, int $delta = NULL, array $messageOverrides = []) {
-    if ($fieldDefinition = $this->getParDataManager()->getFieldDefinition($entityType, $bundle, $field)) {
+  public function __construct(protected mixed $elementKey, string $entityType, string $field, string $property = NULL, string $bundle = NULL, int $delta = NULL, array $messageOverrides = []) {
+    if ($fieldDefinition = $this->getParDataManager()->getFieldDefinition($entityType, $field, $bundle)) {
       $this->fieldDefinition = $fieldDefinition;
     }
     else {
@@ -47,7 +46,6 @@ class ParEntityMapping {
 
     $this->delta = $delta ?: 0;
     $this->property = $property;
-    $this->elementKey = $elementKey;
     $this->errorMessageOverrides = $messageOverrides;
   }
 
@@ -118,6 +116,6 @@ class ParEntityMapping {
    * @return string
    */
   public function getErrorMessage($message) {
-    return isset($this->errorMessageOverrides[(string) $message]) ? $this->errorMessageOverrides[(string) $message] : $message;
+    return $this->errorMessageOverrides[(string) $message] ?? $message;
   }
 }

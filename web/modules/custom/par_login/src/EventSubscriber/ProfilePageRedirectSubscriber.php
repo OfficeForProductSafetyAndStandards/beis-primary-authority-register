@@ -7,24 +7,10 @@ use Drupal\Core\Url;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 class ProfilePageRedirectSubscriber implements EventSubscriberInterface {
-
-  /**
-   * The current user.
-   *
-   * @var \Drupal\Core\Session\AccountProxyInterface
-   */
-  private $account;
-
-  /**
-   * The logger service.
-   *
-   * @param \Psr\Log\LoggerInterface $logger
-   */
-  private $logger;
 
   /**
    * @param \Drupal\Core\Session\AccountProxyInterface $account
@@ -34,15 +20,21 @@ class ProfilePageRedirectSubscriber implements EventSubscriberInterface {
    *
    * @throws \InvalidArgumentException
    */
-  public function __construct(AccountProxyInterface $account, LoggerInterface $logger) {
-    $this->account = $account;
-    $this->logger = $logger;
+  public function __construct(
+      /**
+       * The current user.
+       */
+      private readonly AccountProxyInterface $account,
+      private readonly LoggerInterface $logger
+  )
+  {
   }
 
   /**
    * {@inheritdoc}
    */
-  public static function getSubscribedEvents() {
+  #[\Override]
+  public static function getSubscribedEvents(): array {
     // This MUST run before RouterListener::onKernelRequest(), to ensure
     // the redirection doesn't recursively resolve.
     $events[KernelEvents::REQUEST][] = ['redirectProfilePage', 34];
@@ -52,10 +44,10 @@ class ProfilePageRedirectSubscriber implements EventSubscriberInterface {
   /**
    * Redirect requests for the user page to the relevant dashboard.
    *
-   * @param GetResponseEvent $event
+   * @param RequestEvent $event
    * @return void
    */
-  public function redirectProfilePage(GetResponseEvent $event) {
+  public function redirectProfilePage(RequestEvent $event) {
     $request = $event->getRequest();
 
     if ($this->account->isAuthenticated()) {
@@ -70,7 +62,7 @@ class ProfilePageRedirectSubscriber implements EventSubscriberInterface {
 
       // Log the denied request as well as the referer for information.
       $referer = $request->headers->get('referer');
-      $this->logger->warning(
+      $this->logger->info(
         'User @user is not allowed to access their profile page. Redirected from %redirected',
         ['%user' => $this->account->id(), '%redirected' => $referer]
       );

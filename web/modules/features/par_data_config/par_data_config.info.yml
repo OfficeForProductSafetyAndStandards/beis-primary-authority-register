@@ -20,4 +20,4 @@ dependencies:
   - 'par_data:par_data'
   - 'par_data_config:par_data_config'
 package: PAR
-core_version_requirement: '^8.9 || ^9'
+core_version_requirement: '^9 || ^10 || ^11'

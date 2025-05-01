@@ -32,6 +32,7 @@ class ParPartnershipsCombinedStatusField extends FieldPluginBase {
   /**
    * @{inheritdoc}
    */
+  #[\Override]
   public function query() {
     // Leave empty to avoid a query on this field.
   }
@@ -39,6 +40,7 @@ class ParPartnershipsCombinedStatusField extends FieldPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function defineOptions() {
     $options = parent::defineOptions();
 
@@ -52,14 +54,15 @@ class ParPartnershipsCombinedStatusField extends FieldPluginBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);
 
     // @todo figure out how to get the label from the entity configuration.
     $form['status_fields'] = [
+      '#type' => 'checkboxes',
       '#title' => 'Status fields to include',
       '#description' => 'Select multiple PAR Partnership status fields',
-      '#type' => 'checkboxes',
       '#options' => [
         'partnership_info_agreed_authority' => 'PA Partnership Info Agreed',
         'partnership_info_agreed_business' => 'Business Partnership Details Confirmed',
@@ -91,6 +94,7 @@ class ParPartnershipsCombinedStatusField extends FieldPluginBase {
    *
    * @return string $documentation_completion
    */
+  #[\Override]
   public function render(ResultRow $values) {
     $entity = $values->_entity;
 

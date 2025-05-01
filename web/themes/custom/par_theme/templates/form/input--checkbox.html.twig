@@ -1,0 +1,22 @@
+{#
+/**
+ * @file
+ * Theme override for an 'input' #type form element.
+ *
+ * Available variables:
+ * - attributes: A list of HTML attributes for the input element.
+ * - children: Optional additional rendered elements.
+ *
+ * @see template_preprocess_input()
+ */
+#}
+
+{%
+  set classes = [
+    'form-control',
+    'govuk-checkboxes__input',
+    errors ? 'govuk-input--error'
+  ]
+%}
+
+<input type="checkbox"{{ attributes.removeClass('govuk-form-group').addClass(classes).removeAttribute('placeholder') }} />

@@ -1,0 +1,48 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_legal_entity
+  uuid: d53162d9-c87d-45a7-894c-120f53f97fea
+  bundle: legal_entity
+  default_langcode: en
+  depends:
+    44f38230-a289-4dc9-b3fa-1f0475c8a31e: user
+default:
+  user_id:
+    -
+      entity: 44f38230-a289-4dc9-b3fa-1f0475c8a31e
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1664205285
+  revision_uid:
+    -
+      entity: 44f38230-a289-4dc9-b3fa-1f0475c8a31e
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 'Active Organisation 2 Ltd'
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  par_status:
+    -
+      value: active
+  registered_name:
+    -
+      value: 'Active Organisation 2 Ltd'
+  registered_number:
+    -
+      value: '1525354555'
+  legal_entity_type:
+    -
+      value: limited_company

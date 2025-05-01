@@ -2,9 +2,11 @@
 
 namespace Drupal\par_data\Entity;
 
-use Drupal\comment\Entity\Comment;
+use Drupal\comment\CommentManagerInterface;
+use Drupal\comment\CommentStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\par_data\ParDataException;
 
 /**
  * Defines the par_data_general_enquiry entity.
@@ -68,42 +70,96 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   field_ui_base_route = "entity.par_data_general_enquiry_t.edit_form"
  * )
  */
-class ParDataGeneralEnquiry extends ParDataEntity {
+class ParDataGeneralEnquiry extends ParDataEntity implements ParDataEnquiryInterface {
 
   use ParEnforcementEntityTrait;
 
   /**
-   * Get the message comments.
-   */
-  public function getReplies($single = FALSE) {
-    $cids = \Drupal::entityQuery('comment')
-      ->condition('entity_id', $this->id())
-      ->condition('entity_type', $this->getEntityTypeId())
-      ->sort('cid', 'DESC')
-      ->execute();
-    $messages = !empty($cids) ? array_values(Comment::loadMultiple($cids)) : NULL;
-    $message = !empty($messages) ? current($messages): NULL;
-
-    return $single ? $message : $messages;
-  }
-
-  /**
    * {@inheritdoc}
    */
-  public function filterRelationshipsByAction($relationship, $action) {
-    switch ($action) {
-      case 'manage':
-        // No relationships should be followed, this is one of the lowest tier entities.
-        return FALSE;
-
+  #[\Override]
+  public function creator(): ParDataPersonInterface {
+    if ($this->hasField('field_person') &&
+      !$this->get('field_person')->isEmpty()) {
+      $enforcing_officers = $this->get('field_person')->referencedEntities();
     }
 
-    return parent::filterRelationshipsByAction($relationship, $action);
+    // Validate that there is an enforcement officer.
+    if (empty($enforcing_officers)) {
+      throw new ParDataException("Mandatory data is missing for this entity: {$this->label()}");
+    }
+
+    return current($enforcing_officers);
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
+  public function sender(): ParDataAuthority {
+    if ($this->hasField('field_enforcing_authority')) {
+      $enforcing_authorities = $this->get('field_enforcing_authority')->referencedEntities();
+    }
+
+    // Validate that there is an enforcing authority.
+    if (empty($enforcing_authorities)) {
+      throw new ParDataException("Mandatory data is missing for this entity: {$this->label()}");
+    }
+
+    return current($enforcing_authorities);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  #[\Override]
+  public function receiver(): array {
+    if ($this->hasField('field_primary_authority')) {
+      $primary_authorities = $this->get('field_primary_authority')->referencedEntities();
+    }
+    if ($this->hasField('field_partnership') && empty($primary_authorities)) {
+      $partnerships = $this->get('field_partnership')->referencedEntities();
+      $primary_authorities = [];
+      foreach ($partnerships as $partnership) {
+        $primary_authorities = array_merge($primary_authorities, $partnership->getAuthority());
+      }
+    }
+
+    // Validate that there is a primary authority.
+    if (empty($primary_authorities)) {
+      throw new ParDataException("Mandatory data is missing for this entity: {$this->label()}");
+    }
+
+    return array_filter($primary_authorities);
+  }
+
+  /**
+   * {@inheritDoc}>
+   */
+  #[\Override]
+  public function getReplies(): array {
+    /** @var CommentStorageInterface $comment_storage */
+    $comment_storage = \Drupal::entityTypeManager()->getStorage('comment');
+    $thread = $comment_storage->loadThread($this, 'messages', CommentManagerInterface::COMMENT_MODE_FLAT);
+    return array_values($thread);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  #[\Override]
+  public function filterRelationshipsByAction($relationship, $action)
+  {
+      return match ($action) {
+          'manage' => FALSE,
+          default => parent::filterRelationshipsByAction($relationship, $action),
+      };
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  #[\Override]
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 

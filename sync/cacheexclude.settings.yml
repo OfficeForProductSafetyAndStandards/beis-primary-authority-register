@@ -1,0 +1,4 @@
+cacheexclude_list: "/cookies\r\n/user/login"
+cacheexclude_node_types:
+  article: '0'
+  page: '0'

@@ -5,6 +5,7 @@ namespace Drupal\par_data\Entity;
 use CommerceGuys\Addressing\Exception\UnknownCountryException;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\user\UserInterface;
 
 /**
  * Defines the par_data_organisation entity.
@@ -68,7 +69,70 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   field_ui_base_route = "entity.par_data_organisation_type.edit_form"
  * )
  */
-class ParDataOrganisation extends ParDataEntity {
+class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInterface {
+
+  /**
+   * {@inheritdoc}
+   */
+  #[\Override]
+  public function getMembers(): array {
+    /** @var ParDataPersonInterface[] $people */
+    $people = $this->getPerson();
+    $users = [];
+
+    foreach ($people as $person) {
+      $user = $person->getUserAccount();
+      if ($user instanceof UserInterface) {
+        $users[$user->getEmail()] = $user;
+      }
+    }
+
+    return $users;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  #[\Override]
+  public function getPerson(bool $primary = FALSE): mixed {
+    $people = $this->get('field_person')->referencedEntities();
+    $person = !empty($people) ? current($people) : NULL;
+
+    return $primary ? $person : $people;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  #[\Override]
+  public function addPerson(ParDataPersonInterface $person): void {
+    if (!$this->hasPerson($person)) {
+      $this->get('field_person')->appendItem($person->id());
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  #[\Override]
+  public function removePerson(ParDataPersonInterface $person): void {
+    foreach ($this->getPerson() as $index => $existing_person) {
+      if ($existing_person->id() === $person->id()) {
+        $this->get('field_person')->removeItem($index);
+      }
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  #[\Override]
+  public function hasPerson(ParDataPersonInterface $person): bool {
+    $existing_people = $this->getPerson();
+    $exists = array_filter($existing_people, fn($existing_person) => $existing_person->id() === $person->id());
+
+    return !empty($exists);
+  }
 
   /**
    * @var array
@@ -79,16 +143,6 @@ class ParDataOrganisation extends ParDataEntity {
     'par_data_person',
     'par_data_legal_entity',
   ];
-
-  /**
-   * Get the contacts for this Organisation.
-   */
-  public function getPerson($primary = FALSE) {
-    $people = $this->get('field_person')->referencedEntities();
-    $person = !empty($people) ? current($people) : NULL;
-
-    return $primary ? $person : $people;
-  }
 
   /**
    * Get the legal entites for this Organisation.
@@ -108,7 +162,7 @@ class ParDataOrganisation extends ParDataEntity {
    */
   public function getPartnershipLegalEntities() {
     $partnership_legal_entities = $this->getLegalEntity();
-    $legal_obj_list = array();
+    $legal_obj_list = [];
 
     foreach ($partnership_legal_entities as $key => $current_legal_entity) {
       $legal_obj_list[$current_legal_entity->get('id')->getString()] =  $current_legal_entity->get('registered_name')->getString();
@@ -117,16 +171,67 @@ class ParDataOrganisation extends ParDataEntity {
   }
 
   /**
-   * Add a legal entity for this Organisation.
+   * Add a legal entity to this Organisation.
    *
    * @param ParDataLegalEntity $legal_entity
    *   A PAR Legal Entity to add.
-
+   *
+   * @throws EntityStorageException
+   *    In case of failures an exception is thrown.
    */
   public function addLegalEntity(ParDataLegalEntity $legal_entity) {
-    $legal_entities = $this->getLegalEntity();
-    $legal_entities[] = $legal_entity;
-    $this->set('field_legal_entity', $legal_entities);
+    // The legal entity must be saved before adding.
+    if ($legal_entity->isNew()) {
+      $legal_entity->save();
+    }
+
+    // If this legal entity is already attached then don't attach it again.
+    /* @var ParDataLegalEntity $legal_entity */
+    foreach ($this->getLegalEntity() as $delta => $existing_legal_entity) {
+      if ($existing_legal_entity->id() === $legal_entity->id()) {
+        return;
+      }
+    }
+
+    // Attach the new legal entity.
+    $this->get('field_legal_entity')->appendItem($legal_entity);
+  }
+
+  public function updateLegalEntity(ParDataLegalEntity $legal_entity) {
+    // Before updating any legal entity check there isn't a duplicate.
+    $deduplicated = $legal_entity->deduplicate();
+
+    // If no duplicate was found there is nothing to update.
+    if ($deduplicated->id() === $legal_entity->id()) {
+      return;
+    }
+
+    // Find the field delta for the original item.
+    $original_delta = NULL;
+    foreach ($this->getLegalEntity() as $delta => $existing_legal_entity) {
+      if ($existing_legal_entity->id() === $legal_entity->id()) {
+        $original_delta = $delta;
+      }
+    }
+
+    // Find the field delta for the duplicate item.
+    $deduplicated_delta = NULL;
+    foreach ($this->getLegalEntity() as $delta => $existing_legal_entity) {
+      // If this legal entity is already attached then don't attach it again.
+      if ($existing_legal_entity->id() === $deduplicated->id()) {
+        $deduplicated_delta = $delta;
+      }
+    }
+
+    // Remove the original legal entity if the deduplicated legal entity is already on the organisation.
+    if (is_int($original_delta) && is_int($deduplicated_delta)) {
+      // Replace an existing legal entity.
+      $this->get('field_legal_entity')->offsetUnset($original_delta);
+    }
+    // Replace the original legal entity with the deduplicated one.
+    else if (is_int($original_delta) && !is_int($deduplicated_delta)) {
+      $this->get('field_legal_entity')->set($original_delta, $deduplicated->id());
+    }
   }
 
   /**
@@ -155,7 +260,7 @@ class ParDataOrganisation extends ParDataEntity {
    * @return bool
    */
   public function isCoordinatedMember() {
-    $query = \Drupal::entityQuery('par_data_coordinated_business');
+    $query = \Drupal::entityQuery('par_data_coordinated_business')->accessCheck();
 
     $query->condition('field_organisation', [$this->id()], 'IN');
 
@@ -203,7 +308,7 @@ class ParDataOrganisation extends ParDataEntity {
       $trading_names = $this->get('trading_name')->getString();
     }
 
-    return isset($trading_names) ? $trading_names : '';
+    return $trading_names ?? '';
   }
 
   /**
@@ -238,6 +343,7 @@ class ParDataOrganisation extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 

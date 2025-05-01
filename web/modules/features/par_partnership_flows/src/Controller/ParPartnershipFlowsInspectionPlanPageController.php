@@ -23,6 +23,7 @@ class ParPartnershipFlowsInspectionPlanPageController extends ParBaseController 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     $par_data_partnership_inspection_plan = $this->getFlowDataHandler()->getParameter('par_data_inspection_plan');
     if ($par_data_partnership_inspection_plan) {
@@ -34,15 +35,16 @@ class ParPartnershipFlowsInspectionPlanPageController extends ParBaseController 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function build($build = [], ParDataPartnership $par_data_partnership = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL) {
     if ($par_data_inspection_plan->isRevoked()) {
       $build['inspection_plan_details'] = [
         '#type' => 'container',
-        '#attributes' => ['class' => ['form-group', 'notice']],
+        '#attributes' => ['class' => ['govuk-form-group', 'notice']],
       ];
       $build['inspection_plan_details']['revoked'] = [
         '#type' => 'markup',
-        '#markup' => '<i class="icon icon-important"><span class="visually-hidden">Revoked</span></i>',
+        '#markup' => '<i class="icon icon-important"><span class="govuk-visually-hidden">Revoked</span></i>',
       ];
       $build['inspection_plan_details']['warning'] = [
         '#type' => 'markup',

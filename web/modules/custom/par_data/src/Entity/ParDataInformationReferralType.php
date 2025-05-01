@@ -25,9 +25,9 @@ namespace Drupal\par_data\Entity;
  *     "uuid" = "uuid"
  *   },
  *   links = {
- *     "canonical" = "/admin/structure/par_data/par_data_information_referral_type/{par_data_information_referral_type}",
- *     "edit-form" = "/admin/structure/par_data/par_data_information_referral_type/{par_data_information_referral_type}/edit",
- *     "delete-form" = "/admin/structure/par_data/par_data_information_referral_type/{par_data_information_referral_type}/delete",
+ *     "canonical" = "/admin/structure/par_data/par_data_information_referral_type/{par_data_information_referral_t}",
+ *     "edit-form" = "/admin/structure/par_data/par_data_information_referral_type/{par_data_information_referral_t}/edit",
+ *     "delete-form" = "/admin/structure/par_data/par_data_information_referral_type/{par_data_information_referral_t}/delete",
  *     "collection" = "/admin/structure/par_data/par_data_information_referral_type"
  *   },
  *   config_export = {

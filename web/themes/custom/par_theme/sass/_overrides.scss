@@ -1,0 +1,199 @@
+.data-item {
+  .data-number {
+    font-weight: 700 !important;
+    font-size: 5rem !important;
+    line-height: 1 !important;
+  }
+  .data-caption {
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+    line-height: 1.25 !important;
+  }
+}
+
+.form-text {
+  background: none;
+}
+
+.app-phase-banner {
+  border-bottom: 0;
+}
+
+.app-cookie-banner {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 100%;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background-color: $govuk-body-background-colour;
+  .govuk-width-container {
+    font-family: "GDS Transport",Arial,sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 1.14286;
+    color: govuk-colour("light-green");
+  }
+}
+
+.govuk-header__logo {
+  .govuk-header__link {
+    white-space: nowrap;
+    svg {
+      fill: #fff;
+    }
+    &:focus {
+      svg {
+        fill: #000;
+      }
+    }
+  }
+}
+
+#block-par-theme-account-menu {
+  h2 {
+    color: #fff;
+  }
+}
+
+// PAR green branded header/footer.
+.par-branding {
+  .govuk-header {
+    .header-wrapper,
+    & {
+      background: #006633;
+    }
+
+    a {
+      &:hover,
+      &:focus {
+        color: govuk-colour("white");
+      }
+    }
+  }
+
+  .govuk-footer__copyright-logo {
+    background-image: url("../assets/images/govuk-par.png?v2");
+    background-size: 100px 100px;
+  }
+}
+
+.govuk-clearfix {
+  @include govuk-clearfix;
+}
+
+.govuk-header__content,
+.govuk-header__navigation-item {
+  a {
+    text-decoration: none;
+  }
+}
+
+// Account Menu block.
+.govuk-header__navigation {
+  clear: both;
+
+  &-list {
+    margin-bottom: 10px;
+  }
+
+  li {
+    padding: 5px 0;
+    a {
+      font-weight: 700;
+      font-size: 1rem;
+      line-height: 1.25;
+
+      &:hover,
+      &:focus {
+        color: govuk-colour("white");
+      }
+    }
+  }
+
+  &-item--active {
+    a {
+      &:link,
+      &:hover,
+      &:visited {
+        color: govuk-colour("white");
+        text-decoration: underline;
+        text-decoration-thickness: 3px;
+
+        @if $govuk-link-underline-offset {
+          text-underline-offset: $govuk-link-underline-offset;
+        }
+      }
+      &:focus {
+        border: 0;
+        @include govuk-focused-text;
+      }
+    }
+  }
+}
+
+.govuk-grid-column-one-third {
+  .views-element-container {
+    @include govuk-media-query($from: desktop) {
+      float: right;
+    }
+  }
+}
+.govuk-character-count {
+  .text-count-message {
+    @extend .govuk-hint;
+    @extend .govuk-character-count__message;
+  }
+}
+.webform-element {
+  label {
+    font-weight: bold;
+  }
+}
+.govuk-tabs {
+  margin-bottom: 0;
+}
+.govuk-main-wrapper.has-breadcrumb {
+  padding-top: 20px;
+}
+.govuk-main-wrapper.has-local-tasks {
+  #block-govuk-content {
+    @extend .govuk-tabs__panel;
+  }
+}
+
+.toolbar-tray-name {
+  color: govuk-colour("black");
+}
+
+.toolbar div,
+.toolbar-menu {
+  font-size: 16px !important;
+
+  ul > li {
+    margin-bottom: 0 !important;
+  }
+}
+
+.govuk-button {
+  &:hover,
+  &:focus {
+    color: govuk-colour("white") !important;
+  }
+
+  &.add-action {
+    margin-top: 30px;
+  }
+}
+
+.govuk-cookie-banner {
+  border-bottom: 0;
+  padding-top: 0;
+}
+
+.par-govuk-cookie-banner__message {
+  border-bottom: 10px solid transparent;
+  padding-top: 20px;
+}
+

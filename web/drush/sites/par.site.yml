@@ -7,7 +7,7 @@ dev:
           ordered-dump: true
           structure-tables-key: 'common'
           skip-tables-key: 'common'
-          extra: '-O -x -w'
+          extra-dump: '-O -x -w'
       sanitize:
         options:
           sanitize-password: 'TestPassword'
@@ -21,8 +21,18 @@ paas:
           ordered-dump: true
           structure-tables-key: 'common'
           skip-tables-key: 'common'
-          extra: '-O -x -w'
+          extra-dump: '-O -x -w'
       sanitize:
         options:
           sanitize-password: 'TestPassword'
           sanitize-email: 'no'
+seed:
+  user: 1
+  command:
+    sql:
+      dump:
+        options:
+          ordered-dump: true
+          structure-tables-key: 'full'
+          skip-tables-key: 'common'
+          extra-dump: '-O -x -w'

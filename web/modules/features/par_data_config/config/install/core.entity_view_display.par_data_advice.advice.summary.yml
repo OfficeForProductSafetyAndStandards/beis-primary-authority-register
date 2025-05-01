@@ -15,54 +15,54 @@ bundle: advice
 mode: summary
 content:
   advice_status:
+    type: string
     label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
     weight: 4
     region: content
+  advice_title:
+    type: string
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
-  advice_title:
-    label: hidden
     weight: 0
     region: content
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
   attachment:
+    type: file_default
     label: hidden
-    weight: 1
-    region: content
     settings:
       use_description_as_link_text: true
     third_party_settings: {  }
-    type: file_default
+    weight: 1
+    region: content
   document:
     type: file_default
-    weight: 1
-    region: content
     label: hidden
     settings:
       use_description_as_link_text: true
     third_party_settings: {  }
-  issue_date:
-    label: hidden
-    weight: 5
+    weight: 1
     region: content
+  issue_date:
+    type: datetime_default
+    label: hidden
     settings:
       timezone_override: ''
       format_type: gds_date_format
     third_party_settings: {  }
-    type: datetime_default
+    weight: 5
+    region: content
   notes:
     type: text_trimmed
-    weight: 3
-    region: content
     label: hidden
     settings:
       trim_length: 600
     third_party_settings: {  }
+    weight: 3
+    region: content
 hidden:
   advice_type: true
   archive_reason: true

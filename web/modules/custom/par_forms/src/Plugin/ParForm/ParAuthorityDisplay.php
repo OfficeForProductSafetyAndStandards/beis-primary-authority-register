@@ -2,10 +2,12 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPerson;
+use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParFormPluginBase;
 
@@ -22,8 +24,11 @@ class ParAuthorityDisplay extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  #[\Override]
+  public function loadData(int $index = 1): void {
     $par_data_authority = $this->getFlowDataHandler()->getParameter('par_data_authority');
+    $par_data_premises = $this->getFlowDataHandler()->getParameter('par_data_premises') ??
+      $par_data_authority?->getPremises(TRUE);
 
     if ($par_data_authority) {
       if ($par_data_authority->hasField('authority_name')) {
@@ -35,10 +40,6 @@ class ParAuthorityDisplay extends ParFormPluginBase {
 
       if ($par_data_authority->hasField('authority_type')) {
         $this->getFlowDataHandler()->setFormPermValue("authority_type", $par_data_authority->getAuthorityType());
-      }
-
-      if ($address = $par_data_authority->getPremises(TRUE)) {
-        $this->getFlowDataHandler()->setFormPermValue("authority_address", $address->label());
       }
 
       if ($par_data_authority->hasField('field_regulatory_function')) {
@@ -60,38 +61,43 @@ class ParAuthorityDisplay extends ParFormPluginBase {
       }
     }
 
-    parent::loadData($cardinality);
+    if ($par_data_premises instanceof ParDataPremises) {
+      $this->getFlowDataHandler()->setFormPermValue("authority_address", $par_data_premises->label());
+    }
+
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  #[\Override]
+  public function getElements(array $form = [], int $index = 1) {
     // Return path for all redirect links.
     $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
     $params = $this->getRouteParams() + ['destination' => $return_path];
 
     $form['authority'] = [
-      '#type' => 'fieldset',
+      '#type' => 'container',
     ];
 
     $form['authority']['name'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['grid-row']],
+      '#attributes' => ['class' => ['govuk-grid-row']],
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium', 'column-full']],
+        '#attributes' => ['class' => ['govuk-heading-m', 'govuk-grid-column-full']],
         '#value' => $this->t('Authority Name'),
       ],
       'value' => [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#attributes' => ['class' => ['column-two-thirds']],
-        '#value' => $this->getDefaultValuesByKey('authority_name', $cardinality, NULL),
+        '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
+        '#value' => $this->getDefaultValuesByKey('authority_name', $index, NULL),
       ],
     ];
-
+    $params = $this->getRouteParams() + ['destination' => $return_path];
     // Add operation link for updating authority details.
     try {
       $link = $this->getFlowNegotiator()->getFlow()
@@ -100,7 +106,7 @@ class ParAuthorityDisplay extends ParFormPluginBase {
       $form['authority']['name']['change'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#attributes' => ['class' => ['column-one-third']],
+        '#attributes' => ['class' => ['govuk-grid-column-one-third']],
         '#weight' => 99,
         '#value' => t('@link', [
           '@link' => $link ? $link->toString() : '',
@@ -113,18 +119,18 @@ class ParAuthorityDisplay extends ParFormPluginBase {
 
     $form['authority']['type'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['grid-row']],
+      '#attributes' => ['class' => ['govuk-grid-row']],
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium', 'column-full']],
+        '#attributes' => ['class' => ['govuk-heading-m', 'govuk-grid-column-full']],
         '#value' => $this->t('Authority Type'),
       ],
       'value' => [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#attributes' => ['class' => ['column-two-thirds']],
-        '#value' => $this->getDefaultValuesByKey('authority_type', $cardinality, NULL),
+        '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
+        '#value' => $this->getDefaultValuesByKey('authority_type', $index, NULL),
       ],
     ];
 
@@ -136,7 +142,7 @@ class ParAuthorityDisplay extends ParFormPluginBase {
       $form['authority']['type']['change'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#attributes' => ['class' => ['column-one-third']],
+        '#attributes' => ['class' => ['govuk-grid-column-one-third']],
         '#weight' => 99,
         '#value' => t('@link', [
           '@link' => $link ? $link->toString() : '',
@@ -147,20 +153,20 @@ class ParAuthorityDisplay extends ParFormPluginBase {
 
     }
 
-    if ($primary_address = $this->getDefaultValuesByKey('authority_address', $cardinality, NULL)) {
+    if ($primary_address = $this->getDefaultValuesByKey('authority_address', $index, NULL)) {
       $form['authority']['address'] = [
         '#type' => 'container',
-        '#attributes' => ['class' => ['grid-row']],
+        '#attributes' => ['class' => ['govuk-grid-row']],
         'heading' => [
           '#type' => 'html_tag',
           '#tag' => 'h3',
-          '#attributes' => ['class' => ['heading-medium', 'column-full']],
+          '#attributes' => ['class' => ['govuk-heading-m', 'govuk-grid-column-full']],
           '#value' => $this->t('Primary Address'),
         ],
         'value' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#attributes' => ['class' => ['column-two-thirds']],
+          '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
           '#value' => $primary_address,
         ],
       ];
@@ -173,31 +179,31 @@ class ParAuthorityDisplay extends ParFormPluginBase {
         $form['authority']['address']['change'] = [
           '#type' => 'html_tag',
           '#tag' => 'p',
-          '#attributes' => ['class' => ['column-one-third']],
+          '#attributes' => ['class' => ['govuk-grid-column-one-third']],
           '#weight' => 99,
           '#value' => t('@link', [
             '@link' => $link ? $link->toString() : '',
           ]),
         ];
-      } catch (ParFlowException $e) {
+      } catch (ParFlowException) {
 
       }
     }
 
     $form['authority']['ons'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['grid-row']],
+      '#attributes' => ['class' => ['govuk-grid-row']],
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium', 'column-full']],
+        '#attributes' => ['class' => ['govuk-heading-m', 'govuk-grid-column-full']],
         '#value' => $this->t('ONS Code'),
       ],
       'value' => [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#attributes' => ['class' => ['column-two-thirds']],
-        '#value' => $this->getDefaultValuesByKey('ons_code', $cardinality, NULL),
+        '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
+        '#value' => $this->getDefaultValuesByKey('ons_code', $index, NULL),
       ],
     ];
 
@@ -209,7 +215,7 @@ class ParAuthorityDisplay extends ParFormPluginBase {
       $form['authority']['ons']['change'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#attributes' => ['class' => ['column-one-third']],
+        '#attributes' => ['class' => ['govuk-grid-column-one-third']],
         '#weight' => 99,
         '#value' => t('@link', [
           '@link' => $link ? $link->toString() : '',
@@ -222,18 +228,18 @@ class ParAuthorityDisplay extends ParFormPluginBase {
 
     $form['authority']['regulatory_functions'] = [
       '#type' => 'container',
-      '#attributes' => ['class' => ['grid-row']],
+      '#attributes' => ['class' => ['govuk-grid-row']],
       'heading' => [
         '#type' => 'html_tag',
         '#tag' => 'h3',
-        '#attributes' => ['class' => ['heading-medium', 'column-full']],
+        '#attributes' => ['class' => ['govuk-heading-m', 'govuk-grid-column-full']],
         '#value' => $this->t('Regulatory Functions'),
       ],
       'value' => [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#attributes' => ['class' => ['column-two-thirds']],
-        '#value' => $this->getDefaultValuesByKey('regulatory_functions', $cardinality, NULL),
+        '#attributes' => ['class' => ['govuk-grid-column-two-thirds']],
+        '#value' => $this->getDefaultValuesByKey('regulatory_functions', $index, NULL),
       ],
     ];
 
@@ -245,14 +251,14 @@ class ParAuthorityDisplay extends ParFormPluginBase {
       $form['authority']['regulatory_functions']['change'] = [
         '#type' => 'html_tag',
         '#tag' => 'p',
-        '#attributes' => ['class' => ['column-one-third']],
+        '#attributes' => ['class' => ['govuk-grid-column-one-third']],
         '#weight' => 99,
         '#value' => t('@link', [
           '@link' => $link ? $link->toString() : '',
         ]),
       ];
     }
-    catch (ParFlowException $e) {
+    catch (ParFlowException) {
 
     }
 

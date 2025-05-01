@@ -24,6 +24,7 @@ class ParRdHelpDeskDeleteForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     return "Help Desk | Partnership deleted";
   }
@@ -31,11 +32,12 @@ class ParRdHelpDeskDeleteForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
+  #[\Override]
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account): AccessResult {
     try {
       // Get a new flow negotiator that points the the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException $e) {
+    } catch (ParFlowException) {
 
     }
 
@@ -45,13 +47,17 @@ class ParRdHelpDeskDeleteForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form['partnership_info'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('The partnership application has been deleted'),
-      '#attributes' => ['class' => 'form-group'],
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => $this->t('The partnership application has been deleted'),
+      ],
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
 
     // Change the action to save.

@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataLegalEntity;
@@ -23,7 +24,8 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  #[\Override]
+  public function loadData(int $index = 1): void {
     $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
     $par_data_deviation_request = $this->getFlowDataHandler()->getParameter('par_data_deviation_request');
     $par_data_inspection_feedback = $this->getFlowDataHandler()->getParameter('par_data_inspection_feedback');
@@ -132,13 +134,13 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
     }
     // Otherwise assume we're on the raise flow and use this data.
     else {
-      $enforcing_officer_cid = $this->getFormCid('enforcing_officer');
-      $enforcing_authority_cid = $this->getFormCid('authority_selection');
-      $enforced_organisation_cid = $this->getFormCid('organisation_selection');
-      $enforced_legal_entity_cid = $this->getFormCid('select_legal');
+      $enforcing_officer_cid = $this->getFlowNegotiator()->getFormKey('enforcing_officer');
+      $enforcing_authority_cid = $this->getFlowNegotiator()->getFormKey('authority_selection');
+      $enforced_organisation_cid = $this->getFlowNegotiator()->getFormKey('organisation_selection');
+      $enforced_legal_entity_cid = $this->getFlowNegotiator()->getFormKey('select_legal');
 
       // Set the enforcement officer details.
-      if ($enforcing_officer_id = $this->getDefaultValuesByKey('enforcement_officer_id', $cardinality, NULL, $enforcing_officer_cid)) {
+      if ($enforcing_officer_id = $this->getDefaultValuesByKey('enforcement_officer_id', $index, NULL, $enforcing_officer_cid)) {
         if ($enforcing_officer = ParDataPerson::load($enforcing_officer_id)) {
           $this->getFlowDataHandler()->setFormPermValue("enforcing_officer_name", $enforcing_officer->label());
           $this->getFlowDataHandler()->setFormPermValue("enforcing_officer_work_phone", $enforcing_officer->get('work_phone')->getString());
@@ -147,7 +149,7 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
       }
 
       // Set the enforcing authority details.
-      if ($enforcing_authority_id = $this->getDefaultValuesByKey('par_data_authority_id', $cardinality, NULL, $enforcing_authority_cid)) {
+      if ($enforcing_authority_id = $this->getDefaultValuesByKey('par_data_authority_id', $index, NULL, $enforcing_authority_cid)) {
         if ($enforcing_authority = ParDataAuthority::load($enforcing_authority_id)) {
           $this->getFlowDataHandler()->setFormPermValue("enforcing_authority", $enforcing_authority->label());
         }
@@ -183,15 +185,16 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
       }
     }
 
-    parent::loadData($cardinality);
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
-    $enforcing_officer_name = $this->getDefaultValuesByKey('enforcing_officer_name', $cardinality, NULL);
-    $enforcing_authority = $this->getDefaultValuesByKey('enforcing_authority', $cardinality, NULL);
+  #[\Override]
+  public function getElements(array $form = [], int $index = 1) {
+    $enforcing_officer_name = $this->getDefaultValuesByKey('enforcing_officer_name', $index, NULL);
+    $enforcing_authority = $this->getDefaultValuesByKey('enforcing_authority', $index, NULL);
 
     // Return path for all redirect links.
     $return_path = UrlHelper::encodePath(\Drupal::service('path.current')->getPath());
@@ -200,72 +203,83 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
     // Add the details about the enforcer.
     if ($enforcing_authority || $enforcing_officer_name) {
       $form['enforcer'] = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => ['grid-row', 'form-group', 'enforcement-officer']],
+        '#type' => 'container',
+        '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group', 'enforcement-officer']],
       ];
 
       if ($enforcing_officer_name) {
         $form['enforcer']['enforcement_officer'] = [
-          '#type' => 'fieldset',
-          '#title' => t('Enforcement officer'),
-          '#attributes' => ['class' => 'column-one-half'],
-          '#prefix' => '<p>',
-          '#suffix' => '</p>',
+          '#type' => 'container',
+          'heading' => [
+            '#type' => 'html_tag',
+            '#tag' => 'h2',
+            '#attributes' => ['class' => ['govuk-heading-m']],
+            '#value' => t('Enforcement officer'),
+          ],
+          '#attributes' => ['class' => 'govuk-grid-column-one-half'],
           'name' => [
-            '#type' => 'markup',
-            '#markup' => $enforcing_officer_name,
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => $enforcing_officer_name,
           ],
         ];
-        if ($work_phone = $this->getDefaultValuesByKey('enforcing_officer_work_phone', $cardinality, NULL)) {
-          $form['enforcer']['enforcement_officer']['work_phone'] = [
-            '#type' => 'markup',
-            '#markup' => ', ' . $work_phone,
-          ];
-        }
-        if ($email = $this->getDefaultValuesByKey('enforcing_officer_email', $cardinality, NULL)) {
-          $form['enforcer']['enforcement_officer']['email'] = [
-            '#type' => 'markup',
-            '#markup' => ', ' . $email,
+        $enforcement_contact_details = array_filter([
+          'phone' => $this->getDefaultValuesByKey('enforcing_officer_work_phone', $index, NULL),
+          'email' => $this->getDefaultValuesByKey('enforcing_officer_email', $index, NULL),
+        ]);
+        if (!empty($enforcement_contact_details)) {
+          $form['enforcer']['enforcement_officer']['contact_details'] = [
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => implode(', ', array_filter($enforcement_contact_details)),
           ];
         }
       }
 
       if ($enforcing_authority) {
         $form['enforcer']['enforcing_authority'] = [
-          '#type' => 'fieldset',
-          '#title' => t('Enforcing authority'),
-          '#attributes' => ['class' => 'column-one-half'],
+          '#type' => 'container',
+          'heading' => [
+            '#type' => 'html_tag',
+            '#tag' => 'h2',
+            '#attributes' => ['class' => ['govuk-heading-m']],
+            '#value' => t('Enforcing authority'),
+          ],
+          '#attributes' => ['class' => 'govuk-grid-column-one-half'],
           'enforcing_authority' => [
-            '#type' => 'markup',
-            '#markup' => $enforcing_authority,
-            '#prefix' => '<p>',
-            '#suffix' => '</p>',
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => $enforcing_authority,
           ]
         ];
       }
     }
 
-    $primary_authority = $this->getDefaultValuesByKey('primary_authority', $cardinality, NULL);
-    $enforced_organisation = $this->getDefaultValuesByKey('enforced_organisation', $cardinality, NULL);
-    $referring_authority = $this->getDefaultValuesByKey('referred_authority', $cardinality, NULL);
+    $primary_authority = $this->getDefaultValuesByKey('primary_authority', $index, NULL);
+    $enforced_organisation = $this->getDefaultValuesByKey('enforced_organisation', $index, NULL);
+    $referring_authority = $this->getDefaultValuesByKey('referred_authority', $index, NULL);
 
     // Add the details about the partnership.
     if ($primary_authority || $enforced_organisation) {
       $form['partnership'] = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => ['grid-row', 'form-group']],
+        '#type' => 'container',
+        '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group']],
       ];
 
       if ($enforced_organisation) {
         $form['partnership']['enforced_organisation'] = [
-          '#type' => 'fieldset',
-          '#title' => t('Enforced organisation'),
-          '#attributes' => ['class' => 'column-one-half'],
+          '#type' => 'container',
+          'heading' => [
+            '#type' => 'html_tag',
+            '#tag' => 'h2',
+            '#attributes' => ['class' => ['govuk-heading-m']],
+            '#value' => t('Organisation'),
+          ],
+          '#attributes' => ['class' => 'govuk-grid-column-one-half'],
           'organisation_name' => [
-            '#type' => 'markup',
-            '#markup' => $enforced_organisation,
-            '#prefix' => '<p>',
-            '#suffix' => '</p>',
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => $enforced_organisation,
           ],
         ];
         try {
@@ -279,72 +293,82 @@ class ParEnforcementFullSummary extends ParFormPluginBase {
             ]),
           ];
         }
-        catch (ParFlowException $e) {
+        catch (ParFlowException) {
 
         }
       }
 
       if ($primary_authority) {
         $form['partnership']['primary_authority'] = [
-          '#type' => 'fieldset',
-          '#title' => t('Primary authority'),
-          '#attributes' => ['class' => ['column-one-half', 'authority-officer']],
+          '#type' => 'container',
+          'heading' => [
+            '#type' => 'html_tag',
+            '#tag' => 'h2',
+            '#attributes' => ['class' => ['govuk-heading-m']],
+            '#value' => t('Primary authority'),
+          ],
+          '#attributes' => ['class' => ['govuk-grid-column-one-half', 'authority-officer']],
           'primary_authority_name' => [
-            '#type' => 'markup',
-            '#markup' => $primary_authority,
-            '#prefix' => '<p>',
-            '#suffix' => '</p>',
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => $primary_authority,
           ],
         ];
       }
-      if ($pa_officer_name = $this->getDefaultValuesByKey('pa_officer_name', $cardinality, NULL)) {
+      if ($pa_officer_name = $this->getDefaultValuesByKey('pa_officer_name', $index, NULL)) {
         $form['partnership']['primary_authority']['pa_officer'] = [
-          '#type' => 'fieldset',
-          '#prefix' => '<p>',
-          '#suffix' => '</p>',
+          '#type' => 'container',
           'name' => [
-            '#type' => 'markup',
-            '#markup' => $pa_officer_name,
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => $pa_officer_name,
           ],
         ];
-        if ($pa_officer_work_phone = $this->getDefaultValuesByKey('pa_officer_work_phone', $cardinality, NULL)) {
-          $form['partnership']['primary_authority']['pa_officer']['work_phone'] = [
-            '#type' => 'markup',
-            '#markup' => ', ' . $pa_officer_work_phone,
-          ];
-        }
-        if ($pa_officer_email = $this->getDefaultValuesByKey('pa_officer_email', $cardinality, NULL)) {
-          $form['partnership']['primary_authority']['pa_officer']['email'] = [
-            '#type' => 'markup',
-            '#markup' => ', ' . $pa_officer_email,
+        $pa_officer_contact_details = array_filter([
+          'phone' => $this->getDefaultValuesByKey('pa_officer_work_phone', $index, NULL),
+          'email' => $this->getDefaultValuesByKey('pa_officer_email', $index, NULL),
+        ]);
+        if (!empty($pa_officer_contact_details)) {
+          $form['partnership']['primary_authority']['pa_officer']['contact_details'] = [
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => implode(', ', array_filter($pa_officer_contact_details)),
           ];
         }
       }
 
       if ($referring_authority) {
         $form['partnership']['referring_authority'] = [
-          '#type' => 'fieldset',
-          '#title' => t('Referred by'),
-          '#attributes' => ['class' => 'column-one-half'],
+          '#type' => 'container',
+          'heading' => [
+            '#type' => 'html_tag',
+            '#tag' => 'h2',
+            '#attributes' => ['class' => ['govuk-heading-m']],
+            '#value' => t('Referred by'),
+          ],
+          '#attributes' => ['class' => 'govuk-grid-column-one-half'],
           'referring_authority_name' => [
-            '#type' => 'markup',
-            '#markup' => $referring_authority,
-            '#prefix' => '<p>',
-            '#suffix' => '</p>',
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => $referring_authority,
           ],
         ];
       }
 
       if ($enforcing_authority) {
         $form['enforcer']['enforcing_authority'] = [
-          '#type' => 'fieldset',
-          '#title' => t('Enforcing authority'),
-          '#attributes' => ['class' => 'column-one-half'],
+          '#type' => 'container',
+          'heading' => [
+            '#type' => 'html_tag',
+            '#tag' => 'h2',
+            '#attributes' => ['class' => ['govuk-heading-m']],
+            '#value' => t('Enforcing authority'),
+          ],
+          '#attributes' => ['class' => 'govuk-grid-column-one-half'],
           'enforcing_authority' => [
-            '#type' => 'markup',
-            '#markup' => $enforcing_authority,
-            '#prefix' => '<p>',
-            '#suffix' => '</p>',
+            '#type' => 'html_tag',
+            '#tag' => 'p',
+            '#value' => $enforcing_authority,
           ]
         ];
       }

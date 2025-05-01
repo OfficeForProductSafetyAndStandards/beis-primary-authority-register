@@ -40,6 +40,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
 
     // Get files from "contact_form" step.
@@ -90,6 +91,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
     $form['par_data_person_id'] = [
       '#type' => 'radios',
       '#title' => t('Did you mean any of these users?'),
+      '#title_tag' => 'h2',
       '#options' => $people_options + ['new' => 'No, it is not one of the above, create a new contact.'],
     ];
 
@@ -113,6 +115,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
@@ -121,6 +124,7 @@ class ParPartnershipFlowsContactSuggestionForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

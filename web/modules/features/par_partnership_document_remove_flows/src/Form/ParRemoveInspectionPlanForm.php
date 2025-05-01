@@ -22,6 +22,7 @@ class ParRemoveInspectionPlanForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_inspection_plan = $this->getFlowDataHandler()->getParameter('par_data_inspection_plan');
@@ -43,6 +44,7 @@ class ParRemoveInspectionPlanForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $par_data_inspection_plan = NULL) {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $par_data_inspection_plan = $this->getFlowDataHandler()->getParameter('par_data_inspection_plan');
@@ -62,7 +64,7 @@ class ParRemoveInspectionPlanForm extends ParBaseForm {
       '#type' => 'html_tag',
       '#tag' => 'p',
       '#value' => $this->t('Are you sure you want to remove the inspection plan @inspection_plan from the @partnership?', ['@inspection_plan' => $par_data_inspection_plan->getTitle(), '@partnership' => $par_data_partnership->label()]),
-      '#attributes' => ['class' => ['remove-inspection-plan', 'form-group']],
+      '#attributes' => ['class' => ['remove-inspection-plan', 'govuk-form-group']],
     ];
 
     if (!empty($documents)) {
@@ -76,7 +78,7 @@ class ParRemoveInspectionPlanForm extends ParBaseForm {
         '#type' => 'html_tag',
         '#tag' => 'div',
         '#value' => $this->getRenderer()->render($documents),
-        '#attributes' => ['class' => ['document-summary', 'form-group']],
+        '#attributes' => ['class' => ['document-summary', 'govuk-form-group']],
       ];
     }
 
@@ -85,6 +87,7 @@ class ParRemoveInspectionPlanForm extends ParBaseForm {
       '#title' => $this->t('Enter the reason you are removing this inspection plan'),
       '#type' => 'textarea',
       '#rows' => 5,
+      '#required' => TRUE,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('remove_reason', FALSE),
     ];
 
@@ -105,6 +108,7 @@ class ParRemoveInspectionPlanForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
 
     parent::validateForm($form, $form_state);
@@ -118,6 +122,7 @@ class ParRemoveInspectionPlanForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
@@ -129,17 +134,17 @@ class ParRemoveInspectionPlanForm extends ParBaseForm {
     try {
       if (isset($delta)) {
         $par_data_partnership->get('field_inspection_plan')->removeItem($delta);
+
+        // Set the reason as the revision message.
+        // Which allows it to be recorded by the logger.
         $remove_reason = $this->getFlowDataHandler()->getDefaultValues('remove_reason', '');
-        $revision_message = $this->t(
-          "The inspection plan @inspection_plan was removed from the partnership. The reason given was:" . PHP_EOL . "@reason",
-          ['@inspection_plan' => $par_data_inspection_plan->getTitle(), '@reason' => $remove_reason]);
-        $par_data_partnership->setNewRevision(TRUE, $revision_message);
+        $par_data_partnership->setNewRevision(TRUE, $remove_reason);
       }
       else {
         throw new \InvalidArgumentException('No field delta has been provided.');
       }
     }
-    catch (\InvalidArgumentException $e) {
+    catch (\InvalidArgumentException) {
 
     }
 

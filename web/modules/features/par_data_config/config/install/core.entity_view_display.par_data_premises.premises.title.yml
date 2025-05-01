@@ -14,40 +14,40 @@ mode: title
 content:
   address:
     type: address_plain
-    weight: 0
-    region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
   archive_reason:
+    type: text_default
     label: hidden
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 0
+    region: content
   deleted_reason:
+    type: text_default
     label: hidden
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 0
+    region: content
   revocation_reason:
+    type: text_default
     label: hidden
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
-    type: text_default
-  uprn:
-    label: hidden
+    weight: 0
     region: content
+  uprn:
+    type: string
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
     weight: 1
+    region: content
 hidden:
   name: true
   nation: true

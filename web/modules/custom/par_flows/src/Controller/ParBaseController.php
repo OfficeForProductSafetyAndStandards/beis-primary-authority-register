@@ -41,16 +41,11 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   use ParControllerTrait;
 
   /**
-   * The response cache kill switch.
-   */
-  protected $killSwitch;
-
-  /**
-   * The access result
+   * The access result.
    *
-   * @var \Drupal\Core\Access\AccessResult
+   * @var ?AccessResult $accessResult
    */
-  protected $accessResult;
+  protected ?AccessResult $accessResult = NULL;
 
   /*
    * Constructs a \Drupal\par_flows\Form\ParBaseForm.
@@ -66,12 +61,14 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
    * @param \Drupal\Core\PageCache\ResponsePolicy\KillSwitch $kill_switch
    *   The page cache kill switch.
    */
-  public function __construct(ParFlowNegotiatorInterface $negotiator, ParFlowDataHandlerInterface $data_handler, ParDataManagerInterface $par_data_manager, PluginManagerInterface $plugin_manager, KillSwitch $kill_switch, UrlGeneratorInterface $url_generator) {
+  public function __construct(ParFlowNegotiatorInterface $negotiator, ParFlowDataHandlerInterface $data_handler, ParDataManagerInterface $par_data_manager, PluginManagerInterface $plugin_manager, /**
+   * The response cache kill switch.
+   */
+  protected KillSwitch $killSwitch, UrlGeneratorInterface $url_generator) {
     $this->negotiator = $negotiator;
     $this->flowDataHandler = $data_handler;
     $this->parDataManager = $par_data_manager;
     $this->formBuilder = $plugin_manager;
-    $this->killSwitch = $kill_switch;
     $this->urlGenerator = $url_generator;
 
     $this->setCurrentUser();
@@ -82,7 +79,7 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
       $this->getFlowNegotiator()->getFlow();
 
       $this->loadData();
-    } catch (ParFlowException $e) {
+    } catch (ParFlowException) {
 
     }
   }
@@ -90,6 +87,7 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('par_flows.negotiator'),
@@ -116,52 +114,53 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
 
     // Add all the registered components to the form.
     foreach ($this->getComponents() as $component) {
-      // If there's is a cardinality parameter present display only this item.
-      $cardinality = $this->getFlowDataHandler()->getParameter('cardinality');
-      $index = isset($cardinality) ? (int) $cardinality : NULL;
+      // If there is a cardinality parameter present display only this item.
+      $index = $this->getFlowDataHandler()->getParameter('cardinality');
 
-      // Handle instances where FormBuilderInterface should return a redirect response.
-      $plugin = $this->getFormBuilder()->getPluginElements($component, $build, $index);
-      if ($plugin instanceof RedirectResponse) {
-        return $plugin;
-      }
+      // Build the plugin.
+      $plugin = $this->getFormBuilder()->build($component, $index);
+
+      // Merge the component elements into the build array.
+      $build = array_merge($build, $plugin);
     }
 
     // Add all the action links.
     if ($this->getFlowNegotiator()->getFlow()->hasAction('done')) {
       $done_url = $this->getProceedingUrl('done');
-      $done_link = $done_url ? Link::fromTextAndUrl('Done', $done_url) : NULL;
       $build['done'] = [
-        '#type' => 'markup',
-        '#markup' => t('@link', [
-          '@link' => $done_link->toString(),
-        ]),
+        '#type' => 'link',
+        '#title' => 'Done',
+        '#url' => $done_url,
+        '#attributes' => [
+          'class' => ['govuk-button', 'govuk-form-group'],
+          'role' => 'button'
+        ],
       ];
     }
     else {
       if ($this->getFlowNegotiator()->getFlow()->hasAction('next')) {
         $next_url = $this->getProceedingUrl('next');
-        $next_link = $next_url ? Link::fromTextAndUrl('Continue', $next_url) : NULL;
         $build['next'] = [
-          '#type' => 'markup',
-          '#prefix' => '<div class="form-group">',
-          '#suffix' => '</div>',
-          '#markup' => t('@link', [
-            '@link' => $next_link->toString(),
-          ]),
+          '#type' => 'link',
+          '#title' => 'Continue',
+          '#url' => $next_url,
+          '#attributes' => [
+            'class' => ['govuk-button', 'govuk-form-group'],
+            'role' => 'button'
+          ],
         ];
       }
 
       if ($this->getFlowNegotiator()->getFlow()->hasAction('cancel')) {
         $cancel_url = $this->getProceedingUrl('cancel');
-        $cancel_link = $cancel_url ? Link::fromTextAndUrl('Cancel', $cancel_url) : NULL;
         $build['cancel'] = [
-          '#type' => 'markup',
-          '#prefix' => '<div>',
-          '#suffix' => '</div>',
-          '#markup' => t('@link', [
-            '@link' => $cancel_link->toString(),
-          ]),
+          '#type' => 'link',
+          '#title' => 'Cancel',
+          '#url' => $cancel_url,
+          '#attributes' => [
+            'class' => ['cta-cancel', 'govuk-button', 'govuk-button--secondary'],
+            'role' => 'button'
+          ],
         ];
       }
     }
@@ -182,14 +181,10 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
     $url = $this->getFlowNegotiator()->getFlow()->progress($action);
 
     // All links other than cancel should display as primary buttons.
-    switch($action) {
-      case 'cancel':
-        $route_options = [];
-        break;
-
-      default:
-        $route_options = ['attributes' => ['class' => ['button']]];
-    }
+    $route_options = match ($action) {
+        'cancel' => [],
+        default => ['attributes' => ['class' => ['button']]],
+    };
 
     if ($url && $url instanceof Url) {
       $url->mergeOptions($route_options);
@@ -201,8 +196,7 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
   }
 
   /**
-   * Access callback
-   * Useful for custom business logic for access.
+   * Default access callback.
    *
    * @param \Symfony\Component\Routing\Route $route
    *   The route.
@@ -211,14 +205,11 @@ class ParBaseController extends ControllerBase implements ParBaseInterface {
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
    *
-   * @see \Drupal\Core\Access\AccessResult
-   *   The options for callback.
-   *
    * @return \Drupal\Core\Access\AccessResult
    *   The access result.
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account) {
-    return $this->accessResult ? $this->accessResult : AccessResult::allowed();
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account): AccessResult {
+    return $this->accessResult instanceof AccessResult ? $this->accessResult : AccessResult::allowed();
   }
 
 }

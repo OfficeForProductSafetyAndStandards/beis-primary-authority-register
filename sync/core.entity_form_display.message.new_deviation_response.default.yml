@@ -6,6 +6,7 @@ dependencies:
     - field.field.message.new_deviation_response.field_comment
     - field.field.message.new_deviation_response.field_deviation_request
     - field.field.message.new_deviation_response.field_message_subject
+    - field.field.message.new_deviation_response.field_to
     - message.template.new_deviation_response
 id: message.new_deviation_response.default
 targetEntityType: message
@@ -13,31 +14,39 @@ bundle: new_deviation_response
 mode: default
 content:
   field_comment:
+    type: entity_reference_autocomplete
     weight: 1
+    region: content
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_deviation_request:
+    type: entity_reference_autocomplete
     weight: 2
+    region: content
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_message_subject:
+    type: string_textfield
     weight: 0
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
+  field_to:
+    type: email_default
+    weight: 3
     region: content
+    settings:
+      placeholder: ''
+      size: 60
+    third_party_settings: {  }
 hidden: {  }

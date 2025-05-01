@@ -17,6 +17,21 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
   use ParPartnershipFlowAccessTrait;
 
   /**
+   * {@inheritdoc}
+   */
+  #[\Override]
+  public function titleCallback() {
+    $trading_name_delta = $this->getFlowDataHandler()->getParameter('field_sic_code_delta');
+
+    // Check from the route if we are editing an existing trading name.
+    $action = isset($trading_name_delta) ? 'Edit' : 'Add a';
+
+    $this->pageTitle = "Update partnership information | {$action} SIC code for your organisation";
+
+    return $this->pageTitle;
+  }
+
+  /**
    * Helper to get all the editable values.
    *
    * Used for when editing or revisiting a previously edited page.
@@ -41,6 +56,7 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $field_sic_code_delta = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $field_sic_code_delta);
     $par_data_organisation = current($par_data_partnership->getOrganisation());
@@ -74,6 +90,7 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

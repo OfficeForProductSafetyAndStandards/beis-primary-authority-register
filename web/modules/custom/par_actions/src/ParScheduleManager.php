@@ -2,6 +2,7 @@
 
 namespace Drupal\par_actions;
 
+use Drupal\par_actions\Annotation\ParSchedulerRule;
 use Drupal\Component\Plugin\Factory\DefaultFactory;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
@@ -26,9 +27,10 @@ class ParScheduleManager extends DefaultPluginManager {
   const PAR_LOGGER_CHANNEL = 'par';
 
   /**
-   * The minimum interval required between runs.
+   * The minimum interval required between runs
    *
-   * This allows the queued items to be processed before the next run.
+   * Scheduled rules can be run at most once a day, this allows the
+   * queued items to be processed before the next run.
    */
   const MIN_INTERVAL = 3600;
 
@@ -48,8 +50,8 @@ class ParScheduleManager extends DefaultPluginManager {
       'Plugin/ParSchedulerRule',
       $namespaces,
       $module_handler,
-      'Drupal\par_actions\ParSchedulerRuleInterface',
-      'Drupal\par_actions\Annotation\ParSchedulerRule'
+      ParSchedulerRuleInterface::class,
+      ParSchedulerRule::class
     );
 
     $this->alterInfo('par_scheduler_info');
@@ -69,12 +71,17 @@ class ParScheduleManager extends DefaultPluginManager {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function processDefinition(&$definition, $plugin_id) {
     parent::processDefinition($definition, $plugin_id);
 
     // Assign a default property to search for.
     if (!isset($definition['property'])) {
       $definition['property'] = 'created';
+    }
+    // Assign a default frequency to run.
+    if (!isset($definition['property'])) {
+      $definition['property'] = NULL;
     }
   }
 
@@ -83,6 +90,7 @@ class ParScheduleManager extends DefaultPluginManager {
    *
    * @return \Drupal\par_actions\ParSchedulerRuleInterface
    */
+  #[\Override]
   public function createInstance($plugin_id, array $configuration = []) {
     return parent::createInstance($plugin_id, $configuration);
   }
@@ -90,6 +98,7 @@ class ParScheduleManager extends DefaultPluginManager {
   /**
    * Get only the enabled rules.
    */
+  #[\Override]
   public function getDefinitions($only_active = FALSE) {
     $definitions = [];
     foreach (parent::getDefinitions() as $id => $definition) {

@@ -30,8 +30,8 @@ command -v cf >/dev/null 2>&1 || {
 ####################################################################################
 # Set required parameters
 #    ENV (required) - the password for the user account
-#    GOVUK_CF_USER (required) - the user deploying the script
-#    GOVUK_CF_PWD (required) - the password for the user account
+#    DEV_GOVUK_CF_USER (required) - the user deploying the script
+#    DEV_GOVUK_CF_PWD (required) - the password for the user account
 ####################################################################################
 OPTIONS=u:p:
 LONGOPTS=user:,password:
@@ -50,17 +50,17 @@ fi
 eval set -- "$PARSED"
 
 # Defaults
-GOVUK_CF_USER=${GOVUK_CF_USER:-}
-GOVUK_CF_PWD=${GOVUK_CF_PWD:-}
+DEV_GOVUK_CF_USER=${DEV_GOVUK_CF_USER:-}
+DEV_GOVUK_CF_PWD=${DEV_GOVUK_CF_PWD:-}
 
 while true; do
     case "$1" in
         -u|--user)
-            GOVUK_CF_USER="$2"
+            DEV_GOVUK_CF_USER="$2"
             shift 2
             ;;
         -p|--password)
-            GOVUK_CF_PWD="$2"
+            DEV_GOVUK_CF_PWD="$2"
             shift 2
             ;;
         --)
@@ -90,19 +90,19 @@ fi
 ####################################################################################
 # Allow manual input of missing parameters
 #    ENV (required) - the password for the user account
-#    GOVUK_CF_USER (required) - the user deploying the script
-#    GOVUK_CF_PWD (required) - the password for the user account
+#    DEV_GOVUK_CF_USER (required) - the user deploying the script
+#    DEV_GOVUK_CF_PWD (required) - the password for the user account
 #    BUILD_DIR - the directory containing the build assets
 #    VAULT_ADDR - the vault service endpoint
 #    VAULT_UNSEAL_KEY (required) - the key used to unseal the vault
 ####################################################################################
-if [[ -z "${GOVUK_CF_USER}" ]]; then
+if [[ -z "${DEV_GOVUK_CF_USER}" ]]; then
     echo -n "Enter your Cloud Foundry username: "
-    read GOVUK_CF_USER
+    read DEV_GOVUK_CF_USER
 fi
-if [[ -z "${GOVUK_CF_PWD}" ]]; then
+if [[ -z "${DEV_GOVUK_CF_PWD}" ]]; then
     echo -n "Enter your Cloud Foundry password (will be hidden): "
-    read -s GOVUK_CF_PWD
+    read -s DEV_GOVUK_CF_PWD
 fi
 
 
@@ -111,10 +111,14 @@ fi
 ####################################################################################
 printf "Authenticating with GovUK PaaS...\n"
 
-cf login -a api.cloud.service.gov.uk -u $GOVUK_CF_USER -p $GOVUK_CF_PWD
-
-# Only allow apps in the development space to be removed.
-cf target -o "office-for-product-safety-and-standards" -s "primary-authority-register-development"
+# Only allow apps in the development or staging space to be removed.
+if [[ $ENV == 'staging' ]] || [[ $ENV =~ ^staging-.* ]]; then
+    cf login -a api.cloud.service.gov.uk -u $GOVUK_CF_USER -p $GOVUK_CF_PWD \
+      -o "office-for-product-safety-and-standards" -s "primary-authority-register-staging"
+else
+    cf login -a api.cloud.service.gov.uk -u $DEV_GOVUK_CF_USER -p $DEV_GOVUK_CF_PWD \
+      -o "office-for-product-safety-and-standards" -s "primary-authority-register-development"
+fi
 
 
 ####################################################################################
@@ -123,35 +127,79 @@ cf target -o "office-for-product-safety-and-standards" -s "primary-authority-reg
 printf "Acquiring the backing services to be removed...\n"
 
 APP="beis-par-$ENV"
+CDN_BACKING_SERVICE="par-cdn-$ENV"
 PG_BACKING_SERVICE="par-pg-$ENV"
 REDIS_BACKING_SERVICE="par-redis-$ENV"
+OS_BACKING_SERVICE="par-os-$ENV"
 
 
 ####################################################################################
 # Unbinding all the backing services.
 ####################################################################################
-printf "Removing postgres backing services...\n"
+printf "Removing cdn backing service $CDN_BACKING_SERVICE...\n"
+if cf service $CDN_BACKING_SERVICE >/dev/null 2>&1; then
+    if cf app $APP >/dev/null 2>&1; then
+        printf "Unbinding cdn backing services...\n"
+        cf unbind-service $APP $CDN_BACKING_SERVICE
+    fi
+
+    ## In some instances service keys may also have to be deleted
+    if ! cf service-keys $CDN_BACKING_SERVICE | grep -v 'No service key for service instance'; then
+          printf "Service keys will need to be deleted manually, see 'cf service-keys $CDN_BACKING_SERVICE'\n"
+    fi
+
+    cf delete-service -f $CDN_BACKING_SERVICE
+fi
+
+printf "Removing postgres backing service $PG_BACKING_SERVICE...\n"
 if cf service $PG_BACKING_SERVICE >/dev/null 2>&1; then
     if cf app $APP >/dev/null 2>&1; then
+        printf "Unbinding postgres backing services...\n"
         cf unbind-service $APP $PG_BACKING_SERVICE
     fi
 
     ## In some instances service keys may also have to be deleted
-    printf "If there are any service keys these will need to be deleted manually, see 'cf service-keys $PG_BACKING_SERVICE'\n"
+    if ! cf service-keys $PG_BACKING_SERVICE | grep -v 'No service key for service instance'; then
+          printf "Service keys will need to be deleted manually, see 'cf service-keys $PG_BACKING_SERVICE'\n"
+    fi
 
     cf delete-service -f $PG_BACKING_SERVICE
 fi
 
-printf "Removing redis backing services...\n"
+printf "Removing redis backing service $REDIS_BACKING_SERVICE...\n"
 if cf service $REDIS_BACKING_SERVICE >/dev/null 2>&1; then
     if cf app $APP >/dev/null 2>&1; then
+        printf "Unbinding redis backing services...\n"
         cf unbind-service $APP $REDIS_BACKING_SERVICE
     fi
 
     ## In some instances service keys may also have to be deleted
-    printf "If there are any service keys these will need to be deleted manually, see 'cf service-keys $REDIS_BACKING_SERVICE'\n"
+    if ! cf service-keys $REDIS_BACKING_SERVICE | grep -v 'No service key for service instance'; then
+          printf "Service keys will need to be deleted manually, see 'cf service-keys $REDIS_BACKING_SERVICE'\n"
+    fi
 
     cf delete-service -f $REDIS_BACKING_SERVICE
+fi
+
+printf "Removing opensearch backing service $OS_BACKING_SERVICE...\n"
+if cf service $OS_BACKING_SERVICE >/dev/null 2>&1; then
+    if cf app $APP >/dev/null 2>&1; then
+        printf "Unbinding opensearch backing services...\n"
+        cf unbind-service $APP $OS_BACKING_SERVICE
+    fi
+
+    ## In some instances service keys may also have to be deleted
+    if ! cf service-keys $OS_BACKING_SERVICE | grep -v 'No service key for service instance'; then
+          printf "Service keys will need to be deleted manually, see 'cf service-keys $OS_BACKING_SERVICE'\n"
+    fi
+
+    cf delete-service -f $OS_BACKING_SERVICE
+fi
+
+## Remove the main app if it exists
+printf "Removing the app '$APP'...\n"
+if cf app $APP >/dev/null 2>&1; then
+    cf delete -f $APP
 fi
 
 printf "Removing the routes...\n"
@@ -159,11 +207,5 @@ if cf app $APP >/dev/null 2>&1; then
     cf unmap-route $APP cloudapps.digital -n $APP
     cf unmap-route $APP cloudapps.digital -n $APP-green
 fi
-cf delete-route cloudapps.digital -n $APP -y
-cf delete-route cloudapps.digital -n $APP-green -y
-
-## Remove the main app if it exists
-printf "Removing the app...\n"
-if cf app $APP >/dev/null 2>&1; then
-    cf delete -f $APP
-fi
+cf delete-route -f cloudapps.digital -n $APP
+cf delete-route -f cloudapps.digital -n $APP-green

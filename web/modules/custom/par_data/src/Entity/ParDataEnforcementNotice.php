@@ -76,6 +76,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function filterRelationshipsByAction($relationship, $action) {
     switch ($action) {
       case 'manage':
@@ -93,6 +94,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function inProgress() {
     // Any Enforcement Notices with actions that are awaiting approval are marked as 'in progress'.
     foreach ($this->getEnforcementActions() as $action) {
@@ -191,18 +193,16 @@ class ParDataEnforcementNotice extends ParDataEntity {
     ];
 
     $par_data_partnerships = $this->getParDataManager()
-      ->getEntitiesByQuery('par_data_partnership', $conditions, 10);
+      ->getEntitiesByQuery('par_data_partnership', $conditions, 10, 'id');
 
     // Ignore all inactive partnerships.
-    $par_data_partnerships = array_filter($par_data_partnerships, function ($partnership) {
-      return $partnership->isActive();
-    });
+    $par_data_partnerships = array_filter($par_data_partnerships, fn($partnership) => $partnership->isActive());
 
     // Load all the authorities belonging to these partnerships.
     foreach ($par_data_partnerships as $partnership) {
       $authority = $partnership->getAuthority(TRUE);
 
-      if ($partnership->isLiving() && $authority->isLiving() && $authority->id() != $primary_authority->id()) {
+      if ($authority?->id() != $primary_authority->id()) {
         $authorities[$authority->id()] = $authority->label();
       }
     }
@@ -252,6 +252,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getRawStatus() {
     if ($this->isDeleted()) {
       return 'deleted';
@@ -261,9 +262,6 @@ class ParDataEnforcementNotice extends ParDataEntity {
     }
     if ($this->isArchived()) {
       return 'archived';
-    }
-    if (!$this->isTransitioned()) {
-      return 'n/a';
     }
 
     // Loop through all actions to determine status.
@@ -276,34 +274,13 @@ class ParDataEnforcementNotice extends ParDataEntity {
       }
     }
 
-    return isset($status) ? $status : NULL;
+    return $status ?? NULL;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getParStatus() {
-    if ($this->isDeleted()) {
-      return 'Deleted';
-    }
-    if ($this->isRevoked()) {
-      return 'Revoked';
-    }
-    if ($this->isArchived()) {
-      return 'Archived';
-    }
-    if (!$this->isTransitioned()) {
-      return 'Not transitioned from PAR2';
-    }
-
-    $field_name = $this->getTypeEntity()->getConfigurationElementByType('entity', 'status_field');
-    $raw_status = $this->getRawStatus();
-    return $field_name && $raw_status ? $this->getTypeEntity()->getAllowedFieldlabel($field_name, $raw_status) : '';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
+  #[\Override]
   public function getStatusTime($status) {
     // Loop through all actions to determine status.
     foreach ($this->getEnforcementActions() as $action) {
@@ -318,6 +295,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getStatusAuthor($status) {
     // Loop through all actions to determine status.
     foreach ($this->getEnforcementActions() as $action) {
@@ -364,6 +342,7 @@ class ParDataEnforcementNotice extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields = parent::baseFieldDefinitions($entity_type);
 

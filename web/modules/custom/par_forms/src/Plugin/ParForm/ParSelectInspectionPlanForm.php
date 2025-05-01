@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
@@ -20,27 +21,35 @@ class ParSelectInspectionPlanForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  #[\Override]
+  public function loadData(int $index = 1): void {
     if ($par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership')) {
-      if ($inspection_plans = $par_data_partnership->getInspectionPlan()) {
-        $options = $this->getParDataManager()->getEntitiesAsOptions((array) $inspection_plans);
-        $this->getFlowDataHandler()->setFormPermValue('inspection_plan_options', $options);
-      }
+      $inspection_plans = $par_data_partnership->getInspectionPlan();
+      $options = $inspection_plans ?
+        $this->getParDataManager()->getEntitiesAsOptions((array) $inspection_plans) :
+        [];
+      $this->getFlowDataHandler()->setFormPermValue('inspection_plan_options', $options);
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  #[\Override]
+  public function getElements(array $form = [], int $index = 1) {
     $inspection_plans = $this->getFlowDataHandler()->getFormPermValue('inspection_plan_options');
 
-    if (count($inspection_plans) <= 0) {
+    if (!$inspection_plans or count($inspection_plans) <= 0) {
       $form['no_inspection_plans'] = [
-        '#type' => 'fieldset',
-        '#title' => $this->t('There are no inspection plans'),
+        '#type' => 'container',
+        'heading' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h2',
+          '#attributes' => ['class' => ['govuk-heading-m']],
+          '#value' => $this->t('There are no inspection plans'),
+        ],
         'text' => [
           '#type' => 'markup',
           '#markup' => $this->t("This partnership is not covered by any inspection plans, please contact the primary authority to request an inspection plan be added first."),
@@ -60,11 +69,12 @@ class ParSelectInspectionPlanForm extends ParFormPluginBase {
     // Checkboxes for inspection plans.
     $form['inspection_plan_id'] = [
       '#type' => 'checkboxes',
-      '#attributes' => ['class' => ['form-group']],
       '#title' => t('Choose which inspection plan you\'re request is related to'),
+      '#title_tag' => 'h2',
       '#options' => $inspection_plans,
       // Automatically check all legal entities if no form data is found.
-      '#default_value' => $this->getDefaultValuesByKey('inspection_plan', $cardinality, []),
+      '#default_value' => $this->getDefaultValuesByKey('inspection_plan', $index, []),
+      '#attributes' => ['class' => ['govuk-form-group']],
     ];
 
     return $form;
@@ -73,15 +83,21 @@ class ParSelectInspectionPlanForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
-  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+  #[\Override]
+  public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $inspection_plan_key = $this->getElementKey('inspection_plan_id');
-    $inspection_plan_values = array_filter($form_state->getValue($inspection_plan_key));
+    $inspection_plan_values = array_filter($form_state->getValue($inspection_plan_key) ?? []);
     if (!$inspection_plan_values) {
-      $id_key = $this->getElementKey('inspection_plan_id', $cardinality, TRUE);
-      $message = $this->wrapErrorMessage('You must select at least one inspection plan.', $this->getElementId($id_key, $form));
+      $inspection_plans = $this->getFlowDataHandler()->getFormPermValue('inspection_plan_options');
+      $message = (!$inspection_plans or count($inspection_plans) <= 0) ?
+        "You can not complete this journey because this partnership doesn't have any inspection plans." :
+        "You must select at least one inspection plan.";
+
+      $id_key = $this->getElementKey('inspection_plan_id', $index, TRUE);
+      $message = $this->wrapErrorMessage($message, $this->getElementId($id_key, $form));
       $form_state->setErrorByName($this->getElementName($inspection_plan_key), $message);
     }
 
-    return parent::validate($form, $form_state, $cardinality, $action);
+    parent::validate($form, $form_state, $index, $action);
   }
 }

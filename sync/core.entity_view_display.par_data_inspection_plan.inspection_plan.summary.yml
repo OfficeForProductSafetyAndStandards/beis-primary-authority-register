@@ -18,39 +18,48 @@ bundle: inspection_plan
 mode: summary
 content:
   document:
-    weight: 5
+    type: file_default
     label: above
     settings:
       use_description_as_link_text: true
     third_party_settings: {  }
-    type: file_default
+    weight: 5
     region: content
-  summary:
+  par_label:
+    type: string
     label: hidden
-    type: text_trimmed
-    weight: 1
-    region: content
-    settings:
-      trim_length: 600
-    third_party_settings: {  }
-  title:
-    label: hidden
-    weight: 0
-    region: content
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 0
+    region: content
+  summary:
+    type: text_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  title:
     type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
   valid_date:
     type: daterange_default
-    weight: 4
-    region: content
     label: hidden
     settings:
       timezone_override: ''
       format_type: gds_date_format
+      from_to: both
       separator: ' to '
     third_party_settings: {  }
+    weight: 4
+    region: content
 hidden:
   approved_rd_executive: true
   archive_reason: true
@@ -59,5 +68,8 @@ hidden:
   field_regulatory_function: true
   inspection_status: true
   name: true
+  par_status: true
+  par_status_date: true
   revocation_reason: true
+  search_api_excerpt: true
   user_id: true

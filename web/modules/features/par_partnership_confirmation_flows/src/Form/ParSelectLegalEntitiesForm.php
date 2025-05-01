@@ -21,6 +21,7 @@ class ParSelectLegalEntitiesForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
@@ -38,6 +39,7 @@ class ParSelectLegalEntitiesForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
     // If there are no existing legal entities we can skip this step.
     if (!$this->getFlowDataHandler()->getParameter('organisation_legal_entities')) {

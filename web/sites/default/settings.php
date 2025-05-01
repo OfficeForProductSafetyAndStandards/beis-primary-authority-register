@@ -2,8 +2,8 @@
 $root_path = dirname(__DIR__) . '/../../';
 require "{$root_path}/vendor/autoload.php";
 if (file_exists($root_path . '.env')) {
-    $dotenv = new Dotenv\Dotenv($root_path);
-    $dotenv->load();
+  $dotenv = Dotenv\Dotenv::createImmutable($root_path);
+  $dotenv->safeLoad();
 }
 
 // @codingStandardsIgnoreFile
@@ -289,6 +289,7 @@ $settings['config_sync_directory'] = '../sync';
  *   $settings['hash_salt'] = file_get_contents('/home/example/salt.txt');
  * @endcode
  */
+
 $settings['hash_salt'] = getenv('PAR_HASH_SALT');
 
 /**
@@ -299,7 +300,7 @@ $settings['hash_salt'] = getenv('PAR_HASH_SALT');
  * custom code that changes the container, changing this identifier will also
  * allow the container to be invalidated as soon as code is deployed.
  */
-# $settings['deployment_identifier'] = \Drupal::VERSION;
+$settings['deployment_identifier'] = \Drupal::VERSION;
 
 /**
  * Access control for update.php script.
@@ -379,15 +380,12 @@ $settings['update_free_access'] = FALSE;
  * Be aware, however, that it is likely that this would allow IP
  * address spoofing unless more advanced precautions are taken.
  */
-# $settings['reverse_proxy'] = TRUE;
 $settings['reverse_proxy'] = TRUE;
 
 /**
  * Specify every reverse proxy IP address in your environment.
  * This setting is required if $settings['reverse_proxy'] is TRUE.
  */
-# $settings['reverse_proxy_addresses'] = ['a.b.c.d', ...];
-
 /** http://d7uri8nf7uskq.cloudfront.net/tools/list-cloudfront-ips */
 $cloudFrontGlobalIps = [
     "13.32.0.0/15",
@@ -506,7 +504,7 @@ $settings['reverse_proxy_addresses'] = ['127.0.0.1'] + $cloudFrontGlobalIps + $c
  *
  * @see \Drupal\Core\Form\FormCache::setCache()
  */
-# $settings['form_cache_expiration'] = 21600;
+$settings['form_cache_expiration'] = 3600;
 
 /**
  * Class Loader.
@@ -516,7 +514,7 @@ $settings['reverse_proxy_addresses'] = ['127.0.0.1'] + $cloudFrontGlobalIps + $c
  *
  * @see https://getcomposer.org/doc/articles/autoloader-optimization.md
  */
-# $settings['class_loader_auto_detect'] = FALSE;
+$settings['class_loader_auto_detect'] = TRUE;
 
 /*
  * If the APC extension is not detected, either because APC is missing or
@@ -570,8 +568,8 @@ if ($settings['hash_salt']) {
  *
  * Value should be in PHP Octal Notation, with leading zero.
  */
-# $settings['file_chmod_directory'] = 0775;
-# $settings['file_chmod_file'] = 0664;
+$settings['file_chmod_directory'] = 0775;
+$settings['file_chmod_file'] = 0664;
 
 /**
  * Public file base URL:
@@ -593,7 +591,6 @@ if ($settings['hash_salt']) {
  * must exist and be writable by Drupal. This directory must be relative to
  * the Drupal installation directory and be accessible over the web.
  */
-# $settings['file_public_path'] = 'sites/default/files';
 $settings['file_public_path'] = 'sites/default/files';
 
 /**
@@ -609,7 +606,6 @@ $settings['file_public_path'] = 'sites/default/files';
  * See https://www.drupal.org/documentation/modules/file for more information
  * about securing private files.
  */
-# $settings['file_private_path'] = '';
 $settings['file_private_path'] = realpath($app_root. '/../private');
 
 /**
@@ -623,7 +619,7 @@ $settings['file_private_path'] = realpath($app_root. '/../private');
  *
  * @see \Drupal\Component\FileSystem\FileSystem::getOsTemporaryDirectory()
  */
-# $settings['file_temp_path'] = '/tmp';
+$settings['file_temp_path'] = '/tmp';
 
 /**
  * Session write interval:
@@ -631,7 +627,7 @@ $settings['file_private_path'] = realpath($app_root. '/../private');
  * Set the minimum interval between each session write to database.
  * For performance reasons it defaults to 180.
  */
-# $settings['session_write_interval'] = 180;
+$settings['session_write_interval'] = 180;
 
 /**
  * String overrides:
@@ -660,7 +656,7 @@ $settings['file_private_path'] = realpath($app_root. '/../private');
  *
  * Note: This setting does not apply to installation and update pages.
  */
-# $settings['maintenance_theme'] = 'bartik';
+# $settings['maintenance_theme'] = 'claro';
 
 /**
  * PHP settings:
@@ -742,6 +738,7 @@ $settings['file_private_path'] = realpath($app_root. '/../private');
  */
 $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
 
+
 /**
  * Override the default service container class.
  *
@@ -796,7 +793,6 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
  * will allow the site to run off of all variants of example.com and
  * example.org, with all subdomains included.
  */
-
 $app_env = getenv('APP_ENV');
 
 $settings['trusted_host_patterns'] = [
@@ -868,19 +864,31 @@ $settings['config_readonly_whitelist_patterns'] = [
 ];
 
 /**
+ * By default, the site is configured with PAR branding instead of GovUK branding
+ * because the service is still in BETA.
+ */
+$settings['par_branded_header_footer'] = TRUE;
+
+/**
  * Extract the connection credentials from the VCAP_SERVICES environment variable
  * which is configured by the PaaS service manager
  */
+if (PHP_SAPI === 'cli' && $env_services = getenv("SECRET_VCAP_SERVICES")) {
+  // Need to decode the VCAP_SERVICES environment variable.
+  putenv('VCAP_SERVICES=' . json_decode($env_services));
+}
+
 if ($env_services = getenv("VCAP_SERVICES")) {
   $services = json_decode($env_services);
   $db_credentials = isset($services->postgres) ? $services->postgres[0]->credentials : NULL;
   $redis_credentials = isset($services->redis) ? $services->redis[0]->credentials : NULL;
+  $os_credentials = isset($services->opensearch) ? $services->opensearch[0]->credentials : NULL;
 }
 
 // Set the PaaS database connection credentials.
 if (isset($db_credentials)) {
   $databases['default']['default'] = [
-    'namespace' => 'Drupal\\Core\\Database\\Driver\\pgsql',
+    'namespace' => 'Drupal\\pgsql\\Driver\\Database\\pgsql',
     'driver' => 'pgsql',
     'database' => $db_credentials->name,
     'username' => $db_credentials->username,
@@ -889,18 +897,24 @@ if (isset($db_credentials)) {
     'host' => $db_credentials->host,
     'port' => $db_credentials->port,
     'collation' => 'utf8mb4_general_ci',
+    'autoload' => 'core/modules/pgsql/src/Driver/Database/pgsql/',
   ];
 }
 
-// Set the Paas redis conneciton credentials.
+// Set the PaaS redis connection credentials.
 if (isset($redis_credentials)) {
   // Enable Redis services.
   $settings['redis.connection']['interface'] = 'Predis';
-  $settings['redis.connection']['scheme'] = 'tls';
+  $settings['redis.connection']['scheme'] = $redis_credentials->scheme ?? 'tls';
   $settings['redis.connection']['host'] = $redis_credentials->host;
   $settings['redis.connection']['port'] = $redis_credentials->port;
   $settings['redis.connection']['password'] = $redis_credentials->password;
   $settings['cache']['default'] = 'cache.backend.redis';
+  $settings['cache']['bins']['form'] = 'cache.backend.database';
+  $settings['cache']['bins']['render'] = 'cache.backend.database';
+  $settings['redis.connection']['persistent'] = TRUE;
+  $settings['redis_compress_length'] = 100;
+  $settings['redis_compress_level'] = 1;
 
   // Apply changes to the container configuration to better leverage Redis.
   // This includes using Redis for the lock and flood control systems, as well
@@ -945,6 +959,14 @@ if (isset($redis_credentials)) {
       ],
     ],
   ];
+}
+
+// Set the PaaS opensearch conneciton credentials.
+if (isset($os_credentials)) {
+  $config['search_api.server.opensearch']['backend_config']['connector'] = 'basicauth';
+  $config['search_api.server.opensearch']['backend_config']['connector_config']['url'] = $os_credentials->uri;
+  $config['search_api.server.opensearch']['backend_config']['connector_config']['username'] = $os_credentials->username;
+  $config['search_api.server.opensearch']['backend_config']['connector_config']['password'] = $os_credentials->password;
 }
 
 // Set flysystem configuration to use local files for all environments,
@@ -1038,6 +1060,24 @@ $config['govuk_notify.settings']['api_key'] = getenv('PAR_GOVUK_NOTIFY_KEY');
 $config['govuk_notify.settings']['default_template_id'] = getenv('PAR_GOVUK_NOTIFY_TEMPLATE');
 
 /**
+ * Set the Companies House connection settings.
+ *
+ * These are confidential and should be set with ENV variables.
+ *
+ * @see https://developer-specs.company-information.service.gov.uk/guides/authorisation
+ */
+$config['registered_organisations.settings']['companies_house_api_key'] = getenv('COMPANIES_HOUSE_API_KEY');
+
+/**
+ * Set the Charity Commission connection settings.
+ *
+ * These are confidential and should be set with ENV variables.
+ *
+ * @see https://api-portal.charitycommission.gov.uk
+ */
+$config['registered_organisations.settings']['charity_commission_api_key'] = getenv('CHARITY_COMMISSION_API_KEY');
+
+/**
  * Set Ideal Postcodes settings.
  *
  * These are confidential and should be set with ENV variables.
@@ -1112,8 +1152,32 @@ if (file_exists("{$app_root}/{$site_path}/settings.local.php")) {
   include "{$app_root}/{$site_path}/settings.local.php";
 }
 
+/**
+ * Environment services override.
+ *
+ * Load specific service file for each app environment.
+ */
+if ($app_env != 'staging') {
+  if ($config['config_split.config_split.dev_config']['status'] || $config['config_split.config_split.test_config']['status']) {
+    $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.local.non-production.yml';
+  }
+}
+
 # Allow php to run with increased memory from the CLI.
 if (PHP_SAPI === 'cli') {
   ini_set('memory_limit', '4G');
   ini_set('max_execution_time', '3600');
+}
+
+$settings['state_cache'] = TRUE;
+
+// Automatically generated include for settings managed by ddev.
+$ddev_settings = dirname(__FILE__) . '/settings.ddev.php';
+if (getenv('IS_DDEV_PROJECT') == 'true' && is_readable($ddev_settings)) {
+  require $ddev_settings;
+}
+
+// Include settings required for Redis cache.
+if ((file_exists(__DIR__ . '/settings.ddev.redis.php') && getenv('IS_DDEV_PROJECT') == 'true')) {
+  include __DIR__ . '/settings.ddev.redis.php';
 }

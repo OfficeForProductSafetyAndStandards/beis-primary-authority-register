@@ -7,13 +7,14 @@ dependencies:
     - field.field.par_data_partnership.partnership.field_authority_person
     - field.field.par_data_partnership.partnership.field_coordinated_business
     - field.field.par_data_partnership.partnership.field_inspection_plan
-    - field.field.par_data_partnership.partnership.field_legal_entity
     - field.field.par_data_partnership.partnership.field_organisation
     - field.field.par_data_partnership.partnership.field_organisation_person
+    - field.field.par_data_partnership.partnership.field_partnership_legal_entity
     - field.field.par_data_partnership.partnership.field_regulatory_function
     - par_data.par_data_partnership_type.partnership
   module:
     - datetime
+    - link
     - text
 id: par_data_partnership.partnership.default
 targetEntityType: par_data_partnership
@@ -21,95 +22,95 @@ bundle: partnership
 mode: default
 content:
   field_advice:
+    type: entity_reference_autocomplete
     weight: 7
+    region: content
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_authority:
+    type: entity_reference_autocomplete
     weight: 8
+    region: content
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_authority_person:
+    type: entity_reference_autocomplete
     weight: 3
+    region: content
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_coordinated_business:
+    type: entity_reference_autocomplete
     weight: 11
+    region: content
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_inspection_plan:
+    type: entity_reference_autocomplete
     weight: 6
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-      match_limit: 10
-    third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
-  field_legal_entity:
-    type: entity_reference_autocomplete
-    weight: 10
     region: content
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
     third_party_settings: {  }
   field_organisation:
+    type: entity_reference_autocomplete
     weight: 9
+    region: content
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_organisation_person:
+    type: entity_reference_autocomplete
     weight: 4
+    region: content
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
     third_party_settings: {  }
+  field_partnership_legal_entity:
     type: entity_reference_autocomplete
+    weight: 28
     region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_regulatory_function:
+    type: entity_reference_autocomplete
     weight: 5
+    region: content
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   langcode:
     type: language_select
     weight: 2
@@ -128,11 +129,11 @@ content:
   user_id:
     type: entity_reference_autocomplete
     weight: 1
+    region: content
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
-    region: content
     third_party_settings: {  }
 hidden: {  }

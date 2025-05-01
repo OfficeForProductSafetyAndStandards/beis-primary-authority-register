@@ -55,6 +55,7 @@ class ParRdDeletedDataListController extends ControllerBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container) {
     $entity_type_manager = $container->get('entity_type.manager');
     return new static(
@@ -106,10 +107,12 @@ class ParRdDeletedDataListController extends ControllerBase {
           // Split the items up into chunks:
           $chunks = array_chunk($deleted_data, $this->numberPerPage);
 
+          // TODO: Drupal Rector Notice: Please delete the following comment after you've made any necessary changes.
+          // Please confirm that `$entity_type` is an instance of `\Drupal\Core\Entity\EntityType`. Only the method name and not the class name was checked for this replacement, so this may be a false positive.
           $build['entity_types'][$entity_type->id()] = [
             '#type' => 'fieldset',
-            '#title' => t($entity_type->getLowercaseLabel()),
-            '#attributes' => ['class' => ['form-group']],
+            '#title' => t($entity_type->getSingularLabel()),
+            '#attributes' => ['class' => ['govuk-form-group']],
             'items' => [
               '#type' => 'container',
               '#collapsible' => FALSE,
@@ -153,10 +156,12 @@ class ParRdDeletedDataListController extends ControllerBase {
           }
         }
         else {
+          // TODO: Drupal Rector Notice: Please delete the following comment after you've made any necessary changes.
+          // Please confirm that `$entity_type` is an instance of `\Drupal\Core\Entity\EntityType`. Only the method name and not the class name was checked for this replacement, so this may be a false positive.
           $build['entity_types'][$entity_type->id()] = [
             '#type' => 'fieldset',
-            '#title' => t($entity_type->getLowercaseLabel()),
-            '#attributes' => ['class' => ['form-group']],
+            '#title' => t($entity_type->getSingularLabel()),
+            '#attributes' => ['class' => ['govuk-form-group']],
             'items' => [
               '#type' => 'container',
               '#collapsible' => FALSE,
@@ -197,28 +202,21 @@ class ParRdDeletedDataListController extends ControllerBase {
 //    $build['partnerships'] = [
 //      '#type' => 'fieldset',
 //      '#title' => $this->t('Partnerships'),
-//      '#attributes' => ['class' => 'form-group'],
+//      '#attributes' => ['class' => 'govuk-form-group'],
 //      '#collapsible' => FALSE,
 //      '#collapsed' => FALSE,
 //      '#cache' => ['contexts' => ['user.par_memberships:authority']]
 //    ];
 //
-//    $manage_partnerships = $this->getLinkByRoute('view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page');
+//    $manage_partnerships = $this->getLinkByRoute('view.advanced_partnership_search.advanced_search');
 //    $manage_link = $manage_partnerships->setText('Manage partnerships')->toString();
 //    $build['partnerships']['manage'] = [
 //      '#type' => 'markup',
 //      '#markup' => "<p>{$manage_link}</p>",
 //    ];
 //
-//    $partnership_report = $this->getLinkByRoute('view.helpdesk_dashboard.helpdesk_csv');
-//    $partnership_report_link = $partnership_report->setText('Download CSV partnership report')->toString();
-//    $build['partnerships']['report'] = [
-//      '#type' => 'markup',
-//      '#markup' => "<p>{$partnership_report_link}</p>",
-//    ];
-//
 //    // Partnerships search link.
-//    $search_partnerships = $this->getLinkByRoute('view.partnership_search.enforcment_flow_search_partnerships');
+//    $search_partnerships = $this->getLinkByRoute('view.partnership_search.search_partnerships');
 //    $search_link = $search_partnerships->setText('Search for a partnership')->toString();
 //    $build['partnerships']['link'] = [
 //      '#type' => 'markup',
@@ -231,11 +229,11 @@ class ParRdDeletedDataListController extends ControllerBase {
 //    $build['institutions'] = [
 //      '#type' => 'fieldset',
 //      '#title' => $this->t('Authorities & Organisations'),
-//      '#attributes' => ['class' => 'form-group'],
+//      '#attributes' => ['class' => 'govuk-form-group'],
 //      '#collapsible' => FALSE,
 //      '#collapsed' => FALSE,
 //    ];
-//    $manage_authorities_link = $this->getLinkByRoute('view.helpdesk_authorities.par_helpdesk_authority_page');
+//    $manage_authorities_link = $this->getLinkByRoute('view.helpdesk_authorities.authority_page');
 //    if ($manage_authorities_link) {
 //      $build['institutions']['authorities'] = [
 //        '#type' => 'markup',
@@ -256,7 +254,7 @@ class ParRdDeletedDataListController extends ControllerBase {
 //    $build['people'] = [
 //      '#type' => 'fieldset',
 //      '#title' => $this->t('People'),
-//      '#attributes' => ['class' => 'form-group'],
+//      '#attributes' => ['class' => 'govuk-form-group'],
 //      '#collapsible' => FALSE,
 //      '#collapsed' => FALSE,
 //      '#cache' => ['contexts' => ['user.par_memberships:authority']]
@@ -280,7 +278,7 @@ class ParRdDeletedDataListController extends ControllerBase {
 //    $build['enforcements'] = [
 //      '#type' => 'fieldset',
 //      '#title' => $this->t('Enforcements'),
-//      '#attributes' => ['class' => 'form-group'],
+//      '#attributes' => ['class' => 'govuk-form-group'],
 //      '#collapsible' => FALSE,
 //      '#collapsed' => FALSE,
 //      '#cache' => ['contexts' => ['user.par_memberships:authority']]
@@ -313,7 +311,7 @@ class ParRdDeletedDataListController extends ControllerBase {
 //    $build['enquiries'] = [
 //      '#type' => 'fieldset',
 //      '#title' => $this->t('Enquiries'),
-//      '#attributes' => ['class' => 'form-group'],
+//      '#attributes' => ['class' => 'govuk-form-group'],
 //      '#collapsible' => FALSE,
 //      '#collapsed' => FALSE,
 //      '#cache' => ['contexts' => ['user.par_memberships:authority']]

@@ -7,6 +7,7 @@ _meta:
   depends:
     66a1618f-e4e5-4232-979a-0f8832dd51b0: par_data_legal_entity
     26db3fbe-d4a6-4a6a-ad69-108b54e1e4c5: par_data_person
+    1720a28b-f492-43a3-9421-6c73993cc6b8: par_data_person
     3f21083a-98c9-440e-92b0-12947f799e0a: par_data_person
     7f3b87cd-4406-4f07-a562-ee6876774b16: par_data_premises
     86bcff9c-882e-46d1-b768-68eb5b311f2c: par_data_sic_code
@@ -70,6 +71,8 @@ default:
       entity: 26db3fbe-d4a6-4a6a-ad69-108b54e1e4c5
     -
       entity: 3f21083a-98c9-440e-92b0-12947f799e0a
+    -
+      entity: 1720a28b-f492-43a3-9421-6c73993cc6b8
   field_premises:
     -
       entity: 7f3b87cd-4406-4f07-a562-ee6876774b16

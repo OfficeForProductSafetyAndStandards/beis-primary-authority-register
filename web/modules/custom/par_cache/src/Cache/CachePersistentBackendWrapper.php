@@ -19,13 +19,6 @@ class CachePersistentBackendWrapper implements CacheBackendInterface, CacheTagsI
   protected $cacheBackend;
 
   /**
-   * The name of the wrapped cache bin.
-   *
-   * @var string
-   */
-  protected $bin;
-
-  /**
    * Constructs a new CacheBackendWrapper.
    *
    * @param \Drupal\Core\Cache\CacheBackendInterface $cacheBackend
@@ -33,21 +26,24 @@ class CachePersistentBackendWrapper implements CacheBackendInterface, CacheTagsI
    * @param string $bin
    *   The name of the wrapped cache bin.
    */
-  public function __construct(CacheBackendInterface $cacheBackend, $bin) {
+  public function __construct(CacheBackendInterface $cacheBackend, /**
+   * The name of the wrapped cache bin.
+   */
+  protected $bin) {
     $this->cacheBackend = $cacheBackend;
-    $this->bin = $bin;
   }
 
   /**
    * Call any missing methods on the decorated service.
    */
   public function __call($method, $args) {
-    return call_user_func_array(array($this->cacheBackend, $method), $args);
+    return call_user_func_array([$this->cacheBackend, $method], $args);
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function deleteAll() {
     // This cache doesn't need to be deleted when doing cache rebuild.
     // We do nothing here.
@@ -63,6 +59,7 @@ class CachePersistentBackendWrapper implements CacheBackendInterface, CacheTagsI
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function removeBin() {
     $this->cacheBackend->deleteAll();
   }
@@ -70,6 +67,7 @@ class CachePersistentBackendWrapper implements CacheBackendInterface, CacheTagsI
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function get($cid, $allow_invalid = FALSE) {
     return $this->cacheBackend->get($cid, $allow_invalid);
   }
@@ -77,13 +75,15 @@ class CachePersistentBackendWrapper implements CacheBackendInterface, CacheTagsI
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function getMultiple(&$cids, $allow_invalid = FALSE) {
-    return $this->cacheBackend->getMultiple($cid, $allow_invalid);
+    return $this->cacheBackend->getMultiple($cids, $allow_invalid);
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function set($cid, $data, $expire = Cache::PERMANENT, array $tags = []) {
     return $this->cacheBackend->set($cid, $data, $expire, $tags);
   }
@@ -91,6 +91,7 @@ class CachePersistentBackendWrapper implements CacheBackendInterface, CacheTagsI
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function setMultiple(array $items) {
     return $this->cacheBackend->setMultiple($items);
   }
@@ -98,6 +99,7 @@ class CachePersistentBackendWrapper implements CacheBackendInterface, CacheTagsI
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function delete($cid) {
     return $this->cacheBackend->delete($cid);
   }
@@ -105,6 +107,7 @@ class CachePersistentBackendWrapper implements CacheBackendInterface, CacheTagsI
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function deleteMultiple(array $cids) {
     return $this->cacheBackend->deleteMultiple($cids);
   }
@@ -112,6 +115,7 @@ class CachePersistentBackendWrapper implements CacheBackendInterface, CacheTagsI
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function invalidate($cid) {
     return $this->cacheBackend->invalidate($cid);
   }
@@ -119,6 +123,7 @@ class CachePersistentBackendWrapper implements CacheBackendInterface, CacheTagsI
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function invalidateMultiple(array $cids) {
     return $this->cacheBackend->invalidateMultiple($cids);
   }
@@ -126,6 +131,7 @@ class CachePersistentBackendWrapper implements CacheBackendInterface, CacheTagsI
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function invalidateTags(array $tags) {
     if ($this->cacheBackend instanceof CacheTagsInvalidatorInterface) {
       $this->cacheBackend->invalidateTags($tags);
@@ -135,6 +141,7 @@ class CachePersistentBackendWrapper implements CacheBackendInterface, CacheTagsI
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function invalidateAll() {
     return $this->cacheBackend->invalidateAll();
   }
@@ -142,6 +149,7 @@ class CachePersistentBackendWrapper implements CacheBackendInterface, CacheTagsI
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function garbageCollection() {
     return $this->cacheBackend->garbageCollection();
   }

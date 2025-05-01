@@ -17,7 +17,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
  * @see \Drupal\par_reporting\Annotation\ParStatistic
  * @see plugin_api
  */
-abstract class ParStatisticBase extends PluginBase implements ParStatisticBaseInterface {
+abstract class ParStatisticBase extends PluginBase implements ParStatisticInterface {
 
   /**
    * {@inheritdoc}
@@ -55,6 +55,15 @@ abstract class ParStatisticBase extends PluginBase implements ParStatisticBaseIn
   }
 
   /**
+   * Simple getter to inject the PAR Reporting Manager service.
+   *
+   * @return ParDataManagerInterface
+   */
+  public function getReportingManager() {
+    return \Drupal::service('par_reporting.manager');
+  }
+
+  /**
    * Simple getter to inject the PAR Data Manager service.
    *
    * @return ParDataManagerInterface
@@ -73,22 +82,38 @@ abstract class ParStatisticBase extends PluginBase implements ParStatisticBaseIn
   }
 
   /**
-   * Get the statistic
-   *
-   * {@inheritDoc}
+   * Get the statistic.
    */
-  public function getStat() {
+  protected function getStat(): int {
     return 0;
   }
 
   /**
    * {@inheritDoc}
    */
-  public function renderStat() {
+  #[\Override]
+  public function renderStat(): ?array {
+    // Loading the statistic through the statistic manager adds the caching layer.
+    $stat = $this->getReportingManager()->get($this->getPluginId());
+
+    // Format a human-readable version of the statistic.
+    $precision_intervals = [
+      'b' => 1000000000,
+      'm' => 1000000,
+      'k' => 1000,
+    ];
+    foreach ($precision_intervals as $letter => $interval) {
+      if ((int) $stat > $interval) {
+        $whole = floor((10*$stat) / $interval) / 10;
+        $stat = sprintf('%.1f%s', $whole, "$letter");
+        break;
+      }
+    }
+
     return [
       '#theme' => 'gds_data',
-      '#attributes' => ['class' => 'column-one-third'],
-      '#value' => $this->getStat(),
+      '#attributes' => ['class' => 'govuk-grid-column-one-third'],
+      '#value' => $stat,
       '#label' => $this->getTitle(),
       '#description' => $this->getDescription(),
     ];

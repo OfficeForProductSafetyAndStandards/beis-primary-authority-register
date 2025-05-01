@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -17,7 +18,7 @@ class ParOnsForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  protected $entityMapping = [
+  protected array $entityMapping = [
     ['ons_code', 'par_data_authority', 'ons_code', NULL, NULL, 0, [
       'You must fill in the missing information.' => "You must enter an ONS code."
     ]],
@@ -26,7 +27,8 @@ class ParOnsForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
-  public function loadData($cardinality = 1) {
+  #[\Override]
+  public function loadData(int $index = 1): void {
     $par_data_authority = $this->getFlowDataHandler()->getParameter('par_data_authority');
 
     if ($par_data_authority && $ons_code = $par_data_authority->get('ons_code')) {
@@ -34,18 +36,19 @@ class ParOnsForm extends ParFormPluginBase {
     }
 
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  #[\Override]
+  public function getElements(array $form = [], int $index = 1) {
     $form['ons_code'] = [
       '#type' => 'textfield',
       '#title' => 'Enter the ONS code',
       '#description' => 'The Office for National Statistics maintains a series of codes to represent a wide range of geographical areas of the UK including local authorities.',
-      '#default_value' => $this->getDefaultValuesByKey('ons_code', $cardinality, NULL),
+      '#default_value' => $this->getDefaultValuesByKey('ons_code', $index, NULL),
     ];
 
     return $form;

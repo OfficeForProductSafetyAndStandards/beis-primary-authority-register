@@ -3,7 +3,7 @@
 namespace Drupal\par_flows\EventSubscriber;
 
 use Drupal\par_flows\Event\ParFlowEvents;
-use Symfony\Cmf\Component\Routing\RouteObjectInterface;
+use Drupal\Core\Routing\RouteObjectInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Drupal\par_flows\Event\ParFlowEvent;
 use Drupal\par_flows\Event\ParFlowEventInterface;
@@ -19,7 +19,8 @@ class ParProgressDestinationSubscriber extends ParFlowSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
+  #[\Override]
+  static function getSubscribedEvents(): array {
     $events[ParFlowEvents::FLOW_SUBMIT][] = ['onEvent', 300];
     return $events;
   }

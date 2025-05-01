@@ -116,6 +116,7 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     $entity_type_manager = $container->get('entity_type.manager');
     return new static(
@@ -145,6 +146,7 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $types = $this->parDataManager->getParEntityTypes();
 
@@ -153,58 +155,27 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
       return;
     }
 
-    $options = array();
+    $options = [];
 
     foreach ($types as $type) {
       /** @var \Drupal\Core\Entity\ContentEntityType $type */
-      $options[$type->id()] = array(
-        'type' => array('#markup' => $type->getLabel()),
-      );
+      $options[$type->id()] = ['type' => ['#markup' => $type->getLabel()]];
     }
 
-    $header = array(
-      'type' => $this->t('Par Data Type'),
-    );
+    $header = ['type' => $this->t('Par Data Type')];
 
-    $form['par_data_types'] = array(
-      '#type' => 'tableselect',
-      '#header' => $header,
-      '#options' => $options,
-    );
+    $form['par_data_types'] = ['#type' => 'tableselect', '#header' => $header, '#options' => $options];
 
-    $form['kill'] = array(
-      '#type' => 'checkbox',
-      '#title' => $this->t('<strong>Delete all par data entities</strong> of these types before generating new entities.'),
-      '#default_value' => $this->getSetting('kill'),
-    );
-    $form['num'] = array(
-      '#type' => 'number',
-      '#title' => $this->t('How many entities would you like to generate?'),
-      '#default_value' => $this->getSetting('num'),
-      '#required' => TRUE,
-      '#min' => 0,
-    );
+    $form['kill'] = ['#type' => 'checkbox', '#title' => $this->t('<strong>Delete all par data entities</strong> of these types before generating new entities.'), '#default_value' => $this->getSetting('kill')];
+    $form['num'] = ['#type' => 'number', '#title' => $this->t('How many entities would you like to generate?'), '#default_value' => $this->getSetting('num'), '#required' => TRUE, '#min' => 0];
 
-    $options = array(1 => $this->t('Now'));
-    foreach (array(3600, 86400, 604800, 2592000, 31536000) as $interval) {
+    $options = [1 => $this->t('Now')];
+    foreach ([3600, 86400, 604800, 2592000, 31536000] as $interval) {
       $options[$interval] = $this->dateFormatter->formatInterval($interval, 1) . ' ' . $this->t('ago');
     }
-    $form['time_range'] = array(
-      '#type' => 'select',
-      '#title' => $this->t('How far back in time should the entities be dated?'),
-      '#description' => $this->t('Entity creation dates will be distributed randomly from the current time, back to the selected time.'),
-      '#options' => $options,
-      '#default_value' => 604800,
-    );
+    $form['time_range'] = ['#type' => 'select', '#title' => $this->t('How far back in time should the entities be dated?'), '#description' => $this->t('Entity creation dates will be distributed randomly from the current time, back to the selected time.'), '#options' => $options, '#default_value' => 604800];
 
-    $form['title_length'] = array(
-      '#type' => 'number',
-      '#title' => $this->t('Maximum number of words in titles'),
-      '#default_value' => $this->getSetting('title_length'),
-      '#required' => TRUE,
-      '#min' => 1,
-      '#max' => 255,
-    );
+    $form['title_length'] = ['#type' => 'number', '#title' => $this->t('Maximum number of words in titles'), '#default_value' => $this->getSetting('title_length'), '#required' => TRUE, '#min' => 1, '#max' => 255];
 
     $form['#redirect'] = FALSE;
 
@@ -214,6 +185,7 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   function settingsFormValidate(array $form, FormStateInterface $form_state) {
     if (!array_filter($form_state->getValue('par_data_types'))) {
       $form_state->setErrorByName('par_data_types', $this->t('Please select at least one content type'));
@@ -223,6 +195,7 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function generateElements(array $values) {
     if ($values['num'] <= 50) {
       $this->generateContent($values);
@@ -250,7 +223,8 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
         $this->develGenerateContentAddEntity($values);
         if ($this->isDrush8() && function_exists('drush_log') && $i % drush_get_option('feedback', 1000) == 0) {
           $now = time();
-          drush_log(dt('Completed @feedback entities (@rate nodes/min)', array('@feedback' => drush_get_option('feedback', 1000), '@rate' => (drush_get_option('feedback', 1000) * 60) / ($now - $start))), 'ok');
+          $message = dt('Completed @feedback entities (@rate nodes/min)', ['@feedback' => drush_get_option('feedback', 1000), '@rate' => (drush_get_option('feedback', 1000) * 60) / ($now - $start)]);
+          $this->logger->log('ok', $message);
           $start = $now;
         }
       }
@@ -264,25 +238,20 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
    */
   private function generateBatchContent($values) {
     // Setup the batch operations and save the variables.
-    $operations[] = array('devel_generate_operation', array($this, 'batchContentPreEntity', $values));
+    $operations[] = ['devel_generate_operation', [$this, 'batchContentPreEntity', $values]];
 
     // Add the kill operation.
     if ($values['kill']) {
-      $operations[] = array('devel_generate_operation', array($this, 'batchContentKill', $values));
+      $operations[] = ['devel_generate_operation', [$this, 'batchContentKill', $values]];
     }
 
     // Add the operations to create the nodes.
     for ($num = 0; $num < $values['num']; $num ++) {
-      $operations[] = array('devel_generate_operation', array($this, 'batchContentAddEntity', $values));
+      $operations[] = ['devel_generate_operation', [$this, 'batchContentAddEntity', $values]];
     }
 
     // Set the batch.
-    $batch = array(
-      'title' => $this->t('Generating Content'),
-      'operations' => $operations,
-      'finished' => 'devel_generate_batch_finished',
-      'file' => drupal_get_path('module', 'devel_generate') . '/devel_generate.batch.inc',
-    );
+    $batch = ['title' => $this->t('Generating Content'), 'operations' => $operations, 'finished' => 'devel_generate_batch_finished', 'file' => \Drupal::service('extension.list.module')->getPath('devel_generate') . '/devel_generate.batch.inc'];
     batch_set($batch);
   }
 
@@ -304,6 +273,7 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateDrushParams($args, $options = []) {
     $add_language = $this->isDrush8() ? drush_get_option('languages') : $options['languages'];
     if (!empty($add_language)) {
@@ -318,7 +288,8 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
     $values['num'] = array_shift($args);
     $all_types = array_keys(\Drupal::service('par_data.manager')->getParEntityTypes());
     if ($this->isDrush8()) {
-      $selected_types = _convert_csv_to_array(drush_get_option('types', []));
+      $args = drush_get_option('types', []);
+      $selected_types = StringUtils::csvToArray($args);
     }
     else {
       $selected_types = StringUtils::csvToArray($options['types'] ?: []);
@@ -354,7 +325,7 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
       $storage = $this->parDataManager->getEntityTypeStorage($entity_type_id);
       $entities = $storage->loadMultiple();
       $storage->delete($entities);
-      $this->setMessage($this->t('Deleted all %type entities.', array('%type' => $entity_type_id)));
+      $this->setMessage($this->t('Deleted all %type entities.', ['%type' => $entity_type_id]));
     }
   }
 
@@ -380,17 +351,7 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
     $node_type = array_rand(array_filter($results['par_data_types']));
     $uid = $users[array_rand($users)];
 
-    $node = $this->storage->create(array(
-      'nid' => NULL,
-      'type' => $node_type,
-      'title' => $this->getRandom()->sentences(mt_rand(1, $results['title_length']), TRUE),
-      'uid' => $uid,
-      'revision' => mt_rand(0, 1),
-      'status' => TRUE,
-      'promote' => mt_rand(0, 1),
-      'created' => $this->getTime()->getRequestTime() - mt_rand(0, $results['time_range']),
-      'langcode' => $this->getLangcode($results),
-    ));
+    $node = $this->storage->create(['nid' => NULL, 'type' => $node_type, 'title' => $this->getRandom()->sentences(mt_rand(1, $results['title_length']), TRUE), 'uid' => $uid, 'revision' => mt_rand(0, 1), 'status' => TRUE, 'promote' => mt_rand(0, 1), 'created' => $this->getTime()->getRequestTime() - mt_rand(0, $results['time_range']), 'langcode' => $this->getLangcode($results)]);
 
     // A flag to let hook_node_insert() implementations know that this is a
     // generated node.
@@ -407,6 +368,7 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
   /**
    * Determine language based on $results.
    */
+  #[\Override]
   protected function getLangcode($results) {
     if (isset($results['add_language'])) {
       $langcodes = $results['add_language'];
@@ -423,7 +385,7 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
    */
   protected function getUsers() {
     $connection = \Drupal::database();
-    $users = array();
+    $users = [];
     $result = $connection->queryRange("SELECT uid FROM {users}", 0, 50);
     foreach ($result as $record) {
       $users[] = $record->uid;

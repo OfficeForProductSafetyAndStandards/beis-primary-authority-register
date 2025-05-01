@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
@@ -21,7 +22,8 @@ class ParSelectAuthorityForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  #[\Override]
+  public function loadData(int $index = 1): void {
     $authority_options = [];
 
     // Get the authorities that the current user belongs to.
@@ -33,13 +35,14 @@ class ParSelectAuthorityForm extends ParFormPluginBase {
 
     $this->getFlowDataHandler()->setFormPermValue('authorities', $authority_options);
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  #[\Override]
+  public function getElements(array $form = [], int $index = 1) {
     // Get all the allowed authorities.
     $authorities = $this->getFlowDataHandler()->getFormPermValue('authorities');
     $required = $this->getFlowDataHandler()->getDefaultValues('authority_required', TRUE);
@@ -60,27 +63,29 @@ class ParSelectAuthorityForm extends ParFormPluginBase {
     if ($authorities) {
       // Initialize pager and get current page.
       $number_of_items = 10;
-      $pager = $this->getUniquePager()->getPager('par_plugin_authority_select_'.$cardinality);
+      $pager = $this->getUniquePager()->getPager('par_plugin_authority_select_'.$index);
       $current_pager = $this->getUniquePager()->getPagerManager()->createPager(count($authorities), $number_of_items, $pager);
 
       // Split the items up into chunks:
       $chunks = array_chunk($authorities, $number_of_items, TRUE);
+      $chunk = $chunks[$current_pager->getCurrentPage()] ?? [];
 
       $multiple = $this->getFlowDataHandler()->getDefaultValues('allow_multiple', FALSE);
-      $default_value = $this->getDefaultValuesByKey("par_data_authority_id", $cardinality, NULL);
+      $default_value = $this->getDefaultValuesByKey("par_data_authority_id", $index, NULL);
       $form['par_data_authority_id'] = [
         '#type' => $multiple ? 'checkboxes' : 'radios',
         '#title' => t('Choose an Authority'),
+        '#title_tag' => 'h2',
         '#options' => $authorities,
         '#default_value' => $multiple ? (array) $default_value : $default_value,
-        '#attributes' => ['class' => ['form-group']],
+        '#attributes' => ['class' => ['govuk-form-group']],
       ];
 
       // @TODO Add pager so that any selected checkboxes aren't unselected when a new page is loaded.
 //      $form['pager'] = [
 //        '#type' => 'pager',
 //        '#theme' => 'pagerer',
-//        '#element' => $cardinality,
+//        '#element' => $index,
 //        '#config' => [
 //          'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
 //        ],
@@ -89,10 +94,10 @@ class ParSelectAuthorityForm extends ParFormPluginBase {
     }
     else {
       $form['intro'] = [
-        '#type' => 'markup',
-        '#markup' => "There are no authorities to choose from.",
-        '#prefix' => '<p class=""form-group">',
-        '#suffix' => '</p>',
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#attributes' => ['class' => ['govuk-form-group']],
+        '#value' => $this->t('There are no authorities to choose from.'),
       ];
     }
 
@@ -102,20 +107,21 @@ class ParSelectAuthorityForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
-  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+  #[\Override]
+  public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $required = $this->getFlowDataHandler()->getDefaultValues('authority_required', TRUE);
 
     // If multiple choices are allowed the resulting value may be an array with keys but empty values.
-    $authority_element_key = $this->getElementKey('par_data_authority_id', $cardinality);
+    $authority_element_key = $this->getElementKey('par_data_authority_id', $index);
     $authorities_selected = $this->getFlowDataHandler()->getDefaultValues('allow_multiple', FALSE) ?
       NestedArray::filter((array) $form_state->getValue($authority_element_key)) :
       $form_state->getValue($authority_element_key);
 
     if ($required && empty($authorities_selected)) {
-      $id_key = $this->getElementKey('par_data_authority_id', $cardinality, TRUE);
+      $id_key = $this->getElementKey('par_data_authority_id', $index, TRUE);
       $form_state->setErrorByName($this->getElementName($authority_element_key), $this->wrapErrorMessage('You must select an authority.', $this->getElementId($id_key, $form)));
     }
 
-    return parent::validate($form, $form_state, $cardinality, $action);
+    parent::validate($form, $form_state, $index, $action);
   }
 }

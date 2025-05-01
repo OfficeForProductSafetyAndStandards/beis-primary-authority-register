@@ -19,61 +19,32 @@ class ParPartnershipFlowsAboutBusinessForm extends ParBaseForm {
   protected $pageTitle = 'Information about the organisation';
 
   /**
-   * Helper to get all the editable values.
-   *
-   * Used for when editing or revisiting a previously edited page.
-   *
-   * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
-   *   The Partnership being retrieved.
+   * {@inheritdoc}
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
-    if ($par_data_partnership && $par_data_organisation = $par_data_partnership->getOrganisation(TRUE)) {
-      $this->getFlowDataHandler()->setFormPermValue('about_business', $par_data_organisation->getPlain('comments'));
+  #[\Override]
+  public function loadData() {
+    if ($par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership')) {
+      $this->getFlowDataHandler()->setParameter('par_data_organisation', $par_data_partnership?->getOrganisation(TRUE));
     }
+
+    parent::loadData();
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
-    $par_data_organisation = current($par_data_partnership->getOrganisation());
-    $bundle = $par_data_organisation->bundle();
-    $this->formItems = [
-      'par_data_organisation:' . $bundle => [
-        'comments' => 'about_business',
-      ],
-    ];
-
-    $this->retrieveEditableValues($par_data_partnership);
-
-    $form['about_business_fieldset'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('Provide information about the organisation'),
-    ];
-
-    // Business details.
-    $form['about_business_fieldset']['about_business'] = [
-      '#type' => 'textarea',
-      '#default_value' => $this->getFlowDataHandler()->getDefaultValues('about_business'),
-      '#description' => '<p>Use this section to give a brief overview of the organisation.</p><p>Include any information you feel may be useful to enforcing authorities.</p>',
-    ];
-
-    // Make sure to add the partnership cacheability data to this form.
-    $this->addCacheableDependency($par_data_partnership);
-
-    return parent::buildForm($form, $form_state);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
+    // Get the organisation to save the information to.
+    $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
+
+    // Get the submitted value.
+    $about_business = $this->getFlowDataHandler()->getTempDataValue('about_business');
+
     // Save the value for the about_partnership field.
-    $partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
-    $par_data_organisation = current($partnership->getOrganisation());
-    $par_data_organisation->get('comments')->setValue([
+    $par_data_organisation?->get('comments')->setValue([
       'value' => $this->getFlowDataHandler()->getTempDataValue('about_business'),
       'format' => 'plain_text',
     ]);

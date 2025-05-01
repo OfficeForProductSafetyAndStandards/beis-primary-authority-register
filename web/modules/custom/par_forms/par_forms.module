@@ -33,3 +33,10 @@ function par_forms_theme($existing, $type, $theme, $path) {
 
   return $variables;
 }
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function par_forms_theme_registry_alter(&$theme_registry) {
+  $theme_registry['item_list']['variables']['list_header_tag'] = NULL;
+}

@@ -6,25 +6,26 @@ dependencies:
     - core.entity_view_mode.message.full
     - field.field.message.revoke_inspection_plan.field_inspection_plan
     - field.field.message.revoke_inspection_plan.field_message_subject
+    - field.field.message.revoke_inspection_plan.field_to
     - message.template.revoke_inspection_plan
 id: message.revoke_inspection_plan.full
 targetEntityType: message
 bundle: revoke_inspection_plan
 mode: full
 content:
-  field_inspection_plan:
-    weight: 1
-    label: hidden
-    settings:
-      view_mode: title
-      link: false
-    third_party_settings: {  }
-    type: entity_reference_entity_view
-    region: content
   partial_0:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
+  partial_1:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
+  field_inspection_plan: true
   field_message_subject: true
+  field_to: true
+  partial_2: true
+  search_api_excerpt: true

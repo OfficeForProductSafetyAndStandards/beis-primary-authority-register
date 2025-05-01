@@ -24,6 +24,7 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     $verb = 'Upload';
     $this->pageTitle = "$verb advice documents";
@@ -54,6 +55,7 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $par_data_advice);
 
@@ -76,11 +78,12 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
 
     $form['advice_type_help_text'] = [
       '#type' => 'fieldset',
-      '#attributes' => [
-        'class' => ['form-group'],
-      ],
       '#title' => $this->t('How to upload Primary Authority Advice to Local Authorities'),
-      '#description' => $this->t('To upload Primary Authority Advice to a Local Authority, email it to <a href="mailto:pa@beis.gov.uk">pa@beis.gov.uk</a> with details of the organisation it applies to and we’ll get back to you shortly.'),
+      '#title_tag' => 'h2',
+      '#attributes' => [
+        'class' => ['govuk-form-group'],
+      ],
+      '#description' => $this->t('To upload Primary Authority Advice to a Local Authority, email it to <a href="mailto:pa@businessandtrade.gov.uk">pa@businessandtrade.gov.uk</a> with details of the organisation it applies to and we’ll get back to you shortly.'),
     ];
 
     // Multiple file field.

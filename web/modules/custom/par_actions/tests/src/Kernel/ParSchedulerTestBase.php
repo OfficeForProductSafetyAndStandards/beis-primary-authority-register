@@ -3,11 +3,7 @@
 namespace Drupal\Tests\par_actions\Kernel;
 
 use Drupal\Core\Session\AccountInterface;
-use Drupal\file\Entity\File;
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
-use Drupal\KernelTests\Core\Plugin\PluginTestBase;
-use Drupal\par_data_test_entity\Entity\ParDataTestEntity;
-use Drupal\par_data_test_entity\Entity\ParDataTestEntityType;
 use Drupal\par_data_test_entity\Plugin\TestSchedulerManager;
 
 /**
@@ -17,27 +13,30 @@ use Drupal\par_data_test_entity\Plugin\TestSchedulerManager;
  */
 class ParSchedulerTestBase extends EntityKernelTestBase {
 
-  static $modules = ['user', 'language', 'content_translation', 'comment', 'trance', 'par_validation', 'par_data', 'par_data_config', 'par_data_test_entity', 'par_actions', 'datetime'];
+  protected static $modules = ['user', 'language', 'content_translation', 'comment', 'trance', 'par_validation', 'par_data', 'par_data_config', 'par_data_test_entity', 'par_actions', 'datetime', 'link'];
 
   /**
-   * @var AccountInterface
+   * @var AccountInterface $account
    */
-  protected $account;
+  protected AccountInterface $account;
 
-  /** @var  \Drupal\par_data_test_entity\Plugin\TestSchedulerManager */
-  protected $schedulerManager;
+  /**
+   * @var TestSchedulerManager $schedulerManager
+   */
+  protected TestSchedulerManager $schedulerManager;
 
-  protected $permissions = [
+  protected array $permissions = [
     'access content',
     'access par_data_test_entity entities',
   ];
 
-  protected $entityTypes = [];
+  protected array $entityTypes = [];
 
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  #[\Override]
+  protected function setUp(): void {
     // Must change the bytea_output to the format "escape" before running tests.
     // @see https://www.drupal.org/node/2810049
     //db_query("ALTER DATABASE 'par' SET bytea_output = 'escape';")->execute();
@@ -72,14 +71,14 @@ class ParSchedulerTestBase extends EntityKernelTestBase {
     $this->installEntitySchema('user');
   }
 
-  public function getBaseValues() {
+  public function getBaseValues(): array {
     return [
       'uid' => $this->account,
       'type' => 'UNKNOWN',
     ];
   }
 
-  public function getTestEntityValues($expiry_date = '2020-01-01') {
+  public function getTestEntityValues($expiry_date = '2020-01-01'): array {
     return [
       'type' => 'test',
       'expiry_date' => $expiry_date,

@@ -31,12 +31,14 @@ class ParMemberConfirmUploadForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
 
     // Upload csv file confirmation message.
     $form['csv_upload_confirmation_message_fieldset'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Are you sure you want to upload a new list of members?'),
+      '#title_tag' => 'h2',
       'intro' => [
         '#type' => 'markup',
         '#markup' => '<p><b>' . $this->t('This operation will erase any existing list of members. If you are unsure, please click the Cancel link (below) and contact the Help Desk.') . '</b></p>',
@@ -57,6 +59,7 @@ class ParMemberConfirmUploadForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
@@ -69,6 +72,7 @@ class ParMemberConfirmUploadForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
@@ -79,10 +83,10 @@ class ParMemberConfirmUploadForm extends ParBaseForm {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     // Process the data in one go if less than half the maximum batch size.
-    if (count($csv_data) <= (ParMemberCsvHandler::BATCH_LIMIT/2)) {
+    if (!empty($csv_data) && count($csv_data) <= (ParMemberCsvHandler::BATCH_LIMIT/2)) {
       $uploaded = $this->getCsvHandler()->upload($csv_data, $par_data_partnership);
     }
-    else {
+    else if (!empty($csv_data)) {
       $uploaded = $this->getCsvHandler()->batchUpload($csv_data, $par_data_partnership);
     }
 

@@ -21,6 +21,7 @@ class ParTradingForm extends ParBaseForm {
    */
   protected $pageTitle = "Add trading name";
 
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataCoordinatedBusiness $par_data_coordinated_business = NULL, $trading_name_delta = NULL) {
     $this->getFlowDataHandler()->setParameter('trading_name_delta', $trading_name_delta);
 
@@ -30,6 +31,7 @@ class ParTradingForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function loadData() {
     $par_data_coordinated_business = $this->getFlowDataHandler()->getParameter('par_data_coordinated_business');
     $par_data_organisation = $par_data_coordinated_business->getOrganisation(TRUE);
@@ -37,17 +39,19 @@ class ParTradingForm extends ParBaseForm {
     parent::loadData();
   }
 
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
+    $trading_name_delta = $this->getFlowDataHandler()->getParameter('trading_name_delta');
 
     $trading_name = $this->getFlowDataHandler()->getTempDataValue('trading_name');
-    $trading_name_delta = (int) $this->getRouteParam('trading_name_delta');
+
     // If a delta is specified we should update this delta only.
     if (isset($trading_name_delta)) {
       try {
-        $par_data_organisation->get('trading_name')->set($trading_name_delta, $trading_name);
+        $par_data_organisation->get('trading_name')->set((int) $trading_name_delta, $trading_name);
       } catch (MissingDataException $e) {
         $message = $this->t('Trading name could not be saved for %form_id due to missing data: %error');
         $replacements = [

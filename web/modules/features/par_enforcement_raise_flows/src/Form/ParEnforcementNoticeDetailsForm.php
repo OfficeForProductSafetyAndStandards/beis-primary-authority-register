@@ -34,6 +34,7 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
   /**
    * Load the data for this form.
    */
+  #[\Override]
   public function loadData() {
     $cid = $this->getFlowNegotiator()->getFormKey('par_authority_selection');
     $authority_id = $this->getFlowDataHandler()->getDefaultValues('par_data_authority_id', NULL, $cid);
@@ -54,6 +55,7 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
 
     $enforcement_notice_entity_type = $this->getParDataManager()->getParBundleEntity('par_data_enforcement_notice');
@@ -62,9 +64,10 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
     $form['notice_type'] = [
       '#type' => 'radios',
       '#title' => $this->t('This enforcement action is'),
+      '#title_tag' => 'h2',
       '#options' => $notice_type,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('notice_type', key($notice_type)),
-      '#attributes' => ['class' => ['form-group']],
+      '#attributes' => ['class' => ['govuk-form-group']],
       '#required' => TRUE,
       '#weight' => 100,
     ];
@@ -72,6 +75,7 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
     $form['summary'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Provide a summary of the enforcement notification'),
+      '#title_tag' => 'h2',
       '#description' => [
         '#theme' => 'item_list',
         '#items' => [
@@ -80,7 +84,7 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
           'your proposed text for any statutory notice or draft changes etc',
           'your reasons for proposing the enforcement action',
         ],
-        '#attributes' => ['class' => ['list', 'list-bullet']],
+        '#attributes' => ['class' => ['govuk-list', 'govuk-list--bullet']],
         '#weight' => 100,
       ],
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues('summary'),

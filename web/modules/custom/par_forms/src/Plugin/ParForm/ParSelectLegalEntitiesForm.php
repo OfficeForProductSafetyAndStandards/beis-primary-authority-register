@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_flows\ParDisplayTrait;
 use Drupal\par_forms\ParFormPluginBase;
 
@@ -18,7 +19,8 @@ class ParSelectLegalEntitiesForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  #[\Override]
+  public function loadData(int $index = 1): void {
     $par_data_partnership = $this->getflowDataHandler()->getParameter('par_data_partnership');
     $par_data_organisation = $this->getflowDataHandler()->getParameter('par_data_organisation');
 
@@ -28,20 +30,26 @@ class ParSelectLegalEntitiesForm extends ParFormPluginBase {
     $radio_options = $this->getParDataManager()->getEntitiesAsOptions($organisation_legal_entities, [], 'summary');
     $this->getFlowDataHandler()->setFormPermValue('legal_entity_options', $radio_options);
 
+    $partnership_legal_entities = $par_data_partnership->getLegalEntity();
+    $partnership_ids = [];
+    foreach ($partnership_legal_entities as $partnership_legal_entity) {
+      $partnership_ids[] = $partnership_legal_entity->id();
+    }
     $this->getFlowDataHandler()
-      ->setTempDataValue('partnership_legal_entities', $par_data_partnership->retrieveEntityIds('field_legal_entity'));
+      ->setTempDataValue('partnership_legal_entities', $partnership_ids);
 
     if ($par_data_partnership) {
       $this->getFlowDataHandler()->setFormPermValue('coordinated_partnership', $par_data_partnership->isCoordinated());
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  #[\Override]
+  public function getElements(array $form = [], int $index = 1) {
     // Get all the allowed authorities.
     $radio_options = $this->getFlowDataHandler()->getFormPermValue('legal_entity_options');
 
@@ -51,8 +59,13 @@ class ParSelectLegalEntitiesForm extends ParFormPluginBase {
 
     // Intro text.
     $form['legal_entity_intro'] = [
-      '#type' => 'fieldset',
-      '#title' => $this->t('What is a legal entity?'),
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => $this->t('What is a legal entity?'),
+      ],
       'text' => [
         '#type' => 'markup',
         '#markup' => $this->t('A legal entity is any kind of individual or organisation that has legal standing. This can include a
@@ -63,27 +76,47 @@ limited company or partnership, as well as other types of organisations such as 
     ];
     if ($this->getFlowDataHandler()->getFormPermValue('coordinated_partnership')) {
       $form['legal_entity_intro']['note'] = [
-        '#type' => 'markup',
-        '#markup' => '<div class="form-group notice">
-              <i class="icon icon-important"><span class="visually-hidden">Warning</span></i>
-              <strong class="bold-small">Please select the legal entities for the coordinator not the members covered by this partnership.</strong>
-            </div>',
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => ['class' => ['govuk-warning-text']],
+        'icon' => [
+          '#type' => 'html_tag',
+          '#tag' => 'span',
+          '#value' => '!',
+          '#attributes' => [
+            'class' => ['govuk-warning-text__icon'],
+            'aria-hidden' => 'true',
+          ],
+        ],
+        'strong' => [
+          '#type' => 'html_tag',
+          '#tag' => 'strong',
+          '#value' => $this->t('Please select the legal entities for the co-ordinator not the members covered by this partnership.'),
+          '#attributes' => ['class' => ['govuk-warning-text__text']],
+          'message' => [
+            '#type' => 'html_tag',
+            '#tag' => 'span',
+            '#value' => $this->t('Warning'),
+            '#attributes' => ['class' => ['govuk-warning-text__assistive']],
+          ],
+        ]
       ];
     }
 
     // Checkboxes for legal entities.
     $form['field_legal_entity'] = [
       '#type' => 'checkboxes',
-      '#attributes' => ['class' => ['form-group']],
+      '#attributes' => ['class' => ['govuk-form-group']],
       '#title' => t('Choose which legal entities this partnership relates to'),
+      '#title_tag' => 'h2',
       '#options' => $radio_options,
       // Automatically check all legal entities if no form data is found.
-      '#default_value' => $this->getDefaultValuesByKey('field_legal_entity', $cardinality, $partnership_legal_entities),
+      '#default_value' => $this->getDefaultValuesByKey('field_legal_entity', $index, $partnership_legal_entities),
     ];
 
     // A note to the user that they can add a new legal entity on the next step.
     $form['legal_entity_add_more_info'] = [
-      '#type' => 'fieldset',
+      '#type' => 'container',
       '#title' => $this->t('Additional legal entities'),
       'text' => [
         '#type' => 'markup',

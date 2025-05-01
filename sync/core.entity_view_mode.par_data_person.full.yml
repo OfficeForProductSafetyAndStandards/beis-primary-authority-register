@@ -8,5 +8,6 @@ _core:
   default_config_hash: xpLyA5L-TlDT5FpjwbqpFkqNVFv6TWHgbToOuJBX4Ck
 id: par_data_person.full
 label: Full
+description: ''
 targetEntityType: par_data_person
 cache: true

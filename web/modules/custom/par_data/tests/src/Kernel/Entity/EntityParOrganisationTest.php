@@ -2,9 +2,7 @@
 
 namespace Drupal\Tests\par_data\Kernel\Entity;
 
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataOrganisationType;
 use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 
 /**
@@ -20,7 +18,7 @@ class EntityParOrganisationTest extends ParDataTestBase {
   public function testEntityValidate() {
     $entity = ParDataOrganisation::create($this->getOrganisationValues());
     $violations = $entity->validate();
-    $this->assertEqual(count($violations->getFieldNames()), 0, 'No violations when validating a default PAR Organisation entity of type Business.');
+    $this->assertEquals(0, count($violations->getFieldNames()), 'No violations when validating a default PAR Organisation entity of type Business.');
   }
 
   /**
@@ -39,7 +37,11 @@ class EntityParOrganisationTest extends ParDataTestBase {
    * Test to validate an organisation entity.
    */
   public function testOrganisationRequiredFields() {
+    // List of fields that have the addConstraint() applied.
     $values = [
+      // @see ParDataEntity::baseFieldDefinitions()
+      'archive_reason' => '',
+      // @see ParDataOrganisation::baseFieldDefinitions()
       'organisation_name' => '',
       'size' => '',
       'employees_band' => '',
@@ -52,7 +54,14 @@ class EntityParOrganisationTest extends ParDataTestBase {
 
     $entity = ParDataOrganisation::create($values + $this->getOrganisationValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
-    $this->assertEqual(count($violations->getFieldNames()), count($values), t('Field values are required for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
+    $this->assertEquals(
+      count($values),
+      count($violations->getFieldNames()),
+      t(
+        'Violations are reported for fields @fields.',
+        ['@fields' => implode(', ', $violations->getFieldNames())]
+      )->render()
+    );
   }
 
   /**
@@ -69,12 +78,12 @@ class EntityParOrganisationTest extends ParDataTestBase {
       'coordinator_type' => $this->randomString(256),
       'trading_name' => [
         $this->randomString(501),
-      ]
+      ],
     ];
 
     $entity = ParDataOrganisation::create($values + $this->getOrganisationValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
-    $this->assertEqual(count($violations->getFieldNames()), count($values), t('Field values cannot be longer than their allowed lengths for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
+    $this->assertEquals(count($values), count($violations->getFieldNames()), t('Field values cannot be longer than their allowed lengths for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
   }
 
   /**
@@ -84,4 +93,5 @@ class EntityParOrganisationTest extends ParDataTestBase {
     $entity = ParDataOrganisation::create($this->getOrganisationValues());
     $this->assertTrue($entity->save() === SAVED_NEW, 'PAR Organisation entity saved correctly.');
   }
+
 }

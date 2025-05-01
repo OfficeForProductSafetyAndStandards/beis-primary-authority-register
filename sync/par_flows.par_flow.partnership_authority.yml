@@ -14,7 +14,7 @@ states:
   - par_data_partnership
 final_routes:
   - view.par_user_partnerships.partnerships_page
-  - view.helpdesk_dashboard.par_rd_helpdesk_dashboard_page
+  - view.advanced_partnership_search.advanced_search
 steps:
   1:
     route: par_partnership_flows.authority_details
@@ -28,7 +28,7 @@ steps:
         weight: -8
       sic_code_display:
         weight: -7
-      legal_entity_display:
+      partnership_legal_entity_display:
         weight: -6
       trading_name_display:
         weight: -5
@@ -48,6 +48,11 @@ steps:
       edit_regulatory_functions: 3
       inspection_plans: 4
       advice: 5
+      revoke_legal_entity: 19
+      reinstate_legal_entity: 20
+      remove_legal_entity: 21
+      add_legal_entity: 22
+      edit_legal_entity: 23
   2:
     route: par_partnership_flows.about_partnership
     form_id: par_partnership_about
@@ -168,3 +173,41 @@ steps:
     route: par_partnership_flows.authority_inspection_plan_details
     redirect:
       done: 4
+  19:
+    route: par_partnership_flows.legal_entity_revoke
+    form_id: par_partnership_legal_entity_revoke
+    redirect:
+      save: 1
+      cancel: 1
+  20:
+    route: par_partnership_flows.legal_entity_reinstate
+    form_id: par_partnership_legal_entity_reinstate
+    redirect:
+      save: 1
+      cancel: 1
+  21:
+    route: par_partnership_flows.legal_entity_remove
+    form_id: par_partnership_legal_entity_remove
+    redirect:
+      save: 1
+      cancel: 1
+  22:
+    route: par_partnership_flows.legal_entity_add
+    form_id: par_partnership_legal_entity_add
+    components:
+      legal_entity:
+        weight: -10
+        cardinality: 1
+    redirect:
+      save: 1
+      cancel: 1
+  23:
+    route: par_partnership_flows.legal_entity_edit
+    form_id: par_partnership_legal_entity_edit
+    components:
+      legal_entity:
+        weight: -10
+        cardinality: 1
+    redirect:
+      save: 1
+      cancel: 1

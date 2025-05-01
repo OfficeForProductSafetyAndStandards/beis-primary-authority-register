@@ -44,6 +44,7 @@ class ParReportingController extends ControllerBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('par_data.manager'),
@@ -58,37 +59,85 @@ class ParReportingController extends ControllerBase {
     $build = [];
 
     // Statistics related to partnerships.
-    $build['partnerships'] = [
-      '#type' => 'fieldset',
-      '#title' => 'Partnerships',
-      '#attributes' => ['class' => ['grid-row', 'form-group']],
+    $build['partnership_applications'] = [
+      '#type' => 'container',
+      '#title' => 'Partnership Applications',
+      '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group']],
     ];
-    $build['partnerships']['active'] = [
+    $build['partnership_applications']['active'] = [
       '#lazy_builder' => ['par_reporting.manager:render', ['total_active_partnerships']],
       '#create_placeholder' => TRUE,
     ];
-    $build['partnerships']['pending'] = [
+    $build['partnership_applications']['pending'] = [
       '#lazy_builder' => ['par_reporting.manager:render', ['total_pending_partnerships']],
       '#create_placeholder' => TRUE,
     ];
-    $build['partnerships']['revoked'] = [
+    $build['partnership_applications']['revoked'] = [
       '#lazy_builder' => ['par_reporting.manager:render', ['total_revoked_partnerships']],
       '#create_placeholder' => TRUE,
     ];
-    $build['partnerships']['direct'] = [
+    $build['partnership_applications']['direct'] = [
       '#lazy_builder' => ['par_reporting.manager:render', ['total_active_direct_partnerships']],
       '#create_placeholder' => TRUE,
     ];
-    $build['partnerships']['coordinated'] = [
+    $build['partnership_applications']['coordinated'] = [
       '#lazy_builder' => ['par_reporting.manager:render', ['total_active_coordinated_partnerships']],
       '#create_placeholder' => TRUE,
     ];
 
+    // Statistics related to partnerships.
+    $build['partnerships'] = [
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => t('Partnerships'),
+      ],
+      '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group']],
+    ];
+    $build['partnerships']['total'] = [
+      '#lazy_builder' => ['par_reporting.manager:render', ['total_businesses']],
+      '#create_placeholder' => TRUE,
+    ];
+    $build['partnerships']['direct'] = [
+      '#lazy_builder' => ['par_reporting.manager:render', ['total_direct_businesses']],
+      '#create_placeholder' => TRUE,
+    ];
+    $build['partnerships']['coordinated'] = [
+      '#lazy_builder' => ['par_reporting.manager:render', ['total_coordinated_members']],
+      '#create_placeholder' => TRUE,
+    ];
+
+//    // Statistics related to organisations and legal entities.
+//    $build['businesses_in_partnership'] = [
+//      '#type' => 'fieldset',
+//      '#title' => 'Organisations in a partnership',
+//      '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group']],
+//    ];
+//    $build['businesses_in_partnership']['total'] = [
+//      '#lazy_builder' => ['par_reporting.manager:render', ['total_unique_businesses']],
+//      '#create_placeholder' => TRUE,
+//    ];
+//    $build['businesses_in_partnership']['direct'] = [
+//      '#lazy_builder' => ['par_reporting.manager:render', ['total_unique_direct_businesses']],
+//      '#create_placeholder' => TRUE,
+//    ];
+//    $build['businesses_in_partnership']['coordinated'] = [
+//      '#lazy_builder' => ['par_reporting.manager:render', ['total_unique_coordinated_members']],
+//      '#create_placeholder' => TRUE,
+//    ];
+
     // Statistics related to partnership documents.
     $build['documents'] = [
-      '#type' => 'fieldset',
-      '#title' => 'Partnership documents',
-      '#attributes' => ['class' => ['grid-row', 'form-group']],
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h3',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => t('Partnership documents'),
+      ],
+      '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group']],
     ];
     $build['documents']['inspection_plans'] = [
       '#lazy_builder' => ['par_reporting.manager:render', ['active_partnerships_with_inspection_plans']],
@@ -100,29 +149,15 @@ class ParReportingController extends ControllerBase {
     ];
 
     // Statistics related to organisations and legal entities.
-    $build['covered_organisations'] = [
-      '#type' => 'fieldset',
-      '#title' => 'Organisations',
-      '#attributes' => ['class' => ['grid-row', 'form-group']],
-    ];
-    $build['covered_organisations']['total'] = [
-      '#lazy_builder' => ['par_reporting.manager:render', ['total_businesses']],
-      '#create_placeholder' => TRUE,
-    ];
-    $build['covered_organisations']['direct'] = [
-      '#lazy_builder' => ['par_reporting.manager:render', ['total_direct_businesses']],
-      '#create_placeholder' => TRUE,
-    ];
-    $build['covered_organisations']['coordinated'] = [
-      '#lazy_builder' => ['par_reporting.manager:render', ['total_coordinated_members']],
-      '#create_placeholder' => TRUE,
-    ];
-
-    // Statistics related to organisations and legal entities.
     $build['authorities'] = [
-      '#type' => 'fieldset',
-      '#title' => 'Authorities',
-      '#attributes' => ['class' => ['grid-row', 'form-group']],
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => t('Authorities'),
+      ],
+      '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group']],
     ];
     $build['authorities']['total'] = [
       '#lazy_builder' => ['par_reporting.manager:render', ['total_authorities']],
@@ -135,9 +170,14 @@ class ParReportingController extends ControllerBase {
 
     // Statistics related to organisations and legal entities.
     $build['messages'] = [
-      '#type' => 'fieldset',
-      '#title' => 'Notifications',
-      '#attributes' => ['class' => ['grid-row', 'form-group']],
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => t('Notifications'),
+      ],
+      '#attributes' => ['class' => ['govuk-grid--row', 'govuk-form-group']],
     ];
     $build['messages']['enforcements'] = [
       '#lazy_builder' => ['par_reporting.manager:render', ['total_enforcement_notices']],
@@ -150,9 +190,14 @@ class ParReportingController extends ControllerBase {
 
     // Statistics related to users.
     $build['users'] = [
-      '#type' => 'fieldset',
-      '#title' => 'Users',
-      '#attributes' => ['class' => ['grid-row', 'form-group']],
+      '#type' => 'container',
+      'heading' => [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#attributes' => ['class' => ['govuk-heading-m']],
+        '#value' => $this->t('Users'),
+      ],
+      '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group']],
     ];
     $build['users']['total'] = [
       '#lazy_builder' => ['par_reporting.manager:render', ['total_users']],
@@ -165,6 +210,18 @@ class ParReportingController extends ControllerBase {
     $build['users']['recent'] = [
       '#lazy_builder' => ['par_reporting.manager:render', ['recent_users']],
       '#create_placeholder' => TRUE,
+    ];
+
+
+    $build['back'] = [
+      '#type' => 'link',
+      '#title' => 'back to dashboard',
+      '#url' => Url::fromRoute('par_help_desks_flows.helpdesk_dashboard'),
+      '#options' => [
+        'attributes' => [
+          'class' => ['govuk-back-link', 'govuk-form-group'],
+        ],
+      ]
     ];
 
     return $build;

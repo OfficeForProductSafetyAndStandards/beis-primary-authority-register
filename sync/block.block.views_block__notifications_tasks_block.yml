@@ -1,0 +1,37 @@
+uuid: da63198d-1e36-4bd7-b6ab-62b1f6d09c1b
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.notifications
+  module:
+    - system
+    - user
+    - views
+  theme:
+    - par_theme
+id: views_block__notifications_tasks_block
+theme: par_theme
+region: content
+weight: -8
+provider: null
+plugin: 'views_block:notifications-tasks_block'
+settings:
+  id: 'views_block:notifications-tasks_block'
+  label: ''
+  label_display: '0'
+  provider: views
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: "/dashboard\r\n/helpdesk"
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      authenticated: authenticated

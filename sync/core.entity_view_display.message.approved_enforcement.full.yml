@@ -1,0 +1,33 @@
+uuid: 2c95b90c-6160-4f50-9549-1b101becf385
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.message.full
+    - field.field.message.approved_enforcement.field_enforcement_notice
+    - field.field.message.approved_enforcement.field_message_subject
+    - field.field.message.approved_enforcement.field_to
+    - message.template.approved_enforcement
+id: message.approved_enforcement.full
+targetEntityType: message
+bundle: approved_enforcement
+mode: full
+content:
+  partial_0:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  partial_2:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 6
+    region: content
+hidden:
+  field_enforcement_notice: true
+  field_message_subject: true
+  field_to: true
+  partial_1: true
+  partial_3: true
+  partial_4: true
+  search_api_excerpt: true

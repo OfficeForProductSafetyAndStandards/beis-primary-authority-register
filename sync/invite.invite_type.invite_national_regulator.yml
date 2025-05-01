@@ -1,0 +1,8 @@
+uuid: dc313e65-cc97-4159-8f42-88223baf87fc
+langcode: en
+status: null
+dependencies: {  }
+id: invite_national_regulator
+label: 'Invite National Regulator'
+description: ''
+data: 'a:4:{s:11:"use_default";i:1;s:16:"subject_editable";i:0;s:10:"html_email";i:0;s:11:"target_role";s:18:"national_regulator";}'

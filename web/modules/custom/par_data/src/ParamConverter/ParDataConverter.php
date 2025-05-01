@@ -25,18 +25,16 @@ class ParDataConverter implements ParamConverterInterface {
   protected $parDataManager;
 
   /**
-   * The inner parent service being decorated.
-   *
-   * @param \Drupal\Core\ParamConverter\EntityConverter
-   */
-  protected $parent;
-
-  /**
    * Settings for stubbed data.
    *
    * @param boolean
    */
   protected $settings;
+
+  /**
+   * A unique stub ID for forcing a stub to be loaded.
+   */
+  const STUB_ID = 000;
 
   /**
    * Constructs a new EntityConverter.
@@ -50,38 +48,38 @@ class ParDataConverter implements ParamConverterInterface {
    * @param \Drupal\Core\Config\ConfigFactory $config_factory
    *   The conig factory.
    */
-  public function __construct($parent, EntityTypeManagerInterface $entity_type_manager, ParDataManagerInterface $par_data_manager, $config_factory) {
+  public function __construct(protected $parent, EntityTypeManagerInterface $entity_type_manager, ParDataManagerInterface $par_data_manager, $config_factory) {
     $this->entityTypeManager = $entity_type_manager;
     $this->parDataManager = $par_data_manager;
-    $this->parent = $parent;
     $this->settings = $config_factory->get('par_data.settings');
   }
 
   public function __call($method, $args) {
-    return call_user_func_array(array($this->parent, $method), $args);
+    return call_user_func_array([$this->parent, $method], $args);
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function convert($value, $definition, $name, array $defaults) {
     $par_data_manager = \Drupal::service('par_data.manager');
 
     // Get stubs and generate a dummy entity.
     if (array_key_exists($name, $par_data_manager->getParEntityTypes()) && $this->settings->get('stubbed')) {
       // Set the entity Type to use.
-      $entity_type_id = substr($definition['type'], strlen('entity:'));
+      $entity_type_id = substr((string) $definition['type'], strlen('entity:'));
 
       // Set the entity ID to use.
       if ($this->parDataManager->getEntityTypeStorage($entity_type_id)->load($value)) {
         $entity = $this->parent->convert($value, $definition, $name, $defaults);
       }
-      elseif ($entity_type_id) {
+      elseif ($entity_type_id && $value == self::STUB_ID) {
         $entities = $this->parDataManager->getEntityTypeStorage($entity_type_id)->loadMultiple();
         $entity = !empty($entities) ? current($entities) : NULL;
       }
 
-      return isset($entity) ? $entity : NULL;
+      return $entity ?? NULL;
     }
     else {
       return $this->parent->convert($value, $definition, $name, $defaults);
@@ -91,6 +89,7 @@ class ParDataConverter implements ParamConverterInterface {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function applies($definition, $name, Route $route) {
     $par_data_manager = \Drupal::service('par_data.manager');
     if (array_key_exists($name, $par_data_manager->getParEntityTypes()) && $this->settings->get('stubbed')) {

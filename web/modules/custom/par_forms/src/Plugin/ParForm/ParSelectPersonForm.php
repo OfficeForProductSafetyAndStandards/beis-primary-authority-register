@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_forms\ParFormBuilder;
@@ -22,7 +23,8 @@ class ParSelectPersonForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  #[\Override]
+  public function loadData(int $index = 1): void {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
     $user_people = [];
 
@@ -31,9 +33,7 @@ class ParSelectPersonForm extends ParFormPluginBase {
     $account = $this->getFlowDataHandler()->getParameter('user');
     if ($account && $account->isAuthenticated() && $people = $this->getParDataManager()->getUserPeople($account)) {
       // Ignore deleted person accounts.
-      $people = array_filter($people, function ($person) {
-        return !$person->isDeleted();
-      });
+      $people = array_filter($people, fn($person) => !$person->isDeleted());
 
       $user_people = $this->getParDataManager()->getEntitiesAsOptions($people, $user_people, 'summary');
     }
@@ -46,13 +46,14 @@ class ParSelectPersonForm extends ParFormPluginBase {
 
     $this->getFlowDataHandler()->setFormPermValue('user_people', $user_people);
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  #[\Override]
+  public function getElements(array $form = [], int $index = 1) {
     // Get all the allowed authorities.
     $user_people = $this->getFlowDataHandler()->getFormPermValue('user_people');
 
@@ -78,9 +79,10 @@ class ParSelectPersonForm extends ParFormPluginBase {
     $form['user_person'] = [
       '#type' => 'radios',
       '#title' => t('Choose which contact record you would like to update'),
+      '#title_tag' => 'h2',
       '#options' => $user_people,
-      '#default_value' => $this->getDefaultValuesByKey("user_person", $cardinality, NULL),
-      '#attributes' => ['class' => ['form-group']],
+      '#default_value' => $this->getDefaultValuesByKey("user_person", $index, NULL),
+      '#attributes' => ['class' => ['govuk-form-group']],
     ];
 
     return $form;
@@ -89,13 +91,14 @@ class ParSelectPersonForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
-  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+  #[\Override]
+  public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $person_id_key = $this->getElementKey('user_person');
     if (empty($form_state->getValue($person_id_key))) {
-      $id_key = $this->getElementKey('user_person', $cardinality, TRUE);
+      $id_key = $this->getElementKey('user_person', $index, TRUE);
       $form_state->setErrorByName($this->getElementName($person_id_key), $this->wrapErrorMessage('You must select a contact record.', $this->getElementId($id_key, $form)));
     }
 
-    return parent::validate($form, $form_state, $cardinality, $action);
+    parent::validate($form, $form_state, $index, $action);
   }
 }

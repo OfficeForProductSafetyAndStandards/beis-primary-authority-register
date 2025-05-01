@@ -1,32 +1,50 @@
 version: 2.1
 orbs:
-  aws-s3: circleci/aws-s3@1.0.0
+  aws-cli: circleci/aws-cli@4.1.1
+  aws-s3: circleci/aws-s3@4.0.0
   browser-tools: circleci/browser-tools@1.1.3
 
 references:
   defaults: &defaults
     docker:
-      - image: beispar/web:v3.4.1
-        name: web
+      - image: beispar/web:v5.2.0
         environment:
           APP_ENV: ci
           SENTRY_ENVIRONMENT: ci
 
-      - image: postgres:11.12
+      - image: cimg/postgres:13.4-postgis
         environment:
+          PGHOST: localhost
           POSTGRES_USER: par
           POSTGRES_PASSWORD: 123456
           POSTGRES_DB: par
+
+      - image: opensearchproject/opensearch:1.2.4
+        environment:
+          - cluster.name=opensearch-cluster
+          - node.name=beis-par-search
+          - discovery.seed_hosts=beis-par-search
+          - cluster.initial_master_nodes=beis-par-search
+          - DISABLE_INSTALL_DEMO_CONFIG=true # disables execution of install_demo_configuration.sh bundled with security plugin, which installs demo certificates and security configurations to OpenSearch
+          - DISABLE_SECURITY_PLUGIN=true # disables security plugin entirely in OpenSearch by setting plugins.security.disabled: true in opensearch.yml
+
     resource_class: large
 
     environment:
       TEST_REPORTS: ~/par/tests/reports
       S3_ARTIFACTS_BUCKET: beis-par-artifacts
+      SEED_DATABASE: db-dump-production-seed
       SANITISED_DATABASE: db-dump-production-sanitised
       UNSANITISED_DATABASE: db-dump-production-unsanitised
       SIMPLETEST_DB: pgsql://par:123456@localhost:5432/par
 
     working_directory: /var/www/html
+
+  aws_setup: &aws_setup
+    aws-cli/setup:
+      aws_access_key_id: S3_ACCESS_KEY
+      aws_secret_access_key: S3_SECRET_KEY
+      region: S3_REGION
 
   clean_working_directory: &clean_working_directory
     run:
@@ -39,17 +57,18 @@ references:
   restore_code: &restore_code
     restore_cache:
       keys:
-        - v10-repo-{{ .Branch }}-{{ .Revision }}
+        - v16-repo-{{ .Branch }}-{{ .Revision }}
 
   restore_dependencies: &restore_dependencies
     restore_cache:
       keys:
-        - v10-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
+        - v16-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
 
   restore_scaffold: &restore_scaffold
     run:
       name: "Install drupal scaffold files"
       command: |
+        composer install
         composer drupal:scaffold
 
   configure_webroot: &configure_webroot
@@ -63,34 +82,53 @@ references:
         echo 127.0.0.1 par.localhost | sudo tee -a /etc/hosts
         cat /etc/hosts
 
-  configure_theme: &configure_theme
-    run:
-      name: "Configure the appropriate theme."
-      command: |
-        echo "THEME_VERSION=<<parameters.theme_version>>" >> .env
-        echo "Enabled theme: $THEME_VERSION"
-      environment:
-        THEME_VERSION: <<parameters.theme_version>>
-
   import_database: &import_database
     run:
       name: "Import & set up the database"
       command: |
         cd web
         ../vendor/bin/drush @par.dev sql:cli < ../backups/${SANITISED_DATABASE}.sql
+        pg_restore --username= USERNAME --host=HOST --port= --clean --if-exists --no-owner --no-privileges --no-password
         ../drupal-update.sh
+
+  prepare_application: &prepare_application
+    run:
+      name: "Prepare the application"
+      command: |
+        cd web
+        ../vendor/bin/drush cron
+        ../scripts/cache-warmer.sh
+        ../scripts/re-index.sh partnership_index --rebuild
+
+  check_application: &check_application
+    run:
+      name: "Application checklist"
+      command: |
+        cd web
+        ../vendor/bin/drush --yes --quiet config-split:export dev_config
+        ../vendor/bin/drush --yes --quiet config-split:export test_config
+        ../vendor/bin/drush --no --diff config:import
+        ../vendor/bin/drush core-requirements --severity=2
+        curl -sD - -o /dev/null http://par.localhost
 
   build_assets: &build_assets
     run:
       name: "Make asset bundle"
       command: |
         cd /tmp/workspace
-        echo "{ \"build\" : \"${CIRCLE_BUILD_NUM}\", \"tag\":\"${CIRCLE_TAG}\", \"time\":\"$(date -u)\"}" > web/build_version.txt
-        echo "SENTRY_RELEASE=$CIRCLE_TAG" >> .env
+        echo "{ "build" : "${CIRCLE_BUILD_NUM}", "tag":"${CIRCLE_TAG}", "time":"$(date -u)"}" >> web/build_version.txt
         tar -zcf /tmp/$CIRCLE_TAG.tar.gz .
 
+  remove_assets: &remove_assets
+    run:
+      name: "Remove unwanted files from the asset bundle"
+      command: |
+        cd /tmp/workspace
+        rm -fr /backups/*.sql
+        rm -fr /tests
+
   workspace_root: &workspace_root
-    /tmp/workspace
+                    /tmp/workspace
 
   attach_workspace: &attach_workspace
     attach_workspace:
@@ -106,42 +144,33 @@ jobs:
           post:
             - git fetch --tags
       - run:
-          name: "Export environment variables"
-          command: |
-            echo "S3_REGION=$S3_REGION" >> .env
-            echo "S3_ACCESS_KEY=$S3_ACCESS_KEY" >> .env
-            echo "S3_SECRET_KEY=$S3_SECRET_KEY" >> .env
-            echo "S3_BUCKET_ARTIFACTS=$S3_BUCKET_ARTIFACTS" >> .env
-            echo "S3_BUCKET_PRIVATE=$S3_BUCKET_PRIVATE" >> .env
-            echo "S3_BUCKET_PUBLIC=$S3_BUCKET_PUBLIC" >> .env
-            echo "PAR_HASH_SALT=$PAR_HASH_SALT" >> .env
-            echo "APP_ENV=$APP_ENV" >> .env
-            echo "SENTRY_ENVIRONMENT=$APP_ENV" >> .env
-            echo "SENTRY_DSN=$SENTRY_DSN" >> .env
-            echo "SENTRY_DSN_PUBLIC=$SENTRY_DSN_PUBLIC" >> .env
-            echo "PAR_GOVUK_NOTIFY_KEY=$PAR_GOVUK_NOTIFY_KEY" >> .env
-            echo "PAR_GOVUK_NOTIFY_TEMPLATE=$PAR_GOVUK_NOTIFY_TEMPLATE" >> .env
-            echo "CLAMAV_HTTP_USER=$CLAMAV_HTTP_USER" >> .env
-            echo "CLAMAV_HTTP_PASS=$CLAMAV_HTTP_PASS" >> .env
-      - run:
           name: "Database preparation"
           command: |
             mkdir -p backups
+      - *aws_setup
       - aws-s3/copy:
+          arguments: |
+            --cache-control "max-age=0"
+          from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SEED_DATABASE}-latest.tar.gz"
+          to: backups/${SEED_DATABASE}-latest.tar.gz
+      - run:
+          name: "Unpack seed database"
+          command: cd backups && tar --no-same-owner -zxvf ${SEED_DATABASE}-latest.tar.gz
+      - aws-s3/copy:
+          arguments: |
+            --cache-control "max-age=0"
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}-latest.tar.gz"
           to: backups/${SANITISED_DATABASE}-latest.tar.gz
-          arguments: |
-            --region eu-west-1 \
-            --cache-control "max-age=0"
       - run:
-          name: "Unpacking database"
+          name: "Unpacking sanitised database"
           command: cd backups && tar --no-same-owner -zxvf ${SANITISED_DATABASE}-latest.tar.gz
       - save_cache:
-          key: v10-repo-{{ .Branch }}-{{ .Revision }}
+          key: v16-repo-{{ .Branch }}-{{ .Revision }}
           paths:
             - .
 
   compile_code:
+    circleci_ip_ranges: true
     <<: *defaults
     steps:
       - *clean_working_directory
@@ -153,18 +182,15 @@ jobs:
             echo "$(pwd)"
             composer install -v
             rm -f web/themes/contrib/govuk_theme/css/styles.css
-            npm run install-govuk-theme
-            npm run install-par-theme
-            npm install
-            npm run gulp
+            npm run frontend
       - run:
           name: "Installing tests"
           command: |
             echo "$(pwd)"
-            cd ./tests && rm -rf node_modules && npm install
+            echo "Test running has been decomissioned. See runbook for steps to run new test suite."
       - *restore_scaffold
       - save_cache:
-          key: v10-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
+          key: v16-dependencies-{{ checksum "composer.lock" }}-{{ checksum "package-lock.json" }}--{{ checksum "web/themes/custom/par_theme/par_theme.libraries.yml" }}--{{ checksum "web/themes/custom/par_theme/par_theme.info.yml" }}
           paths:
             - ./node_modules
             - ./vendor
@@ -185,118 +211,59 @@ jobs:
           paths:
             - .
 
+  release_notes:
+    <<: *defaults
+    parameters:
+    steps:
+      - *clean_working_directory
+      - *restore_code
+      - *restore_dependencies
+      - *restore_scaffold
+      - *configure_webroot
+      - run:
+          name: "Add workflow url to build summary"
+          command: |
+            cd /tmp/workspace
+            printf "https://app.circleci.com/pipelines/workflows/$CIRCLE_WORKFLOW_ID\n" >> build_summary.txt
+      - run:
+          name: "Write artifacts to github release"
+          command: |
+            cd /tmp/workspace
+            # This is a work in progress, see https://circleci.com/developer/orbs/orb/circleci/github-cli && https://github.com/cli/cli/issues/1997
+
   test_smoke:
     <<: *defaults
     parameters:
-      theme_version:
-        description: "The theme version to test."
-        default: v1
-        type: string
     steps:
       - *clean_working_directory
       - *restore_code
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - *configure_theme
-      - *import_database
-      - run:
-          name: "Run cron"
-          command: |
-            cd web
-            ../vendor/bin/drush cron
-            ../vendor/bin/drush cron
-            ../vendor/bin/drush cron
-      - run:
-          name: "Application checklist"
-          command: |
-            cd web
-            ../vendor/bin/drush --no config:import
-            ../vendor/bin/drush core-requirements --severity=2
-            ../vendor/bin/drush ev "print_r(\Drupal::service('flysystem_factory')->ensure());"
-            curl -sD - -o /dev/null http://par.localhost
-      - run:
-          name: "Install test dependencies"
-          command: |
-            cd tests
-            mkdir -p ./reports/phpunit
-            mkdir -p ./reports/nightwatch
-            npm install
-            npm run selenium-install
       - run:
           name: "Run unit tests"
           command: |
-            ./vendor/bin/paratest --processes=16 --no-coverage
-      - run:
-          name: "Run feature tests"
-          command: |
-            cd tests
-            echo "Running tests against theme: <<parameters.theme_version>>"
-            npm run ci-<<parameters.theme_version>> -- --tag <<parameters.theme_version>>-ci
-            npm run generate-report
+            ./vendor/bin/phpunit --no-coverage
       # Save artifacts
       - store_artifacts:
           path: /var/www/html/tests/reports
           destination: build
-      # Upload test results
-      - store_test_results:
-          path: /var/www/html/tests/reports
 
   test_full:
     <<: *defaults
-    parameters:
-      theme_version:
-        description: "The theme version to test."
-        default: v1
-        type: string
     steps:
       - *clean_working_directory
       - *restore_code
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - *configure_theme
-      - *import_database
-      - run:
-          name: "Run cron"
-          command: |
-            cd web
-            ../vendor/bin/drush cron
-      - run:
-          name: "Application checklist"
-          command: |
-            cd web
-            ../vendor/bin/drush --no config:import
-            ../vendor/bin/drush core-requirements --severity=2
-            curl -sD - -o /dev/null http://par.localhost
-      - run:
-          name: "Install test dependencies"
-          command: |
-            cd tests
-            mkdir -p ./reports/phpunit
-            mkdir -p ./reports/nightwatch
-            npm install
-            npm run selenium-install
-      - run:
-          name: "Run unit tests"
-          command: |
-            ./vendor/bin/paratest --processes=16 --no-coverage
-      - run:
-          name: "Run feature tests"
-          command: |
-            cd tests
-            echo "Running tests against theme: <<parameters.theme_version>>"
-            npm run ci-<<parameters.theme_version>> -- --tag <<parameters.theme_version>>-ci
-            npm run generate-report
       # Save artifacts
       - store_artifacts:
           path: /var/www/html/tests/reports
           destination: build
-      # Upload test results
-      - store_test_results:
-          path: /var/www/html/tests/reports
 
-  deploy_stage:
+  test_load:
+    circleci_ip_ranges: true
     <<: *defaults
     steps:
       - *clean_working_directory
@@ -305,17 +272,104 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - *import_database
       - *build_assets
+      - *remove_assets
+
       - run:
           name: "Examine asset bundle."
           command: |
             ls -lah /tmp/workspace
+      - run:
+          name: "Deploy to fresh load testing environment"
+          command: |
+            DEPLOY_ENV="test"
+            UNIQUE_NAME=$(echo $CIRCLE_WORKFLOW_ID | head -c 6)
+            printf "Deploying to test environment beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital\n"
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV-$UNIQUE_NAME
+      - run:
+          name: "Wait for site to be ready for testing"
+          command: |
+            DEPLOY_ENV="test"
+            UNIQUE_NAME=$(echo $CIRCLE_WORKFLOW_ID | head -c 6)
+            SITE_URL="https://beis-par-${DEPLOY_ENV}-${UNIQUE_NAME}.cloudapps.digital"
+            printf "Checking that $SITE_URL is ready to perform a load test\n"
+            curl -s -o /dev/null -w "Response status: %{http_code}\n" $SITE_URL
+            sleep 30;
+      - run:
+          name: "Run load test"
+          command: |
+            DEPLOY_ENV="test"
+            UNIQUE_NAME=$(echo $CIRCLE_WORKFLOW_ID | head -c 6)
+            printf "Running load test against beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital\n"
+            set +e
+            jmeter -n -t ./tests/nfr/jmeter/search_partnerships.jmx \
+                -Jurl=beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital \
+                -l ./tests/reports/jmeter/jmeter-log.jtl
+            /opt/apache-jmeter-5.5/bin/JMeterPluginsCMD.sh --generate-csv ./tests/reports/jmeter/aggregate-report.csv \
+                --input-jtl ./tests/reports/jmeter/jmeter-log.jtl \
+                --plugin-type AggregateReport
+      - run:
+          name: "Destroy the load testing environment."
+          command: |
+            DEPLOY_ENV="test"
+            UNIQUE_NAME=$(echo $CIRCLE_WORKFLOW_ID | head -c 6)
+            printf "Removing test environment beis-par-$DEPLOY_ENV-$UNIQUE_NAME.cloudapps.digital\n"
+            ./devops/cf/destroy.app.sh $DEPLOY_ENV-$UNIQUE_NAME
+      # Save artifacts
+      - store_artifacts:
+          path: /var/www/html/tests/reports
+          destination: build
+
+  deploy_migration:
+    circleci_ip_ranges: true
+    <<: *defaults
+    steps:
+      - *clean_working_directory
+      - *attach_workspace
+      - *restore_code
+      - *restore_dependencies
+      - *restore_scaffold
+      - *configure_webroot
+      - *build_assets
+      - *remove_assets
+      - run:
+          name: "Examine asset bundle."
+          command: |
+            ls -lah /tmp/workspace
+      - *aws_setup
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
           to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
           arguments: |
-            --region eu-west-1 \
+            --cache-control "max-age=0"
+      - run:
+          name: "Deploy to migration environment"
+          command: |
+            DEPLOY_ENV="migration"
+            printf "$DEPLOY_ENV\n"
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
+
+  deploy_stage:
+    circleci_ip_ranges: true
+    <<: *defaults
+    steps:
+      - *clean_working_directory
+      - *attach_workspace
+      - *restore_code
+      - *restore_dependencies
+      - *restore_scaffold
+      - *configure_webroot
+      - *build_assets
+      - *remove_assets
+      - run:
+          name: "Examine asset bundle."
+          command: |
+            ls -lah /tmp/workspace
+      - *aws_setup
+      - aws-s3/copy:
+          from: /tmp/${CIRCLE_TAG}.tar.gz
+          to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
+          arguments: |
             --cache-control "max-age=0"
       - run:
           name: "Deploy to staging environment"
@@ -325,6 +379,7 @@ jobs:
             ./devops/cf/push.local.sh -T $CIRCLE_TAG -r -b /var/www/html/backups/${SANITISED_DATABASE}.sql -d /tmp/workspace $DEPLOY_ENV
 
   deploy_prod:
+    circleci_ip_ranges: true
     <<: *defaults
     steps:
       - *clean_working_directory
@@ -333,7 +388,7 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - *import_database
+      - *remove_assets
       - run:
           name: "Remove additional sensitive assets"
           command: |
@@ -349,7 +404,7 @@ jobs:
           command: |
             DEPLOY_ENV="production"
             printf "$DEPLOY_ENV\n"
-            ./devops/cf/push.local.sh -T $CIRCLE_TAG -u $GOVUK_CF_USER -p $GOVUK_CF_PWD -x -d /tmp/workspace -i 4 $DEPLOY_ENV
+            ./devops/cf/push.local.sh -T $CIRCLE_TAG -u $DEV_GOVUK_CF_USER -p $DEV_GOVUK_CF_PWD -d /tmp/workspace -i 4 $DEPLOY_ENV
 
   deploy_test:
     <<: *defaults
@@ -360,16 +415,16 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
-      - *import_database
       - *build_assets
+      - *remove_assets
       - run:
           name: "Examine asset bundle."
           command: |
             ls -lah /tmp/workspace
+      - *aws_setup
       - aws-s3/copy:
           from: /tmp/${CIRCLE_TAG}.tar.gz
           to: "s3://${S3_ARTIFACTS_BUCKET}/builds/${CIRCLE_TAG}.tar.gz"
-          arguments: '--region eu-west-1'
       - run:
           name: "Deploy to test environment"
           command: |
@@ -385,16 +440,11 @@ jobs:
       - run:
           name: "Backup production database"
           command: |
-            ./scripts/db-remote-backup.sh production -d "/tmp/backups" -u $PROD_GOVUK_CF_USER -p $PROD_GOVUK_CF_PWD
-      - aws-s3/copy:
-          from: "/tmp/backups/"
-          to: "s3://${S3_ARTIFACTS_BUCKET}/backups/"
-          arguments: |
-            --region eu-west-1 \
-            --cache-control "max-age=0" \
-            --recursive \
-            --exclude="*" \
-            --include "db-dump-*.tar.gz"
+            ./scripts/db-remote-backup.sh production -d "/tmp/backups" -u $DEV_GOVUK_CF_USER -p $DEV_GOVUK_CF_PWD
+      - *aws_setup
+      - run: # https://discuss.circleci.com/t/aws-s3-cp-errors-on-exclude-argument/50086
+          name: "Backup database to S3"
+          command: aws s3 cp /tmp/backups/ s3://${S3_ARTIFACTS_BUCKET}/backups/ --recursive --exclude "*" --include "db-dump-*.tar.gz"
 
   sanitise_database:
     <<: *defaults
@@ -404,11 +454,11 @@ jobs:
       - *restore_dependencies
       - *restore_scaffold
       - *configure_webroot
+      - *aws_setup
       - aws-s3/copy:
           from: "s3://${S3_ARTIFACTS_BUCKET}/backups/${UNSANITISED_DATABASE}-latest.tar.gz"
           to: "backups/${UNSANITISED_DATABASE}-latest.tar.gz"
           arguments: |
-            --region eu-west-1 \
             --cache-control "max-age=0"
       - run:
           name: "Unpacking database"
@@ -418,64 +468,30 @@ jobs:
           command: cd backups && ls -lah ${UNSANITISED_DATABASE}.sql
       - run:
           name: "Importing database"
-          command: cd web && sed -e '/-- do not execute if not member of manager role/,+4d' < ../backups/${UNSANITISED_DATABASE}.sql | ../vendor/bin/drush @par.dev sql:cli
-          environment:
-            APP_ENV: ci-sanitise
-      - run:
-          name: "Setup application"
-          command: ./drupal-update.sh
-          environment:
-            APP_ENV: ci-sanitise
-      - run:
-          name: "Run cron"
-          command: |
-            cd web
-            ../vendor/bin/drush cron
-          environment:
-            APP_ENV: ci-sanitise
-      - run:
-          name: "Application checklist"
-          command: |
-            cd web
-            ../vendor/bin/drush --no config:import
-            ../vendor/bin/drush core-requirements --severity=2
-            curl -sD - -o /dev/null http://par.localhost
-          environment:
-            APP_ENV: ci-sanitise
-      - run:
-          name: "Un-install temporary data @temp"
-          command: |
-            cd web
-            ../vendor/bin/drush pm-uninstall par_data_test -y
-          environment:
-            APP_ENV: ci-sanitise
-      - run:
-          name: "Un-install dev only modules"
-          command: |
-            cd web
-            ../vendor/bin/drush pm-uninstall webprofiler -y
-            ../vendor/bin/drush pm-uninstall maillog -y
-            ../vendor/bin/drush pm-uninstall dblog -y
+          command: cd web && sed -e '/-- do not execute if not member of manager role/,+4d' < ../backups/${UNSANITISED_DATABASE}.sql | ../vendor/bin/drush @par.paas sql:cli
           environment:
             APP_ENV: ci-sanitise
       - run:
           name: "Sanitise database"
           command: |
             cd web
-            ../vendor/bin/drush @par.paas sql:sanitize -y
+            ../vendor/bin/drush @par.paas sql:sanitize -y && ../vendor/bin/drush spp
           environment:
             APP_ENV: ci-sanitise
       - run:
-          name: "Backup database"
-          command: ./scripts/db-backup.sh production -s -d "../backups" -a '@par.dev'
+          name: "Backup sanitised database"
+          command: ./scripts/db-backup.sh production -s -d "/tmp/backups" -a '@par.dev'
           environment:
             APP_ENV: ci-sanitise
-      - aws-s3/copy:
-          from: "backups/${SANITISED_DATABASE}-latest.tar.gz"
-          to: "s3://${S3_ARTIFACTS_BUCKET}/backups/${SANITISED_DATABASE}-latest.tar.gz"
-          arguments: |
-            --region eu-west-1 \
-            --cache-control "max-age=0"
+      - run:
+          name: "Backup seed database"
+          command: ./scripts/db-backup.sh production -z -d "/tmp/backups" -a '@par.seed'
+          environment:
+            APP_ENV: ci-sanitise
+      - run: # https://discuss.circleci.com/t/aws-s3-cp-errors-on-exclude-argument/50086
+          name: "Backup database to S3"
+          command: aws s3 cp /tmp/backups/ s3://${S3_ARTIFACTS_BUCKET}/backups/ --recursive --exclude "*" --include "db-dump-*.tar.gz"
+
 
 workflows:
   version: 2.1
@@ -505,6 +521,23 @@ workflows:
               only: /^[a-zA-Z0-9]+.*/
             branches:
               ignore: /.*/
+      - hold_migration:
+          type: approval
+          requires:
+            - test_full
+          filters:
+            tags:
+              only: /^m.*/
+            branches:
+              ignore: /.*/
+      - deploy_migration:
+          requires:
+            - hold_migration
+          filters:
+            tags:
+              only: /^m.*/
+            branches:
+              ignore: /.*/
       - hold_stage:
           type: approval
           requires:
@@ -517,6 +550,23 @@ workflows:
       - deploy_stage:
           requires:
             - hold_stage
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - hold_load_test:
+          type: approval
+          requires:
+            - compile_code
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - test_load:
+          requires:
+            - hold_load_test
           filters:
             tags:
               only: /^v.*/

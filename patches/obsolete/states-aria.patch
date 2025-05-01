@@ -1,0 +1,16 @@
+diff --git a/core/misc/states.js b/core/misc/states.js
+index 15987ac..80cbadd 100644
+--- a/core/misc/states.js
++++ b/core/misc/states.js
+@@ -318,7 +318,10 @@
+   });
+   $document.on('state:visible', function (e) {
+     if (e.trigger) {
+-      $(e.target).closest('.js-form-item, .js-form-submit, .js-form-wrapper').toggle(e.value);
++      $(e.target).attr('aria-hidden','true').closest('.js-form-item, .js-form-submit, .js-form-wrapper').toggle(e.value);
++      if (e.value) {
++        $(e.target).attr('aria-hidden','false')
++      }
+     }
+   });
+   $document.on('state:checked', function (e) {

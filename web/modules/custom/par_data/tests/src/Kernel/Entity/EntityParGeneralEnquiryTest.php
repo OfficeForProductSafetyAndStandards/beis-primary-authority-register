@@ -2,11 +2,7 @@
 
 namespace Drupal\Tests\par_data\Kernel\Entity;
 
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataGeneralEnquiry;
-use Drupal\par_data\Entity\ParDataGeneralEnquiryType;
-use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 
 /**
@@ -22,7 +18,7 @@ class EntityParGeneralEnquiryTest extends ParDataTestBase {
   public function testEntityValidate() {
     $entity = ParDataGeneralEnquiry::create($this->getGeneralEnquiryValues());
     $violations = $entity->validate();
-    $this->assertEqual(count($violations->getFieldNames()), 0, 'No violations when validating a default Par General Enquiry entity.');
+    $this->assertEquals(0, count($violations->getFieldNames()), 'No violations when validating a default Par General Enquiry entity.');
   }
 
   /**
@@ -41,14 +37,26 @@ class EntityParGeneralEnquiryTest extends ParDataTestBase {
    * Test to validate an authority entity.
    */
   public function testGeneralEnquiryRequiredFields() {
+    // List of fields that have the addConstraint() applied.
     $values = [
+      // @see ParDataEntity::baseFieldDefinitions()
+      'archive_reason' => '',
+      // @see ParDataGeneralEnquiry::baseFieldDefinitions()
       'request_date' => '',
       'notes' => '',
+      'primary_authority_notes' => '',
     ];
 
     $entity = ParDataGeneralEnquiry::create($values + $this->getGeneralEnquiryValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
-    $this->assertEqual(count($violations->getFieldNames()), count($values), t('Field values are required for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
+    $this->assertEquals(
+      count($values),
+      count($violations->getFieldNames()),
+      t(
+        'Violations are reported for fields @fields.',
+        ['@fields' => implode(', ', $violations->getFieldNames())]
+      )->render()
+    );
   }
 
   /**
@@ -58,4 +66,5 @@ class EntityParGeneralEnquiryTest extends ParDataTestBase {
     $entity = ParDataGeneralEnquiry::create($this->getGeneralEnquiryValues());
     $this->assertTrue($entity->save() === SAVED_NEW, 'Par General Enquiry entity saved correctly.');
   }
+
 }

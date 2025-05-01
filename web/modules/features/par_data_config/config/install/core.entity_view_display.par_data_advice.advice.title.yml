@@ -13,36 +13,44 @@ bundle: advice
 mode: title
 content:
   advice_status:
+    type: string
     label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
     weight: 3
     region: content
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
   advice_title:
+    type: string
     label: hidden
-    weight: 0
-    region: content
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
-  attachment:
-    label: hidden
     weight: 0
     region: content
+  attachment:
+    type: file_default
+    label: hidden
     settings:
       use_description_as_link_text: true
     third_party_settings: {  }
-    type: file_default
+    weight: 0
+    region: content
   document:
-    weight: 4
+    type: file_default
     label: above
     settings:
       use_description_as_link_text: true
     third_party_settings: {  }
-    type: file_default
+    weight: 4
+    region: content
+  par_label:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
     region: content
 hidden:
   advice_type: true
@@ -52,8 +60,10 @@ hidden:
   issue_date: true
   name: true
   notes: true
+  par_status: true
   regulatory_function: true
   revocation_reason: true
+  search_api_excerpt: true
   user_id: true
   visible_authority: true
   visible_business: true

@@ -39,6 +39,7 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     return 'Are you sure you want to revoke this inspection plan?';
   }
@@ -54,23 +55,32 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
     if ($par_data_partnership && $par_data_partnership->inProgress()) {
       $form['inspection_plan_info'] = [
-        '#type' => 'markup',
-        '#title' => $this->t('Revoke denied'),
-        '#markup' => $this->t('This inspection plan document cannot be revoked because the partnership it is awaiting approval or there are enforcement notices currently awaiting review. Please try again later.'),
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'h2',
+          '#value' => $this->t('Revoke denied'),
+        ],
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $this->t('This inspection plan document cannot be revoked because the partnership it is awaiting approval or there are enforcement notices currently awaiting review. Please try again later.'),
+        ],
       ];
 
       return parent::buildForm($form, $form_state);
     }
 
     $form['inspection_plan_info'] = [
-      '#type' => 'fieldset',
+      '#type' => 'container',
       '#title' => $this->t('Revoke the inspection plan'),
-      '#attributes' => ['class' => 'form-group'],
+      '#title_tag' => 'h2',
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
 
     $form['inspection_plan_info']['inspection_plan_text'] = [
@@ -86,6 +96,7 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
       '#type' => 'textarea',
       '#rows' => 5,
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues(ParDataEntity::REVOKE_REASON_FIELD, FALSE),
+      '#required' => TRUE,
     ];
 
     return parent::buildForm($form, $form_state);
@@ -94,6 +105,7 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
@@ -107,6 +119,7 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

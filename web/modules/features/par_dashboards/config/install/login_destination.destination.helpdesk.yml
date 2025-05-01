@@ -12,5 +12,7 @@ pages: ''
 roles:
   administrator: administrator
   par_helpdesk: par_helpdesk
+  senior_administration_officer: senior_administration_officer
+  secretary_state: secretary_state
 weight: -10
 enabled: true

@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -17,9 +18,10 @@ class ParAuthorityNameForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  protected $entityMapping = [
+  protected array $entityMapping = [
     ['name', 'par_data_authority', 'authority_name', NULL, NULL, 0, [
-      'You must fill in the missing information.' => "You must enter the authority's name."
+      'You must fill in the missing information.' => "You must enter the authority's name.",
+      'This value should not be null.' => "You must enter the authority's name.",
     ]],
   ];
 
@@ -27,18 +29,20 @@ class ParAuthorityNameForm extends ParFormPluginBase {
   /**
    * Load the data for this form.
    */
-  public function loadData($cardinality = 1) {
+  #[\Override]
+  public function loadData(int $index = 1): void {
     if ($par_data_authority = $this->getFlowDataHandler()->getParameter('par_data_authority')) {
       $this->getFlowDataHandler()->setFormPermValue('name', $par_data_authority->get('authority_name')->getString());
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  #[\Override]
+  public function getElements(array $form = [], int $index = 1) {
 
     $form['name'] = [
       '#type' => 'textfield',

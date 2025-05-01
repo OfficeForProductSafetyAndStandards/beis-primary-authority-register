@@ -32,6 +32,9 @@ default:
   archived:
     -
       value: false
+  par_status:
+    -
+      value: active
   sic_code:
     -
       value: '111111'

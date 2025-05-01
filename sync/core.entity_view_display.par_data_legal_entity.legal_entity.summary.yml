@@ -15,32 +15,37 @@ bundle: legal_entity
 mode: summary
 content:
   legal_entity_type:
-    type: par_list_formatter
+    type: par_registered_organisations_formatter
+    label: hidden
+    settings:
+      display_original_value: '1'
+    third_party_settings: {  }
     weight: 1
     region: content
-    label: hidden
-    settings:
-      display_original_value: false
-    third_party_settings: {  }
   registered_name:
     type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
     weight: 0
     region: content
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
   registered_number:
     type: string
-    weight: 2
-    region: content
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    weight: 2
+    region: content
 hidden:
   archive_reason: true
   deleted_reason: true
   name: true
+  par_label: true
+  par_status: true
+  par_status_date: true
+  registry: true
   revocation_reason: true
+  search_api_excerpt: true
   user_id: true

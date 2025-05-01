@@ -1,0 +1,558 @@
+uuid: 5f2feda3-9189-4495-b31c-02eea8e39a92
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.par_data_advice.field_regulatory_function
+    - field.storage.par_data_coordinated_business.field_legal_entity
+    - field.storage.par_data_coordinated_business.field_organisation
+    - field.storage.par_data_organisation.field_legal_entity
+    - field.storage.par_data_partnership.field_advice
+    - field.storage.par_data_partnership.field_authority
+    - field.storage.par_data_partnership.field_coordinated_business
+    - field.storage.par_data_partnership.field_inspection_plan
+    - field.storage.par_data_partnership.field_organisation
+    - field.storage.par_data_partnership.field_partnership_legal_entity
+    - field.storage.par_data_partnership.field_regulatory_function
+    - field.storage.par_data_partnership_le.field_legal_entity
+    - search_api.server.opensearch
+  module:
+    - file
+    - par_data
+    - search_api_opensearch
+id: partnership_index
+name: 'Partnership Index'
+description: ''
+read_only: false
+field_settings:
+  about_partnership:
+    label: 'About the Partnership'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: about_partnership
+    type: text
+    boost: 2.0
+    dependencies:
+      module:
+        - par_data
+  advice_document_uri:
+    label: 'Advice » PAR Advice » Document » File » URI'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_advice:entity:document:entity:uri'
+    type: string
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_advice
+      module:
+        - file
+        - par_data
+  advice_regulatory_function:
+    label: 'Advice » PAR Advice » Regulatory Function'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_advice:entity:field_regulatory_function'
+    type: integer
+    dependencies:
+      config:
+        - field.storage.par_data_advice.field_regulatory_function
+        - field.storage.par_data_partnership.field_advice
+      module:
+        - par_data
+  advice_status:
+    label: 'Advice » PAR Advice » Status'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_advice:entity:par_status'
+    type: string
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_advice
+      module:
+        - par_data
+  advice_summary:
+    label: 'Advice » Advice Summary'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_advice:entity:notes'
+    type: text
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_advice
+      module:
+        - par_data
+  advice_title:
+    label: 'Advice » Advice Title'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_advice:entity:advice_title'
+    type: text
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_advice
+      module:
+        - par_data
+  advice_type:
+    label: 'Advice » PAR Advice » Advice Type'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_advice:entity:advice_type'
+    type: string
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_advice
+      module:
+        - par_data
+  approved_date:
+    label: 'Partnership Approved Date'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: approved_date
+    type: date
+    dependencies:
+      module:
+        - par_data
+  authority_name:
+    label: 'Authority » Authority Name'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_authority:entity:authority_name'
+    type: text
+    boost: 8.0
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_authority
+      module:
+        - par_data
+  authority_terms:
+    label: 'Authority Terms and Conditions'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: terms_authority_agreed
+    type: boolean
+    dependencies:
+      module:
+        - par_data
+  changed:
+    label: Changed
+    datasource_id: 'entity:par_data_partnership'
+    property_path: changed
+    type: date
+    dependencies:
+      module:
+        - par_data
+  comments:
+    label: 'Organisation » About the organisation'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_organisation:entity:comments'
+    type: text
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_organisation
+      module:
+        - par_data
+  created:
+    label: Created
+    datasource_id: 'entity:par_data_partnership'
+    property_path: created
+    type: date
+    dependencies:
+      module:
+        - par_data
+  function_name:
+    label: 'Regulatory Function » Regulatory Function Name'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_regulatory_function:entity:function_name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_regulatory_function
+      module:
+        - par_data
+  inspection_plan_end_date:
+    label: 'Inspection Plan » PAR Inspection Plan » Valid Date'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_inspection_plan:entity:valid_date'
+    type: date
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_inspection_plan
+      module:
+        - par_data
+  inspection_plan_status:
+    label: 'Inspection Plan » PAR Inspection Plan » Status'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_inspection_plan:entity:par_status'
+    type: string
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_inspection_plan
+      module:
+        - par_data
+  inspection_plan_summary:
+    label: 'Inspection Plan » PAR Inspection Plan » Inspection plan summary'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_inspection_plan:entity:summary'
+    type: text
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_inspection_plan
+      module:
+        - par_data
+  inspection_plan_title:
+    label: 'Inspection Plan » PAR Inspection Plan » Inspection plan title'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_inspection_plan:entity:title'
+    type: text
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_inspection_plan
+      module:
+        - par_data
+  legal_entity_revoked:
+    label: 'Partnership Legal Entity » PAR Partnership Legal Entity » Revoked'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_partnership_legal_entity:entity:revoked'
+    type: boolean
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_partnership_legal_entity
+      module:
+        - par_data
+  legal_entity_status:
+    label: 'Partnership Legal Entity » PAR Partnership Legal Entity » Status'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_partnership_legal_entity:entity:par_status'
+    type: string
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_partnership_legal_entity
+      module:
+        - par_data
+  legal_entity_type:
+    label: 'Partnership Legal Entity » PAR Partnership Legal Entity » Legal Entity » PAR Legal Entity » Legal Entity Type'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_partnership_legal_entity:entity:field_legal_entity:entity:legal_entity_type'
+    type: string
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_partnership_legal_entity
+        - field.storage.par_data_partnership_le.field_legal_entity
+      module:
+        - par_data
+  member_ceased:
+    label: 'Coordinated Member » Revoked'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_coordinated_business:entity:revoked'
+    type: boolean
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_coordinated_business
+      module:
+        - par_data
+  member_display:
+    label: 'Member List Display'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: member_display
+    type: string
+    dependencies:
+      module:
+        - par_data
+  member_legal_entity_name:
+    label: 'Coordinated Member » Legal Entity » Registered Name'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_coordinated_business:entity:field_legal_entity:entity:registered_name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.par_data_coordinated_business.field_legal_entity
+        - field.storage.par_data_partnership.field_coordinated_business
+      module:
+        - par_data
+  member_legal_entity_number:
+    label: 'Coordinated Member » Legal Entity » Registered Number'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_coordinated_business:entity:field_legal_entity:entity:registered_number'
+    type: string
+    dependencies:
+      config:
+        - field.storage.par_data_coordinated_business.field_legal_entity
+        - field.storage.par_data_partnership.field_coordinated_business
+      module:
+        - par_data
+  member_link:
+    label: 'Member List Link'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: member_link
+    type: string
+    dependencies:
+      module:
+        - par_data
+  member_list_updated:
+    label: 'Member List Updated'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: member_list_updated
+    type: date
+    dependencies:
+      module:
+        - par_data
+  member_number:
+    label: 'Number of Members'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: member_count
+    type: integer
+    dependencies:
+      module:
+        - par_data
+  member_organisation_about:
+    label: 'Coordinated Member » Organisation » About the organisation'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_coordinated_business:entity:field_organisation:entity:comments'
+    type: text
+    dependencies:
+      config:
+        - field.storage.par_data_coordinated_business.field_organisation
+        - field.storage.par_data_partnership.field_coordinated_business
+      module:
+        - par_data
+  member_organisation_name:
+    label: 'Coordinated Member » Organisation » Organisation Name'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_coordinated_business:entity:field_organisation:entity:organisation_name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.par_data_coordinated_business.field_organisation
+        - field.storage.par_data_partnership.field_coordinated_business
+      module:
+        - par_data
+  member_trading_name:
+    label: 'Coordinated Member » Organisation » Trading Name'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_coordinated_business:entity:field_organisation:entity:trading_name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.par_data_coordinated_business.field_organisation
+        - field.storage.par_data_partnership.field_coordinated_business
+      module:
+        - par_data
+  organisation_name:
+    label: 'Organisation » Organisation Name'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_organisation:entity:organisation_name'
+    type: text
+    boost: 8.0
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_organisation
+      module:
+        - par_data
+  organisation_registered_name:
+    label: 'Organisation » Legal Entity » Registered Name'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_organisation:entity:field_legal_entity:entity:registered_name'
+    type: text
+    dependencies:
+      config:
+        - field.storage.par_data_organisation.field_legal_entity
+        - field.storage.par_data_partnership.field_organisation
+      module:
+        - par_data
+  organisation_registered_number:
+    label: 'Organisation » Legal Entity » Registered Number'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_organisation:entity:field_legal_entity:entity:registered_number'
+    type: string
+    boost: 2.0
+    dependencies:
+      config:
+        - field.storage.par_data_organisation.field_legal_entity
+        - field.storage.par_data_partnership.field_organisation
+      module:
+        - par_data
+  organisation_terms:
+    label: 'Organisation Terms and Conditions'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: terms_organisation_agreed
+    type: boolean
+    dependencies:
+      module:
+        - par_data
+  partnership_status:
+    label: 'Partnership Status'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: par_status
+    type: string
+    dependencies:
+      module:
+        - par_data
+  partnership_status_date:
+    label: 'Partnership Status Last Updated'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: par_status_date
+    type: date
+    dependencies:
+      module:
+        - par_data
+  partnership_type:
+    label: 'Partnership Type'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: partnership_type
+    type: string
+    dependencies:
+      module:
+        - par_data
+  registered_name:
+    label: 'Partnership Legal Entity » PAR Partnership Legal Entity » Legal Entity » PAR Legal Entity » Registered Name'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_partnership_legal_entity:entity:field_legal_entity:entity:registered_name'
+    type: text
+    boost: 3.0
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_partnership_legal_entity
+        - field.storage.par_data_partnership_le.field_legal_entity
+      module:
+        - par_data
+  registered_number:
+    label: 'Partnership Legal Entity » PAR Partnership Legal Entity » Legal Entity » PAR Legal Entity » Registered Number'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_partnership_legal_entity:entity:field_legal_entity:entity:registered_number'
+    type: string
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_partnership_legal_entity
+        - field.storage.par_data_partnership_le.field_legal_entity
+      module:
+        - par_data
+  regulatory_function:
+    label: 'Regulatory Function'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: field_regulatory_function
+    type: integer
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_regulatory_function
+  revocation_date:
+    label: 'Partnership Recovation Date'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: revocation_date
+    type: date
+    dependencies:
+      module:
+        - par_data
+  revoked:
+    label: 'Partnership Revoked'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: revoked
+    type: boolean
+    dependencies:
+      module:
+        - par_data
+  trading_name:
+    label: 'Organisation » Trading Name'
+    datasource_id: 'entity:par_data_partnership'
+    property_path: 'field_organisation:entity:trading_name'
+    type: text
+    boost: 3.0
+    dependencies:
+      config:
+        - field.storage.par_data_partnership.field_organisation
+      module:
+        - par_data
+datasource_settings:
+  'entity:par_data_partnership':
+    bundles:
+      default: true
+      selected: {  }
+    languages:
+      default: true
+      selected: {  }
+processor_settings:
+  add_url: {  }
+  aggregated_field: {  }
+  entity_type: {  }
+  highlight:
+    weights:
+      postprocess_query: 0
+    prefix: '<strong>'
+    suffix: '</strong>'
+    excerpt: true
+    excerpt_always: true
+    excerpt_length: 256
+    exclude_fields:
+      - authority_name
+      - organisation_name
+    highlight: always
+    highlight_partial: false
+  ignore_character:
+    weights:
+      preprocess_index: -10
+      preprocess_query: -10
+    all_fields: false
+    fields:
+      - advice_title
+      - authority_name
+      - function_name
+      - member_legal_entity_name
+      - member_organisation_name
+      - member_trading_name
+      - organisation_name
+      - organisation_registered_name
+      - trading_name
+    ignorable: "['¿¡!?,.:;]"
+    ignorable_classes:
+      - Pc
+      - Pd
+      - Pe
+      - Pf
+      - Pi
+      - Po
+      - Ps
+  ignorecase:
+    weights:
+      preprocess_index: -20
+      preprocess_query: -20
+    all_fields: false
+    fields:
+      - about_partnership
+      - advice_summary
+      - advice_title
+      - authority_name
+      - comments
+      - function_name
+      - member_legal_entity_name
+      - member_legal_entity_number
+      - member_organisation_about
+      - member_organisation_name
+      - member_trading_name
+      - organisation_name
+      - organisation_registered_name
+      - organisation_registered_number
+      - partnership_status
+      - partnership_type
+      - trading_name
+  language_with_fallback: {  }
+  rendered_item: {  }
+  tokenizer:
+    weights:
+      preprocess_index: -6
+      preprocess_query: -6
+    all_fields: false
+    fields:
+      - about_partnership
+      - advice_summary
+      - advice_title
+      - authority_name
+      - comments
+      - function_name
+      - member_legal_entity_name
+      - member_organisation_about
+      - member_organisation_name
+      - member_trading_name
+      - organisation_name
+      - organisation_registered_name
+      - trading_name
+    spaces: ''
+    ignored: ._-
+    overlap_cjk: 1
+    minimum_word_size: '3'
+tracker_settings:
+  default:
+    indexing_order: fifo
+options:
+  cron_limit: 50
+  index_directly: true
+  track_changes_in_references: true
+server: opensearch

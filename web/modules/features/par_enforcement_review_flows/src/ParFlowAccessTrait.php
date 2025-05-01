@@ -20,14 +20,14 @@ trait ParFlowAccessTrait {
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataEnforcementNotice $par_data_enforcement_notice = NULL): AccessResult {
     try {
       // Get a new flow negotiator that points the the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException $e) {
+    } catch (ParFlowException) {
 
     }
-    
+
     // Steps 1 & 2 shouldn't be accessed if the enforcement notice has already been approved.
     if (!$par_data_enforcement_notice->inProgress() && $access_route_negotiator->getFlow()->getCurrentStep() <= 2) {
       // Set an error if this action has already been reviewed.

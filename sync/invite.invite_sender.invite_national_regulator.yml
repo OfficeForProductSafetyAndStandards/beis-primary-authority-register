@@ -1,0 +1,6 @@
+uuid: e2ce474c-f9f3-4b32-8fe7-55f778ecc365
+langcode: en
+status: true
+dependencies: {  }
+id: invite_national_regulator
+sending_methods: invite_by_email||0

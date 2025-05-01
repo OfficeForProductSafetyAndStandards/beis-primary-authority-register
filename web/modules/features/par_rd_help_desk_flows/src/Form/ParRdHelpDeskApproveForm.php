@@ -19,6 +19,7 @@ class ParRdHelpDeskApproveForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     return "Confirmation | Partnership is approved";
   }
@@ -34,13 +35,15 @@ class ParRdHelpDeskApproveForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
     $form['partnership_info'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('The following partnership has been approved'),
-      '#attributes' => ['class' => 'form-group'],
+      '#title_tag' => 'h2',
+      '#attributes' => ['class' => 'govuk-form-group'],
       '#collapsible' => FALSE,
       '#collapsed' => FALSE,
     ];
@@ -61,6 +64,7 @@ class ParRdHelpDeskApproveForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
   }

@@ -2,6 +2,7 @@
 
 namespace Drupal\par_data\Access;
 
+use Drupal\user\Entity\User;
 use Drupal\Core\Entity\EntityAccessControlHandler;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResult;
@@ -18,6 +19,7 @@ class ParDataAccessControlHandler extends EntityAccessControlHandler {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function access(EntityInterface $entity, $operation, AccountInterface $account = NULL, $return_as_object = FALSE) {
     // @see PAR-1462 - Do not allow access to any entities that are deleted.
     if ($entity->isDeleted()) {
@@ -42,6 +44,7 @@ class ParDataAccessControlHandler extends EntityAccessControlHandler {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {
     // @see PAR-1462 - Do not allow access to any entities that are deleted.
     if ($entity->isDeleted()) {
@@ -54,7 +57,7 @@ class ParDataAccessControlHandler extends EntityAccessControlHandler {
     // All access checks are done using the relationship between a user account
     // and a par person entity, so we need all the user's par people.
     $par_data_manager = \Drupal::service('par_data.manager');
-    $user_account = \Drupal\user\Entity\User::load($account->id());
+    $user_account = User::load($account->id());
     $is_member = $par_data_manager->isMember($entity, $user_account);
 
     switch ($operation) {
@@ -97,6 +100,7 @@ class ParDataAccessControlHandler extends EntityAccessControlHandler {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL) {
     return AccessResult::allowedIfHasPermission($account, 'add ' . $this->entityTypeId . ' entities');
   }
@@ -104,6 +108,7 @@ class ParDataAccessControlHandler extends EntityAccessControlHandler {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function createAccess($entity_bundle = NULL, AccountInterface $account = NULL, array $context = [], $return_as_object = FALSE) {
     $account = $this->prepareUser($account);
 

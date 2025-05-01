@@ -37,6 +37,7 @@ class ParMemberCsvValidationForm extends ParBaseForm {
    *
    * @return \Drupal\unique_pager\UniquePagerService
    */
+  #[\Override]
   public static function getUniquePager() {
     return \Drupal::service('unique_pager.unique_pager_service');
   }
@@ -44,6 +45,7 @@ class ParMemberCsvValidationForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
     // Load csv data from temporary data storage and display any errors or move on.
     $cid = $this->getFlowNegotiator()->getFormKey('par_member_upload_csv');
@@ -63,9 +65,10 @@ class ParMemberCsvValidationForm extends ParBaseForm {
     $form['info'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('There were some errors with the CSV file.'),
-      '#description' => $this->t('You can read more about preparing a CSV file on the %guidance. If you need assistance please contact pa@beis.gov.uk', ['%guidance' => $guidance_link->toString()]),
+      '#title_tag' => 'h2',
+      '#description' => $this->t('You can read more about preparing a CSV file on the %guidance. If you need assistance please contact pa@businessandtrade.gov.uk', ['%guidance' => $guidance_link->toString()]),
       '#attributes' => [
-        'class' => ['form-group'],
+        'class' => ['govuk-form-group'],
       ]
     ];
 
@@ -87,8 +90,8 @@ class ParMemberCsvValidationForm extends ParBaseForm {
     }
 
     // Initialize pager and get current page.
-    $pager = $this->getUniquePager()->getPager('csv_members_validation');
-    $current_pager = $this->getUniquePager()->getPagerManager()->createPager(count($rows), 10, $pager);
+    $pager = static::getUniquePager()->getPager('csv_members_validation');
+    $current_pager = static::getUniquePager()->getPagerManager()->createPager(count($rows), 10, $pager);
 
     // Split the items up into chunks:
     $chunks = array_chunk($rows, 10);
@@ -96,11 +99,9 @@ class ParMemberCsvValidationForm extends ParBaseForm {
     // Display error message if violations are found in the uploaded csv file.
     $form['error_list'] = [
       '#type' => 'fieldset',
-      '#collapsible' => FALSE,
-      '#collapsed' => FALSE,
       'table' => [
         '#theme' => 'table',
-        '#attributes' => ['class' => ['form-group']],
+        '#attributes' => ['class' => ['govuk-form-group']],
         '#title' => 'CSV Errors',
         '#weight' => 0,
         '#header' => [
@@ -128,21 +129,20 @@ class ParMemberCsvValidationForm extends ParBaseForm {
       }
     }
 
-    $form = parent::buildForm($form, $form_state);
-
-    if ($this->getFlowNegotiator()->getFlow()->hasAction('done')) {
-      $form['actions']['done']['#value'] = 'Re-upload';
+    // If there are warnings and no errors give a choice to continue or cancel.
+    $fatal_errors = isset($errors) ? $this->getCsvHandler()->filterFatalErrors($errors) : NULL;
+    if (!empty($errors) && empty($fatal_errors)) {
+      $this->getFlowNegotiator()->getFlow()->enableAction('next');
+      $this->getFlowNegotiator()->getFlow()->disableAction('done');
+      $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Continue with upload');
     }
-    return $form;
-  }
+    // Otherwise, require the csv to be re-uploaded.
+    else if ($this->getFlowNegotiator()->getFlow()->hasAction('done')) {
+      $form['actions']['done']['#value'] = 'Re-upload';
+      $this->getFlowNegotiator()->getFlow()->setPrimaryActionTitle('Re-upload');
+    }
 
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state) {
-    parent::submitForm($form, $form_state);
-
-    $this->getFlowDataHandler()->deleteStore();
+    return parent::buildForm($form, $form_state);
   }
 
 }

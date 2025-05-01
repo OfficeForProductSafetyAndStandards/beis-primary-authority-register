@@ -6,6 +6,7 @@ use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\message\MessageInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Link;
 
 /**
  * Defines an interface for the Par Link Action plugins
@@ -15,14 +16,26 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 interface ParLinkActionInterface extends PluginInspectionInterface {
 
   /**
-   * Processes a received request for notification link.
+   * Processes a received request from a notification link.
+   *
+   * @param \Drupal\message\MessageInterface $message
+   *   The message interface that needs redirection.
+   *
+   * @return \Symfony\Component\HttpFoundation\RedirectResponse|null
+   *   Returns a redirection response if there is an available action.
+   */
+  public function receive(MessageInterface $message): ?RedirectResponse;
+
+  /**
+   * Gets the next available notification link action.
    *
    * @param \Drupal\message\Entity\Message $message
    *   The message interface that needs redirection.
    *
-   * @return \Symfony\Component\HttpFoundation\RedirectResponse
+   * @return \Drupal\Core\Link|null
+   *   Returns a link if there is an available action.
    */
-  public function receive(MessageInterface $message);
+  public function getLink(MessageInterface $message): ?Link;
 
   /**
    * Set the user that is being redirected.

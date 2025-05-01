@@ -1,0 +1,15 @@
+par_govuk_cookies.cookies:
+  path: '/cookies'
+  defaults:
+    _controller: '\Drupal\par_govuk_cookies\Controller\CookiePageController::content'
+    _title: 'Cookies'
+  requirements:
+    _access: 'TRUE'
+
+par_govuk_cookies.settings_form:
+  path: '/admin/config/system/par-govuk-cookies'
+  defaults:
+    _form: '\Drupal\par_govuk_cookies\Form\CookieSettingsForm'
+    _title: 'PAR GOVUK Cookies settings'
+  requirements:
+    _permission: 'administer par govuk cookies'

@@ -28,48 +28,44 @@ class ParDataTypeTest extends UnitTestCase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  #[\Override]
+  protected function setUp(): void {
     parent::setUp();
 
-    $values = array(
-      'id' => 'test',
-      'title' => 'Test Data Entity Type',
-      'description' => 'This is the test entity type.',
-      'configuration' => [
-        'entity' => [
-          'status_field' => 'field_status',
-          'label_field' => 'field_name',
-          'completed_fields' => [
-            'field_1',
-            'field_2',
-            'field_3',
-          ],
-        ],
-        'field_status' => [
-          'allowed_values' => [
-            'value_1' => 'First Value',
-            'value_2' => 'Second Value',
-            'value_3' => 'Third Value',
-          ],
-        ],
-        'field_terms' => [
-          'boolean_values' => [
-            'on' => 'Agreed',
-            'off' => 'Awaiting confirmation',
-          ]
-        ],
-        'field_salutation' => [
-          'allowed_values' => [
-            'mrs' => 'Mrs',
-            'mr' => 'Mr',
-            'ms' => 'Ms',
-            'dr' => 'Dr',
-          ],
+    $values = ['id' => 'test', 'title' => 'Test Data Entity Type', 'description' => 'This is the test entity type.', 'configuration' => [
+      'entity' => [
+        'status_field' => 'field_status',
+        'label_field' => 'field_name',
+        'completed_fields' => [
+          'field_1',
+          'field_2',
+          'field_3',
         ],
       ],
-    );
+      'field_status' => [
+        'allowed_values' => [
+          'value_1' => 'First Value',
+          'value_2' => 'Second Value',
+          'value_3' => 'Third Value',
+        ],
+      ],
+      'field_terms' => [
+        'boolean_values' => [
+          'on' => 'Agreed',
+          'off' => 'Awaiting confirmation',
+        ]
+      ],
+      'field_salutation' => [
+        'allowed_values' => [
+          'mrs' => 'Mrs',
+          'mr' => 'Mr',
+          'ms' => 'Ms',
+          'dr' => 'Dr',
+        ],
+      ],
+    ]];
 
-    $this->parDataType = $this->getMockForAbstractClass('Drupal\par_data\Entity\ParDataType', [$values, 'test']);
+    $this->parDataType = $this->getMockForAbstractClass(ParDataType::class, [$values, 'test']);
   }
 
   /**
@@ -86,7 +82,7 @@ class ParDataTypeTest extends UnitTestCase {
     ];
     $actual = $this->parDataType->getConfigurationElement('field_salutation');
 
-    $this->assertArrayEquals($expected, $actual, "The configuration element for the field_salutation field has been returned.");
+    $this->assertSame($expected, $actual, "The configuration element for the field_salutation field has been returned.");
   }
 
   /**
@@ -94,7 +90,7 @@ class ParDataTypeTest extends UnitTestCase {
    */
   public function testElementConfigurationEmpty() {
     $actual = $this->parDataType->getConfigurationElement('field_unknown');
-    $this->assertArrayEquals([], $actual, "Unknown field configuration not found.");
+    $this->assertSame([], $actual, "Unknown field configuration not found.");
   }
 
   /**
@@ -116,7 +112,7 @@ class ParDataTypeTest extends UnitTestCase {
     ];
     $actual = $this->parDataType->getConfigurationByType('allowed_values');
 
-    $this->assertArrayEquals($expected, $actual, "Allowed values have been returned.");
+    $this->assertSame($expected, $actual, "Allowed values have been returned.");
   }
 
   /**
@@ -124,7 +120,7 @@ class ParDataTypeTest extends UnitTestCase {
    */
   public function testTypeConfigurationEmpty() {
     $actual = $this->parDataType->getConfigurationByType('unknown_configuration');
-    $this->assertArrayEquals([], $actual, "Unknown configuration not found.");
+    $this->assertSame([], $actual, "Unknown configuration not found.");
   }
 
   /**
@@ -137,7 +133,7 @@ class ParDataTypeTest extends UnitTestCase {
     ];
     $actual = $this->parDataType->getConfigurationElementByType('field_terms', 'boolean_values');
 
-    $this->assertArrayEquals($expected, $actual, "Boolean values for the field_terms field have been returned.");
+    $this->assertSame($expected, $actual, "Boolean values for the field_terms field have been returned.");
 
     $label_field = $this->parDataType->getConfigurationElementByType('entity', 'label_field');
     $this->assertEquals('field_name', $label_field, "The label field is correctly configured.");
@@ -168,7 +164,7 @@ class ParDataTypeTest extends UnitTestCase {
    * @covers ::getAllowedValues
    */
   public function testGetAllowedValues() {
-    $this->assertArrayEquals([], $this->parDataType->getAllowedValues('field_unknown'), "Empty array returned for unspecified allowed values.");
+    $this->assertSame([], $this->parDataType->getAllowedValues('field_unknown'), "Empty array returned for unspecified allowed values.");
   }
 
   /**

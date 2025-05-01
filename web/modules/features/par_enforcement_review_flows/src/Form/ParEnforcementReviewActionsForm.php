@@ -12,6 +12,7 @@ use Drupal\par_data\ParDataException;
 use Drupal\par_enforcement_review_flows\ParFlowAccessTrait;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_forms\ParFormBuilder;
+use Drupal\par_forms\ParFormPluginInterface;
 
 /**
  * The confirmation for creating a new enforcement notice.
@@ -25,6 +26,7 @@ class ParEnforcementReviewActionsForm extends ParBaseForm {
    */
   protected $pageTitle = "Respond to notice of enforcement actions | Review";
 
+  #[\Override]
   public function loadData() {
     // Set the data values on the entities
     $entities = $this->createEntities();
@@ -34,7 +36,20 @@ class ParEnforcementReviewActionsForm extends ParBaseForm {
 
     if ($par_data_enforcement_actions) {
       $this->getFlowDataHandler()->setParameter('par_data_enforcement_actions', $par_data_enforcement_actions);
-      $this->getFlowDataHandler()->setTempDataValue(ParFormBuilder::PAR_COMPONENT_PREFIX . 'enforcement_action_detail', $par_data_enforcement_actions);
+
+      // In order to display multiple cardinality the enforcement_action_detail
+      // plugin needs to know how many instances of data to display, it doesn't
+      // use this data other than to know how many instances of data to display.
+      // The actual displayed data comes from the par_data_enforcement_actions
+      // parameter set above.
+      $action_detail_component = $this->getComponent('enforcement_action_detail');
+      if ($action_detail_component instanceof ParFormPluginInterface) {
+        $values = [];
+        foreach ($par_data_enforcement_actions as $action) {
+          $values[] = ['action_title' => $action->label()];
+        }
+        $this->getFlowDataHandler()->setPluginTempData($action_detail_component, $values);
+      }
     }
 
     parent::loadData();
@@ -44,7 +59,7 @@ class ParEnforcementReviewActionsForm extends ParBaseForm {
     $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
     $par_data_enforcement_actions = $par_data_enforcement_notice->getEnforcementActions();
 
-    // Get the cache IDs for the various forms that needs needs to be extracted from.
+    // Get the cache IDs for the various forms that needs to be extracted from.
     $enforcement_actions_cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_notice_approve');
     $enforcement_referral_cid = $this->getFlowNegotiator()->getFormKey('referrals');
 
@@ -78,6 +93,7 @@ class ParEnforcementReviewActionsForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
@@ -87,6 +103,7 @@ class ParEnforcementReviewActionsForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

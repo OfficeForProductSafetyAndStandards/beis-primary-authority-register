@@ -114,7 +114,7 @@ printf "Extracting Vault secrets...\n"
 export VAULT_ADDR
 export VAULT_TOKEN
 
-vault operator seal -tls-skip-verify
+#vault operator seal -tls-skip-verify
 vault operator unseal -tls-skip-verify $VAULT_UNSEAL
 
 ## Set the environment variables by generating an .env file
@@ -135,9 +135,9 @@ VAULT_STRING=''
 for VAR_NAME in "${VAULT_VARS[@]}"
 do
     if [[ $VAR_NAME == $KEY ]]; then
-      VAR="$VAR_NAME='$VALUE' "
+      VAR="$VAR_NAME=$VALUE "
     else
-      VAR="$VAR_NAME='$(vault kv get --field=$VAR_NAME -tls-skip-verify secret/par/env/$SECRET)' "
+      VAR="$VAR_NAME=$(vault kv get --field=$VAR_NAME -tls-skip-verify secret/par/env/$SECRET) "
     fi
     VAULT_STRING+="$VAR"
 done

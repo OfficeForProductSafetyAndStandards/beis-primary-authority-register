@@ -21,11 +21,13 @@ class ParEnforcementConfirmController extends ParBaseController {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function build($build = [], ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
     // Information about the next steps.
     $build['next_steps'] = [
-      '#title' => $this->t('What happens next?'),
       '#type' => 'fieldset',
+      '#title' => $this->t('What happens next?'),
+      '#title_tag' => 'h2',
     ];
     $build['next_steps']['info'] = [
       '#type' => 'markup',

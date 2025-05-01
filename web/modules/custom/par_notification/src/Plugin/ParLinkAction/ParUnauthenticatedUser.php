@@ -20,12 +20,20 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  */
 class ParUnauthenticatedUser extends ParLinkActionBase {
 
-  public function receive(MessageInterface $message) {
+  /**
+   * {@inheritDoc}
+   */
+  public function getUrl(MessageInterface $message): ?Url {
     // If the user is not logged in, allow them to login first.
     if (!$this->user->isAuthenticated()) {
       // Redirect to user login page with the appended destination query.
-      $login_url = Url::fromRoute('user.login', [], $this->getReturnQuery());
-      return new RedirectResponse($login_url->toString());
+      return Url::fromRoute(
+        'par_notification.link_access_denied',
+        ['message' => $message->id()],
+        $this->getReturnQuery()
+      );
     }
+
+    return NULL;
   }
 }

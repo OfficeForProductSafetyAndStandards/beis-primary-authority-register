@@ -1,0 +1,85 @@
+version: "3.1"
+
+services:
+    web:
+      image: beispar/web:latest
+      container_name: beis-par-web
+      environment:
+        - XDEBUG=${XDEBUG:-off}
+      extra_hosts:
+        - "host.docker.internal:host-gateway"
+      ports:
+        - "8080:80"
+        - "4433:443"
+      links:
+        - db:db.localhost
+        - os:os.localhost
+      networks:
+        - par-net
+      volumes:
+        - .:/var/www/html
+
+    db:
+      image: beispar/db:latest
+      container_name: beis-par-db
+      restart: always
+      ports:
+        - "5433:5432"
+      networks:
+        - par-net
+      volumes:
+        - ./data/postgres:/var/lib/postgresql/data
+      shm_size: 500m
+      environment:
+        POSTGRES_USER: par
+        POSTGRES_PASSWORD: 123456
+        POSTGRES_DB: par
+        PGDATA: /var/lib/postgresql/data
+
+    os:
+      image: opensearchproject/opensearch:1.2.4
+      container_name: beis-par-search
+      restart: always
+      ports:
+        - "9200:9200"
+        - "9600:9600" # required for Performance Analyzer
+      networks:
+        - par-net
+      volumes:
+        - ./data/opensearch:/usr/share/opensearch/data
+      environment:
+        - cluster.name=opensearch-cluster
+        - node.name=beis-par-search
+        - discovery.seed_hosts=beis-par-search
+        - cluster.initial_master_nodes=beis-par-search
+        - bootstrap.memory_lock=true # along with the memlock settings below, disables swapping
+        - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m" # minimum and maximum Java heap size, recommend setting both to 50% of system RAM
+        - DISABLE_INSTALL_DEMO_CONFIG=true # disables execution of install_demo_configuration.sh bundled with security plugin, which installs demo certificates and security configurations to OpenSearch
+        - DISABLE_SECURITY_PLUGIN=true # disables security plugin entirely in OpenSearch by setting plugins.security.disabled: true in opensearch.yml
+      ulimits:
+        memlock:
+          soft: -1
+          hard: -1
+        nofile:
+          soft: 65536 # maximum number of open files for the OpenSearch user, set to at least 65536 on modern systems
+          hard: 65536
+
+    search-dashboard:
+      image: opensearchproject/opensearch-dashboards:1.2.0
+      container_name: opensearch-dashboards
+      ports:
+        - "5601:5601"
+      expose:
+        - "5601"
+      links:
+        - db:db.localhost
+        - os:os.localhost
+      networks:
+        - par-net
+      environment:
+        - OPENSEARCH_HOSTS=["http://os.localhost:9200"]
+        - DISABLE_SECURITY_DASHBOARDS_PLUGIN=true # disables security dashboards plugin in OpenSearch Dashboards
+
+networks:
+  par-net:
+    driver: bridge

@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParFormBuilder;
@@ -20,12 +21,13 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  protected $entityMapping = [];
+  protected array $entityMapping = [];
 
   /**
    * Load the data for this form.
    */
-  public function loadData($cardinality = 1) {
+  #[\Override]
+  public function loadData(int $index = 1): void {
     // Decide which entity to use.
     if ($par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership')) {
       $existing_selection = $par_data_partnership->getRegulatoryFunction();
@@ -52,9 +54,7 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
         $relationships = $organisation->getRelationships('par_data_partnership');
 
         // Ignore the current organisation.
-        $relationships = array_filter($relationships, function ($relationship) use ($par_data_partnership) {
-          return $relationship->getEntity()->id() !== $par_data_partnership->id();
-        });
+        $relationships = array_filter($relationships, fn($relationship) => $relationship->getEntity()->id() !== $par_data_partnership->id());
 
         // Discover the regulatory functions for these partnerships.
         $covered_by_other_partnerships = [];
@@ -67,37 +67,57 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
       }
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  #[\Override]
+  public function getElements(array $form = [], int $index = 1) {
     $renderer = \Drupal::service('renderer');
 
     // If there are no available regulatory functions then this form should not be displayed.
     $regulatory_function_options = $this->getFlowDataHandler()->getFormPermValue('regulatory_function_options');
     if (empty($regulatory_function_options)) {
       try {
-        $params = ['par_data_authority' => $this->getDefaultValuesByKey('partnership_authority_id', $cardinality, NULL)];
-        $link_options = ['attributes' => ['class' => ['flow-link'], 'target' => '_blank']];
+        $params = ['par_data_authority' => $this->getDefaultValuesByKey('partnership_authority_id', $index, NULL)];
+        $link_options = ['attributes' => ['class' => ['flow-link', 'govuk-link'], 'target' => '_blank']];
         $authority_update_link = $this->getLinkByRoute('par_authority_update_flows.authority_update_review', $params, $link_options)
             ->setText('Update the authority\'s regulatory functions')
             ->toString();
-      } catch (ParFlowException $e) {
+      } catch (ParFlowException) {
 
       }
       $form['no_regulatory_functions'] = [
         '#type' => 'container',
-        '#attributes' => ['class' => ['form-group', 'notice']],
-        'warning' => [
+        '#attributes' => ['class' => ['govuk-form-group', 'notice']],
+      ];
+      $form['no_regulatory_functions']['warning'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => ['class' => ['govuk-warning-text']],
+        'icon' => [
+          '#type' => 'html_tag',
+          '#tag' => 'span',
+          '#value' => '!',
+          '#attributes' => [
+            'class' => ['govuk-warning-text__icon'],
+            'aria-hidden' => 'true',
+          ],
+        ],
+        'strong' => [
           '#type' => 'html_tag',
           '#tag' => 'strong',
           '#value' => $this->t('This authority does not provide any regulatory functions, please update the authority before continuing: %link', ['%link' => $authority_update_link]),
-          '#attributes' => ['class' => 'bold-small'],
-          '#prefix' => '<i class="icon icon-important"><span class="visually-hidden">Warning</span></i>'
-        ],
+          '#attributes' => ['class' => ['govuk-warning-text__text']],
+          'message' => [
+            '#type' => 'html_tag',
+            '#tag' => 'span',
+            '#value' => $this->t('Warning'),
+            '#attributes' => ['class' => ['govuk-warning-text__assistive']],
+          ],
+        ]
       ];
 
       return $form;
@@ -109,14 +129,33 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
     if ($covered_by_other_partnerships) {
       $form['covered_by_other_patnerships'] = [
         '#type' => 'container',
-        '#attributes' => ['class' => ['form-group', 'notice']],
-        'warning' => [
+        '#attributes' => ['class' => ['govuk-form-group', 'notice']],
+      ];
+      $form['covered_by_other_patnerships']['warning'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => ['class' => ['govuk-warning-text']],
+        'icon' => [
+          '#type' => 'html_tag',
+          '#tag' => 'span',
+          '#value' => '!',
+          '#attributes' => [
+            'class' => ['govuk-warning-text__icon'],
+            'aria-hidden' => 'true',
+          ],
+        ],
+        'strong' => [
           '#type' => 'html_tag',
           '#tag' => 'strong',
           '#value' => $this->t('This organisation is already covered for %regulatory_functions by other partnerships.', ['%regulatory_functions' => $covered_by_other_partnerships]),
-          '#attributes' => ['class' => 'bold-small'],
-          '#prefix' => '<i class="icon icon-important"><span class="visually-hidden">Warning</span></i>'
-        ],
+          '#attributes' => ['class' => ['govuk-warning-text__text']],
+          'message' => [
+            '#type' => 'html_tag',
+            '#tag' => 'span',
+            '#value' => $this->t('Warning'),
+            '#attributes' => ['class' => ['govuk-warning-text__assistive']],
+          ],
+        ]
       ];
     }
 
@@ -127,18 +166,13 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
         '#value' => $this->t('Normal or Sequenced'),
       ],
       [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $this->t('Either for normal partnerships, where the organisation only has one partnership, or for sequenced partnerships, where a business wishes to enter into a partnership with more than one local authority and the regulatory functions of those local authorities do not overlap.'),
-        '#attributes' => ['class' => 'form-hint'],
-      ],
-      [
         '#theme' => 'item_list',
         '#list_type' => 'ul',
+        '#list_header_tag' => 'h2',
         '#title' => 'The following regulatory functions will be added',
         '#items' => $regulatory_function_options,
-        '#attributes' => ['class' => ['list', 'list-bullet']],
-        '#wrapper_attributes' => ['class' => 'form-group'],
+        '#attributes' => ['class' => ['govuk-list', 'govuk-list--bullet']],
+        '#wrapper_attributes' => ['class' => 'govuk-form-group'],
       ]
     ];
     $bespoke_label = [
@@ -146,12 +180,6 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
         '#type' => 'html_tag',
         '#tag' => 'p',
         '#value' => $this->t('Bespoke'),
-      ],
-      [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $this->t('Bespoke partnerships should only be selected when a business wishes to enter into a partnership with more than one local authority and the regulatory functions of those local authorities overlap.'),
-        '#attributes' => ['class' => 'form-hint'],
       ],
     ];
 
@@ -161,14 +189,15 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
     $form['partnership_cover'] = [
       '#type' => 'radios',
       '#title' => 'Is this a sequenced or bespoke partnership?',
+      '#title_tag' => 'h2',
       '#options' => [
-        'default' => $renderer->render($default_label),
-        'bespoke' => $renderer->render($bespoke_label),
+        'default' => $this->t('Normal or Sequenced'),
+        'bespoke' => $this->t('Bespoke'),
       ],
-      '#options_descriptions' => array(
-        'default' => 'Either for normal partnerships, where the organisation only has one partnership, or for sequenced partnerships, where a business wishes to enter into a partnership with more than one local authority and the regulatory functions of those local authorities do not overlap.',
-        'bespoke' => 'Bespoke partnerships should only be selected when a business wishes to enter into a partnership with more than one local authority and the regulatory functions of those local authorities overlap.',
-      ),
+      '#options_descriptions' => ['default' => 'Either for normal partnerships, where the organisation only has one partnership, or for sequenced partnerships, where a business wishes to enter into a partnership with more than one local authority and the regulatory functions of those local authorities do not overlap.', 'bespoke' => 'Bespoke partnerships should only be selected when a business wishes to enter into a partnership with more than one local authority and the regulatory functions of those local authorities overlap.'],
+      '#after_build' => [
+        [static::class, 'optionsDescriptions'],
+      ],
       '#default_value' => $default ? 'default' : 'bespoke',
     ];
 
@@ -182,12 +211,35 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
       '#value' => $values,
     ];
 
+    $form['sequenced_regulatory_functions'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['govuk-form-group']],
+      '#states' => [
+        'visible' => [
+          'input[name="partnership_cover"]' => ['value' => 'default'],
+        ],
+      ],
+      [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => $this->t('The following regulatory functions will be added'),
+        '#attributes' => ['class' => 'govuk-heading-m'],
+      ],
+      [
+        '#theme' => 'item_list',
+        '#list_type' => 'ul',
+        '#items' => $regulatory_function_options,
+        '#attributes' => ['class' => ['govuk-list', 'govuk-list--bullet']],
+      ],
+    ];
+
     $form['regulatory_functions'] = [
       '#type' => 'checkboxes',
-      '#title' => '',
+      '#title' => 'Regulatory Functions',
+      '#title_tag' => 'h2',
       '#options' => $regulatory_function_options,
-      '#default_value' => $this->getDefaultValuesByKey('regulatory_functions', $cardinality, []),
-      '#attributes' => ['class' => ['form-group']],
+      '#default_value' => $this->getDefaultValuesByKey('regulatory_functions', $index, []),
+      '#attributes' => ['class' => ['govuk-form-group']],
       '#states' => [
         'visible' => [
           'input[name="partnership_cover"]' => ['value' => 'bespoke'],
@@ -204,7 +256,8 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
-  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+  #[\Override]
+  public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $partnership_cover_key = $this->getElementKey('partnership_cover');
     $regulatory_functions_key = $this->getElementKey('regulatory_functions');
     $default_regulatory_functions_key = $this->getElementKey('default_regulatory_functions');
@@ -216,18 +269,18 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
     elseif ($form_state->getValue($partnership_cover_key) === 'bespoke') {
       $regulatory_functions = array_filter($form_state->getValue($regulatory_functions_key));
       if (empty($regulatory_functions)) {
-        $id_key = $this->getElementKey('regulatory_functions', $cardinality, TRUE);
+        $id_key = $this->getElementKey('regulatory_functions', $index, TRUE);
         $message = $this->wrapErrorMessage('You must choose at least one regulatory function.', $this->getElementId($id_key, $form));
         $form_state->setErrorByName($this->getElementName($regulatory_functions_key), $message);
       }
     }
     else {
       // In case no partnership type was selected.
-      $id_key = $this->getElementKey('partnership_cover', $cardinality, TRUE);
+      $id_key = $this->getElementKey('partnership_cover', $index, TRUE);
       $message = $this->wrapErrorMessage('Please choose whether this is a normal, sequenced or bespoke partnership.', $this->getElementId($id_key, $form));
       $form_state->setErrorByName($this->getElementName($partnership_cover_key), $message);
     }
 
-    return parent::validate($form, $form_state, $cardinality, $action);
+    parent::validate($form, $form_state, $index, $action);
   }
 }

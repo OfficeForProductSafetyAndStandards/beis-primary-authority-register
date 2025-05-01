@@ -2,73 +2,216 @@
 
 # Primary Authority Register
 
-[![Build Status](https://travis-ci.org/UKGovernmentBEIS/beis-primary-authority-register.svg?branch=master)](https://travis-ci.org/UKGovernmentBEIS/beis-primary-authority-register)
+The Primary Authority Register is the product responsible for storing and managing information about all the partnerships within the Primary Authority scheme.
 
 ## Web Application
 
 Please see the [web application readme file](https://github.com/UKGovernmentBEIS/beis-primary-authority-register/blob/master/web/README.md) in the web directory for more information about Drupal and how to configure the web application.
 
-## Dashboard
+## Ways of Working
 
-Please see the [dashboard readme file](https://github.com/UKGovernmentBEIS/beis-primary-authority-register/blob/master/dashboard/README.md) in the dashboard directory for more information.
+There are some basic ways of working with the PAR project to ensure consistency and code quality across the team.
 
-## Vagrant development environment
+* We use feature branching and merge all code back into the master branch via PRs.
+Feature branches should preferably be named after the task number.
 
-The Vagrant development environment tries to maximise all the work done for Drupal-VM as much as possible. Please follow the Drupal-VM readme below and install Drupal-VM in a convenient location.
+* We request peer reviews from other developers against all completed tasks.
+PRs should be tested against the Definition of Done.
 
-*NOTE:* The old Vagrant development environment wraps docker in a VM, these files vagrant files are still in the repository but please do not use them.
+* We deploy through a release strategy by tagging the master branch.
 
-#### Prerequisites
+### Definition of ready
 
-* [VirtualBox](https://www.virtualbox.org/wiki/Downloads) - tested with version 5.2.22
-* [Vagrant](https://www.vagrantup.com/downloads.html) - tested with version 2.2.0
-* [Drupal-VM](https://github.com/kalpaitch/drupal-vm)
-* A copy of the [Drupal-VM config.yml file](https://s3.eu-west-2.amazonaws.com/beis-par-artifacts/dev/config.yml) in the BEIS S3 artifacts bucket.
-* A copy of the [latest sanitised PAR database](https://s3.eu-west-2.amazonaws.com/beis-par-artifacts/backups/drush-dump-production-sanitized-latest.sql.tar.gz) from the BEIS S3 artifacts bucket.
+* Story A/Cs have been discussed with QA, and PO where applicable
+* Story has been refined, and sized
+* There is enough information on the ticket to complete it
+* Any UI changes have been prototyped and agreed by stakeholders
 
-#### Configuration
+### Definition of Done
 
-Before starting the Drupal-VM make sure that you have cloned a copy of the website and run all the necessary setup on this. You will need to configure Drupal-VM so that the `vagrant_synced_folders` for this project points to the correct `local_path` of your application.
+* Code meets the A/C agreed on the task.
+* TTD requirements met. New tests written for all A/C (at a minimum).
+* Coding standards met. `drupal-check -d` is essential, `phpcs` is optional:
+```
+./vendor/bin/drupal-check -d --memory-limit=256M web/modules/custom/ web/modules/features/ web/themes/custom/
+./vendor/bin/phpcs web/modules/custom/ web/modules/features/ web/themes/custom/
+```
+* Can be deployed to an existing environment without manual intervention.
+* No regressions found from local testing.
 
-As part of the site setup run composer install from the project root folder.  Ensure the vendor directory is created with all the required application components before moving on to the database section.
+### Deployment
+Deployments are handled through CircleCI. All started jobs can be found on [CircleCI](https://app.circleci.com/pipelines/github/UKGovernmentBEIS/beis-primary-authority-register).
 
-#### Database
+Locate the tag you've just created under the "Branch / Commit" column:![image](https://user-images.githubusercontent.com/334114/230381309-a5b8a11e-5b27-4499-9db2-ae76757472b6.png)
 
-In order to run the site you will need to import a copy of the latest par database, download this and place in the `backups` directory of the par project (create the folder if it doesn't' exist).
+And all tagged deployments will have to be manually released through CI once they have passed manual regression testing. They will then be released to staging and production, or to the relevant test environment.
 
-Import the database using drush (note the database should be truncated before re-importing)
-```bash
-cd /var/www/par/web
-tar -zxvf ../backups/drush-dump-production-sanitized-latest.sql.tar.gz ../backups/drush-dump-production-sanitized-latest.sql
-../vendor/bin/drush sql:cli < ../backups/drush-dump-production-sanitized-latest.sql
+#### Production
+
+Tagging the **master branch** with a **semver tag** starting with a lowercase `v` e.g. `v1.0.0` will start a production deployment build.
+
+```
+git tag v0.0.31
+git push --tags
+```
+The build will be deployed first to [Staging](https://beis-par-staging.cloudapps.digital), and then to [Production](https://primary-authority.beis.gov.uk/).
+
+#### Non-Production / Test
+Tagging **any branch** with **any other tag** will start a test deployment and allow the feature to be deployed to a test environment.
+
+The tag name will be split on the `-` character, and the first part will be used as the name of the environment. e.g. `test-some_feature-01` will deploy to the `test` environment.
+
+The build will be deployed to a non-production environment - https://beis-par-{ENVIRONMENT}.cloudapps.digital - e.g. https://beis-par-test.cloudapps.digital
+
+## Development environment
+
+Docker can be used as the local development environment.
+
+There is a docker-compose file in the project root which contains all the images needed to run PAR, these are the same containers that are run in CI:
+* Web (primary container)
+* Postgres
+* Opensearch
+
+Just run `docker-compose up -d` from the project root.
+
+To run commands within the primary container:
+```
+docker exec -it beis-par-web /bin/bash
+$ cd /var/www/html/web
+$ ../vendor/bin/drush cr
 ```
 
-## Deployment
+Once you have a working development environment PAR should be available at [https://par.localhost:8080](https://par.localhost:8080)
 
-Tagging the master branch will cause the build to be packaged and stored in S3
+### Prerequisites
 
-    git tag v0.0.31
-    git push --tags
+* [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) - version 2.0 or higher
+* [php](https://www.php.net/) - version 8.1 or higher
+* [Composer](https://getcomposer.org/download) - version 2.3.5 or higher
+* [Docker](https://docs.docker.com/engine/install) - version 20.0 or higher
+* [Docker Compose](https://docs.docker.com/compose/install) - version 2.2.2 or higher
+* (Optional) A copy of the [latest sanitised PAR database](https://s3.eu-west-2.amazonaws.com/beis-par-artifacts/backups/drush-dump-production-sanitized-latest.sql.tar.gz) from the BEIS S3 artifacts bucket.
+* A copy of the [settings.local.php](https://beis-par-artifacts.s3.eu-west-2.amazonaws.com/dev/settings.local.php) configuration file required to setup the application locally.
 
-Once a build has been packaged, it can be deployed to another environment as follows:
+#### Additional Windows prerequisites
+If on windows follow the instructions below, essentially docker performance on windows is poor and needs to run from the WSL distro (use the latest Ubuntu LTS).
 
-    cd cf
-    ./push.sh ENV_NAME VERSION
+* [Install WSL2](https://learn.microsoft.com/en-us/windows/wsl/install)
+  * [Configure .wslconfig](https://learn.microsoft.com/en-us/windows/wsl/wsl-config#configuration-setting-for-wslconfig), and set maximum memory and processor limits
+* [Install Docker Desktop & enable WSL 2 support](https://docs.docker.com/desktop/windows/wsl/#install)
+* [Clone the repository into the WSL 2 distro's filesystem](https://docs.docker.com/desktop/windows/wsl/#best-practices), for better performance
+  * This can be found by navigating to `\\wsl$\{DISTRO}\home` in the file explorer, where `{DISTRO}` can be found by running `wsl -l`, e.g. `Ubuntu-22.04`
+* php, composer & patch (available through `C:/Program Files/Git/usr/bin`) need to be added to the system path
 
-e.g.
+### Set up
 
-    ./push.sh staging v0.0.31
+There are a few main tasks that need to be performed after pulling new code or downloading a new database.
 
-Full instructions on setting AWS keys and environment variables for the target environment can be found in the push.sh script itself.
+#### Composer install
+After pulling any changes to the `composer.json` file, run:
 
-#### Prerequisites
+```
+composer install
+```
 
-* [Vault](https://www.vaultproject.io/)
-* [AWS CLI](https://aws.amazon.com/cli/)
+This is best run from outside the primary docker container (very slow within the container), on your local machine.
+
+#### NPM install
+The theme and the tests dependencies are both managed with NPM, any changes to `package.json` or `tests/package.json`, run:
+
+```
+npm install
+npm run install-govuk-theme
+npm run install-par-theme
+npm run gulp
+```
+
+#### Database (optional)
+
+The docker container includes a seed database that can be used to get started.
+
+In order to get the latest and most up-to-date database including some of the par data you will need access to AWS:
+```
+aws s3 cp s3://beis-par-artifacts/backups/db-dump-production-{DB_TYPE}-latest.tar.gz ./backups/
+```
+Where `{DB_TYPE}` is one of:
+
+* seed
+* sanitised
+
+Download this and place in the `backups` directory of the par project (create the folder if it doesn't' exist).
+
+##### Extract the database
+```
+cd ./backups
+tar -zxvf ../backups/db-dump-production-{DB_TYPE}-latest.tar.gz db-dump-production-{DB_TYPE}.sql
+```
+**Note:** On some systems, such as windows, and for some files the downloaded archives are not compressed and may end in `.tar` instead of `.tar.gz`
+
+##### Import the database using drush
+
+You will need the `settings.local.php` before you run this, see the Drupal install section below.
+
+```
+cd ./web
+../vendor/bin/drush sql:drop
+../vendor/bin/drush sql:cli < ../backups/db-dump-production-{DB_TYPE}.sql
+```
+
+#### Drupal install
+Get a copy of the settings.local.php file that will configure Drupal within your local environment and place this in `web/sites/default`:
+```
+aws s3 cp s3://beis-par-artifacts/dev/settings.local.php ./web/sites/default/settings.local.php
+```
+
+To set-up drupal, on whenever switching branches or importing a fresh database, run:
+
+```
+./drupal-update.sh
+```
+
+#### Debugging
+
+The Xdebug PHP extension is included in the web container image. It is disabled by default.
+
+To activate the debugger set the XDEBUG environment variable to 'debug' before starting the services.
+
+```
+export XDEBUG=debug
+docker-compose up -d web
+```
+
+To deactivate Xdebug remove the XDEBUG environment variable, or set to 'off', and restart.
+
+```
+export XDEBUG=off
+docker-compose up -d web
+```
+
+To avoid slowing execution when debugging is not required Xdebug is configured for debugging
+to start only when triggered, it will not initiate a connection to the IDE unless a trigger is
+present. Which trigger to use depends on whether you're debugging a PHP application through
+a browser, or on the command line. See [Xdebug activating step debugging](https://xdebug.org/docs/step_debug#activate_debugger)
+for more information about triggering debugging.
+
+To debug Drush commands you will need to set two environment variables in the running web container.
+```
+export XDEBUG_CONFIG=idekey=PHPSTORM
+export PHP_IDE_CONFIG=servername=par.localhost
+```
+To stop Drush debugging unset the variables.
+```
+unset XDEBUG_CONFIG
+unset PHP_IDE_CONFIG
+```
 
 ## Backup database
 
-The build relies on a seed database which is a sanitised version of the production database. At regular periods this seed database needs to be updated:
+The build relies on a seed database which is a sanitised version of the production database. At regular periods this seed database needs to be updated.
+
+Typically this process will be handled by a daily CI job, with database backups being stored to the S3 bucket `beis-par-artifacts` with the prefix `backups/`.
+
+But should this process need to be run manually...
 
 #### Backup the production database
 ```

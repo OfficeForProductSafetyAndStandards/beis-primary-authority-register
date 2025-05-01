@@ -28,6 +28,7 @@ class ParRdDeleteDataConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     $entity_type = $this->getFlowDataHandler()->getParameter('entity_type');
     $entity_id = $this->getFlowDataHandler()->getParameter('entity_id');
@@ -38,11 +39,12 @@ class ParRdDeleteDataConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, $entity_type = '', $entity_id = '') {
+  #[\Override]
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, $entity_type = '', $entity_id = ''): AccessResult {
     try {
       // Get a new flow negotiator that points the the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException $e) {
+    } catch (ParFlowException) {
 
     }
 
@@ -59,6 +61,7 @@ class ParRdDeleteDataConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state, $entity_type = '', $entity_id = '') {
     $entity = \Drupal::entityTypeManager()->getStorage($entity_type)->load($entity_id);
 
@@ -78,7 +81,8 @@ class ParRdDeleteDataConfirmForm extends ParBaseForm {
     $form['detail'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Full details about this data'),
-      '#attributes' => ['class' => 'form-group'],
+      '#title_tag' => 'h2',
+      '#attributes' => ['class' => 'govuk-form-group'],
     ];
 
     $form['detail']['text'] = [
@@ -97,6 +101,7 @@ class ParRdDeleteDataConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     // No validation yet.
     parent::validateForm($form, $form_state);
@@ -105,6 +110,7 @@ class ParRdDeleteDataConfirmForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 

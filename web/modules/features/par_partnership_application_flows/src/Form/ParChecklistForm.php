@@ -16,6 +16,7 @@ class ParChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function titleCallback() {
     // Load application type from previous step.
     $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_application_type');
@@ -30,6 +31,7 @@ class ParChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function buildForm(array $form, FormStateInterface $form_state) {
 
     // Load application type from previous step.
@@ -65,25 +67,38 @@ class ParChecklistForm extends ParBaseForm {
     }
 
     if (!empty($checklist)) {
-      $form['checklist'] = [
-        '#theme' => 'item_list',
-        '#list_type' => 'ul',
-        '#title' => 'Please confirm that',
-        '#items' => $checklist,
-        '#attributes' => ['class' => ['list', 'list-bullet']],
-        '#wrapper_attributes' => ['class' => ['form-group']],
+      $form['declaration'] = [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['govuk-form-group']],
       ];
 
-      $form['confirm'] = [
+      $form['declaration']['title'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'h2',
+        '#value' => $this->t('Please confirm that'),
+        '#attributes' => ['class' => ['govuk-heading-m']],
+      ];
+
+      $form['declaration']['checklist'] = [
+        '#theme' => 'item_list',
+        '#list_type' => 'ul',
+        '#items' => $checklist,
+        '#attributes' => ['class' => ['govuk-list', 'govuk-list--bullet']],
+        '#wrapper_attributes' => ['class' => ['govuk-form-group']],
+      ];
+
+      $form['declaration']['confirm'] = [
         '#type' => 'checkbox',
         '#title' => $this->t('I confirm these conditions have been met'),
         '#default_value' => $this->getFlowDataHandler()->getDefaultValues('confirm', FALSE),
         '#return_value' => 'on',
+        '#wrapper_attributes' => ['class' => ['govuk-!-margin-bottom-8', 'govuk-!-margin-top-8']],
       ];
 
-      $form['help'] = [
-        '#type' => 'markup',
-        '#markup' => '<p>These essential conditions for the nomination of direct partnerships are required by the Regulatory Enforcement and Sanctions Act 2008 (as amended by the Enterprise Act 2016) and the Primary Authority Statutory Guidance.</p>',
+      $form['declaration']['help'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->t('These essential conditions for the nomination of direct partnerships are required by the Regulatory Enforcement and Sanctions Act 2008 (as amended by the Enterprise Act 2016) and the Primary Authority Statutory Guidance.'),
       ];
     }
 
@@ -93,6 +108,7 @@ class ParChecklistForm extends ParBaseForm {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 

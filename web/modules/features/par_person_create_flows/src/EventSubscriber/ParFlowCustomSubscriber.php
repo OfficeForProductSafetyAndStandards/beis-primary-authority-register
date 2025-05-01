@@ -26,8 +26,9 @@ class ParFlowCustomSubscriber extends ParFlowSubscriberBase {
    *
    * @return mixed
    */
-  static function getSubscribedEvents() {
-    $events[ParFlowEvents::FLOW_DONE][] = ['onEvent', 300];
+  #[\Override]
+  static function getSubscribedEvents(): array {
+    $events[ParFlowEvents::FLOW_SUBMIT][] = ['onEvent', 300];
     return $events;
   }
 
@@ -57,7 +58,7 @@ class ParFlowCustomSubscriber extends ParFlowSubscriberBase {
           $route_params = $event->getFlow()
             ->getRequiredParams($redirect_route, $extra_params);
           $event->setUrl(Url::fromRoute($redirect_route, $route_params));
-      } catch (ParFlowException $e) {
+      } catch (ParFlowException) {
 
       }
     }

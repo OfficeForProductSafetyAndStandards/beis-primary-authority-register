@@ -1,0 +1,21 @@
+uuid: e0f01da1-abc7-48d5-9adc-4e330a177579
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.message.field_message_subject
+    - message.template.approved_enforcement
+id: message.approved_enforcement.field_message_subject
+field_name: field_message_subject
+entity_type: message
+bundle: approved_enforcement
+label: 'Message Subject'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 'Primary Authority: Notification of enforcement'
+default_value_callback: ''
+settings: {  }
+field_type: string

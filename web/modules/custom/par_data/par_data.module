@@ -9,6 +9,7 @@
 use Drupal\field\FieldStorageConfigInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPersonType;
@@ -16,6 +17,10 @@ use Drupal\views\ViewExecutable;
 use Drupal\views\Plugin\views\query\QueryPluginBase;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Entity\ParDataEntityInterface;
+use Drupal\par_data\Plugin\field\FieldType\ParStatusField;
+use Drupal\par_data\Plugin\field\FieldType\ParLabelField;
+use Drupal\par_data\Plugin\field\FieldType\ParStatusChangedField;
+use Drupal\Core\Field\BaseFieldDefinition;
 
 /**
  * Implements hook_help().
@@ -68,7 +73,7 @@ function par_data_theme() {
  * The present use case requires all bundle fields, currently
  * only entity reference fields, to be required if validated.
  */
-function par_data_entity_bundle_field_info_alter(&$fields, \Drupal\Core\Entity\EntityTypeInterface $entity_type, $bundle) {
+function par_data_entity_bundle_field_info_alter(&$fields, EntityTypeInterface $entity_type, $bundle) {
   $par_data_manager = \Drupal::service('par_data.manager');
   if ($par_data_manager->getParEntityType($entity_type->id())) {
     foreach ($fields as $name => $field) {
@@ -92,20 +97,109 @@ function par_data_entity_bundle_field_info_alter(&$fields, \Drupal\Core\Entity\E
  * @param $query
  */
 function par_data_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  // It is not a given that the query properties are public.
+  // @see PAR-1760 & Drupal\search_api\Plugin\views\query\SearchApiQuery
+  try {
+    $rq = new ReflectionProperty($query,'where');
+    if (!$rq->isPublic()) {
+      return;
+    }
+  }
+  catch (ReflectionException) {
+    return;
+  }
 
   // PostgreSQL case insensitive query alter.
   foreach ($query->where as $group_key => $group) {
     foreach ($group['conditions'] as $key => $condition) {
 
       // Only apply to combined fields, Views stamps in queries are useful!
-      if (preg_match('/:views_combine/', $condition['field'])) {
+      if (preg_match('/:views_combine/', (string) $condition['field'])) {
         // ILIKE is proprietary to PostgreSQL.
         $query->where[$group_key]['conditions'][$key]['field'] = str_replace(' LIKE', ' ILIKE', $condition['field']);
       }
+    }
+  }
+}
 
+/**
+ * Retrieves the allowed values for a par list field instance.
+ *
+ * @param string $entity_type_id
+ *   The entity type id to which the field is attached.
+ * @param string $bundle
+ *   The bundle to which the field is attached.
+ * @param string $field_name
+ *   The field's field name.
+ *
+ * @return array|null
+ *   An array of allowed values in the form key => label, or NULL.
+ *
+ * @see _search_api_views_handler_adjustments()
+ */
+function _par_data_search_api_views_get_allowed_values($entity_type_id, $bundle, $field_name) {
+  // Make sure not to request this more than once for a given entity type.
+  $function_id = __FUNCTION__ . ':' . $entity_type_id . ':' . $bundle . ':' . $field_name;
+  $allowed_values = &drupal_static($function_id);
+  if (!empty($allowed_values)) {
+    return $allowed_values;
+  }
+
+  // Get the par data manager.
+  $par_data_manager = \Drupal::service('par_data.manager');
+
+  // Lookup the par data config for the field.
+  $entity_type = $par_data_manager->getParBundleEntity($entity_type_id, $bundle);
+
+  // Check whether this field has allowed values.
+  $allowed_values = $entity_type->getAllowedValues($field_name);
+
+  // If this is the status field then it should also have the default statuses.
+  $status_field = $entity_type->getConfigurationElementByType('entity', 'status_field');
+  if ($field_name === $status_field) {
+    if ($entity_type->isRevokable()) {
+      $allowed_values['revoked'] = 'Revoked';
+    }
+    if ($entity_type->isArchivable()) {
+      $allowed_values['archived'] = 'Archived';
     }
   }
 
+  return !empty($allowed_values) ? $allowed_values : NULL;
+}
+
+/**
+ * Retrieves the entity values in a list.
+ *
+ * @param string $entity_type_id
+ *   The entity type id to which the field is attached.
+ *
+ * @return array|null
+ *   An array of entity values in the form id => label, or NULL.
+ *
+ * @see _search_api_views_handler_adjustments()
+ */
+function _par_data_search_api_views_get_entity_values($entity_type_id) {
+  // Make sure not to request this more than once for a given entity type.
+  $function_id = __FUNCTION__ . ':' . $entity_type_id;
+  $allowed_values = &drupal_static($function_id);
+  if (!empty($allowed_values)) {
+    return $allowed_values;
+  }
+
+  // Get the par data manager.
+  $par_data_manager = \Drupal::service('par_data.manager');
+
+  // Get all the entities.
+  $count = $par_data_manager->getEntityQuery($entity_type_id)->count()->execute();
+  if ($count <= 20) {
+    $entities = \Drupal::entityTypeManager()->getStorage($entity_type_id)->loadMultiple();
+  }
+
+  // Check whether this field has allowed values.
+  $allowed_values = $par_data_manager->getEntitiesAsOptions($entities);
+
+  return !empty($allowed_values) ? $allowed_values : NULL;
 }
 
 /**

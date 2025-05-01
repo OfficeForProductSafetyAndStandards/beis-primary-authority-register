@@ -2,6 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_forms\ParFormBuilder;
@@ -30,7 +31,7 @@ class ParDedupePersonForm extends ParFormPluginBase {
    * @return mixed
    *   A user account if selected, otherwise null.
    */
-  static function getDedupedPerson($value) {
+  static function getDedupedPerson(mixed $value) {
     foreach ([self::ADD_NEW] as $opt) {
       if ($value === $opt) {
         return NULL;
@@ -45,7 +46,8 @@ class ParDedupePersonForm extends ParFormPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function loadData($cardinality = 1) {
+  #[\Override]
+  public function loadData(int $index = 1): void {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
 
     $cid_contact_details = $this->getFlowNegotiator()->getFormKey('email_address');
@@ -70,7 +72,7 @@ class ParDedupePersonForm extends ParFormPluginBase {
 
     $this->getFlowDataHandler()->setFormPermValue('contact_records', $contact_records);
 
-    // Choose whether or not to allow a new contact to be created
+    // Choose whether to allow a new contact to be created
     // if an existing one is found.
     $require_existing = isset($this->getConfiguration()['require_existing']) ? (bool) $this->getConfiguration()['require_existing'] : FALSE;
     if ($require_existing) {
@@ -82,13 +84,14 @@ class ParDedupePersonForm extends ParFormPluginBase {
       $this->getFlowDataHandler()->setFormPermValue('add_message', $add_message);
     }
 
-    parent::loadData();
+    parent::loadData($index);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getElements($form = [], $cardinality = 1) {
+  #[\Override]
+  public function getElements(array $form = [], int $index = 1) {
     // Get all the allowed authorities.
     $contact_records = $this->getFlowDataHandler()->getFormPermValue('contact_records');
     $require_existing = (bool) $this->getFlowDataHandler()->getFormPermValue('require_existing');
@@ -121,9 +124,10 @@ class ParDedupePersonForm extends ParFormPluginBase {
     $form['contact_record'] = [
       '#type' => 'radios',
       '#title' => t('Choose which contact record you would like to use'),
+      '#title_tag' => 'h2',
       '#options' => $contact_records,
-      '#default_value' => $this->getDefaultValuesByKey("contact_record", $cardinality, NULL),
-      '#attributes' => ['class' => ['form-group']],
+      '#default_value' => $this->getDefaultValuesByKey("contact_record", $index, NULL),
+      '#attributes' => ['class' => ['govuk-form-group']],
     ];
 
     return $form;
@@ -132,13 +136,14 @@ class ParDedupePersonForm extends ParFormPluginBase {
   /**
    * Validate date field.
    */
-  public function validate($form, &$form_state, $cardinality = 1, $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
+  #[\Override]
+  public function validate(array $form, FormStateInterface &$form_state, $index = 1, mixed $action = ParFormBuilder::PAR_ERROR_DISPLAY) {
     $person_id_key = $this->getElementKey('contact_record');
     if (empty($form_state->getValue($person_id_key))) {
-      $id_key = $this->getElementKey('contact_record', $cardinality, TRUE);
+      $id_key = $this->getElementKey('contact_record', $index, TRUE);
       $form_state->setErrorByName($this->getElementName($person_id_key), $this->wrapErrorMessage('You must select a contact record.', $this->getElementId($id_key, $form)));
     }
 
-    return parent::validate($form, $form_state, $cardinality, $action);
+    parent::validate($form, $form_state, $index, $action);
   }
 }

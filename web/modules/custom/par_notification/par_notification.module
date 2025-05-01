@@ -4,8 +4,19 @@
  * @file
  * Contains par_notification.module.
  */
-
+use Drupal\par_notification\Access\ParMessageAccessControlHandler;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\link\LinkItemInterface;
+use Drupal\message\MessageInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Database\Query\SelectInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\Database\Query\AlterableInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\user\Entity\User;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\par_notification\Plugin\Field\FieldType\NotificationLinkField;
+//use Drupal\par_notification\Plugin\Field\FieldType\ParNotificationStatus;
 
 /**
  * Implements hook_help().
@@ -21,4 +32,129 @@ function par_notification_help($route_name, RouteMatchInterface $route_match) {
 
     default:
   }
+  return;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function par_notification_theme($existing, $type, $theme, $path) {
+  return [
+    'par_notification' => [
+      'variables' => [
+        'first_name' => NULL,
+        'message' => NULL,
+      ],
+    ],
+  ];
+}
+
+
+/**
+ * Implements hook_entity_presave().
+ *
+ * Adds the correct subscribers and recipients to the message.
+ */
+function par_notification_entity_presave(EntityInterface $message) {
+  // Only act on message entities.
+  if (!$message instanceof MessageInterface) {
+    return;
+  }
+
+  // Get the subscription manager.
+  $subscription_manager = \Drupal::service('plugin.manager.par_subscription_manager');
+
+  // Get the related entities.
+  $related_entities = $subscription_manager->getSubscribedEntities($message);
+  $authorities = array_filter($related_entities, fn($related_entity) => 'par_data_authority' === $related_entity->getEntityTypeId());
+  $organisations = array_filter($related_entities, fn($related_entity) => 'par_data_organisation' === $related_entity->getEntityTypeId());
+
+  // Add the subscribed entities.
+  if ($message->hasField('field_target_authority') &&
+    !empty($authorities)) {
+    $message->set('field_target_authority', $authorities);
+  }
+  if ($message->hasField('field_target_organisation') &&
+    !empty($organisations)) {
+    $message->set('field_target_organisation', $organisations);
+  }
+
+  // Add any recipients to the 'field_to'.
+  if ($message->hasField('field_to') &&
+    $emails = $subscription_manager->getRecipientEmails($message)) {
+    $message->set('field_to', $emails);
+  }
+}
+
+/**
+ * Implements hook_entity_insert().
+ *
+ * Sends the message to all recipients.
+ */
+function par_notification_entity_insert(EntityInterface $message) {
+  // Only act on message entities.
+  if (!$message instanceof MessageInterface) {
+    return;
+  }
+
+  // Get the message handler.
+  $message_handler = \Drupal::service('par_notification.message_handler');
+
+  // Send the message.
+  if ($message->hasField('field_to') &&
+    !$message->get('field_to')->isEmpty()) {
+    $message_handler->sendMessage($message);
+  }
+}
+
+/**
+ * Implements hook_entity_type_alter().
+ */
+function par_notification_entity_type_alter(array &$entity_types) {
+  /** @var $entity_types EntityTypeInterface[] */
+
+  // Add an access control handler for message entities.
+  if (isset($entity_types['message'])) {
+    $entity_types['message']
+      ->setHandlerClass('access', ParMessageAccessControlHandler::class);
+  }
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function par_notification_entity_base_field_info(EntityTypeInterface $entity_type): array {
+  $fields = [];
+  if ($entity_type->id() === "message") {
+    // We need to add a base field to store the authorities
+    // and organisations that the message is sent to.
+    $fields['field_target_authority'] = BaseFieldDefinition::create('entity_reference')
+      ->setName('field_target_authority')
+      ->setLabel(t('Receiving Authorities'))
+      ->setDescription(t('A reference field that stores the authorities that can view this message.'))
+      ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
+      ->setSetting('target_type', 'par_data_authority');
+    $fields['field_target_organisation'] = BaseFieldDefinition::create('entity_reference')
+      ->setName('field_target_organisation')
+      ->setLabel(t('Receiving Organisations'))
+      ->setDescription(t('A reference field that stores the organisations that can view this message.'))
+      ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
+      ->setSetting('target_type', 'par_data_organisation');
+
+    // A boolean field to determine whether action is required.
+    $fields['link'] = BaseFieldDefinition::create('link')
+      ->setName('link')
+      ->setLabel(t('Message Link'))
+      ->setComputed(TRUE)
+      ->setClass(NotificationLinkField::class)
+      ->setSettings([
+        'link_type' => LinkItemInterface::LINK_GENERIC,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'link_default',
+        'weight' => -2,
+      ]);
+  }
+
+  return $fields;
 }

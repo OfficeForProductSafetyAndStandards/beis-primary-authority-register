@@ -1,0 +1,7 @@
+text:
+  -
+    value: "<p>The Primary Authority Processing Team have now nominated the amendments to the @partnership, these are now active on your partnership.</p>\r\n"
+    format: basic_html
+  -
+    value: "<p>^ View the partnership: [message:primary-action]</p>\r\n"
+    format: basic_html

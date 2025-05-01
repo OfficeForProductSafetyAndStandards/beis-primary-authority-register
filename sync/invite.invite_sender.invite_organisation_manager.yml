@@ -1,0 +1,6 @@
+uuid: df68c6cf-b4bd-4122-9d54-08c1a3cd0e4c
+langcode: en
+status: true
+dependencies: {  }
+id: invite_organisation_manager
+sending_methods: invite_by_email||0

@@ -5,7 +5,7 @@ dependencies: {  }
 _core:
   default_config_hash: 320fQiuFwn20Nv2vG0ckqZsZBJcy27bNSjZpA1XDOHs
 id: partnership_inspection_plan_remove
-label: 'Remove Partnership''s Inspection Plan Flow'
+label: "Remove Partnership's Inspection Plan Flow"
 default_title: null
 default_section_title: 'Primary Authority partnership information'
 description: ''

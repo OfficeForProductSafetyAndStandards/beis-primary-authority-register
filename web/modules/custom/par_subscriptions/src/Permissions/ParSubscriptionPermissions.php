@@ -12,22 +12,21 @@ class ParSubscriptionPermissions implements ContainerInjectionInterface {
   use StringTranslationTrait;
 
   /**
-   * The entity manager.
-   *
-   * @var \Drupal\Core\Entity\EntityManagerInterface
-   */
-  protected $parDataManager;
-
-  /**
    * Constructs a subscription permissions.
    */
-  public function __construct(ParSubscriptionManagerInterface $par_subscriptions_manager) {
-    $this->subscriptionManager = $par_subscriptions_manager;
+  public function __construct(
+      /**
+       * The subscription manager.
+       */
+      protected ParSubscriptionManagerInterface $subscriptionManager
+  )
+  {
   }
 
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container) {
     return new static($container->get('par_subscriptions.manager'));
   }
@@ -54,24 +53,24 @@ class ParSubscriptionPermissions implements ContainerInjectionInterface {
       // Subscribe to a list.
       $permissions += [
         "subscribe to $list" => [
-          'title' => $this->t('Subscribe to subscription %list', array('%list' => $list)),
-          'description' => $this->t('Allow users to subscribe to the %list subscription list.', array('%list' => $list)),
+          'title' => $this->t('Subscribe to subscription %list', ['%list' => $list]),
+          'description' => $this->t('Allow users to subscribe to the %list subscription list.', ['%list' => $list]),
         ]
       ];
 
       // View a list.
       $permissions += [
         "view list $list" => [
-          'title' => $this->t('View subscribers to %list', array('%list' => $list)),
-          'description' => $this->t('Allow users to see who is subscribed to %list.', array('%list' => $list)),
+          'title' => $this->t('View subscribers to %list', ['%list' => $list]),
+          'description' => $this->t('Allow users to see who is subscribed to %list.', ['%list' => $list]),
         ]
       ];
 
       // Administer a list.
       $permissions += [
         "administer list $list" => [
-          'title' => $this->t('Manage subscribers to %list', array('%list' => $list)),
-          'description' => $this->t('Allow users to manage the %list subscription list.', array('%list' => $list)),
+          'title' => $this->t('Manage subscribers to %list', ['%list' => $list]),
+          'description' => $this->t('Allow users to manage the %list subscription list.', ['%list' => $list]),
         ]
       ];
     }

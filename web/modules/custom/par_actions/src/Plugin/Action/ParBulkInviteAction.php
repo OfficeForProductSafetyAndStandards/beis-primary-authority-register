@@ -38,6 +38,7 @@ class ParBulkInviteAction extends ViewsBulkOperationsActionBase implements Views
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function execute($entity = NULL) {
     /*
      * All config resides in $this->configuration.
@@ -130,25 +131,26 @@ HEREDOC;
   /**
    * {@inheritdoc}
    */
-  public function buildPreConfigurationForm(array $form, array $values, FormStateInterface $form_state) {
-    $form['par_bulk_invite_existing'] = [
+  #[\Override]
+  public function buildPreConfigurationForm(array $element, array $values, FormStateInterface $form_state): array {
+    $element['par_bulk_invite_existing'] = [
       '#title' => $this->t('Invite existimg members'),
       '#description' => $this->t('If checked this will re-invite eixsting members.'),
       '#type' => 'checkbox',
-      '#default_value' => isset($values['par_bulk_invite_existing']) ? TRUE : FALSE,
+      '#default_value' => isset($values['par_bulk_invite_existing']),
     ];
-    $form['par_bulk_invite_message_body'] = [
+    $element['par_bulk_invite_message_body'] = [
       '#title' => $this->t('Message body'),
       '#type' => 'textarea',
-      '#default_value' => isset($values['par_bulk_invite_message_body']) ? $values['par_bulk_invite_message_body'] : $this->getDefaultMessage(),
+      '#default_value' => $values['par_bulk_invite_message_body'] ?? $this->getDefaultMessage(),
     ];
-    $form['par_bulk_invite_message_subject'] = [
+    $element['par_bulk_invite_message_subject'] = [
       '#title' => $this->t('Message subject'),
       '#type' => 'textfield',
-      '#default_value' => isset($values['par_bulk_invite_message_subject']) ? $values['par_bulk_invite_message_subject'] : 'New Primary Authority Register',
+      '#default_value' => $values['par_bulk_invite_message_subject'] ?? 'New Primary Authority Register',
     ];
 
-    return $form;
+    return $element;
   }
 
   /**
@@ -159,7 +161,7 @@ HEREDOC;
    *
    * @param array $form
    *   Form array.
-   * @param Drupal\Core\Form\FormStateInterface $form_state
+   * @param FormStateInterface $form_state
    *   The form state object.
    *
    * @return array
@@ -169,10 +171,10 @@ HEREDOC;
     $body = $form_state->getValue('par_bulk_invite_message_body') ?: $this->getDefaultMessage();
     $subject = $form_state->getValue('par_bulk_invite_message_subject') ?: 'New Primary Authority Register';
     $form['par_bulk_invite_all_authority_members'] = [
+      '#type' => 'checkbox',
       '#title' => $this->t('Invite existimg members'),
       '#description' => $this->t('If checked this will re-invite eixsting members.'),
-      '#type' => 'checkbox',
-      '#default_value' => $form_state->getValue('par_bulk_invite_existing') ? TRUE : FALSE,
+      '#default_value' => (bool) $form_state->getValue('par_bulk_invite_existing'),
     ];
     $form['par_bulk_invite_message_subject'] = [
       '#title' => $this->t('Message subject'),
@@ -199,6 +201,7 @@ HEREDOC;
    * @param Drupal\Core\Form\FormStateInterface $form_state
    *   The form state object.
    */
+  #[\Override]
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     // This is not required here, when this method is not defined,
     // form values are assigned to the action configuration by default.
@@ -211,6 +214,7 @@ HEREDOC;
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
     if (!$account->hasPermission('invite authority members')) {
       return FALSE;

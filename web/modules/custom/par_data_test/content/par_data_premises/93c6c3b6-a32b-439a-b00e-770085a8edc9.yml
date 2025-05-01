@@ -34,18 +34,15 @@ default:
   archived:
     -
       value: false
+  par_status:
+    -
+      value: active
   address:
     -
       langcode: ''
       country_code: GB
       administrative_area: ''
       locality: London
-      dependent_locality: ''
       postal_code: 'SE5 9EZ'
-      sorting_code: ''
       address_line1: '6 Lowth Road'
       address_line2: ''
-      organization: ''
-      given_name: ''
-      additional_name: ''
-      family_name: ''

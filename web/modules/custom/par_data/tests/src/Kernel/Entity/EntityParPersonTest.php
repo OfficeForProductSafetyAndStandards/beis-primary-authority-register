@@ -2,9 +2,7 @@
 
 namespace Drupal\Tests\par_data\Kernel\Entity;
 
-use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPersonType;
 use Drupal\Tests\par_data\Kernel\ParDataTestBase;
 
 /**
@@ -20,7 +18,7 @@ class EntityParPersonTest extends ParDataTestBase {
   public function testEntityValidate() {
     $entity = ParDataPerson::create($this->getPersonValues());
     $violations = $entity->validate();
-    $this->assertEqual(count($violations->getFieldNames()), 0, 'No violations when validating a default PAR Person entity.');
+    $this->assertEquals(0, count($violations->getFieldNames()), 'No violations when validating a default PAR Person entity.');
   }
 
   /**
@@ -40,6 +38,9 @@ class EntityParPersonTest extends ParDataTestBase {
    */
   public function testPeopleRequiredFields() {
     $values = [
+      // @see ParDataEntity::baseFieldDefinitions()
+      'archive_reason' => '',
+      // @see ParDataPartnership::baseFieldDefinitions()
       'first_name' => '',
       'last_name' => '',
       'work_phone' => '',
@@ -48,7 +49,14 @@ class EntityParPersonTest extends ParDataTestBase {
 
     $entity = ParDataPerson::create($values + $this->getPersonValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
-    $this->assertEqual(count($violations->getFieldNames()), count($values), t('Field values are required for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
+    $this->assertEquals(
+      count($values),
+      count($violations->getFieldNames()),
+      t(
+        'Violations are reported for fields @fields.',
+        ['@fields' => implode(', ', $violations->getFieldNames())]
+      )->render()
+    );
   }
 
   /**
@@ -67,7 +75,7 @@ class EntityParPersonTest extends ParDataTestBase {
 
     $entity = ParDataPerson::create($values + $this->getPersonValues());
     $violations = $entity->validate()->getByFields(array_keys($values));
-    $this->assertEqual(count($violations->getFieldNames()), count($values), t('Field values cannot be longer than their allowed lengths for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
+    $this->assertEquals(count($values), count($violations->getFieldNames()), t('Field values cannot be longer than their allowed lengths for %fields.', ['%fields' => implode(', ', $violations->getFieldNames())]));
   }
 
   /**
@@ -77,4 +85,5 @@ class EntityParPersonTest extends ParDataTestBase {
     $entity = ParDataPerson::create($this->getPersonValues());
     $this->assertTrue($entity->save() === SAVED_NEW, 'PAR Person entity saved correctly.');
   }
+
 }

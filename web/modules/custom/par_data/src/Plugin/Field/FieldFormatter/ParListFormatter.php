@@ -18,6 +18,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   field_types = {
  *     "string",
  *     "text",
+ *     "par_status_field",
  *   }
  * )
  */
@@ -44,7 +45,7 @@ class ParListFormatter extends FormatterBase {
    * @param string $view_mode
    *   The view mode.
    * @param array $third_party_settings
-   *   Any third party settings settings.
+   *   Any third party settings.
    */
   public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
@@ -57,6 +58,7 @@ class ParListFormatter extends FormatterBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
 
@@ -72,7 +74,7 @@ class ParListFormatter extends FormatterBase {
 
       $element[$delta] = [
         '#type' => 'markup',
-        '#markup' => $value ? $value : 'Unknown value',
+        '#markup' => $value ?: 'Unknown value',
       ];
     }
 
@@ -82,6 +84,7 @@ class ParListFormatter extends FormatterBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function defaultSettings() {
     return [
       'display_original_value' => FALSE,
@@ -91,6 +94,7 @@ class ParListFormatter extends FormatterBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $element['display_original_value'] = [
       '#title' => t('Display original value if there is no match'),

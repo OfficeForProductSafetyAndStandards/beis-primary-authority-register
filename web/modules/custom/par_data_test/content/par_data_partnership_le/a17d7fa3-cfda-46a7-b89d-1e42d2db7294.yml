@@ -1,0 +1,46 @@
+_meta:
+  version: '1.0'
+  entity_type: par_data_partnership_le
+  uuid: a17d7fa3-cfda-46a7-b89d-1e42d2db7294
+  bundle: partnership_legal_entity
+  default_langcode: en
+  depends:
+    44f38230-a289-4dc9-b3fa-1f0475c8a31e: user
+    f7fe21f8-6059-49ae-861c-2cbef8f51377: par_data_legal_entity
+default:
+  user_id:
+    -
+      entity: 44f38230-a289-4dc9-b3fa-1f0475c8a31e
+  status:
+    -
+      value: true
+  created:
+    -
+      value: 1661508133
+  revision_uid:
+    -
+      target_id: 0
+  revision_translation_affected:
+    -
+      value: true
+  name:
+    -
+      value: 63089b11b783c
+  deleted:
+    -
+      value: false
+  revoked:
+    -
+      value: false
+  archived:
+    -
+      value: false
+  legal_entity_status:
+    -
+      value: confirmed_authority
+  par_status:
+    -
+      value: active
+  field_legal_entity:
+    -
+      entity: f7fe21f8-6059-49ae-861c-2cbef8f51377

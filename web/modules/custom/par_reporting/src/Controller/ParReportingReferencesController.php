@@ -52,6 +52,7 @@ class ParReportingReferencesController extends ControllerBase {
   /**
    * {@inheritdoc}
    */
+  #[\Override]
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('par_data.manager'),
@@ -71,9 +72,14 @@ class ParReportingReferencesController extends ControllerBase {
     foreach ($references as $entity_type => $fields) {
       // Display the Entity type.
       $build['references'][$entity_type] = [
-        '#type' => 'fieldset',
-        '#title' => $entity_type,
-        '#attributes' => ['class' => ['form-group']],
+        '#type' => 'container',
+        'heading' => [
+          '#type' => 'html_tag',
+          '#tag' => 'h2',
+          '#attributes' => ['class' => ['govuk-heading-m']],
+          '#value' => $entity_type
+        ],
+        '#attributes' => ['class' => ['govuk-form-group']],
       ];
 
       foreach ($fields as $field_name => $reference) {

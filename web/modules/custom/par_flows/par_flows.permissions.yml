@@ -1,0 +1,4 @@
+administer par flows:
+  title: 'Administer PAR flows'
+  description: 'Administer user journeys configured by par flows.'
+  restrict access: TRUE

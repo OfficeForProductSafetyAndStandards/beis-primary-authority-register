@@ -1,9 +1,10 @@
 name: PAR Notification
 type: module
 description: Adds a centralized notification service for handling interactions that need to be passed to other users.
-core_version_requirement: ^8 || ^9
+core_version_requirement: ^9 || ^10 || ^11
 package: PAR
 dependencies:
   - message
   - message_notify
+  - message_expire
   - par_data
