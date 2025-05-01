@@ -1,0 +1,242 @@
+diff --git a/clamav.install b/clamav.install
+index f78cae5..70fef40 100644
+--- a/clamav.install
++++ b/clamav.install
+@@ -32,6 +32,10 @@ function clamav_requirements($phase) {
+       case Config::MODE_UNIX_SOCKET:
+         $scanner = new DaemonUnixSocket($config);
+         break;
++
++      case Config::MODE_DAEMON_REST_CLIENT:
++        $scanner = new Scanner\DaemonRestClient($config);
++        break;
+     }
+ 
+     if (!is_null($scanner)) {
+diff --git a/config/install/clamav.settings.yml b/config/install/clamav.settings.yml
+index c960d45..36deb64 100644
+--- a/config/install/clamav.settings.yml
++++ b/config/install/clamav.settings.yml
+@@ -18,3 +18,6 @@ mode_daemon_tcpip:
+ 
+ mode_daemon_unixsocket:
+   unixsocket: '/var/clamav/clamd'
++
++mode_daemon_rest_client:
++  endpoint: ''
+diff --git a/config/schema/clamav.schema.yml b/config/schema/clamav.schema.yml
+index 51ff6b5..b55576a 100644
+--- a/config/schema/clamav.schema.yml
++++ b/config/schema/clamav.schema.yml
+@@ -46,3 +46,10 @@ clamav.settings:
+         unixsocket:
+           type: string
+           label: 'Unix socket path'
++    mode_daemon_rest_client:
++      type: mapping
++      label: 'Mode Daemon REST client'
++      mapping:
++        endpoint:
++          type: string
++          label: 'REST client API endpoint'
+diff --git a/src/Config.php b/src/Config.php
+index cdb191c..c69a66d 100644
+--- a/src/Config.php
++++ b/src/Config.php
+@@ -9,6 +9,7 @@ class Config {
+   const MODE_DAEMON = 0;
+   const MODE_EXECUTABLE = 1;
+   const MODE_UNIX_SOCKET = 2;
++  const MODE_DAEMON_REST_CLIENT = 3;
+ 
+   const OUTAGE_BLOCK_UNCHECKED = 0;
+   const OUTAGE_ALLOW_UNCHECKED = 1;
+diff --git a/src/Form/ClamAVConfigForm.php b/src/Form/ClamAVConfigForm.php
+index 8437ebb..eaca40d 100644
+--- a/src/Form/ClamAVConfigForm.php
++++ b/src/Form/ClamAVConfigForm.php
+@@ -70,6 +70,7 @@ class ClamAVConfigForm extends ConfigFormBase {
+         Config::MODE_EXECUTABLE => $this->t('Executable'),
+         Config::MODE_DAEMON => $this->t('Daemon mode (over TCP/IP)'),
+         Config::MODE_UNIX_SOCKET => $this->t('Daemon mode (over Unix socket)'),
++        Config::MODE_DAEMON_REST_CLIENT => $this->t('Daemon mode (over REST)'),
+       ],
+       '#default_value' => $config->get('scan_mode'),
+       '#description' => $this->t("Control how Drupal connects to ClamAV.<br />Daemon mode is recommended if the ClamAV service is capable of running as a daemon."),
+@@ -147,6 +148,25 @@ class ClamAVConfigForm extends ConfigFormBase {
+       // '#description' => t('The unix socket path for the ClamAV daemon. Defaults to %default_socket.', array('%default_socket' => CLAMAV_DEFAULT_UNIX_SOCKET)),
+     ];
+ 
++    // Configuration if ClamAV is set to use a REST API mode.
++    $form['scan_mechanism_wrapper']['mode_daemon_rest_client'] = [
++      '#type' => 'details',
++      '#title' => $this->t('Daemon mode using a REST API endpoint'),
++      '#open' => TRUE,
++      '#states' => [
++        'visible' => [
++          ':input[name="scan_mode"]' => ['value' => Config::MODE_DAEMON_REST_CLIENT],
++        ],
++      ],
++    ];
++    $form['scan_mechanism_wrapper']['mode_daemon_rest_client']['endpoint'] = [
++      '#type' => 'textfield',
++      '#title' => $this->t('REST endpoint'),
++      '#default_value' => $config->get('mode_daemon_rest_client.endpoint'),
++      '#maxlength' => 255,
++      '#description' => $this->t('The endpoint for the ClamAV REST scanner.'),
++    ];
++
+     $form['outage_actions_wrapper'] = [
+       '#type' => 'details',
+       '#title' => $this->t('Outage behavior'),
+@@ -249,6 +269,7 @@ class ClamAVConfigForm extends ConfigFormBase {
+       ->set('mode_daemon_tcpip.hostname', $form_state->getValue('hostname'))
+       ->set('mode_daemon_tcpip.port', $form_state->getValue('port'))
+       ->set('mode_daemon_unixsocket.unixsocket', $form_state->getValue('unixsocket'))
++      ->set('mode_daemon_rest_client.endpoint', $form_state->getValue('rest_endpoint'))
+       ->save();
+ 
+     parent::submitForm($form, $form_state);
+diff --git a/src/Scanner.php b/src/Scanner.php
+index 1364638..6f91926 100644
+--- a/src/Scanner.php
++++ b/src/Scanner.php
+@@ -2,6 +2,7 @@
+ 
+ namespace Drupal\clamav;
+ 
++use Drupal\clamav\Scanner\DaemonRestClient;
+ use Drupal\clamav\Scanner\DaemonUnixSocket;
+ use Drupal\clamav\Scanner\DaemonTCPIP;
+ use Drupal\clamav\Scanner\Executable;
+@@ -58,6 +59,10 @@ class Scanner {
+       case Config::MODE_UNIX_SOCKET:
+         $this->scanner = new DaemonUnixSocket($this->config);
+         break;
++
++      case Config::MODE_DAEMON_REST_CLIENT:
++        $this->scanner = new DaemonRestClient($this->config);
++        break;
+     }
+   }
+ 
+diff --git a/src/Scanner/DaemonRestClient.php b/src/Scanner/DaemonRestClient.php
+index e69de29..9847150 100644
+--- a/src/Scanner/DaemonRestClient.php
++++ b/src/Scanner/DaemonRestClient.php
+@@ -0,0 +1,115 @@
++<?php
++
++namespace Drupal\clamav\Scanner;
++
++use Drupal\Core\Logger\LoggerChannelTrait;
++use Drupal\clamav\Config;
++use Drupal\clamav\Scanner;
++use Drupal\clamav\ScannerInterface;
++use Drupal\file\FileInterface;
++
++class DaemonRestClient implements ScannerInterface {
++
++  use LoggerChannelTrait;
++
++  protected $file;
++
++  protected $endpoint;
++
++  protected $httpUser;
++
++  protected $httpPass;
++
++  protected $virusName = '';
++
++  protected $httpClient;
++
++  /**
++   * {@inheritdoc}
++   */
++  public function __construct(Config $config) {
++    $this->endpoint = $config->get('mode_daemon_rest_client.endpoint');
++    $this->httpUser = getenv('CLAMAV_HTTP_USER');
++    $this->httpPass = getenv('CLAMAV_HTTP_PASS');
++
++    $this->httpClient = \Drupal::httpClient();
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function scan(FileInterface $file) {
++    $result = Scanner::FILE_IS_UNCHECKED;
++
++    try {
++      $file_post = $this->httpClient->post($this->endpoint, [
++        'auth' => [$this->httpUser, $this->httpPass, 'Basic'],
++        'multipart' => [
++          [
++            'name' => 'file',
++            'contents' => fopen($file->getFileUri(), 'r'),
++          ],
++          [
++            'name' => 'name',
++            'contents' => $file->getFilename(),
++          ],
++        ],
++      ]);
++
++      $response = json_decode($file_post->getBody()->getContents());
++    }
++    catch (\Exception $e) {
++      $this->getLogger('clamav')
++        ->warning('Request for ClamAV service failed for file @file, error @error.', [
++          '@file' => $file->getFilename(),
++          '@error' => $e->getMessage(),
++        ]);
++      return $result;
++    }
++
++    // Check for any viruses detected.
++    if (isset($response) && isset($response->file->status)) {
++      $result = $response->file->status == 'OK' ? Scanner::FILE_IS_CLEAN : Scanner::FILE_IS_INFECTED;
++
++      if (isset($response->file->foundViruses->stream)) {
++        $this->virusName = current($response->file->foundViruses->stream);
++      }
++    }
++    else {
++      $result = Scanner::FILE_IS_UNCHECKED;
++    }
++
++    return $result;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function virus_name() {
++    return $this->virusName;
++  }
++
++  /**
++   * {@inheritdoc}
++   */
++  public function version() {
++    try {
++      $request = $this->httpClient->get($this->endpoint,
++        ['auth' => [$this->httpUser, $this->httpPass, 'Basic']]
++      );
++
++      if ($json = json_decode($request->getBody())) {
++        return isset($json->version) ? $json->version : 'unknown';
++      }
++    }
++    catch (\Exception $e) {
++      $this->getLogger('clamav')
++        ->warning('Unable to connect to ClamAV REST Endpoint @endpoint. @error', [
++          '@endpoint' => $this->endpoint,
++          '@error' => $e->getMessage(),
++        ]);
++      return 'No connection';
++    }
++  }
++
++}

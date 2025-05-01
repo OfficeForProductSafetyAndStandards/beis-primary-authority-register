@@ -45,6 +45,7 @@
         "drupal/block_classes": "^1.0",
         "drupal/cacheexclude": "^2.0",
         "drupal/chosen": "~3.0.0",
+        "drupal/clamav": "2.1.0",
         "drupal/config_filter": "^2.7",
         "drupal/config_readonly": "^1.0",
         "drupal/config_split": "~2.0.0",
@@ -184,6 +185,9 @@
             "drupal/core": "-p2"
         },
         "patches": {
+            "drupal/clamav": {
+                "Lack of anti virus on V3 - https://regulatorydelivery.atlassian.net/browse/PAR-2600": "./patches/drupal/clamav/clamav_add_rest_client.patch"
+            },
             "drupal/core": {
                 "Identifiers longer than 63 characters are truncated, causing Views to break on Postgres - https://www.drupal.org/project/drupal/issues/571548": "https://www.drupal.org/files/issues/2025-01-16/drupal-postgres_identifiers_10_4-571548-207.patch"
             },
