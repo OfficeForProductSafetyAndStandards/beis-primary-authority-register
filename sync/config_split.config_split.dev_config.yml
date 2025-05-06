@@ -22,6 +22,7 @@ module:
   upgrade_status: 0
 theme: {  }
 complete_list:
+  - clamav.settings
   - par_data.settings
   - update.settings
   - upgrade_status.settings
