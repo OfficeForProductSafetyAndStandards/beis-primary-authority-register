@@ -63,7 +63,7 @@ RUN cd /tmp \
 
 # Install node
 ## Using the node installation from https://github.com/nodejs/docker-node
-ENV NODE_VERSION 20.11.1
+ENV NODE_VERSION 22.14.0
 RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
     && case "${dpkgArch##*-}" in \
       amd64) ARCH='x64';; \
