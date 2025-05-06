@@ -888,6 +888,72 @@ if ($env_services = getenv("VCAP_SERVICES")) {
   $os_credentials = isset($services->opensearch) ? $services->opensearch[0]->credentials : NULL;
 }
 
+/**
+ * Extract the JSON encoded service credentials from the environment variables
+ * which is configured by the PaaS service manager
+ */
+if (PHP_SAPI === 'cli') {
+  $services_name = [
+    'DATABASE_CREDENTIALS',
+  ];
+  foreach ($services_name as $service_name) {
+    $service_env = getenv('SECRET_' . $service_name);
+    if ($service_env) {
+      // Need to decode the environment variable.
+      putenv($service_name . '=' . json_decode($service_env));
+    }
+  }
+}
+
+if (!isset($db_credentials) && $db_credentials_env = getenv('DATABASE_CREDENTIALS')) {
+  // Assume that it is a JSON string.
+  $db_credentials = json_decode($db_credentials_env);
+  if ($db_credentials === NULL) {
+    // Assume that is a string with the format:
+    $parsed_url = parse_url($db_credentials_env);
+    if (is_array($parsed_url)) {
+      $db_credentials = new stdClass();
+      $db_credentials->name = ltrim($parsed_url['path'], '/');
+      $db_credentials->username = $parsed_url['user'];
+      $db_credentials->password = $parsed_url['pass'];
+      $db_credentials->host = $parsed_url['host'];
+      $db_credentials->port = $parsed_url['port'] ?? 5432;
+    }
+  }
+  else {
+    // Remap the JSON information to the expected format.
+    $db_credentials->name = $db_credentials->dbname;
+  }
+}
+
+if (!isset($redis_credentials) && $redis_credentials_env = getenv('REDIS_ENDPOINT')) {
+  // Expected format is rediss://node.identity.cache.amazonaws.com:6379
+  $parsed_url = parse_url($redis_credentials_env);
+  if (is_array($parsed_url)) {
+    $redis_credentials = new stdClass();
+    $redis_credentials->scheme = $parsed_url['scheme'] == 'rediss' ? 'tls' : 'tcp';
+    $redis_credentials->host = $parsed_url['host'];
+    $redis_credentials->port = $parsed_url['port'] ?? 6379;
+    $redis_credentials->password = $parsed_url['pass'] ?? '';
+  }
+}
+
+if (!isset($os_credentials) && $os_credentials_env = getenv('OPENSEARCH_ENDPOINT')) {
+  // Expected format is https://username:password@endpoint.eu-west-2.es.amazonaws.com
+  $parsed_url = parse_url($os_credentials_env);
+  if (is_array($parsed_url)) {
+    $os_credentials = new stdClass();
+    // Rebuild the endpoint URL to use the correct scheme.
+    $os_credentials->uri = $parsed_url['scheme']
+      . '://'
+      . $parsed_url['host']
+      . (!empty($parsed_url['port']) ? (':' . $parsed_url['port']) : '')
+      . $parsed_url['path'];
+    $os_credentials->username = $parsed_url['user'];
+    $os_credentials->password = $parsed_url['pass'];
+  }
+}
+
 // Set the PaaS database connection credentials.
 if (isset($db_credentials)) {
   $databases['default']['default'] = [
@@ -911,7 +977,7 @@ if (isset($redis_credentials)) {
   $settings['redis.connection']['scheme'] = $redis_credentials->scheme ?? 'tls';
   $settings['redis.connection']['host'] = $redis_credentials->host;
   $settings['redis.connection']['port'] = $redis_credentials->port;
-  $settings['redis.connection']['password'] = $redis_credentials->password;
+  $settings['redis.connection']['password'] = $redis_credentials->password ?? '';
   $settings['cache']['default'] = 'cache.backend.redis';
   $settings['cache']['bins']['form'] = 'cache.backend.database';
   $settings['cache']['bins']['render'] = 'cache.backend.database';
