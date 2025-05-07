@@ -87,7 +87,7 @@ class ParSortStatus extends SortPluginBase {
       $table = $this->tableAlias . '.' . $this->field;
       $formula .= "CASE ";
       foreach ($allowed_values as $index => $key) {
-        $formula .= "WHEN $table='$key' THEN $index";
+        $formula .= "WHEN $table='$key' THEN $index ";
       }
       $formula .= "ELSE 999999999 END";
 
