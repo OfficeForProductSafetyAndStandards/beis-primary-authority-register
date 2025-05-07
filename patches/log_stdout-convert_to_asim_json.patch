@@ -1,0 +1,73 @@
+diff --git a/src/Logger/Stdout.php b/src/Logger/Stdout.php
+index 9734ba0..3505c8d 100644
+--- a/src/Logger/Stdout.php
++++ b/src/Logger/Stdout.php
+@@ -2,17 +2,16 @@
+
+ namespace Drupal\log_stdout\Logger;
+
+-use Drupal\Core\Config\ConfigFactoryInterface;
+-use Drupal\Core\Logger\LogMessageParserInterface;
+ use Drupal\Core\Logger\RfcLoggerTrait;
+-use Drupal\Core\Logger\RfcLogLevel;
+ use Psr\Log\LoggerInterface;
++use Drupal\Core\Logger\RfcLogLevel;
++use Drupal\Core\Logger\LogMessageParserInterface;
++use Drupal\Core\Config\ConfigFactoryInterface;
+
+ /**
+  * This class allows logging to stdout and stderr.
+  */
+ class Stdout implements LoggerInterface {
+-
+   use RfcLoggerTrait;
+
+   /**
+@@ -66,26 +60,27 @@ class Stdout implements LoggerInterface {
+     $variables = $this->parser->parseMessagePlaceholders($message, $context);
+     $message = empty($variables) ? $message : strtr($message, $variables);
+
+-    $fmt = $this->config->get('format');
+-    if (empty($fmt)) {
+-      $fmt = '[@severity] [@type] [@date] @message | uid: @uid | request-uri: @request_uri | refer: @referer | ip:  @ip | link: @link';
+-    }
+-
+-    $entry = strtr($fmt, [
+-      '@base_url'    => $base_url,
+-      '@timestamp'   => $context['timestamp'],
+-      '@severity'    => $severity,
+-      '@type'        => $context['channel'],
+-      '@message'     => strip_tags($message),
+-      '@uid'         => $context['uid'],
+-      '@request_uri' => $context['request_uri'],
+-      '@referer'     => $context['referer'],
+-      '@ip'          => $context['ip'],
+-      '@link'        => strip_tags($context['link']),
+-      '@date'        => date('Y-m-d\TH:i:s', $context['timestamp']),
+-    ]);
+-
+-    fwrite($output, $entry . "\r\n");
++    $entry = [
++      'EventMessage'          => strip_tags($message),
++      'EventCount'            => 1,
++      'EventStartTime'        => $context['timestamp'],
++      'EventEndTime'          => $context['timestamp'],
++      'EventType'             => $context['channel'],
++      'EventResult'           => 'N/A',
++      'EventSeverity'         => $severity,
++      'EventOriginalSeverity' => $severity,
++      'EventSchema'           => 'ProcessEvent',
++      'EventSchemaVersion'    => '0.1.4',
++      'ActingAppType'         => 'Drupal',
++      'AdditionalFields'      => [
++        'uid'         => $context['uid'],
++        'hostname'    => $context['ip'],
++        'request_uri' => $context['request_uri'],
++        'referer'     => $context['referer'],
++      ],
++    ];
++
++    fwrite($output, json_encode($entry) . "\r\n");
+     fclose($output);
+   }
+
