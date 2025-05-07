@@ -24,11 +24,9 @@ module:
   contextual: 0
   core_event_dispatcher: 0
   csv_serialization: 0
-  ctools: 0
   datetime: 0
   datetime_range: 0
   default_content: 0
-  devel_generate: 0
   dynamic_page_cache: 0
   editor: 0
   email_registration: 0
@@ -74,7 +72,6 @@ module:
   migrate: 0
   migrate_drupal: 0
   migrate_plus: 0
-  migrate_tools: 0
   node: 0
   options: 0
   page_cache: 0
