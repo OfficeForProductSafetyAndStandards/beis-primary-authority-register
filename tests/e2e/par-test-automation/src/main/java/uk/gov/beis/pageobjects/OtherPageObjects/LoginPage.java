@@ -31,7 +31,8 @@ public class LoginPage extends BasePageObject {
 	}
 
 	public void navigateToUrl() {
-		ScenarioContext.lastDriver.get(PropertiesUtil.getConfigPropertyValue("par_url") + "/user/login?current");
+		//ScenarioContext.lastDriver.get(PropertiesUtil.getConfigPropertyValue("par_url") + "/user/login?current");
+        ScenarioContext.lastDriver.get(PropertiesUtil.getConfigPropertyValue("par_url") + "/user/login%3Fcurrent");
 		checkLoginPage();
 	}
 

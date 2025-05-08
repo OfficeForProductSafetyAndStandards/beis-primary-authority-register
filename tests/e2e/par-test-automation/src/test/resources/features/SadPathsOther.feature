@@ -30,5 +30,5 @@ Feature: Other Sad Paths
             |                             | TestPassword | The Enter your e-mail address is required.                    |                                                          |
             | par_coordinator@example.com |              | The Enter your password is required.                          | Unrecognized username or password. Forgot your password? |
             | par_coordinator@example.com | Invalid      | Unrecognized username or password. Forgot your password?      |                                                          |
-            | Invalid                     | TestPassword | Unrecognized email address or password. Forgot your password? |                                                          |
-            | Invalid                     | Invalid      | Unrecognized email address or password. Forgot your password? |                                                          |
+            | Invalid                     | TestPassword | Unrecognized username or password. Forgot your password?  |                                                          |
+            | Invalid                     | Invalid      | Unrecognized username or password. Forgot your password?  |                                                          |
