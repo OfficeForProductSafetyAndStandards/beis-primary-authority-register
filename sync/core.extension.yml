@@ -13,6 +13,7 @@ module:
   block_content: 0
   breakpoint: 0
   cacheexclude: 0
+  clamav: 0
   comment: 0
   config: 0
   config_filter: 0
@@ -27,7 +28,6 @@ module:
   datetime: 0
   datetime_range: 0
   default_content: 0
-  devel_generate: 0
   dynamic_page_cache: 0
   editor: 0
   email_registration: 0
