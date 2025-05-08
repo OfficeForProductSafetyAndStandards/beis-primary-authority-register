@@ -15,7 +15,6 @@ module:
   maillog: 0
   tracer: 0
   config_inspector: 0
-  dblog: 0
   masquerade: 0
   par_data_test: 0
   update: 0
