@@ -14,7 +14,7 @@ import uk.gov.beis.utility.DataStore;
 public class BaseDashboardPage extends BasePageObject{
 
 
-	@FindBy(id = "block-cookiebanner")
+	@FindBy(id = "block-par-govuk-cookies-banner")
 	private WebElement cookieBanner;
 
 	@FindBy(id = "block-par-theme-page-title")
@@ -30,10 +30,11 @@ public class BaseDashboardPage extends BasePageObject{
 	}
 
 	public void acceptCookies() {
-		driver.manage().deleteAllCookies();
+	    // This also logs the visitor out.
+		// driver.manage().deleteAllCookies();
 
-		//WebElement acceptBtn = cookieBanner.findElement(By.xpath("//button[contains(text(),'Accept')]"));
-		//acceptBtn.click();
+		WebElement acceptBtn = cookieBanner.findElement(By.xpath("//button[contains(text(),'Accept additional cookies')]"));
+	    acceptBtn.click();
 	}
 
 	public void hideCookieBanner() {

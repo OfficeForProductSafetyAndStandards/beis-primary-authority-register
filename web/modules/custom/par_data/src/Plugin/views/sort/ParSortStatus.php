@@ -2,9 +2,7 @@
 
 namespace Drupal\par_data\Plugin\views\sort;
 
-use Drupal\Core\Database\Database;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataType;
 use Drupal\par_data\Entity\ParDataTypeInterface;
 use Drupal\views\FieldAPIHandlerTrait;
 use Drupal\views\Plugin\views\sort\SortPluginBase;
@@ -44,8 +42,18 @@ class ParSortStatus extends SortPluginBase {
   #[\Override]
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);
-    $form['allowed_values'] = ['#type' => 'radios', '#title' => t('Sort by status'), '#options' => [t('No'), t('Yes')], '#default_value' => $this->options['allowed_values']];
-    $form['null_heavy'] = ['#type' => 'radios', '#title' => t('Treat null values as heavier than the allowed values'), '#options' => [t('No'), t('Yes')], '#default_value' => $this->options['null_heavy']];
+    $form['allowed_values'] = [
+      '#type' => 'radios',
+      '#title' => t('Sort by status'),
+      '#options' => [t('No'), t('Yes')],
+      '#default_value' => $this->options['allowed_values'],
+    ];
+    $form['null_heavy'] = [
+      '#type' => 'radios',
+      '#title' => t('Treat null values as heavier than the allowed values'),
+      '#options' => [t('No'), t('Yes')],
+      '#default_value' => $this->options['null_heavy'],
+    ];
   }
 
   /**
@@ -63,8 +71,10 @@ class ParSortStatus extends SortPluginBase {
       return;
     }
 
-    $par_entity_type = $this->getParDataManager()->getParEntityType($this->getEntityType());
-    $entity_bundle = $par_entity_type ? $this->getParDataManager()->getParBundleEntity($par_entity_type->id()) : NULL;
+    $par_entity_type = $this->getParDataManager()
+      ->getParEntityType($this->getEntityType());
+    $entity_bundle = $par_entity_type ? $this->getParDataManager()
+      ->getParBundleEntity($par_entity_type->id()) : NULL;
     if ($entity_bundle instanceof ParDataTypeInterface) {
       $status_values = $entity_bundle->getAllowedValues($entity_bundle->getConfigurationElementByType('entity', 'status_field'));
     }
@@ -73,7 +83,6 @@ class ParSortStatus extends SortPluginBase {
     }
 
     $allowed_values = array_keys($status_values);
-    $connection = Database::getConnection();
 
     $formula = '';
     // Reverse the values returned by the FIELD function and the allowed values
