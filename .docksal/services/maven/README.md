@@ -21,7 +21,7 @@ The major differences are in two patch files
 The patch files are generated using the following commands
 ``` shell
 git diff tests/e2e/par-test-automation/src/main/java/uk/gov/beis/stepdefs/Hooks.java tests/e2e/par-test-automation/src/main/java/uk/gov/beis/supportfactory > .docksal/services/maven/engine.patch;
-git diff tests/e2e/par-test-automation/src/test/resources > .docksal/services/maven/feaures.patch;
+git diff tests/e2e/par-test-automation/src/test/resources > .docksal/services/maven/features.patch;
 git diff tests/e2e/par-test-automation ':!tests/e2e/par-test-automation/src/main/java/uk/gov/beis/stepdefs/Hooks.java' ':!tests/e2e/par-test-automation/src/main/java/uk/gov/beis/supportfactory' ':!tests/e2e/par-test-automation/src/test/resources' > .docksal/services/maven/tests_code.patch;
 ```
 
@@ -34,9 +34,9 @@ git diff --no-index tests/e2e/par-test-automation/pom.xml .docksal/services/mave
 After tests/e2e directory is the same as in the repository, the patches can be applied
 
 ``` shell
-git apply .docksal/etc/maven/engine.patch;
-git apply .docksal/etc/maven/feature.patch;
-git apply .docksal/etc/maven/tests_code.patch;
+git apply .docksal/services/maven/engine.patch;
+git apply .docksal/services/maven/features.patch;
+git apply .docksal/services/maven/tests_code.patch;
 ```
 
 ### Delete the old container so that rebuilding works
