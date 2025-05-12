@@ -1,0 +1,906 @@
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/AdvicePageObjects/AdviceNoticeSearchPage.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/AdvicePageObjects/AdviceNoticeSearchPage.java
+index 936bf2675..cf3350575 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/AdvicePageObjects/AdviceNoticeSearchPage.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/AdvicePageObjects/AdviceNoticeSearchPage.java
+@@ -33,6 +33,7 @@ public class AdviceNoticeSearchPage extends BasePageObject {
+ 		adviceSearchBar.sendKeys(title);
+ 
+ 		searchBtn.click();
++		waitForPageLoad();
+ 	}
+ 
+ 	public void selectUploadLink() {
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/EnforcementNoticePageObjects/EnforcementSearchPage.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/EnforcementNoticePageObjects/EnforcementSearchPage.java
+index 4ab9e71fd..3dc4dbda2 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/EnforcementNoticePageObjects/EnforcementSearchPage.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/EnforcementNoticePageObjects/EnforcementSearchPage.java
+@@ -14,45 +14,47 @@ public class EnforcementSearchPage extends BasePageObject {
+ 
+ 	@FindBy(id = "edit-combine")
+ 	private WebElement searchInput;
+-	
++
+ 	@FindBy(id = "edit-submit-par-user-enforcements")
+ 	private WebElement searchBtn;
+-	
++
+ 	@FindBy(xpath = "//div/p[contains(text(),'Sorry, there are no sent or received notices')]")
+ 	private WebElement noResults;
+-	
++
+ 	private String status = "//td[normalize-space()='?']/preceding-sibling::td[1]";
+ 	private String removeEnfBtn = "//td[normalize-space()='?']/following-sibling::td[1]/a[contains(text(), 'remove enforcement')]";
+-	
++
+ 	public EnforcementSearchPage() throws ClassNotFoundException, IOException {
+ 		super();
+ 	}
+-	
++
+ 	public void searchForEnforcementNotice(String search) {
+ 		searchInput.clear();
+ 		searchInput.sendKeys(search);
+ 		searchBtn.click();
++		waitForPageLoad();
+ 	}
+-	
++
+ 	public void selectEnforcement() {
+ 		driver.findElement(By.linkText(DataStore.getSavedValue(UsableValues.ENFORCEMENT_TITLE))).click();
++		waitForPageLoad();
+ 	}
+-	
++
+ 	public void removeEnforcement() {
+ 		driver.findElement(By.xpath(removeEnfBtn.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_NAME)))).click();
+ 	}
+ 
+ 	public boolean confirmNoReturnedResults() {
+ 		boolean value = false;
+-		
++
+ 		if (driver.findElement(By.xpath("//div/p[contains(text(),'Sorry, there are no sent or received notices')]")).isDisplayed())
+ 		{
+ 			value = true;
+ 		}
+-		
++
+ 		return value;
+ 	}
+-	
++
+ 	public String getStatus() {
+ 		return driver.findElement(By.xpath(status.replace("?", DataStore.getSavedValue(UsableValues.BUSINESS_NAME)))).getText();
+ 	}
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/LegalEntityPageObjects/ConfirmThisAmendmentPage.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/LegalEntityPageObjects/ConfirmThisAmendmentPage.java
+index cec17d345..589ebf0d2 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/LegalEntityPageObjects/ConfirmThisAmendmentPage.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/LegalEntityPageObjects/ConfirmThisAmendmentPage.java
+@@ -9,33 +9,34 @@ import org.openqa.selenium.support.FindBy;
+ import uk.gov.beis.pageobjects.BasePageObject;
+ 
+ public class ConfirmThisAmendmentPage extends BasePageObject {
+-	
++
+ 	@FindBy(id = "edit-confirmation")
+ 	private WebElement confirmationCheckbox;
+-	
++
+ 	@FindBy(id = "edit-next")
+ 	private WebElement submitAmendmentBtn;
+-	
++
+ 	public ConfirmThisAmendmentPage() throws ClassNotFoundException, IOException {
+ 		super();
+ 	}
+-	
++
+ 	public void deselectConfirmationCheckbox() {
+ 		if(confirmationCheckbox.isSelected()) {
+ 			confirmationCheckbox.click();
+ 		}
+ 	}
+-	
++
+ 	public void selectConfirmationCheckbox() {
+ 		if(!confirmationCheckbox.isSelected()) {
+ 			confirmationCheckbox.click();
+ 		}
+ 	}
+-	
++
+ 	public void selectSubmitAmendmentButton() {
+ 		submitAmendmentBtn.click();
++		waitForPageLoad();
+ 	}
+-	
++
+ 	public void goToAmendmentCompletedPage() {
+ 		WebElement element = driver.findElement(By.xpath("//input[@value='Confirm amendment']"));
+ 		executeJavaScript("arguments[0].click();", element);
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/OtherPageObjects/LoginPage.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/OtherPageObjects/LoginPage.java
+index 46fc2c4cd..3d976ed49 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/OtherPageObjects/LoginPage.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/OtherPageObjects/LoginPage.java
+@@ -14,50 +14,50 @@ import uk.gov.beis.pageobjects.BasePageObject;
+ import uk.gov.beis.utility.DataStore;
+ 
+ public class LoginPage extends BasePageObject {
+-	
++
+ 	@FindBy(id = "edit-name")
+ 	private WebElement emailTextfield;
+-	
++
+ 	@FindBy(id = "password-input")
+ 	private WebElement passwordTextfield;
+-	
++
+ 	@FindBy(id = "edit-submit")
+ 	private WebElement loginBtn;
+-	
++
+ 	private String login = "//a[contains(text(),'?')]";
+-	
++
+ 	public LoginPage() throws ClassNotFoundException, IOException {
+ 		super();
+ 	}
+-	
++
+ 	public void navigateToUrl() {
+-		ScenarioContext.lastDriver.get(PropertiesUtil.getConfigPropertyValue("par_url") + "/user/login%3Fcurrent");
++		ScenarioContext.lastDriver.get(PropertiesUtil.getConfigPropertyValue("par_url") + "/user/login");
+ 		checkLoginPage();
+ 	}
+-	
++
+ 	public void navigateToInviteLink() throws InterruptedException {
+ 		ScenarioContext.lastDriver.get(DataStore.getSavedValue(UsableValues.INVITE_LINK));
+ 	}
+-	
++
+ 	public void enterEmailAddress(String email) {
+ 		emailTextfield.clear();
+ 		emailTextfield.sendKeys(email);
+ 	}
+-	
++
+ 	public void enterPassword(String password) {
+ 		passwordTextfield.clear();
+ 		passwordTextfield.sendKeys(password);
+ 	}
+-	
++
+ 	public void enterLoginDetails(String user, String pass) {
+ 		emailTextfield.sendKeys(user);
+ 		passwordTextfield.sendKeys(pass);
+ 	}
+-	
++
+ 	public void selectSignIn() {
+ 		loginBtn.click();
+ 	}
+-	
++
+ 	public void checkLoginPage() {
+ 		try {
+ 			driver.findElement(By.xpath(login.replace("?", "Sign in")));
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/AuthorityPage.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/AuthorityPage.java
+index 41859faad..0c0dd8a83 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/AuthorityPage.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/AuthorityPage.java
+@@ -16,20 +16,22 @@ public class AuthorityPage extends BasePageObject {
+ 	private WebElement continueBtn;
+ 
+ 	private String authorityLocator = "//label[contains(text(),'?')]";
+-	
++
+ 	public AuthorityPage() throws ClassNotFoundException, IOException {
+ 		super();
+ 	}
+-	
++
+ 	public void selectAuthority(String auth) {
+ 		WebElement authority = driver.findElement(By.xpath(authorityLocator.replace("?", auth)));
+-		
++
+ 		DataStore.saveValue(UsableValues.AUTHORITY_NAME, authority.getText());
+-		
++
+ 		authority.click();
+ 	}
+-	
++
+ 	public void selectContinueButton() {
+-		continueBtn.click();
++        waitForElementToBeClickable(By.id("edit-next"), 3000);
++        continueBtn.click();
++        waitForPageLoad();
+ 	}
+ }
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/BusinessNamePage.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/BusinessNamePage.java
+index 67a347734..d92443224 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/BusinessNamePage.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/BusinessNamePage.java
+@@ -8,29 +8,30 @@ import org.openqa.selenium.support.FindBy;
+ import uk.gov.beis.pageobjects.BasePageObject;
+ 
+ public class BusinessNamePage extends BasePageObject {
+-	
++
+ 	@FindBy(id = "edit-name")
+ 	private WebElement businessName;
+-	
++
+ 	@FindBy(id = "edit-next")
+ 	private WebElement continueBtn;
+-	
++
+ 	@FindBy(id = "edit-save")
+ 	private WebElement saveBtn;
+-	
++
+ 	public BusinessNamePage() throws ClassNotFoundException, IOException {
+ 		super();
+ 	}
+-	
++
+ 	public void enterBusinessName(String name) {
+ 		businessName.clear();
+ 		businessName.sendKeys(name);
+ 	}
+-	
++
+ 	public void clickContinueButton() {
+ 		continueBtn.click();
++		waitForPageLoad();
+ 	}
+-	
++
+ 	public void clickSaveButton() {
+ 		saveBtn.click();
+ 	}
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/MemberListCountPage.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/MemberListCountPage.java
+index 897e37e02..1a878b4bf 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/MemberListCountPage.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/MemberListCountPage.java
+@@ -29,5 +29,6 @@ public class MemberListCountPage extends BasePageObject {
+ 	public void clickContinueButton() {
+         waitForElementToBeVisible(By.id("edit-next"), 2000);
+ 		continueBtn.click();
++		waitForPageLoad();
+ 	}
+ }
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/PartnershipSearchPage.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/PartnershipSearchPage.java
+index 94726ec27..4dada2561 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/PartnershipSearchPage.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/PartnershipSearchPage.java
+@@ -11,37 +11,38 @@ import uk.gov.beis.pageobjects.BasePageObject;
+ import uk.gov.beis.utility.DataStore;
+ 
+ public class PartnershipSearchPage extends BasePageObject {
+-	
++
+ 	@FindBy(id = "edit-keywords")
+ 	private WebElement searchInput;
+-	
++
+ 	@FindBy(xpath = "//input[@value='Search']")
+ 	private WebElement searchPartnershipsBtn;
+-	
++
+ 	private String authorityLocator = "//td[contains(normalize-space(), '£')]/preceding-sibling::td/a[contains(normalize-space(), '?')]";
+-	
++
+ 	public PartnershipSearchPage() throws ClassNotFoundException, IOException {
+ 		super();
+ 	}
+-	
++
+ 	public void searchPartnerships() {
+ 		searchInput.sendKeys(DataStore.getSavedValue(UsableValues.BUSINESS_NAME));
+ 		searchPartnershipsBtn.click();
++		waitForPageLoad();
+ 	}
+ 
+ 	public void selectBusinessNameLink() {
+ 		driver.findElement(By.linkText(DataStore.getSavedValue(UsableValues.BUSINESS_NAME))).click();
+ 	}
+-	
++
+ 	public void selectBusinessNameLinkFromPartnership() {
+ 		driver.findElement(By.xpath("//td/a[contains(text(),'" + DataStore.getSavedValue(UsableValues.BUSINESS_NAME) + "')]")).click();
+ 	}
+-	
++
+ 	public void selectAuthority(String auth) {
+ 		WebElement link = driver.findElement(By.xpath(authorityLocator.replace("?", auth).replace("£", DataStore.getSavedValue(UsableValues.BUSINESS_NAME))));
+ 		link.click();
+ 	}
+-	
++
+ 	public void selectPartnershipLink(String businessName) {
+ 		driver.findElement(By.xpath("//td/a[contains(text(),'" + businessName + "')]")).click();
+ 	}
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/PartnershipTermsPage.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/PartnershipTermsPage.java
+index 83c02af88..5d1509233 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/PartnershipTermsPage.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/PartnershipTermsPage.java
+@@ -39,5 +39,6 @@ public class PartnershipTermsPage extends BasePageObject {
+ 	public void clickContinueButton() {
+         waitForElementToBeClickable(By.id("edit-next"), 2000);
+         continueBtn.click();
++        waitForPageLoad();
+ 	}
+ }
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/PartnershipTypePage.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/PartnershipTypePage.java
+index 063cf6f96..8cc9c4617 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/PartnershipTypePage.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/PartnershipTypePage.java
+@@ -26,5 +26,6 @@ public class PartnershipTypePage extends BasePageObject {
+ 	public void clickContinueButton() {
+         waitForElementToBeClickable(By.id("edit-next"), 3000);
+ 		continueBtn.click();
++		waitForPageLoad();
+ 	}
+ }
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/RegulatoryFunctionPage.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/RegulatoryFunctionPage.java
+index 2c6790d5b..12f41e38e 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/RegulatoryFunctionPage.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/PartnershipPageObjects/RegulatoryFunctionPage.java
+@@ -95,5 +95,6 @@ public class RegulatoryFunctionPage extends BasePageObject {
+ 	public void selectSaveButton() {
+         waitForElementToBeClickable(By.id("edit-save"), 2000);
+         saveBtn.click();
++        waitForPageLoad();
+ 	}
+ }
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/SharedPageObjects/AddAddressPage.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/SharedPageObjects/AddAddressPage.java
+index 85780b548..e3e243851 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/SharedPageObjects/AddAddressPage.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/SharedPageObjects/AddAddressPage.java
+@@ -95,6 +95,7 @@ public class AddAddressPage extends BasePageObject {
+ 	public void clickContinueButton() {
+         waitForElementToBeClickable(By.id("edit-next"), 2000);
+ 		continueBtn.click();
++		waitForPageLoad();
+ 	}
+ 
+ 	public void clickSaveButton() {
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/SharedPageObjects/DeclarationPage.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/SharedPageObjects/DeclarationPage.java
+index 53b6f119e..d9ddc045a 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/SharedPageObjects/DeclarationPage.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/SharedPageObjects/DeclarationPage.java
+@@ -63,6 +63,7 @@ public class DeclarationPage extends BasePageObject {
+ 	public void clickContinueButton() {
+         waitForElementToBeClickable(By.id("edit-next"), 2000);
+         continueBtn.click();
++        waitForPageLoad();
+ 	}
+ 
+ 	public void goToEnforcementSearchPage() {
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/TransferPartnerships/PartnershipMigrationSelectionPage.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/TransferPartnerships/PartnershipMigrationSelectionPage.java
+index 79f7ebd9e..2d8201448 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/TransferPartnerships/PartnershipMigrationSelectionPage.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/TransferPartnerships/PartnershipMigrationSelectionPage.java
+@@ -36,5 +36,6 @@ public class PartnershipMigrationSelectionPage extends BasePageObject {
+ 
+         waitForElementToBeVisible(By.id("edit-next"), 2000);
+         continueBtn.click();
++        waitForPageLoad();
+ 	}
+ }
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserDashboardPageObjects/BaseDashboardPage.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserDashboardPageObjects/BaseDashboardPage.java
+index bc9707b17..63a268206 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserDashboardPageObjects/BaseDashboardPage.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserDashboardPageObjects/BaseDashboardPage.java
+@@ -14,7 +14,7 @@ import uk.gov.beis.utility.DataStore;
+ public class BaseDashboardPage extends BasePageObject{
+ 
+ 
+-	@FindBy(id = "block-cookiebanner")
++	@FindBy(id = "block-par-govuk-cookies-banner")
+ 	private WebElement cookieBanner;
+ 
+ 	@FindBy(id = "block-par-theme-page-title")
+@@ -30,14 +30,15 @@ public class BaseDashboardPage extends BasePageObject{
+ 	}
+ 
+ 	public void acceptCookies() {
+-		driver.manage().deleteAllCookies();
++        // This also logs the visitor out.
++		// driver.manage().deleteAllCookies();
+ 
+-		//WebElement acceptBtn = cookieBanner.findElement(By.xpath("//button[contains(text(),'Accept')]"));
+-		//acceptBtn.click();
++		WebElement acceptBtn = cookieBanner.findElement(By.xpath("//button[contains(text(),'Accept additional cookies')]"));
++	    acceptBtn.click();
+ 	}
+ 
+ 	public void hideCookieBanner() {
+-		//cookieBanner.findElement(By.xpath("//button[contains(text(),'Hide this message')]")).click();
++		cookieBanner.findElement(By.xpath("//button[contains(text(),'Hide this message')]")).click();
+ 	}
+ 
+ 	//public Boolean checkCookiesAccepted() {
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserDashboardPageObjects/HelpDeskDashboardPage.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserDashboardPageObjects/HelpDeskDashboardPage.java
+index 05a97c141..3f5ad9ede 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserDashboardPageObjects/HelpDeskDashboardPage.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserDashboardPageObjects/HelpDeskDashboardPage.java
+@@ -6,80 +6,81 @@ import org.openqa.selenium.WebElement;
+ import org.openqa.selenium.support.FindBy;
+ 
+ public class HelpDeskDashboardPage extends BaseDashboardPage {
+-	
++
+ 	@FindBy(linkText  = "View all statistics")
+ 	private WebElement viewStatisticsLink;
+-	
++
+ 	@FindBy(linkText = "Search partnerships")
+ 	private WebElement searchPartnershipBtn;
+-	
++
+ 	@FindBy(linkText = "Manage authorities")
+ 	private WebElement mangeAuthoritiesBtn;
+-	
++
+ 	@FindBy(linkText = "Manage organisations")
+ 	private WebElement mangeOrganisationsBtn;
+-	
++
+ 	@FindBy(linkText = "Manage people")
+ 	private WebElement managePeopleBtn;
+-	
++
+ 	@FindBy(linkText = "Manage subscriptions")
+ 	private WebElement manageSubscriptionsBtn;
+-	
++
+ 	@FindBy(linkText = "Manage enforcement notices")
+ 	private WebElement manageEnforcementNoticesBtn;
+-	
++
+ 	@FindBy(linkText = "Manage general enquiries")
+ 	private WebElement manageGeneralEnquiriesBtn;
+-	
++
+ 	@FindBy(linkText = "Manage deviation requests")
+ 	private WebElement manageDeviationRequestLink;
+-	
++
+ 	@FindBy(linkText = "Manage inspection feedback")
+ 	private WebElement manageInspectionFeedbackLink;
+-	
++
+ 	@FindBy(linkText = "Manage general enquiries")
+ 	private WebElement manageGeneralEnquiryLink;
+-	
++
+ 	public HelpDeskDashboardPage() throws ClassNotFoundException, IOException {
+ 		super();
+ 	}
+-	
++
+ 	public void selectViewAllStatistics() {
+ 		viewStatisticsLink.click();
+ 	}
+-	
++
+ 	public void selectSearchPartnerships() {
+ 		searchPartnershipBtn.click();
+ 	}
+-	
++
+ 	public void selectManageAuthorities() {
+ 		mangeAuthoritiesBtn.click();
+ 	}
+-	
++
+ 	public void selectManageOrganisations() {
+ 		mangeOrganisationsBtn.click();
+ 	}
+-	
++
+ 	public void selectManagePeople() {
+ 		managePeopleBtn.click();
++		waitForPageLoad();
+ 	}
+-	
++
+ 	public void selectManageSubscriptions() {
+ 		manageSubscriptionsBtn.click();
+ 	}
+-	
++
+ 	public void selectManageEnforcementNotices() {
+ 		manageEnforcementNoticesBtn.click();
+ 	}
+-	
++
+ 	public void selectManageDeviationRequests() {
+ 		manageDeviationRequestLink.click();
+ 	}
+-	
++
+ 	public void selectManageInspectionFeedback() {
+ 		manageInspectionFeedbackLink.click();
+ 	}
+-	
++
+ 	public void selectManageGeneralEnquiry() {
+ 		manageGeneralEnquiryLink.click();
+ 	}
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserManagement/AddMembershipConfirmationPage.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserManagement/AddMembershipConfirmationPage.java
+index a0b455193..df1009f41 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserManagement/AddMembershipConfirmationPage.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserManagement/AddMembershipConfirmationPage.java
+@@ -20,5 +20,6 @@ public class AddMembershipConfirmationPage extends BasePageObject {
+ 	public void clickContinueButton() {
+         waitForElementToBeVisible(By.id("edit-next"), 2000);
+ 		continueBtn.click();
++		waitForPageLoad();
+ 	}
+ }
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserManagement/ChoosePersonToAddPage.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserManagement/ChoosePersonToAddPage.java
+index 434d08bd0..63b1fe38c 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserManagement/ChoosePersonToAddPage.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserManagement/ChoosePersonToAddPage.java
+@@ -11,25 +11,26 @@ import uk.gov.beis.pageobjects.BasePageObject;
+ import uk.gov.beis.utility.DataStore;
+ 
+ public class ChoosePersonToAddPage extends BasePageObject{
+-	
++
+ 	@FindBy(id = "edit-next")
+ 	private WebElement continueBtn;
+-	
++
+ 	private String personsNameLocator = "//label/div[contains(normalize-space(), '?')]/../../input";
+-	
++
+ 	public ChoosePersonToAddPage() throws ClassNotFoundException, IOException {
+ 		super();
+ 	}
+-	
++
+ 	public void choosePerson() {
+ 		WebElement radio = driver.findElement(By.xpath(personsNameLocator.replace("?", DataStore.getSavedValue(UsableValues.PERSON_FULLNAME_TITLE))));
+-		
++
+ 		if(radio != null) {
+ 			radio.click();
+ 		}
+ 	}
+-	
++
+ 	public void clickContinueButton() {
+ 		continueBtn.click();
++		waitForPageLoad();
+ 	}
+ }
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserManagement/ContactRecordsPage.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserManagement/ContactRecordsPage.java
+index 6cca8c25e..30749d13c 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserManagement/ContactRecordsPage.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserManagement/ContactRecordsPage.java
+@@ -9,24 +9,26 @@ import org.openqa.selenium.support.FindBy;
+ import uk.gov.beis.pageobjects.BasePageObject;
+ 
+ public class ContactRecordsPage extends BasePageObject {
+-	
++
+ 	@FindBy(name = "user_person")
+ 	private List<WebElement> userContacts;
+-	
++
+ 	@FindBy(id = "edit-next")
+ 	private WebElement continueBtn;
+-	
++
+ 	public ContactRecordsPage() throws ClassNotFoundException, IOException {
+ 		super();
+ 	}
+-	
++
+ 	public void selectContactToUpdate() {
+ 		if(userContacts.size() > 0) {
+ 			userContacts.get(0).click();
++			waitForPageLoad();
+ 		}
+ 	}
+-	
++
+ 	public void selectContinueButton() {
+ 		continueBtn.click();
++    	waitForPageLoad();
+ 	}
+ }
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserManagement/GiveUserAccountPage.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserManagement/GiveUserAccountPage.java
+index aa5fcea85..c955207df 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserManagement/GiveUserAccountPage.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserManagement/GiveUserAccountPage.java
+@@ -8,29 +8,30 @@ import org.openqa.selenium.support.FindBy;
+ import uk.gov.beis.pageobjects.BasePageObject;
+ 
+ public class GiveUserAccountPage extends BasePageObject {
+-	
++
+ 	@FindBy(id = "edit-account-new")
+ 	private WebElement inviteUserRadioBtn;
+-	
++
+ 	@FindBy(xpath = "//label[contains(text(),'Use the existing account:')]")
+ 	private WebElement existingAccountRadial;
+-	
++
+ 	@FindBy(id = "edit-next")
+ 	private WebElement continueBtn;
+-	
++
+ 	public GiveUserAccountPage() throws ClassNotFoundException, IOException {
+ 		super();
+ 	}
+-	
++
+ 	public void selectInviteUserToCreateAccount() {
+ 		inviteUserRadioBtn.click();
+ 	}
+-	
++
+ 	public void selectUseExistingAccount() {
+ 		existingAccountRadial.click();
+ 	}
+-	
++
+ 	public void clickContinueButton() {
+ 		continueBtn.click();
++		waitForPageLoad();
+ 	}
+ }
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserManagement/ManagePeoplePage.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserManagement/ManagePeoplePage.java
+index 25b284a61..661f1ee93 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserManagement/ManagePeoplePage.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserManagement/ManagePeoplePage.java
+@@ -11,66 +11,67 @@ import uk.gov.beis.pageobjects.BasePageObject;
+ import uk.gov.beis.utility.DataStore;
+ 
+ public class ManagePeoplePage extends BasePageObject {
+-	
++
+ 	@FindBy(linkText = "Add a person")
+ 	private WebElement addPersonBtn;
+-	
++
+ 	@FindBy(id = "edit-name-email-search")
+ 	private WebElement searchTextField;
+-	
++
+ 	@FindBy(id = "edit-authority-organisation-filter")
+ 	private WebElement authorityOrganisationTextField;
+-	
++
+ 	@FindBy(id = "edit-submit-par-people")
+ 	private WebElement submitBtn;
+-	
++
+ 	@FindBy(xpath = "//td[@class='views-field views-field-last-name']")
+ 	private WebElement personNameTableElement;
+-	
++
+ 	@FindBy(linkText = "Manage contact")
+ 	private WebElement manageContactBtn;
+-	
++
+ 	private String getNameColumnLocator = "//td[contains(normalize-space(), '?')]/preceding-sibling::td";
+ 	private String manageContactByEmailLocator = "//td[contains(normalize-space(), '?')]/following-sibling::td[2]/a[contains(normalize-space(), 'Manage contact')]";
+ 	private String manageContactByNameLocator = "//td[contains(normalize-space(), '?')]/following-sibling::td[3]/a[contains(normalize-space(), 'Manage contact')]";
+-	
++
+ 	public ManagePeoplePage() throws ClassNotFoundException, IOException {
+ 		super();
+ 	}
+-	
++
+ 	public void selectAddPerson() {
+ 		addPersonBtn.click();
+ 	}
+-	
++
+ 	public void enterNameOrEmail(String searchText) {
+ 		searchTextField.sendKeys(searchText);
+ 	}
+-	
++
+ 	public void enterAuthorityOrOrganisation(String searchText) {
+ 		authorityOrganisationTextField.sendKeys(searchText);
+ 	}
+-	
++
+ 	public void clickSubmit() {
+ 		submitBtn.click();
++		waitForPageLoad();
+ 	}
+-	
++
+ 	public String GetPersonName() {
+ 		WebElement nameColumn = driver.findElement(By.xpath(getNameColumnLocator.replace("?", DataStore.getSavedValue(UsableValues.PERSON_EMAIL_ADDRESS).toLowerCase())));
+ 		return nameColumn.getText().trim();
+-		
++
+ 		//return personNameTableElement.getText().trim();
+ 	}
+-	
++
+ 	public void findManageContactByEmail(String personEmail) {
+ 		WebElement link = driver.findElement(By.xpath(manageContactByEmailLocator.replace("?", personEmail)));
+ 		link.click();
+ 	}
+-	
++
+ 	public void findManageContactByName(String personName) {
+ 		WebElement link = driver.findElement(By.xpath(manageContactByNameLocator.replace("?", personName)));
+ 		link.click();
+ 	}
+-	
++
+ 	public void clickManageContact() {
+ 		manageContactBtn.click();
+ 	}
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserManagement/UserRoleTypePage.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserManagement/UserRoleTypePage.java
+index a9ef1e628..db9ad5900 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserManagement/UserRoleTypePage.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/pageobjects/UserManagement/UserRoleTypePage.java
+@@ -10,51 +10,51 @@ import org.openqa.selenium.support.FindBy;
+ import uk.gov.beis.pageobjects.BasePageObject;
+ 
+ public class UserRoleTypePage extends BasePageObject {
+-	
++
+ 	@FindBy(id = "edit-general-secretary-state")
+ 	private WebElement secretaryOfStateBtn;
+-	
++
+ 	@FindBy(id = "edit-general-senior-administration-officer")
+ 	private WebElement seniorAdministratorBtn;
+-	
++
+ 	@FindBy(id = "edit-general-par-helpdesk")
+ 	private WebElement processingTeamMemberBtn;
+-	
++
+ 	@FindBy(id = "edit-general-national-regulator")
+ 	private WebElement nationalRegulatorBtn;
+-	
++
+ 	@FindBy(id = "edit-par-data-authority-par-authority-manager")
+ 	private WebElement authorityManagerBtn;
+-	
++
+ 	@FindBy(id = "edit-par-data-authority-par-authority")
+ 	private WebElement authorityMemberBtn;
+-	
++
+ 	@FindBy(id = "edit-par-data-authority-par-enforcement")
+ 	private WebElement enforcementOfficerBtn;
+-	
++
+ 	@FindBy(id = "edit-par-data-organisation-par-organisation-manager")
+ 	private WebElement organisationManagerBtn;
+-	
++
+ 	@FindBy(id = "edit-par-data-organisation-par-organisation")
+ 	private WebElement organisationMemberBtn;
+-	
++
+ 	@FindBy(id = "edit-next")
+ 	private WebElement continueBtn;
+-	
++
+ 	public UserRoleTypePage() throws ClassNotFoundException, IOException {
+ 		super();
+ 	}
+-	
++
+ 	public void deselectAllMemberships() {
+ 		List<WebElement> checkboxes = driver.findElements(By.xpath("//input[@class='form-checkbox form-control govuk-input govuk-checkboxes__input']"));
+-		
++
+ 		for(WebElement checkbox : checkboxes) {
+ 			if(checkbox.isSelected()) {
+ 				checkbox.click();
+ 			}
+ 		}
+ 	}
+-	
++
+ 	public void chooseMembershipRole(String roleType) {
+ 		switch(roleType) {
+ 		case "Secretary of State":
+@@ -86,7 +86,7 @@ public class UserRoleTypePage extends BasePageObject {
+ 			break;
+ 		}
+ 	}
+-	
++
+ 	public void selectSecretaryOfState() {
+ 		if(!secretaryOfStateBtn.isSelected()) {
+ 			secretaryOfStateBtn.click();
+@@ -97,50 +97,51 @@ public class UserRoleTypePage extends BasePageObject {
+ 			seniorAdministratorBtn.click();
+ 		}
+ 	}
+-	
++
+ 	public void selectProcessingTeamMember() {
+ 		if(!processingTeamMemberBtn.isSelected()) {
+ 			processingTeamMemberBtn.click();
+ 		}
+ 	}
+-	
++
+ 	public void selectNationalRegulator() {
+ 		if(!nationalRegulatorBtn.isSelected()) {
+ 			nationalRegulatorBtn.click();
+ 		}
+ 	}
+-	
++
+ 	public void selectAuthorityManager() {
+ 		if(!authorityManagerBtn.isSelected()) {
+ 			authorityManagerBtn.click();
+ 		}
+ 	}
+-	
++
+ 	public void selectAuthorityMember() {
+ 		if(!authorityMemberBtn.isSelected()) {
+ 			authorityMemberBtn.click();
+ 		}
+ 	}
+-	
++
+ 	public void selectEnforcementOfficer() {
+ 		if(!enforcementOfficerBtn.isSelected()) {
+ 			enforcementOfficerBtn.click();
+ 		}
+ 	}
+-	
++
+ 	public void selectOrganisationManager() {
+ 		if(!organisationManagerBtn.isSelected()) {
+ 			organisationManagerBtn.click();
+ 		}
+ 	}
+-	
++
+ 	public void selectOrganisationMember() {
+ 		if(!organisationMemberBtn.isSelected()) {
+ 			organisationMemberBtn.click();
+ 		}
+ 	}
+-	
++
+ 	public void clickContinueButton() {
+ 		continueBtn.click();
++		waitForPageLoad();
+ 	}
+ }
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/stepdefs/SadPathStepDefinitions.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/stepdefs/SadPathStepDefinitions.java
+index ad06b118f..f69a65e53 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/stepdefs/SadPathStepDefinitions.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/stepdefs/SadPathStepDefinitions.java
+@@ -868,6 +868,13 @@ public class SadPathStepDefinitions {
+ 		websiteManager.loginPage.selectSignIn();
+ 	}
+ 
++	@Then("^the user is shown an error message Unrecognized email address or password\\. Forgot your password\\?  successfully$")
++	public void the_user_is_shown_an_error_message_Unrecognized_email_address_or_password_Forgot_your_password_successfully() throws Throwable {
++		LOG.info("Validating the error message.");
++
++		assertTrue(websiteManager.loginPage.checkErrorSummary("Unrecognized email address or password. Forgot your password?"));
++	}
++
+ 	@When("^the user enters the following Invalid and Invalid credentials$")
+ 	public void the_user_enters_the_following_Invalid_and_Invalid_credentials() throws Throwable {
+ 		LOG.info("Entering an invalid email and password.");

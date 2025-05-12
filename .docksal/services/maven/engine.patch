@@ -1,0 +1,156 @@
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/stepdefs/Hooks.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/stepdefs/Hooks.java
+index 9c7826ab6..8b6160ef8 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/stepdefs/Hooks.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/stepdefs/Hooks.java
+@@ -31,9 +31,9 @@ public class Hooks {
+ 		tag = (List<String>) scenario.getSourceTagNames();
+ 		WebdriverFactory.checkBrowserRequired(isDifferentDriverRequired());
+ 
+-		LOG.info("... Doing BeforeMethod createdriver routine...");
++		LOG.info("... Doing BeforeMethod createWebdriver routine...");
+ 
+-		driver = new SeleniumDriverConfig(Browser.Chrome, 50, 50).driver;
++		driver = WebdriverFactory.createWebdriver();
+ 
+ 		ScenarioContext.lastDriver = driver;
+ 	}
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/supportfactory/BrowserFactory.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/supportfactory/BrowserFactory.java
+index e0a2333bd..52eb96c15 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/supportfactory/BrowserFactory.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/supportfactory/BrowserFactory.java
+@@ -31,8 +31,6 @@ public class BrowserFactory {
+ 	public static String LINUX_CHROME_EXECUTABLE = PropertiesUtil.getSharedPropertyValue("linux.chrome.executable");
+ 	public static Browser browser = Browser.valueOf(System.getProperty("browser", PropertiesUtil.getConfigPropertyValue("browser")));
+ 
+-	static String desiredBrowserVersion = "browserVersion";
+-
+ 	private static String CHROMEDRIVER_LINUX = PropertiesUtil.getSharedPropertyValue("linux.chrome.driver.path");
+ 	private static String CHROMEDRIVER_WINDOWS = PropertiesUtil.getSharedPropertyValue("windows.chrome.driver.path");
+ 	private static String GECKODRIVER_WINDOWS = PropertiesUtil.getSharedPropertyValue("windows.gecko.driver.path");
+@@ -51,7 +49,7 @@ public class BrowserFactory {
+ 		default:
+ 			throw new WebDriverException("No browser specified");
+ 		}
+-		caps.setCapability("version", desiredBrowserVersion);
++		caps.setCapability("browserVersion", "135.0");
+ 		return caps;
+ 	}
+ 
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/supportfactory/PlatformFactory.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/supportfactory/PlatformFactory.java
+index 5e35c9b07..765d340ca 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/supportfactory/PlatformFactory.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/supportfactory/PlatformFactory.java
+@@ -14,29 +14,28 @@ public class PlatformFactory {
+ 
+     public static String desiredPlatformVersion = "platformVersion";
+     public static String platform = System.getProperty("platform", Platform.valueOf(PropertiesUtil.getConfigPropertyValue("platform")).toString());
+-    
++
+     public static DesiredCapabilities selectPlatform(DesiredCapabilities caps) {
+ 
+         if (platform.equals("Android")) {
+             caps.setCapability("platform", "ANDROID");
+             caps.setCapability("deviceOrientation", "landscape");
+-        } 
++        }
+         else if (platform.equals("Windows")) {
+-            LOG.info(" Running tests locally on windows");
++            LOG.info(" Running tests on windows");
+             LOG.info(" Setting Windows options: ");
+-            
+-            //caps.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
++
+             caps.setCapability(CapabilityType.ACCEPT_INSECURE_CERTS, true);
+-        } 
++        }
+         else if (platform.equals("Linux")) {
+-            LOG.info(" Running tests locally on linux");
++            LOG.info(" Running tests on linux");
+             LOG.info(" Setting Linux options: ");
+-            
++
+             caps.setCapability("acceptInsecureCerts", true);
+-        } 
++        }
+         else {
+             LOG.info(" Platform not specified");
+         }
+         return caps;
+     }
+-}
+\ No newline at end of file
++}
+diff --git a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/supportfactory/WebdriverFactory.java b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/supportfactory/WebdriverFactory.java
+index 8ce9e9cae..23f93a15e 100644
+--- a/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/supportfactory/WebdriverFactory.java
++++ b/tests/e2e/par-test-automation/src/main/java/uk/gov/beis/supportfactory/WebdriverFactory.java
+@@ -4,50 +4,54 @@ import java.net.URL;
+ import org.openqa.selenium.WebDriver;
+ import org.openqa.selenium.WebDriverException;
+ import org.openqa.selenium.remote.DesiredCapabilities;
++import org.openqa.selenium.remote.LocalFileDetector;
+ import org.openqa.selenium.remote.RemoteWebDriver;
+ 
+ import uk.gov.beis.helper.LOG;
+ import uk.gov.beis.helper.PropertiesUtil;
+ 
+ /**
+- * This class determines whether selenium is going to be run remotely i.e.
+- * selenium server OR run locally
++ * This class determines whether selenium is going to be run
++ * remotely i.e. selenium 4 server OR run locally.
+  */
+ public class WebdriverFactory {
+ 
+-	// create the webdriver instance
++	// Create the webdriver instance.
+ 
+ 	public static WebDriver createWebdriver() {
+ 		caps = new DesiredCapabilities();
+ 		String seleniumEnv = PropertiesUtil.getConfigPropertyValue("seleniumEnv");
+ 
+-		// if selenium run locally, set the appropriate capabilities
++		// If selenium run locally, set the appropriate capabilities.
+ 		if (seleniumEnv.equals("local")) {
+ 			LOG.info(" Calling select_local_browser routine");
+-			
++
+ 			caps = PlatformFactory.selectPlatform(caps);
+-			
++
+ 			return BrowserFactory.selectLocalBrowser(caps);
+ 
+-			// if selenium run on remote server, set the appropriate capabilities
++			// If selenium run on remote server, set the appropriate capabilities.
+ 		} else {
+ 			if (seleniumEnv.equals("browserstack")) {
+-				// do browserstack stuf
++				// Do browserstack stuff.
+ 			}
+ 			PlatformFactory.selectPlatform(caps);
+ 			BrowserFactory.selectBrowser(caps);
+ 			WebdriverFactory.caps.merge(additionalCapabilities);
+-			
+-			String seleniumHub = "seleniumhub";
+-			
++
++			String seleniumHub = PropertiesUtil.getConfigPropertyValue("seleniumHost");
++
++			LOG.info(" Calling remote_local_browser routine. " + "Selenium Hub: " + seleniumHub);
+ 			try {
+-				return new RemoteWebDriver(new URL(seleniumHub), caps);
++				RemoteWebDriver driver = new RemoteWebDriver(new URL(seleniumHub), caps);
++				driver.setFileDetector(new LocalFileDetector());
++				return driver;
+ 			} catch (WebDriverException e) {
+-				// don't care for now
++			  LOG.info("  WebDriver Exception: " + e.getMessage());
+ 			} catch (Exception e) {
+-				// don't care for now
++		      LOG.info("  General Exception: " + e.getMessage());
+ 			} finally {
+-				// don't care for now
++				// Don't care for now.
+ 			}
+ 		}
+ 		return null;
