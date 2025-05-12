@@ -186,7 +186,7 @@
         },
         "patches": {
             "drupal/clamav": {
-                "ClamAV setings for PAR": "./patches/drupal/clamav/clamav_add_rest_client.patch"
+                "ClamAV settings for PAR": "./patches/drupal/clamav/clamav_add_rest_client.patch"
             },
             "drupal/core": {
                 "Identifiers longer than 63 characters are truncated, causing Views to break on Postgres - https://www.drupal.org/project/drupal/issues/571548": "https://www.drupal.org/files/issues/2025-01-16/drupal-postgres_identifiers_10_4-571548-207.patch"
