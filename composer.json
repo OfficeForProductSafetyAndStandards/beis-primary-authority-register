@@ -127,7 +127,7 @@
         "phpspec/prophecy": "^1.8.0",
         "phpspec/prophecy-phpunit": "^2",
         "phpstan/phpstan": "^1.12",
-        "vimeo/psalm": "^6.10",
+        "vimeo/psalm": "^6.5",
         "zaporylie/composer-drupal-optimizations": "^1.2"
     },
     "conflict": {
