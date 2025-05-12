@@ -211,13 +211,6 @@ The build relies on a seed database which is a sanitised version of the producti
 
 Typically this process will be handled by a daily CI job, with database backups being stored to the S3 bucket `beis-par-artifacts` with the prefix `backups/`.
 
-But should this process need to be run manually...
-
-#### Backup the production database
-```
-cf ssh beis-par-production -c "python app/devops/tools/postgres_dump.py"
-```
-
 #### Sanitize the production database
 Go to the S3 artifacts bucket and download a copy of the drush-dump-production-unsanitized.sql file that was just created (and uploaded).
 

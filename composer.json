@@ -224,6 +224,23 @@
     "scripts": {
         "post-install-cmd": [
             "alias drush='/var/www/par/vendor/drush/drush/drush'"
+        ],
+        "build:themes": [
+            "Composer\\Config::disableProcessTimeout",
+            "@build:par_theme"
+        ],
+        "build:govuk_theme": [
+            "Composer\\Config::disableProcessTimeout",
+            "[ ! -z `which npm` ] && (NVM_DIR=${NVM_DIR:-\"$HOME/.nvm\"} && . \"$NVM_DIR/nvm.sh\" && nvm install 22.14.0 && cd web/themes/contrib/govuk_theme && (while !(npm install) ; do npm rebuild; done; true) && npm run-script gulp build); true"
+        ],
+        "build:par_theme": [
+            "Composer\\Config::disableProcessTimeout",
+            "[ ! -z `which npm` ] && (NVM_DIR=${NVM_DIR:-\"$HOME/.nvm\"} && . \"$NVM_DIR/nvm.sh\" && nvm install 16.20.0 && cd web/themes/custom/par_theme && (while !(npm install) ; do npm rebuild; done; true) && npm run-script gulp build); true"
         ]
+    },
+    "scripts-descriptions": {
+        "build:govuk_theme": "Build the GDS (CSS)",
+        "build:par_theme": "Build the PAR custom extensions to the GDS (CSS)",
+        "build:themes":  "Build all custom extensions to themes."
     }
 }
