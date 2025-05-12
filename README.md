@@ -240,3 +240,34 @@ Then dump the db, zip it and upload it back to the S3 artifacts bucket with the 
 ```../vendor/bin/drush @par.paas sql-dump --result-file=./drush-dump-production-sanitized-latest.sql --extra="-O -x"
 tar -zcvf drush-dump-production-sanitized-latest.sql.tar.gz -C ./ drush-dump-production-sanitized-latest.sql
 ../vendor/bin/drush fsp s3backups drush-dump-production-sanitized-latest.sql.tar.gz drush-dump-production-sanitized-latest.sql.tar.gz```
+
+Running psalm on the code base:
+```
+Install Psalm (if not already):
+
+composer require --dev vimeo/psalm
+./vendor/bin/psalm --init
+
+Run Psalm Analysis:
+
+./vendor/bin/psalm
+Generate a Report File: You can export results in various formats like JSON, XML, or a baseline file.
+
+./vendor/bin/psalm --output-format=json > psalm-report.json
+
+XML Report:
+./vendor/bin/psalm --output-format=xml > psalm-report.xml
+
+```
+
+Running phpstan on the code base:
+```
+Step 1: Install PHPStan
+
+composer require --dev phpstan/phpstan
+
+Step 2: Run PHPStan
+
+./vendor/bin/phpstan analyse --memory-limit=1G --error-format=checkstyle > phpstan-report.xml
+
+```

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<psalm>
+ <projectFiles>
+  <directory name="web/modules/custom" />
+   <directory name="web/modules/features" />
+   <directory name="web/modules/migrations" />
+   <directory name="web/themes/custom/par_theme" />
+   <directory name="web/sites/default" />
+  <ignoreFiles>
+  <directory name="web/sites/default/files" />
+  </ignoreFiles>
+ </projectFiles>
+</psalm>
+

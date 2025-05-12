@@ -1,0 +1,10 @@
+parameters:
+  level: 5  # From 0 (permissive) to 9 (strict)
+  paths:
+    - web/modules/custom
+    - web/modules/features
+    - web/modules/migrations
+    - web/themes/custom/par_theme
+    - web/sites/default
+  excludePaths:
+    - web/sites/default/files/*
