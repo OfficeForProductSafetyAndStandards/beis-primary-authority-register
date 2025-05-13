@@ -4,7 +4,6 @@ namespace Drupal\par_enforcement_review_flows\Form;
 
 use Drupal\par_enforcement_review_flows\ParFlowAccessTrait;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginInterface;
 
 /**
@@ -46,4 +45,5 @@ class ParEnforcementApproveNoticeForm extends ParBaseForm {
 
     parent::loadData();
   }
+
 }

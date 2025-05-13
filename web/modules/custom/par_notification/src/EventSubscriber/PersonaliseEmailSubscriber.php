@@ -7,6 +7,9 @@ use Drupal\par_notification\Event\ParNotificationEvent;
 use Drupal\par_notification\Event\ParNotificationEventInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ *
+ */
 class PersonaliseEmailSubscriber implements EventSubscriberInterface {
 
   /**
@@ -22,7 +25,7 @@ class PersonaliseEmailSubscriber implements EventSubscriberInterface {
    * @return mixed
    */
   #[\Override]
-  static function getSubscribedEvents(): array {
+  public static function getSubscribedEvents(): array {
     $events = [];
     if (class_exists(ParDataEvent::class)) {
       $events[ParNotificationEvent::SEND][] = ['onSend', 100];
@@ -32,7 +35,7 @@ class PersonaliseEmailSubscriber implements EventSubscriberInterface {
   }
 
   /**
-   * @param ParNotificationEventInterface $event
+   * @param \Drupal\par_notification\Event\ParNotificationEventInterface $event
    */
   public function onSend(ParNotificationEventInterface $event) {
     $first_name = $event->getRecipient()->getName();
@@ -47,4 +50,5 @@ class PersonaliseEmailSubscriber implements EventSubscriberInterface {
     $output['mail_body'] = $this->getRenderer()->renderPlain($themed_message);
     $event->setOutput($output);
   }
+
 }

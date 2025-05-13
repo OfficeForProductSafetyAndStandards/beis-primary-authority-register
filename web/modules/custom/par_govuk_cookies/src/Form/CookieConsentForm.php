@@ -6,13 +6,14 @@ use Drupal\Component\Serialization\Json;
 use Drupal\Core\Flood\FloodInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Messenger\Messenger;
-use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Path\PathValidatorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+/**
+ *
+ */
 class CookieConsentForm extends FormBase {
 
   const ALLOW_VALUE = 'allow';
@@ -92,11 +93,12 @@ class CookieConsentForm extends FormBase {
           '#type' => 'radios',
           '#title' => "Do you want to accept $type cookies?",
           '#options' => $options,
-          '#default_value' => isset($cookie_policy[$type]) && $cookie_policy[$type] !== false ?
-            self::ALLOW_VALUE :
-            self::BLOCK_VALUE,
+          '#default_value' => isset($cookie_policy[$type]) && $cookie_policy[$type] !== FALSE ?
+          self::ALLOW_VALUE :
+          self::BLOCK_VALUE,
         ];
-      } else {
+      }
+      else {
         $form[$type] = [
           '#type' => 'checkbox',
           '#title' => "Essential cookies",
@@ -161,12 +163,14 @@ class CookieConsentForm extends FormBase {
 
       if ($type !== 'essential') {
         if ($form_state->getValue($type) === self::ALLOW_VALUE) {
-          $cookie_policy[$type] = true;
-        } else {
-          $cookie_policy[$type] = false;
+          $cookie_policy[$type] = TRUE;
         }
-      } else {
-        $cookie_policy[$type] = true;
+        else {
+          $cookie_policy[$type] = FALSE;
+        }
+      }
+      else {
+        $cookie_policy[$type] = TRUE;
       }
     }
 
@@ -174,9 +178,10 @@ class CookieConsentForm extends FormBase {
       new RedirectResponse($this->getRequest()->getUri());
 
     // Set the new cookie policy.
-    $response->headers->setCookie(Cookie::create($this->getCookieName(), Json::encode($cookie_policy), \Drupal::time()->getRequestTime() + 31536000, '/', "", false, false, true, 'strict'));
+    $response->headers->setCookie(Cookie::create($this->getCookieName(), Json::encode($cookie_policy), \Drupal::time()->getRequestTime() + 31536000, '/', "", FALSE, FALSE, TRUE, 'strict'));
 
     $this->messenger()->addMessage($this->t('Your cookie preferences have been updated.'));
     $form_state->setResponse($response);
   }
+
 }

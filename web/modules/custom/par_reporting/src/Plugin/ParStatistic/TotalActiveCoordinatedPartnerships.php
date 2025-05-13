@@ -16,6 +16,9 @@ use Drupal\par_reporting\ParStatisticBase;
  */
 class TotalActiveCoordinatedPartnerships extends ParStatisticBase {
 
+  /**
+ *
+ */
   #[\Override]
   public function getStat(): int {
     $query = $this->getParDataManager()->getEntityQuery('par_data_partnership')

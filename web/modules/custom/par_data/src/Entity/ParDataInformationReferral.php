@@ -73,12 +73,11 @@ class ParDataInformationReferral extends ParDataEntity {
    * {@inheritdoc}
    */
   #[\Override]
-  public function filterRelationshipsByAction($relationship, $action)
-  {
-      return match ($action) {
-          'manage' => FALSE,
+  public function filterRelationshipsByAction($relationship, $action) {
+    return match ($action) {
+      'manage' => FALSE,
           default => parent::filterRelationshipsByAction($relationship, $action),
-      };
+    };
   }
 
   /**

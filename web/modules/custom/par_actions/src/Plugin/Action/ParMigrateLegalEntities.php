@@ -5,7 +5,6 @@ namespace Drupal\par_actions\Plugin\Action;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Action\ActionBase;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 
 /**
@@ -47,8 +46,8 @@ class ParMigrateLegalEntities extends ActionBase {
    * {@inheritdoc}
    */
   #[\Override]
-  public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
-    // @TODO Implement entity/action checks
+  public function access($object, ?AccountInterface $account = NULL, $return_as_object = FALSE) {
+    // @todo Implement entity/action checks
     $result = AccessResult::allowed();
     return $return_as_object ? $result : $result->isAllowed();
   }

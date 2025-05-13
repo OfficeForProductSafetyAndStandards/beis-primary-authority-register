@@ -7,7 +7,6 @@ use Drupal\Core\Entity\EntityAccessControlHandler;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\par_data\Entity\ParDataEntityInterface;
 
 /**
  * Access controller for trance entities.
@@ -20,7 +19,7 @@ class ParDataAccessControlHandler extends EntityAccessControlHandler {
    * {@inheritdoc}
    */
   #[\Override]
-  public function access(EntityInterface $entity, $operation, AccountInterface $account = NULL, $return_as_object = FALSE) {
+  public function access(EntityInterface $entity, $operation, ?AccountInterface $account = NULL, $return_as_object = FALSE) {
     // @see PAR-1462 - Do not allow access to any entities that are deleted.
     if ($entity->isDeleted()) {
       $result = AccessResult::forbidden()->cachePerPermissions();
@@ -72,7 +71,7 @@ class ParDataAccessControlHandler extends EntityAccessControlHandler {
         // All users are allowed to view regardless of their membership.
         return AccessResult::allowedIfHasPermission($account, $permission);
 
-        break;
+      break;
 
       case 'update':
         $permission = 'edit ' . $this->entityTypeId . ' entities';
@@ -109,7 +108,7 @@ class ParDataAccessControlHandler extends EntityAccessControlHandler {
    * {@inheritdoc}
    */
   #[\Override]
-  public function createAccess($entity_bundle = NULL, AccountInterface $account = NULL, array $context = [], $return_as_object = FALSE) {
+  public function createAccess($entity_bundle = NULL, ?AccountInterface $account = NULL, array $context = [], $return_as_object = FALSE) {
     $account = $this->prepareUser($account);
 
     if ($account->hasPermission('bypass ' . $this->entityTypeId . ' access')) {

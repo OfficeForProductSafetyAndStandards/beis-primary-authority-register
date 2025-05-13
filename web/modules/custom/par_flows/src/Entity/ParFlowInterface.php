@@ -3,7 +3,6 @@
 namespace Drupal\par_flows\Entity;
 
 use Drupal\Core\Config\Entity\ConfigEntityInterface;
-use Drupal\Core\Link;
 
 /**
  * The interface for all Flow Entities.
@@ -74,7 +73,7 @@ interface ParFlowInterface extends ConfigEntityInterface {
   /**
    * Get current step.
    *
-   * @return NULL|mixed
+   * @return null|mixed
    *   The key for the current step.
    */
   public function getCurrentStep();
@@ -90,7 +89,7 @@ interface ParFlowInterface extends ConfigEntityInterface {
    * @param string $operation
    *   An optional form operation that can be used to override the redirection.
    *
-   * @return \Drupal\Core\Url|NULL
+   * @return \Drupal\Core\Url|null
    *   The route name to progress to OR NULL if there is no route within the flow to go to.
    */
   public function progress($operation = NULL);
@@ -98,7 +97,8 @@ interface ParFlowInterface extends ConfigEntityInterface {
   /**
    * Get a step by the form id.
    *
-   * @param string $form ID
+   * @param string $form
+   *   ID
    *   The form id to lookup.
    *
    * @return mixed
@@ -133,10 +133,10 @@ interface ParFlowInterface extends ConfigEntityInterface {
   /**
    * Get route for any given step.
    *
-   * @param integer $index
+   * @param int $index
    *   The step number to get a route for.
    *
-   * @return NULL|string
+   * @return null|string
    *   The name of the route.
    */
   public function getRouteByStep($index);
@@ -144,10 +144,10 @@ interface ParFlowInterface extends ConfigEntityInterface {
   /**
    * Get a form ID for any given step.
    *
-   * @param integer $index
+   * @param int $index
    *   The step number to get a form ID for.
    *
-   * @return NULL|array
+   * @return null|array
    *   The form ID
    */
   public function getFormIdByStep($index);
@@ -163,7 +163,7 @@ interface ParFlowInterface extends ConfigEntityInterface {
   /**
    * Get link for any given step.
    *
-   * @param integer $index
+   * @param int $index
    *   The step number to get a link for.
    * @param array $route_params
    *   Additional route parameters to add to the route.
@@ -172,7 +172,7 @@ interface ParFlowInterface extends ConfigEntityInterface {
    * @param bool $access
    *   Whether or not an access check should be performed on the link.
    *
-   * @return Link
+   * @return \Drupal\Core\Link
    *   A Drupal link object.
    */
   public function getLinkByStep($index, array $route_params, array $link_options, $access = FALSE);
@@ -189,7 +189,7 @@ interface ParFlowInterface extends ConfigEntityInterface {
    * @param bool $access
    *   Whether or not an access check should be performed on the link.
    *
-   * @return Link
+   * @return \Drupal\Core\Link
    *   A Drupal link object.
    */
   public function getLinkByCurrentOperation($operation, array $route_params, array $link_options, $access = FALSE);
@@ -206,7 +206,7 @@ interface ParFlowInterface extends ConfigEntityInterface {
    * @param bool $access
    *   Whether or not an access check should be performed on the link.
    *
-   * @return Link
+   * @return \Drupal\Core\Link
    *   A Drupal link object.
    */
   public function getNextLink($operation, array $route_params, array $link_options, $access = FALSE);

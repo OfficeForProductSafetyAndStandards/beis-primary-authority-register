@@ -3,7 +3,6 @@
 namespace Drupal\par_partnership_contact_update_flows\Controller;
 
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\Controller\ParBaseController;
 
 /**
@@ -16,7 +15,7 @@ class ParConfirmedController extends ParBaseController {
   /**
    * {@inheritdoc}
    */
-  public function content(ParDataPartnership $par_data_partnership = NULL) {
+  public function content(?ParDataPartnership $par_data_partnership = NULL) {
 
     // Redirect to return page.
     return [];

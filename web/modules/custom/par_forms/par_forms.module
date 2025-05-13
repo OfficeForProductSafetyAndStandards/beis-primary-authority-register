@@ -23,6 +23,9 @@ function par_forms_help($route_name, RouteMatchInterface $route_match) {
   }
 }
 
+/**
+ *
+ */
 function par_forms_theme($existing, $type, $theme, $path) {
   $variables = [
     'gds_date' => [

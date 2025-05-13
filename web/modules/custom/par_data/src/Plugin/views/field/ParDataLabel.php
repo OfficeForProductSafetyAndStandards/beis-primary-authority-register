@@ -1,13 +1,7 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\d8views\Plugin\views\field\NodeTypeFlagger
- */
-
 namespace Drupal\par_data\Plugin\views\field;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\views\Plugin\views\field\FieldPluginBase;
 use Drupal\views\ResultRow;
@@ -40,4 +34,5 @@ class ParDataLabel extends FieldPluginBase {
       return $entity->label();
     }
   }
+
 }

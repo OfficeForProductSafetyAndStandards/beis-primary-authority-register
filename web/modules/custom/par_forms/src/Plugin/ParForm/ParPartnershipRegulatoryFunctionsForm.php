@@ -3,7 +3,6 @@
 namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
@@ -84,9 +83,10 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
         $params = ['par_data_authority' => $this->getDefaultValuesByKey('partnership_authority_id', $index, NULL)];
         $link_options = ['attributes' => ['class' => ['flow-link', 'govuk-link'], 'target' => '_blank']];
         $authority_update_link = $this->getLinkByRoute('par_authority_update_flows.authority_update_review', $params, $link_options)
-            ->setText('Update the authority\'s regulatory functions')
-            ->toString();
-      } catch (ParFlowException) {
+          ->setText('Update the authority\'s regulatory functions')
+          ->toString();
+      }
+      catch (ParFlowException) {
 
       }
       $form['no_regulatory_functions'] = [
@@ -117,7 +117,7 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
             '#value' => $this->t('Warning'),
             '#attributes' => ['class' => ['govuk-warning-text__assistive']],
           ],
-        ]
+        ],
       ];
 
       return $form;
@@ -155,7 +155,7 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
             '#value' => $this->t('Warning'),
             '#attributes' => ['class' => ['govuk-warning-text__assistive']],
           ],
-        ]
+        ],
       ];
     }
 
@@ -173,7 +173,7 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
         '#items' => $regulatory_function_options,
         '#attributes' => ['class' => ['govuk-list', 'govuk-list--bullet']],
         '#wrapper_attributes' => ['class' => 'govuk-form-group'],
-      ]
+      ],
     ];
     $bespoke_label = [
       [
@@ -283,4 +283,5 @@ class ParPartnershipRegulatoryFunctionsForm extends ParFormPluginBase {
 
     parent::validate($form, $form_state, $index, $action);
   }
+
 }

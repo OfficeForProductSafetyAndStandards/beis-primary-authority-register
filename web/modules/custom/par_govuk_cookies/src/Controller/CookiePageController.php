@@ -4,6 +4,9 @@ namespace Drupal\par_govuk_cookies\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 
+/**
+ *
+ */
 class CookiePageController extends ControllerBase {
 
   /**
@@ -28,4 +31,5 @@ class CookiePageController extends ControllerBase {
 
     return $build;
   }
+
 }

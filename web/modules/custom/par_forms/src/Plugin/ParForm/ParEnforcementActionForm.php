@@ -2,7 +2,6 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
@@ -22,14 +21,17 @@ class ParEnforcementActionForm extends ParFormPluginBase {
    */
   protected array $entityMapping = [
     ['title', 'par_data_enforcement_action', 'title', NULL, NULL, 0, [
-      'This value should not be null.' => 'You must enter a title for this enforcement action.'
-    ]],
+      'This value should not be null.' => 'You must enter a title for this enforcement action.',
+    ],
+    ],
     ['details', 'par_data_enforcement_action', 'details', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter the details of this enforcement action.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter the details of this enforcement action.',
+    ],
+    ],
     ['regulatory_function', 'par_data_enforcement_action', 'field_regulatory_function', NULL, NULL, 0, [
-      'This value should be of the correct primitive type.' => 'You must choose which regulatory functions this enforcement action relates to.'
-    ]],
+      'This value should be of the correct primitive type.' => 'You must choose which regulatory functions this enforcement action relates to.',
+    ],
+    ],
   ];
 
   /**
@@ -90,9 +92,9 @@ class ParEnforcementActionForm extends ParFormPluginBase {
       '#default_value' => $this->getDefaultValuesByKey("files", $index),
       '#upload_validators' => [
         'file_validate_extensions' => [
-          0 => $file_extensions
-        ]
-      ]
+          0 => $file_extensions,
+        ],
+      ],
     ];
 
     return $form;
@@ -113,4 +115,5 @@ class ParEnforcementActionForm extends ParFormPluginBase {
 
     parent::validate($form, $form_state, $index, $action);
   }
+
 }

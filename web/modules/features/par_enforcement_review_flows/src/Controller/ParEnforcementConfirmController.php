@@ -22,7 +22,7 @@ class ParEnforcementConfirmController extends ParBaseController {
    * {@inheritdoc}
    */
   #[\Override]
-  public function build($build = [], ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
+  public function build($build = [], ?ParDataEnforcementNotice $par_data_enforcement_notice = NULL) {
     // Information about the next steps.
     $build['next_steps'] = [
       '#type' => 'fieldset',
@@ -47,4 +47,5 @@ class ParEnforcementConfirmController extends ParBaseController {
     return parent::build($build);
 
   }
+
 }

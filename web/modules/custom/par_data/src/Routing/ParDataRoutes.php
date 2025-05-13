@@ -44,15 +44,24 @@ class ParDataRoutes implements ContainerInjectionInterface {
   /**
    * {@inheritdoc}
    *
-   * new Route()...
-   * @param string       $path         The path pattern to match
-   * @param array        $defaults     An array of default parameter values
-   * @param array        $requirements An array of requirements for parameters (regexes)
-   * @param array        $options      An array of options
-   * @param string       $host         The host pattern to match
-   * @param string|array $schemes      A required URI scheme or an array of restricted schemes
-   * @param string|array $methods      A required HTTP method or an array of restricted methods
-   * @param string       $condition    A condition that should evaluate to true for the route to match
+   * New Route()...
+   *
+   * @param string $path
+   *   The path pattern to match.
+   * @param array $defaults
+   *   An array of default parameter values.
+   * @param array $requirements
+   *   An array of requirements for parameters (regexes)
+   * @param array $options
+   *   An array of options.
+   * @param string $host
+   *   The host pattern to match.
+   * @param string|array $schemes
+   *   A required URI scheme or an array of restricted schemes.
+   * @param string|array $methods
+   *   A required HTTP method or an array of restricted methods.
+   * @param string $condition
+   *   A condition that should evaluate to true for the route to match.
    */
   public function routes() {
     $route_collection = new RouteCollection();
@@ -163,7 +172,6 @@ class ParDataRoutes implements ContainerInjectionInterface {
       );
       $route_collection->add("entity.{$id}.delete_form", $route);
 
-
       // The routes for the PAR Entity types.
       // The collection route for viewing all of the entities.
       $route = new Route(
@@ -231,8 +239,6 @@ class ParDataRoutes implements ContainerInjectionInterface {
       $route_collection->add("entity.{$type}.delete_form", $route);
 
     }
-      
-
 
     return $route_collection;
   }

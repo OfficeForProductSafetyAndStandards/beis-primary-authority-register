@@ -4,7 +4,6 @@ namespace Drupal\par_data\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
@@ -21,14 +20,14 @@ class ParDataAddController extends ControllerBase {
   /**
    * The storage handler for the entity type being added.
    *
-   * @var EntityStorageInterface
+   * @var \Drupal\Core\Entity\EntityStorageInterface
    */
   protected $storage;
 
   /**
    * The entity type storage hander for the entity type being added.
    *
-   * @var EntityStorageInterface
+   * @var \Drupal\Core\Entity\EntityStorageInterface
    */
   protected $typeStorage;
 
@@ -45,7 +44,7 @@ class ParDataAddController extends ControllerBase {
    */
   #[\Override]
   public static function create(ContainerInterface $container) {
-    /** @var EntityTypeManagerInterface $entity_type_manager */
+    /** @var \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager */
     $entity_type_manager = $container->get('entity_type.manager');
 
     $entity_type = \Drupal::routeMatch()->getParameter('par_data_entity');
@@ -95,7 +94,7 @@ class ParDataAddController extends ControllerBase {
   /**
    * Presents the creation form for trance entities of given bundle/type.
    *
-   * @param EntityInterface $par_data_entity_type
+   * @param \Drupal\Core\Entity\EntityInterface $par_data_entity_type
    *   The custom bundle to add.
    * @param \Symfony\Component\HttpFoundation\Request $request
    *   The current request object.
@@ -111,7 +110,7 @@ class ParDataAddController extends ControllerBase {
   /**
    * Provides the page title for this controller.
    *
-   * @param EntityInterface $par_data_type
+   * @param \Drupal\Core\Entity\EntityInterface $par_data_type
    *   The custom bundle/type being added.
    *
    * @return string

@@ -2,15 +2,12 @@
 
 namespace Drupal\par_notification\Plugin\ParLinkAction;
 
-use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\Url;
 use Drupal\message\MessageInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_notification\ParLinkActionBase;
 use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParTaskInterface;
-use Drupal\par_data\Entity\ParDataPartnership;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Send user to the partnership completion pages.
@@ -44,7 +41,7 @@ class ParPartnershipAmendmentNominate extends ParLinkActionBase implements ParTa
       throw new ParNotificationException('This message is invalid.');
     }
 
-    /** @var ParDataPartnership[] $partnerships */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership[] $partnerships */
     $partnerships = $message->get($this->getPrimaryField())->referencedEntities();
 
     // If any of the partnerships are awaiting business confirmation this is not complete.
@@ -81,4 +78,5 @@ class ParPartnershipAmendmentNominate extends ParLinkActionBase implements ParTa
 
     return NULL;
   }
+
 }

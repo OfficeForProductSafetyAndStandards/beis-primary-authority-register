@@ -8,6 +8,9 @@ use Drupal\par_subscriptions\Entity\ParSubscriptionInterface;
 use Drupal\user\UserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ *
+ */
 class UserDefaultSubscriber implements EventSubscriberInterface {
 
   /**
@@ -16,17 +19,20 @@ class UserDefaultSubscriber implements EventSubscriberInterface {
    * @return mixed
    */
   #[\Override]
-  static function getSubscribedEvents(): array {
+  public static function getSubscribedEvents(): array {
     $events[EntityInsertEvent::class][] = ['onEvent', 10];
     return $events;
   }
 
+  /**
+   *
+   */
   public function getSubscriptionManager() {
     return \Drupal::service('par_subscriptions.manager');
   }
 
   /**
-   * @param EntityInsertEvent $event
+   * @param \Drupal\core_event_dispatcher\Event\Entity\EntityInsertEvent $event
    */
   public function onEvent(EntityInsertEvent $event) {
     if ($event->getEntity() instanceof UserInterface) {
@@ -47,4 +53,5 @@ class UserDefaultSubscriber implements EventSubscriberInterface {
       }
     }
   }
+
 }

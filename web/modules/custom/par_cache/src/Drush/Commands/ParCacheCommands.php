@@ -3,10 +3,8 @@
 namespace Drupal\par_cache\Drush\Commands;
 
 use Drupal\Core\Cache\CacheFactoryInterface;
-use Drupal\Core\Cache\Cache;
 use Drush\Attributes as CLI;
 use Drush\Commands\DrushCommands;
-use Drush\Exceptions\UserAbortException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**

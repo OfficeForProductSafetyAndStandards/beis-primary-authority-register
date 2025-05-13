@@ -7,11 +7,13 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataAdvice;
 use Drupal\par_data\Entity\ParDataInspectionPlan;
-use Drupal\par_flows\ParFlowException;
 use Drupal\user\Entity\User;
 use Symfony\Component\Routing\Route;
 use Drupal\Core\Routing\RouteMatchInterface;
 
+/**
+ *
+ */
 trait ParPartnershipFlowAccessTrait {
 
   /**
@@ -22,7 +24,7 @@ trait ParPartnershipFlowAccessTrait {
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
    */
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL): AccessResult {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ?ParDataPartnership $par_data_partnership = NULL, ?ParDataAdvice $par_data_advice = NULL, ?ParDataInspectionPlan $par_data_inspection_plan = NULL): AccessResult {
 
     // Limit access to partnership pages.
     $user = $account->isAuthenticated() ? User::load($account->id()) : NULL;
@@ -101,4 +103,5 @@ trait ParPartnershipFlowAccessTrait {
 
     return parent::accessCallback($route, $route_match, $account);
   }
+
 }

@@ -5,7 +5,6 @@ namespace Drupal\par_person_create_flows\Form;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_person_create_flows\ParFlowAccessTrait;
 use Drupal\par_roles\ParRoleManagerInterface;
@@ -90,6 +89,9 @@ class ParContactForm extends ParBaseForm {
     $this->getFlowDataHandler()->deleteStore();
   }
 
+  /**
+   *
+   */
   public function createEntity() {
     $par_data_person = ParDataPerson::create([
       'type' => 'person',

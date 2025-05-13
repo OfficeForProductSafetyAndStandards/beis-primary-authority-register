@@ -3,7 +3,6 @@
 namespace Drupal\par_data\Entity;
 
 use Drupal\user\UserInterface;
-use \Generator;
 
 /**
  * The interface for PAR person entities.
@@ -49,7 +48,7 @@ interface ParDataPersonInterface extends ParDataEntityInterface {
   /**
    * Link up the PAR Person to a Drupal User account.
    *
-   * @param UserInterface $account
+   * @param \Drupal\user\UserInterface $account
    *   An optional user account to lookup.
    *
    * @return ?UserInterface
@@ -81,9 +80,9 @@ interface ParDataPersonInterface extends ParDataEntityInterface {
    * @param ?string $type
    *   The institution type to return, defaults to returning all institutions.
    *
-   * @return Generator & iterable<ParDataMembershipInterface>
+   * @return \Generator & iterable<ParDataMembershipInterface>
    *   The institutions belonging to this person.
    */
-  public function getInstitutions(string $type = NULL): iterable;
+  public function getInstitutions(?string $type = NULL): iterable;
 
 }

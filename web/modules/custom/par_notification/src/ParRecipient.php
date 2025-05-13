@@ -6,7 +6,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AnonymousUserSession;
 use Drupal\par_data\Entity\ParDataPersonInterface;
-use Drupal\user\Entity\User;
 use Drupal\user\UserInterface;
 
 /**
@@ -23,17 +22,16 @@ class ParRecipient implements \Stringable {
    *   The related entity, usually a user or contact record.
    */
   public function __construct(
-      /**
-       * The email address for this recipient.
-       */
-      protected string $email,
-      /**
-       * The addressable name for this recipient.
-       */
-      protected ?string $name = NULL,
-      protected ?EntityInterface $entity = NULL
-  )
-  {
+    /**
+     * The email address for this recipient.
+     */
+    protected string $email,
+    /**
+     * The addressable name for this recipient.
+     */
+    protected ?string $name = NULL,
+    protected ?EntityInterface $entity = NULL,
+  ) {
   }
 
   /**
@@ -64,7 +62,7 @@ class ParRecipient implements \Stringable {
   /**
    * If there is a user account associated with this recipient return it.
    *
-   * @return AccountInterface
+   * @return \Drupal\Core\Session\AccountInterface
    *   A user account if it exists.
    */
   public function getAccount(): AccountInterface {
@@ -74,7 +72,7 @@ class ParRecipient implements \Stringable {
     }
     // If the recipient entity is a ParDataPerson,
     // return the associated user account, or skip if there is none.
-    else if ($this->getEntity() instanceof ParDataPersonInterface) {
+    elseif ($this->getEntity() instanceof ParDataPersonInterface) {
       $user = $this->getEntity()->retrieveUserAccount();
     }
 
@@ -109,4 +107,5 @@ class ParRecipient implements \Stringable {
   public function getName(): string {
     return $this->name ?? self::DEFAULT_ADDRESSABLE_NAME;
   }
+
 }

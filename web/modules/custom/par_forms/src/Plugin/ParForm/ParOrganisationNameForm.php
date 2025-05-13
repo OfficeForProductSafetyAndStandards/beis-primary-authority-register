@@ -2,7 +2,6 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -20,10 +19,10 @@ class ParOrganisationNameForm extends ParFormPluginBase {
    */
   protected array $entityMapping = [
     ['name', 'par_data_organisation', 'organisation_name', NULL, NULL, 0, [
-      'You must fill in the missing information.' => "You must enter the organisation's name."
-    ]],
+      'You must fill in the missing information.' => "You must enter the organisation's name.",
+    ],
+    ],
   ];
-
 
   /**
    * Load the data for this form.
@@ -51,4 +50,5 @@ class ParOrganisationNameForm extends ParFormPluginBase {
 
     return $form;
   }
+
 }

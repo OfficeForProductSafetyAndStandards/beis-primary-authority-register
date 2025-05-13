@@ -27,7 +27,7 @@ class NotificationLinkField extends FieldItemList implements FieldItemListInterf
   /**
    * Get the PAR Link Manager service.
    *
-   * @return ParLinkManagerInterface
+   * @return \Drupal\par_notification\ParLinkManagerInterface
    */
   public function getLinkManager(): ParLinkManagerInterface {
     return \Drupal::service('plugin.manager.par_link_manager');
@@ -42,7 +42,7 @@ class NotificationLinkField extends FieldItemList implements FieldItemListInterf
 
     // Only process for message entities.
     if ($message instanceof MessageInterface) {
-      // TODO: Drupal Rector Notice: Please delete the following comment after you've made any necessary changes.
+      // @todo Drupal Rector Notice: Please delete the following comment after you've made any necessary changes.
       // Please confirm that `$` is an instance of `\Drupal\Core\Entity\EntityInterface`. Only the method name and not the class name was checked for this replacement, so this may be a false positive.
       $link = $this->getLinkManager()->toLink($message)->toString();
 

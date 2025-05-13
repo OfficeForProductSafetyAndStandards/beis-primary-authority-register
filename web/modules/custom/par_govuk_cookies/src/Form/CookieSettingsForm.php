@@ -7,6 +7,9 @@ use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ *
+ */
 class CookieSettingsForm extends ConfigFormBase {
 
   /**
@@ -70,7 +73,8 @@ class CookieSettingsForm extends ConfigFormBase {
       '#options' => [
         'essential' => 'Essential',
         'usage' => 'Usage',
-        'campaigns' => 'Campaigns'],
+        'campaigns' => 'Campaigns',
+      ],
       '#required' => TRUE,
       '#default_value' => $config->get('types') ?? [],
     ];
@@ -98,4 +102,5 @@ class CookieSettingsForm extends ConfigFormBase {
 
     parent::submitForm($form, $form_state);
   }
+
 }

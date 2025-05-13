@@ -3,11 +3,7 @@
 namespace Drupal\par_enforcement_remove_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataEnforcementAction;
-use Drupal\par_data\Entity\ParDataEnforcementNotice;
-use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginInterface;
 
 /**
@@ -47,7 +43,6 @@ class ParEnforcementRemovalForm extends ParBaseForm {
 
     parent::loadData();
 
-
   }
 
   /**
@@ -65,4 +60,5 @@ class ParEnforcementRemovalForm extends ParBaseForm {
 
     parent::submitForm($form, $form_state);
   }
+
 }

@@ -7,7 +7,6 @@ use Drupal\par_data\Entity\ParDataInspectionPlan;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 
-use Drupal\file\Entity\File;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
@@ -41,7 +40,7 @@ class ParPartnershipFlowsInspectionPlanUploadForm extends ParBaseForm {
    * @param \Drupal\par_data\Entity\ParDataInspectionPlan $par_data_inspection_plan
    *   The inspection plan being retrieved.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL) {
+  public function retrieveEditableValues(?ParDataPartnership $par_data_partnership = NULL, ?ParDataInspectionPlan $par_data_inspection_plan = NULL) {
     if (isset($par_data_inspection_plan)) {
       $files = $par_data_inspection_plan->get('document')->referencedEntities();
       $ids = [];
@@ -56,13 +55,15 @@ class ParPartnershipFlowsInspectionPlanUploadForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL, ?ParDataInspectionPlan $par_data_inspection_plan = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $par_data_inspection_plan);
 
     // External link for inspection plan templates.
     $par_text = t('For inspection plan templates, go to: ');
-    $options = ['attributes' => ['target' => '_blank'],
-               'fragment' => 'templates'];
+    $options = [
+      'attributes' => ['target' => '_blank'],
+      'fragment' => 'templates',
+    ];
     $url_obj = Url::fromUri('https://www.gov.uk/government/collections/primary-authority-documents', $options);
 
     $link = Link::fromTextAndUrl(t('Primary Authority templates'), $url_obj)->toString();
@@ -97,9 +98,9 @@ class ParPartnershipFlowsInspectionPlanUploadForm extends ParBaseForm {
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("inspection_plan_files"),
       '#upload_validators' => [
         'file_validate_extensions' => [
-          0 => $file_extensions
-        ]
-      ]
+          0 => $file_extensions,
+        ],
+      ],
     ];
 
     return parent::buildForm($form, $form_state);

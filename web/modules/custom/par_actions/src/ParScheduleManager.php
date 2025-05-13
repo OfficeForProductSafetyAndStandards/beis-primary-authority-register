@@ -8,7 +8,6 @@ use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Logger\LoggerChannelTrait;
-use Drupal\Component\Datetime\TimeInterface;
 
 /**
  * Provides a PAR Schedule plugin manager.
@@ -27,7 +26,7 @@ class ParScheduleManager extends DefaultPluginManager {
   const PAR_LOGGER_CHANNEL = 'par';
 
   /**
-   * The minimum interval required between runs
+   * The minimum interval required between runs.
    *
    * Scheduled rules can be run at most once a day, this allows the
    * queued items to be processed before the next run.

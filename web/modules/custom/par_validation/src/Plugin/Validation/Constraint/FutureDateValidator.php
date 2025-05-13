@@ -2,13 +2,12 @@
 
 namespace Drupal\par_validation\Plugin\Validation\Constraint;
 
-use Drupal\Core\Datetime\DrupalDateTime;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqualValidator;
 
 /**
-* Validates the future date constraint.
-*/
+ * Validates the future date constraint.
+ */
 class FutureDateValidator extends GreaterThanOrEqualValidator {
 
   /**

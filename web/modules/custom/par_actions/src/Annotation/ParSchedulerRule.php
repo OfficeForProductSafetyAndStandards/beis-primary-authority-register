@@ -67,7 +67,7 @@ class ParSchedulerRule extends Plugin {
    * The time relative to the entity/property.
    *
    * These time properties should be recorded in relative time formats:
-   * https://www.php.net/manual/en/datetime.formats.relative.php
+   * https://www.php.net/manual/en/datetime.formats.relative.php.
    *
    * e.g. "+5 weeks", "1 day", "-12 days", "-7 weekdays", "-1 year"
    *
@@ -92,7 +92,7 @@ class ParSchedulerRule extends Plugin {
    * These time properties should be recorded in relative time formats,
    * limited to days, weeks, months and years, and are assumed that
    * these are always in the future:
-   * https://www.php.net/manual/en/datetime.formats.relative.php
+   * https://www.php.net/manual/en/datetime.formats.relative.php.
    *
    * e.g. "1 day", "2 weeks", "3 months", "1 year"
    *
@@ -109,7 +109,7 @@ class ParSchedulerRule extends Plugin {
    * Whether to resolve this action by sticking it in a queue
    * instead of trying to resolve immediately.
    *
-   * @var boolean
+   * @var bool
    */
   public $queue;
 

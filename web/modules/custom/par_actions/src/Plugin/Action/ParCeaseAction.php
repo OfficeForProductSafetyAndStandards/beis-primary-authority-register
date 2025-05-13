@@ -20,14 +20,23 @@ use Drupal\par_data\Entity\ParDataEntityInterface;
  */
 class ParCeaseAction extends ActionBase {
 
+  /**
+   *
+   */
   public function getCurrentUser() {
     return \Drupal::currentUser();
   }
 
+  /**
+   *
+   */
   public function getAccountSwitcher() {
     return \Drupal::service('account_switcher');
   }
 
+  /**
+   *
+   */
   public function getDateFormatter() {
     return \Drupal::service('date.formatter');
   }
@@ -61,8 +70,8 @@ class ParCeaseAction extends ActionBase {
    * {@inheritdoc}
    */
   #[\Override]
-  public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
-    // @TODO Implement entity/action checks
+  public function access($object, ?AccountInterface $account = NULL, $return_as_object = FALSE) {
+    // @todo Implement entity/action checks
     $result = AccessResult::allowed();
     return $return_as_object ? $result : $result->isAllowed();
   }

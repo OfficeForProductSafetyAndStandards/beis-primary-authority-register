@@ -116,8 +116,8 @@ class GovukCookie extends ConditionPluginBase implements ContainerFactoryPluginI
   #[\Override]
   public function defaultConfiguration() {
     return [
-        'enable' => FALSE,
-      ] + parent::defaultConfiguration();
+      'enable' => FALSE,
+    ] + parent::defaultConfiguration();
   }
 
   /**
@@ -142,7 +142,7 @@ class GovukCookie extends ConditionPluginBase implements ContainerFactoryPluginI
   public function evaluate() {
     // Ignore this condition if not enabled.
     if (!$this->configuration['enable']) {
-      return true;
+      return TRUE;
     }
 
     // Determine whether the cookie is set.

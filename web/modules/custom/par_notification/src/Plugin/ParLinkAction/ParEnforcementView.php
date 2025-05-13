@@ -4,10 +4,8 @@ namespace Drupal\par_notification\Plugin\ParLinkAction;
 
 use Drupal\Core\Url;
 use Drupal\message\MessageInterface;
-use Drupal\par_data\Entity\ParDataEnforcementNotice;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_notification\ParLinkActionBase;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Send user to the enforcement page.
@@ -52,4 +50,5 @@ class ParEnforcementView extends ParLinkActionBase {
 
     return NULL;
   }
+
 }

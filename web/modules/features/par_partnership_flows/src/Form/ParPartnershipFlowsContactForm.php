@@ -3,15 +3,11 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
-use Drupal\Core\Session\AccountProxyInterface;
-use Drupal\user\Entity\User;
 
 /**
  * The primary contact form for the partnership details steps of the
@@ -27,23 +23,29 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
    */
   protected $entityMapping = [
     ['first_name', 'par_data_person', 'first_name', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter the first name for this contact.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter the first name for this contact.',
+    ],
+    ],
     ['last_name', 'par_data_person', 'last_name', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter the last name for this contact.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter the last name for this contact.',
+    ],
+    ],
     ['work_phone', 'par_data_person', 'work_phone', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter the work phone number for this contact.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter the work phone number for this contact.',
+    ],
+    ],
     ['mobile_phone', 'par_data_person', 'mobile_phone', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter the mobile phone number for this contact.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter the mobile phone number for this contact.',
+    ],
+    ],
     ['email', 'par_data_person', 'email', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter the email address for this contact.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter the email address for this contact.',
+    ],
+    ],
     ['notes', 'par_data_person', 'communication_notes', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter any communication notes that are relevant to this contact.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter any communication notes that are relevant to this contact.',
+    ],
+    ],
   ];
 
   /**
@@ -67,6 +69,9 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
     }
   }
 
+  /**
+ *
+ */
   #[\Override]
   public function titleCallback() {
     // Check if editing an existing entity.
@@ -96,7 +101,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
    * @param \Drupal\par_data\Entity\ParDataPerson $par_data_person
    *   The Partnership being retrieved.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
+  public function retrieveEditableValues(?ParDataPartnership $par_data_partnership = NULL, ?ParDataPerson $par_data_person = NULL) {
     if ($par_data_person) {
       // Load person data.
       $this->getFlowDataHandler()->setFormPermValue("salutation", $par_data_person->get('salutation')->getString());
@@ -123,7 +128,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL, ?ParDataPerson $par_data_person = NULL) {
     $par_data_person = $this->getPersonParam();
     $this->retrieveEditableValues($par_data_partnership, $par_data_person);
 
@@ -185,7 +190,7 @@ class ParPartnershipFlowsContactForm extends ParBaseForm {
       $par_data_person->set('email', $this->getFlowDataHandler()->getTempDataValue('email'));
       $par_data_person->set('communication_notes', $this->getFlowDataHandler()->getTempDataValue('notes'));
 
-      // Save the contact preferences
+      // Save the contact preferences.
       $email_preference_value = isset($this->getFlowDataHandler()->getTempDataValue('preferred_contact')['communication_email'])
         && !empty($this->getFlowDataHandler()->getTempDataValue('preferred_contact')['communication_email']);
       $par_data_person->set('communication_email', $email_preference_value);

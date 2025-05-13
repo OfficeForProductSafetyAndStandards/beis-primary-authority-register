@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\par_roles\Plugin\views\access\MultiplePermissions.
- */
-
 namespace Drupal\par_roles\Plugin\views\access;
 
 use Drupal\Core\Form\FormStateInterface;
@@ -32,8 +27,10 @@ class MultiplePermissions extends Permission {
    */
   #[\Override]
   public function access(AccountInterface $account) {
-    $access = FALSE; // flag for only one access rule enough
-    $access_all = TRUE; // flag for all access rules needed
+    // Flag for only one access rule enough.
+    $access = FALSE;
+    // Flag for all access rules needed.
+    $access_all = TRUE;
     foreach ($this->options['mult_perm'] as $permission) {
       if ($account->hasPermission($permission) && !$this->options['mult_perm_all']) {
         $access = TRUE;
@@ -57,6 +54,9 @@ class MultiplePermissions extends Permission {
     $route->setRequirement('_permission', $permission);
   }
 
+  /**
+ *
+ */
   #[\Override]
   public function summaryTitle() {
     return ($this->options['mult_perm_all']) ?
@@ -64,7 +64,9 @@ class MultiplePermissions extends Permission {
       $this->t('Enough only one permission');
   }
 
-
+  /**
+ *
+ */
   #[\Override]
   protected function defineOptions() {
     $options = parent::defineOptions();
@@ -74,6 +76,9 @@ class MultiplePermissions extends Permission {
     return $options;
   }
 
+  /**
+ *
+ */
   #[\Override]
   public function buildOptionsForm(&$form, FormStateInterface $form_state) {
     parent::buildOptionsForm($form, $form_state);
@@ -96,4 +101,3 @@ class MultiplePermissions extends Permission {
   }
 
 }
-

@@ -2,8 +2,6 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -21,8 +19,9 @@ class ParEnquiryForm extends ParFormPluginBase {
    */
   protected array $entityMapping = [
     ['notes', 'par_data_general_enquiry', 'notes', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter the details of this enquiry.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter the details of this enquiry.',
+    ],
+    ],
   ];
 
   /**
@@ -66,11 +65,12 @@ class ParEnquiryForm extends ParFormPluginBase {
       '#default_value' => $this->getDefaultValuesByKey("files", $index),
       '#upload_validators' => [
         'file_validate_extensions' => [
-          0 => $file_extensions
-        ]
-      ]
+          0 => $file_extensions,
+        ],
+      ],
     ];
 
     return $form;
   }
+
 }

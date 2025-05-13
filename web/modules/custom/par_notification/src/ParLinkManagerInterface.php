@@ -23,18 +23,17 @@ interface ParLinkManagerInterface {
    *
    * @see PAR-1948 - https://regulatorydelivery.atlassian.net/browse/PAR-1948
    *
-   * @param MessageTemplateInterface $message_template
+   * @param \Drupal\message\MessageTemplateInterface $message_template
    *   The message template (aka the message bundle entity).
    *
    * @return ParTaskInterface[]
    */
   public function retrieveTasks(MessageTemplateInterface $message_template): array;
 
-
-    /**
+  /**
    * Generate the link manager URL.
    *
-   * @param integer|string $message_id
+   * @param int|string $message_id
    *   Can be a message id or a message replacement token.
    *
    * @return \Drupal\Core\Url
@@ -49,15 +48,15 @@ interface ParLinkManagerInterface {
    * Plugins will handle fallback mechanisms in cases where the user is
    * not signed in, or the page is not accessible.
    *
-   * @param RouteMatchInterface $route
+   * @param \Drupal\Core\Routing\RouteMatchInterface $route
    *   The link manager route for this message.
-   * @param MessageInterface $message
+   * @param \Drupal\message\MessageInterface $message
    *   The notification message that is being actioned.
    *
    * @throws ParNotificationException
    *   When the link cannot be accessed after all the checks have been made.
    *
-   * @return RedirectResponse|void
+   * @return \Symfony\Component\HttpFoundation\RedirectResponse|void
    */
   public function receive(RouteMatchInterface $route, MessageInterface $message): ?RedirectResponse;
 
@@ -67,13 +66,13 @@ interface ParLinkManagerInterface {
    * Plugins will handle fallback mechanisms in cases where the user is
    * not signed in, or the page is not accessible.
    *
-   * @param MessageInterface $message
+   * @param \Drupal\message\MessageInterface $message
    *   The notification message that is being actioned.
    *
    * @throws ParNotificationException
    *   When the link cannot be accessed after all the checks have been made.
    *
-   * @return Link|void
+   * @return \Drupal\Core\Link|void
    *   The primary link for this notification.
    */
   public function link(MessageInterface $message): ?Link;

@@ -7,7 +7,6 @@ use Drupal\par_data\Entity\ParDataAdvice;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 
-use Drupal\file\Entity\File;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
@@ -41,7 +40,7 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
    * @param \Drupal\par_data\Entity\ParDataAdvice $par_data_advice
    *   The advice being retrieved.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
+  public function retrieveEditableValues(?ParDataPartnership $par_data_partnership = NULL, ?ParDataAdvice $par_data_advice = NULL) {
     if (isset($par_data_advice)) {
       $files = $par_data_advice->get('document')->referencedEntities();
       $ids = [];
@@ -56,13 +55,15 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL, ?ParDataAdvice $par_data_advice = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $par_data_advice);
 
     // PAR-1158 add the required external link for advice templates.
     $par_text = t('For advice templates, go to: ');
-    $options = ['attributes' => ['target' => '_blank'],
-               'fragment' => 'templates'];
+    $options = [
+      'attributes' => ['target' => '_blank'],
+      'fragment' => 'templates',
+    ];
     $url_obj = Url::fromUri('https://www.gov.uk/government/collections/primary-authority-documents', $options);
 
     $link = Link::fromTextAndUrl(t('Primary Authority templates'), $url_obj)->toString();
@@ -97,9 +98,9 @@ class ParPartnershipFlowsAdviceUploadForm extends ParBaseForm {
       '#default_value' => $this->getFlowDataHandler()->getDefaultValues("files"),
       '#upload_validators' => [
         'file_validate_extensions' => [
-          0 => $file_extensions
-        ]
-      ]
+          0 => $file_extensions,
+        ],
+      ],
     ];
 
     return parent::buildForm($form, $form_state);

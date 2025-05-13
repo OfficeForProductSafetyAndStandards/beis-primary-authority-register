@@ -8,6 +8,9 @@ use Drupal\par_data\Entity\ParDataInspectionFeedback;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_notification\ParEventSubscriberBase;
 
+/**
+ *
+ */
 class NewInspectionFeedbackSubscriber extends ParEventSubscriberBase {
 
   /**
@@ -23,7 +26,7 @@ class NewInspectionFeedbackSubscriber extends ParEventSubscriberBase {
    * @return mixed
    */
   #[\Override]
-  static function getSubscribedEvents(): array {
+  public static function getSubscribedEvents(): array {
     $events = [];
     if (class_exists(ParDataEvent::class)) {
       $events[EntityInsertEvent::class] = ['onEvent', 800];
@@ -40,7 +43,8 @@ class NewInspectionFeedbackSubscriber extends ParEventSubscriberBase {
 
     // 1. Check if the entity is a ParDataInspectionFeedback
     if (!$entity instanceof ParDataInspectionFeedback) {
-      return; // Exit if not the correct entity type
+      // Exit if not the correct entity type.
+      return;
     }
 
     $par_data_partnership = $entity?->getPartnership(TRUE);

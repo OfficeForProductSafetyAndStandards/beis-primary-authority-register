@@ -6,9 +6,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_authority_update_flows\ParFlowAccessTrait;
-use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataPremises;
 
 /**
  * The authority update review form.
@@ -27,11 +25,11 @@ class ParAuthorityReviewForm extends ParBaseForm {
    */
   #[\Override]
   public function loadData() {
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataAuthority $par_data_authority */
-    /** @var ParDataPremises $par_data_premises */
+    /** @var \Drupal\par_data\Entity\ParDataAuthority $par_data_authority */
+    /** @var \Drupal\par_data\Entity\ParDataPremises $par_data_premises */
 
     if (isset($par_data_authority)) {
       $this->getFlowDataHandler()->setParameter('par_data_authority', $par_data_authority);
@@ -44,6 +42,9 @@ class ParAuthorityReviewForm extends ParBaseForm {
     parent::loadData();
   }
 
+  /**
+   *
+   */
   public function createEntities() {
     $par_data_authority = $this->getFlowDataHandler()->getParameter('par_data_authority');
     $par_data_premises = $par_data_authority?->getPremises(TRUE);
@@ -100,7 +101,7 @@ class ParAuthorityReviewForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataAuthority $par_data_authority = NULL) {
     // Change the action to save.
     $this->getFlowNegotiator()->getFlow()->setActions(['save', 'cancel']);
 
@@ -128,7 +129,7 @@ class ParAuthorityReviewForm extends ParBaseForm {
           '#value' => $this->t('Warning'),
           '#attributes' => ['class' => ['govuk-warning-text__assistive']],
         ],
-      ]
+      ],
     ];
 
     return parent::buildForm($form, $form_state);
@@ -141,11 +142,11 @@ class ParAuthorityReviewForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataAuthority $par_data_authority */
-    /** @var ParDataPremises $par_data_premises */
+    /** @var \Drupal\par_data\Entity\ParDataAuthority $par_data_authority */
+    /** @var \Drupal\par_data\Entity\ParDataPremises $par_data_premises */
 
     if ($par_data_authority instanceof ParDataEntityInterface && $par_data_authority->save()) {
       if ($par_data_premises instanceof ParDataEntityInterface) {

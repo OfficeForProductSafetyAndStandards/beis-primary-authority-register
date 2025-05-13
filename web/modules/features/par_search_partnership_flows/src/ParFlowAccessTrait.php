@@ -8,6 +8,9 @@ use Drupal\par_flows\ParFlowException;
 use Symfony\Component\Routing\Route;
 use Drupal\Core\Routing\RouteMatchInterface;
 
+/**
+ *
+ */
 trait ParFlowAccessTrait {
 
   /**
@@ -22,10 +25,12 @@ trait ParFlowAccessTrait {
     try {
       // Get a new flow negotiator that points the the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException) {
+    }
+    catch (ParFlowException) {
 
     }
 
     return parent::accessCallback($route, $route_match, $account);
   }
+
 }

@@ -2,14 +2,7 @@
 
 namespace Drupal\par_partnership_application_flows\Form;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\invite\Entity\Invite;
-use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\user\Entity\User;
-use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
  * Class InviteByEmailBlockForm.
@@ -18,7 +11,8 @@ use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
  */
 class ParInviteForm extends ParBaseForm {
 
-  /** @var invite type */
+  /**
+   * @var invite type */
   protected $invite_type = 'invite_organisation_member';
 
   protected $pageTitle = 'Invite the business';

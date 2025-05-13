@@ -23,7 +23,7 @@ class ParRdHelpDeskUnrevokeForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL) {
     $form['partnership_info'] = [
       '#type' => 'container',
       'heading' => [
@@ -55,4 +55,5 @@ class ParRdHelpDeskUnrevokeForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
   }
+
 }

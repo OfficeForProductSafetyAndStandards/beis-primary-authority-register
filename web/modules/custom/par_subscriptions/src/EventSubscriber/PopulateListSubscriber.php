@@ -4,7 +4,6 @@ namespace Drupal\par_subscriptions\EventSubscriber;
 
 use Drupal\par_subscriptions\Entity\ParSubscriptionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\par_subscriptions\Entity\ParSubscriptionList;
 use Drupal\par_subscriptions\ParSubscriptionManager;
 use Drupal\user\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -13,6 +12,9 @@ use Drupal\Core\Config\ConfigImporterEvent;
 use Drupal\Core\Config\ConfigManagerInterface;
 use Drupal\Core\Config\StorageInterface;
 
+/**
+ *
+ */
 class PopulateListSubscriber implements EventSubscriberInterface {
 
   /**
@@ -105,8 +107,9 @@ class PopulateListSubscriber implements EventSubscriberInterface {
    * @return mixed
    */
   #[\Override]
-  static function getSubscribedEvents(): array {
+  public static function getSubscribedEvents(): array {
     $events[ConfigEvents::IMPORT][] = ['onConfigImporterImport', 30];
     return $events;
   }
+
 }

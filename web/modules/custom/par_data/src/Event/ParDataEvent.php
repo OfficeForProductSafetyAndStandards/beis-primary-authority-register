@@ -21,15 +21,15 @@ if (class_exists(EntityUpdateEvent::class)) {
     const STATUS_CHANGE = 'par_data.entity.status';
 
     /**
-     * The name of the event triggered when entity reference is actioned
+     * The name of the event triggered when entity reference is actioned.
+     *
      * @Event
      *
      * @var string
      */
     const ENTITY_CUSTOM_ACTION = 'par_data.entity.custom_action';
 
-    public function __construct(ParDataEntityInterface $entity)
-    {
+    public function __construct(ParDataEntityInterface $entity) {
       parent::__construct($entity);
     }
 
@@ -43,8 +43,7 @@ if (class_exists(EntityUpdateEvent::class)) {
      *
      * @return string
      */
-    public static function statusChange(string $entity_type_id, string $status): string
-    {
+    public static function statusChange(string $entity_type_id, string $status): string {
       return implode('.', [self::STATUS_CHANGE, $entity_type_id, $status]);
     }
 
@@ -58,8 +57,7 @@ if (class_exists(EntityUpdateEvent::class)) {
      *
      * @return string
      */
-    public static function customAction(string $entity_type, string $action): string
-    {
+    public static function customAction(string $entity_type, string $action): string {
       return implode('.', [self::ENTITY_CUSTOM_ACTION, $entity_type, $action]);
     }
 

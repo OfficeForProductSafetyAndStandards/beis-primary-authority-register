@@ -1,8 +1,10 @@
 <?php
+
 /**
  * @file
  * Installation hooks for par_data_test module.
  */
+
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\Core\Serialization\Yaml;
 
@@ -18,8 +20,8 @@ function par_data_test_uninstall() {
   $serializer = \Drupal::service('serializer');
 
   $module_folder = \Drupal::moduleHandler()
-      ->getModule('par_data_test')
-      ->getPath() . '/content';
+    ->getModule('par_data_test')
+    ->getPath() . '/content';
   $entity_folders = array_filter(scandir($module_folder), fn($item) => $item[0] !== '.');
 
   // Locate all test data uuids.

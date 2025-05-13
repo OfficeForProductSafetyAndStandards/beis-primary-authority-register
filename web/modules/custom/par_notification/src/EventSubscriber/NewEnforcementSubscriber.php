@@ -7,6 +7,9 @@ use Drupal\core_event_dispatcher\Event\Entity\EntityInsertEvent;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
 use Drupal\par_notification\ParEventSubscriberBase;
 
+/**
+ *
+ */
 class NewEnforcementSubscriber extends ParEventSubscriberBase {
 
   /**
@@ -22,7 +25,7 @@ class NewEnforcementSubscriber extends ParEventSubscriberBase {
    * @return mixed
    */
   #[\Override]
-  static function getSubscribedEvents(): array {
+  public static function getSubscribedEvents(): array {
     $events = [];
     if (class_exists(ParDataEvent::class)) {
       $events[EntityInsertEvent::class][] = ['onEvent', 800];
@@ -32,13 +35,13 @@ class NewEnforcementSubscriber extends ParEventSubscriberBase {
   }
 
   /**
-   * @param EntityInsertEvent $event
+   * @param \Drupal\core_event_dispatcher\Event\Entity\EntityInsertEvent $event
    */
   public function onEvent(EntityInsertEvent $event) {
     if ($event->getEntity() instanceof ParDataEnforcementNotice) {
       $this->setEvent($event);
 
-      /** @var ParDataEnforcementNotice $entity */
+      /** @var \Drupal\par_data\Entity\ParDataEnforcementNotice $entity */
       $entity = $event->getEntity();
 
       // Only send messages for active deviation requests.

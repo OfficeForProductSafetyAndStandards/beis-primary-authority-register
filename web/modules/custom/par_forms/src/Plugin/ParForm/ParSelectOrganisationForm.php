@@ -63,7 +63,7 @@ class ParSelectOrganisationForm extends ParFormPluginBase {
     if ($organisations) {
       // Initialize pager and get current page.
       $number_of_items = 10;
-      $pager = $this->getUniquePager()->getPager('par_plugin_organisation_select_'.$index);
+      $pager = $this->getUniquePager()->getPager('par_plugin_organisation_select_' . $index);
       $current_pager = $this->getUniquePager()->getPagerManager()->createPager(count($organisations), $number_of_items, $pager);
 
       // Split the items up into chunks:
@@ -81,15 +81,15 @@ class ParSelectOrganisationForm extends ParFormPluginBase {
         '#attributes' => ['class' => ['govuk-form-group']],
       ];
 
-      // @TODO Add pager so that any selected checkboxes aren't unselected when a new page is loaded.
-//      $form['pager'] = [
-//        '#type' => 'pager',
-//        '#theme' => 'pagerer',
-//        '#element' => $index,
-//        '#config' => [
-//          'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
-//        ],
-//      ];
+      // @todo Add pager so that any selected checkboxes aren't unselected when a new page is loaded.
+      //   $form['pager'] = [
+      //        '#type' => 'pager',
+      //        '#theme' => 'pagerer',
+      //        '#element' => $index,
+      //        '#config' => [
+      //          'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
+      //        ],
+      //      ];
     }
     else {
       $form['intro'] = [
@@ -123,4 +123,5 @@ class ParSelectOrganisationForm extends ParFormPluginBase {
 
     parent::validate($form, $form_state, $index, $action);
   }
+
 }

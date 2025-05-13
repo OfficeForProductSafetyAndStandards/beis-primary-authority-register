@@ -1,14 +1,7 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\d8views\Plugin\views\field\NodeTypeFlagger
- */
-
 namespace Drupal\par_notification\Plugin\views\field;
 
-use Drupal\Component\Utility\Html;
-use Drupal\Core\Link;
 use Drupal\message\MessageInterface;
 use Drupal\par_notification\ParLinkManagerInterface;
 use Drupal\views\Plugin\views\field\FieldPluginBase;
@@ -26,7 +19,7 @@ class ParNotificationAction extends FieldPluginBase {
   /**
    * Get the PAR Link Manager service.
    *
-   * @return ParLinkManagerInterface
+   * @return \Drupal\par_notification\ParLinkManagerInterface
    */
   public function getLinkManager(): ParLinkManagerInterface {
     return \Drupal::service('plugin.manager.par_link_manager');
@@ -43,7 +36,7 @@ class ParNotificationAction extends FieldPluginBase {
   /**
    * @{inheritdoc}
    *
-   * @param ResultRow $values
+   * @param \Drupal\views\ResultRow $values
    *
    * @return string
    */
@@ -62,7 +55,7 @@ class ParNotificationAction extends FieldPluginBase {
       $colour = 'govuk-tag--red';
       $status = 'Action required';
     }
-    else if (!empty($tasks)) {
+    elseif (!empty($tasks)) {
       // Display a blue tag for tasks that have been completed.
       $colour = '';
       $status = 'Complete';
@@ -82,4 +75,5 @@ class ParNotificationAction extends FieldPluginBase {
 
     return $this->getRenderer()->render($status_tag);
   }
+
 }

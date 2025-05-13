@@ -236,7 +236,9 @@
         "build:par_theme": [
             "Composer\\Config::disableProcessTimeout",
             "[ ! -z `which npm` ] && (NVM_DIR=${NVM_DIR:-\"$HOME/.nvm\"} && . \"$NVM_DIR/nvm.sh\" && nvm install 16.20.0 && cd web/themes/custom/par_theme && (while !(npm install) ; do npm rebuild; done; true) && npm run-script gulp build); true"
-        ]
+        ],
+        "cs-check": "phpcs",
+        "cs-fix": "phpcbf"
     },
     "scripts-descriptions": {
         "build:govuk_theme": "Build the GDS (CSS)",

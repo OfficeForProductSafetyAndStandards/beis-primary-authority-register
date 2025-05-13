@@ -20,4 +20,5 @@ class ParUserRouteSubscriber extends RouteSubscriberBase {
       $route->setRequirement('_permission', 'administer users');
     }
   }
+
 }

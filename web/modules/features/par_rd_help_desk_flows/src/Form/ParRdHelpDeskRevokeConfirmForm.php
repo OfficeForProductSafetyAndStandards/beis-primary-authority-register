@@ -36,11 +36,12 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL): AccessResult {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ?ParDataPartnership $par_data_partnership = NULL): AccessResult {
     try {
       // Get a new flow negotiator that points the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException) {
+    }
+    catch (ParFlowException) {
 
     }
 
@@ -56,7 +57,7 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
+  public function retrieveEditableValues(?ParDataPartnership $par_data_partnership = NULL) {
 
   }
 
@@ -64,7 +65,7 @@ class ParRdHelpDeskRevokeConfirmForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
     if ($par_data_partnership && $par_data_partnership->inProgress()) {

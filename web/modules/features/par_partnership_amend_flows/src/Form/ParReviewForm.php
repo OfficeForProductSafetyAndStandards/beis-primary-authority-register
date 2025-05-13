@@ -2,17 +2,9 @@
 
 namespace Drupal\par_partnership_amend_flows\Form;
 
-use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\Component\Datetime\DateTimePlus;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataLegalEntity;
-use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPartnershipLegalEntity;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Form\ParBaseForm;
@@ -38,11 +30,11 @@ class ParReviewForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
-    // Set the data values on the entities
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL) {
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataLegalEntity[] $par_data_legal_entities */
+    /** @var \Drupal\par_data\Entity\ParDataLegalEntity[] $par_data_legal_entities */
 
     // Display the authorities.
     $form['partnership'] = [
@@ -107,6 +99,9 @@ class ParReviewForm extends ParBaseForm {
     return parent::buildForm($form, $form_state);
   }
 
+  /**
+   *
+   */
   public function createEntities() {
     // Set the data for the legal entities.
     $legal_entity_prefix = ParFormBuilder::PAR_COMPONENT_PREFIX . 'legal_entity';
@@ -151,10 +146,10 @@ class ParReviewForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataLegalEntity[] $par_data_legal_entities */
+    /** @var \Drupal\par_data\Entity\ParDataLegalEntity[] $par_data_legal_entities */
 
     // Ensure that the amendment has been confirmed.
     if (!$form_state->getValue('confirmation')) {
@@ -173,10 +168,10 @@ class ParReviewForm extends ParBaseForm {
     // Get the partnership.
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataLegalEntity[] $par_data_legal_entities */
+    /** @var \Drupal\par_data\Entity\ParDataLegalEntity[] $par_data_legal_entities */
 
     // Transfer the partnership.
     $partnership_legal_entities = [];

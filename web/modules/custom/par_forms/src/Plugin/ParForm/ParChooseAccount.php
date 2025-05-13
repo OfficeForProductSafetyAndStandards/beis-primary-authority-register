@@ -3,18 +3,9 @@
 namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\comment\CommentInterface;
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_flows\ParFlowException;
-use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
-use Drupal\user\Entity\Role;
 use Drupal\user\Entity\User;
-use Drupal\user\UserInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -27,9 +18,12 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
  */
 class ParChooseAccount extends ParFormPluginBase {
 
-  const CREATE = 'new'; // Only for unrecognised users
-  const IGNORE = 'none'; // Only for new users
-  const DELETE = 'remove'; // Only for existing users
+  // Only for unrecognised users.
+  const CREATE = 'new';
+  // Only for new users.
+  const IGNORE = 'none';
+  // Only for existing users.
+  const DELETE = 'remove';
 
   /**
    * {@inheritdoc}
@@ -48,7 +42,7 @@ class ParChooseAccount extends ParFormPluginBase {
    * @return mixed
    *   A user account if selected, otherwise null.
    */
-  static function getUserAccount(mixed $value) {
+  public static function getUserAccount(mixed $value) {
     foreach ([self::DELETE, self::IGNORE, self::CREATE] as $opt) {
       if ($value === $opt) {
         return NULL;
@@ -108,7 +102,7 @@ class ParChooseAccount extends ParFormPluginBase {
     }
 
     if (!$user_required) {
-      // If there is an existing user then we should give the option to remove it
+      // If there is an existing user then we should give the option to remove it.
       if (!empty($existing_account)) {
         $account_options[self::DELETE] = 'Remove the user account';
       }
@@ -189,7 +183,8 @@ class ParChooseAccount extends ParFormPluginBase {
    * Return no actions for this plugin.
    */
   #[\Override]
-  public function getComponentActions(array $actions = [], array $data = NULL): ?array {
+  public function getComponentActions(array $actions = [], ?array $data = NULL): ?array {
     return $actions;
   }
+
 }

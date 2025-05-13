@@ -2,12 +2,7 @@
 
 namespace Drupal\par_invite_user_flows\Form;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_invite_user_flows\ParFlowAccessTrait;
-use Drupal\user\Entity\Role;
 use Drupal\user\Entity\User;
 
 /**
@@ -39,7 +34,6 @@ class ParRoleForm extends ParBaseForm {
 
     return parent::titleCallback();
   }
-
 
   /**
    * {@inheritdoc}

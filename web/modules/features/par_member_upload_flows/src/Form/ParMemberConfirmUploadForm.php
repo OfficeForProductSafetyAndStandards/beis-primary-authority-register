@@ -7,7 +7,6 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_member_upload_flows\ParFlowAccessTrait;
 use Drupal\par_member_upload_flows\ParMemberCsvHandler;
-use Drupal\par_member_upload_flows\ParMemberCsvHandlerInterface;
 
 /**
  * The upload CSV confirmation form for importing partnerships.
@@ -22,7 +21,7 @@ class ParMemberConfirmUploadForm extends ParBaseForm {
   protected $pageTitle = 'Confirm member upload';
 
   /**
-   * @return ParMemberCsvHandlerInterface
+   * @return \Drupal\par_member_upload_flows\ParMemberCsvHandlerInterface
    */
   public function getCsvHandler() {
     return \Drupal::service('par_member_upload_flows.csv_handler');
@@ -32,7 +31,7 @@ class ParMemberConfirmUploadForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL) {
 
     // Upload csv file confirmation message.
     $form['csv_upload_confirmation_message_fieldset'] = [
@@ -83,17 +82,18 @@ class ParMemberConfirmUploadForm extends ParBaseForm {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
     // Process the data in one go if less than half the maximum batch size.
-    if (!empty($csv_data) && count($csv_data) <= (ParMemberCsvHandler::BATCH_LIMIT/2)) {
+    if (!empty($csv_data) && count($csv_data) <= (ParMemberCsvHandler::BATCH_LIMIT / 2)) {
       $uploaded = $this->getCsvHandler()->upload($csv_data, $par_data_partnership);
     }
-    else if (!empty($csv_data)) {
+    elseif (!empty($csv_data)) {
       $uploaded = $this->getCsvHandler()->batchUpload($csv_data, $par_data_partnership);
     }
 
     // Log the result.
     if ($uploaded) {
       $this->getFlowDataHandler()->deleteStore();
-    } else {
+    }
+    else {
       $message = $this->t('Membership list could not be processed for %form_id');
       $replacements = [
         '%form_id' => $this->getFormId(),

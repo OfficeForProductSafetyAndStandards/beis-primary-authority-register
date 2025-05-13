@@ -1,8 +1,10 @@
 <?php
+
 /**
  * @file
  * Installation hooks for par_data module.
  */
+
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\Core\Entity\Sql\DefaultTableMapping;
 use Drupal\user\Entity\User;
@@ -12,14 +14,11 @@ use Drupal\block_content\Entity\BlockContent;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\link\LinkItemInterface;
 use Drupal\par_data\Entity\ParDataEnforcementNotice;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\par_data\Entity\ParDataPartnershipLegalEntity;
-use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_data\Plugin\Field\FieldType\ParLabelField;
 use Drupal\par_data\Plugin\Field\FieldType\ParStatusField;
@@ -32,6 +31,9 @@ function par_data_install() {
   \Drupal::service('entity.definition_update_manager')->applyUpdates();
 }
 
+/**
+ *
+ */
 function par_data_update_dependencies() {
   // The system module adds fields to an entity which no longer exists.
   $dependencies['system'][8702] = [
@@ -114,7 +116,7 @@ function par_data_update_8007() {
         ->fields(['bundle' => 'organisation'])
         ->execute();
     }
-  };
+  }
 }
 
 /**
@@ -154,7 +156,8 @@ function par_data_update_8010() {
     $entities = \Drupal::entityTypeManager()
       ->getStorage('par_data_organisation')
       ->loadByProperties(['type' => 'business']);
-  } catch (InvalidPluginDefinitionException|PluginNotFoundException) {
+  }
+  catch (InvalidPluginDefinitionException | PluginNotFoundException) {
   }
 
   foreach ($entities as $entity) {
@@ -181,7 +184,7 @@ function par_data_update_8010() {
         ->fields(['bundle' => 'organisation'])
         ->execute();
     }
-  };
+  }
 }
 
 /**
@@ -259,7 +262,7 @@ function par_data_update_8017() {
   $db = \Drupal::database();
   $entity_types = \Drupal::service('par_data.manager')->getParEntityTypes();
 
-  foreach($entity_types as $entity_type) {
+  foreach ($entity_types as $entity_type) {
     $table_names = [$entity_type->getDataTable(), $entity_type->getRevisionDataTable()];
 
     foreach ($table_names as $table) {
@@ -413,7 +416,7 @@ function par_data_update_8026() {
   // We need to trash the deleted field_uprn because it is causing issues.
   $deleted_field_definitions = \Drupal::state()->get('field.field.deleted', []);
 
-  foreach($deleted_field_definitions as $definition) {
+  foreach ($deleted_field_definitions as $definition) {
     if ($definition->getName() === 'field_uprn') {
       field_purge_field($definition);
     }
@@ -451,7 +454,6 @@ function par_data_update_8027() {
     ->condition('nation', NULL, 'IS NULL');
   $organisation_ids = $query->condition($group)
     ->execute();
-
 
   $premises_entities = \Drupal::entityTypeManager()->getStorage('par_data_premises')->loadMultiple(array_unique($premises_ids));
   $organisation_entities = \Drupal::entityTypeManager()->getStorage('par_data_organisation')->loadMultiple(array_unique($organisation_ids));
@@ -519,7 +521,7 @@ function par_data_update_8030() {
     [
       'AND' => [
         ['field_enforcement_action', '', 'IS NULL'],
-      ]
+      ],
     ],
   ];
   $par_data_enforcement_notices = $par_data_manager->getEntitiesByQuery('par_data_enforcement_notice', $conditions);
@@ -560,7 +562,7 @@ function par_data_update_8032() {
   $public_new = getenv('S3_BUCKET_PRIVATE');
   $region_new = getenv('S3_REGION');
 
-  // Configure AWS cli
+  // Configure AWS cli.
   $access_key = getenv('S3_ACCESS_KEY');
   $secret_key = getenv('S3_SECRET_KEY');
   putenv("AWS_ACCESS_KEY_ID={$access_key}");
@@ -763,7 +765,7 @@ function par_data_update_8035() {
     $document = !$a->get('document')->isEmpty() ? current($documents) : NULL;
 
     if ($document) {
-      /* @var \Drupal\file\Entity\File $document */
+      /** @var \Drupal\file\Entity\File $document */
       $filename = $document->getFilename();
       $sanitised = pathinfo((string) $filename, PATHINFO_FILENAME);
 
@@ -781,11 +783,11 @@ function par_data_update_8036() {
   $entity_definition_manager = \Drupal::service('entity.definition_update_manager');
   $entity_types = \Drupal::service('par_data.manager')->getParEntityTypes();
 
-// New fields definitions to be added to the partnership entity.
-// @see https://www.drupal.org/node/3034742
+  // New fields definitions to be added to the partnership entity.
+  // @see https://www.drupal.org/node/3034742
   $storage_definitions = [];
 
-// Partnership delete reason.
+  // Partnership delete reason.
   $storage_definitions['deleted_reason'] = BaseFieldDefinition::create('text_long')
     ->setLabel(t('Deleted Reason'))
     ->setDescription(t('Comments about why this partnership was deleted.'))
@@ -805,7 +807,7 @@ function par_data_update_8036() {
       'weight' => 0,
     ]);
 
-  foreach($entity_types as $entity_type_id => $entity_type) {
+  foreach ($entity_types as $entity_type_id => $entity_type) {
     foreach ($storage_definitions as $field => $definition) {
       $entity_definition_manager->installFieldStorageDefinition($field, $entity_type_id, $entity_type_id, $definition);
     }
@@ -885,7 +887,7 @@ function par_data_update_8038() {
     [
       'AND' => [
         ['title', NULL, 'IS NULL'],
-      ]
+      ],
     ],
   ];
 
@@ -897,9 +899,8 @@ function par_data_update_8038() {
     $documents = $inspection_plan_entity->get('document')->referencedEntities();
     $document = !$inspection_plan_entity->get('document')->isEmpty() ? current($documents) : NULL;
 
-
     if ($document) {
-      /* @var \Drupal\file\Entity\File $document */
+      /** @var \Drupal\file\Entity\File $document */
       $filename = $document->getFilename();
       $sanitised = pathinfo((string) $filename, PATHINFO_FILENAME);
 
@@ -917,8 +918,8 @@ function par_data_update_8039() {
   $entity_definition_manager = \Drupal::service('entity.definition_update_manager');
   $entity_types = \Drupal::service('par_data.manager')->getParEntityTypes();
 
-// New field definitions to be added to the system entities.
-// @see https://www.drupal.org/node/3034742
+  // New field definitions to be added to the system entities.
+  // @see https://www.drupal.org/node/3034742
   $storage_definitions = [];
 
   // Revocation Reason.
@@ -963,7 +964,7 @@ function par_data_update_8039() {
     ])
     ->setDisplayConfigurable('view', TRUE);
 
-  foreach($entity_types as $entity_type_id => $entity_type) {
+  foreach ($entity_types as $entity_type_id => $entity_type) {
     foreach ($storage_definitions as $field => $definition) {
       $entity_definition_manager->installFieldStorageDefinition($field, $entity_type_id, $entity_type_id, $definition);
     }
@@ -1015,7 +1016,7 @@ function par_data_update_8042() {
  * PAR-1624 Make all email addresses on par_data_person entities lowercase.
  */
 function par_data_update_8043() {
-  $query = \Drupal::database()->query( "SELECT p.id as id FROM par_people_field_data AS p WHERE p.email!=LOWER(email);" );
+  $query = \Drupal::database()->query("SELECT p.id as id FROM par_people_field_data AS p WHERE p.email!=LOWER(email);");
   $results = array_keys($query->fetchAllAssoc('id'));
   if (!empty($results)) {
     $entities = \Drupal::entityTypeManager()->getStorage('par_data_person')->loadMultiple($results);
@@ -1066,7 +1067,7 @@ function par_data_update_8046() {
   $par_data_manager = \Drupal::service('par_data.manager');
   $entity_types = $par_data_manager->getParEntityTypes();
 
-  foreach($entity_types as $entity_type_id => $entity_type) {
+  foreach ($entity_types as $entity_type_id => $entity_type) {
     $field_advice_reason = $entity_definition_update_manager->getFieldStorageDefinition(ParDataEntity::ARCHIVE_REASON_FIELD, $entity_type->id());
     $field_advice_reason->addConstraint('par_required');
     $entity_definition_update_manager->updateFieldStorageDefinition($field_advice_reason);
@@ -1089,12 +1090,12 @@ function par_data_update_8047(&$sandbox) {
     $organisations = $par_data_manager->getEntitiesByType('par_data_organisation');
 
     $primary_addresses = [];
-    foreach($authorities as $id => $entity) {
+    foreach ($authorities as $id => $entity) {
       if ($entity->hasField('field_premises') && !$entity->get('field_premises')->isEmpty()) {
         $primary_addresses[] = $entity->get('field_premises')->first()->target_id;
       }
     }
-    foreach($organisations as $id => $entity) {
+    foreach ($organisations as $id => $entity) {
       if ($entity->hasField('field_premises') && !$entity->get('field_premises')->isEmpty()) {
         $primary_addresses[] = $entity->get('field_premises')->first()->target_id;
       }
@@ -1106,7 +1107,7 @@ function par_data_update_8047(&$sandbox) {
     $total_results = array_unique($total_query->execute());
 
     // Set default values.
-    $sandbox['secondary_addresses'] = array_chunk($total_results, $batch_size, true);
+    $sandbox['secondary_addresses'] = array_chunk($total_results, $batch_size, TRUE);
     $sandbox['total'] = count($total_results);
     $sandbox['current'] = 0;
   }
@@ -1126,7 +1127,8 @@ function par_data_update_8047(&$sandbox) {
 
   if ($sandbox['total'] == 0) {
     $sandbox['#finished'] = 1;
-  } else {
+  }
+  else {
     $sandbox['#finished'] = ($results_removed / $sandbox['total']);
   }
 
@@ -1251,7 +1253,7 @@ function par_data_update_9002() {
 
     // Get the number of members on the organisation.
     /** @var \Drupal\par_data\Entity\ParDataOrganisation $organisation */
-    $organisation = $partnership ? $partnership->getOrganisation(true) : NULL;
+    $organisation = $partnership ? $partnership->getOrganisation(TRUE) : NULL;
     $number_members = $organisation ? $organisation->getMembershipSize() : NULL;
     if ($number_members) {
       $partnership->set('member_number', $number_members);
@@ -1289,7 +1291,7 @@ function par_data_update_9004(&$sandbox) {
     $partnerships = array_unique($query->execute());
 
     // Set default values.
-    $sandbox['partnerships'] = array_chunk($partnerships, $batch_size, true);
+    $sandbox['partnerships'] = array_chunk($partnerships, $batch_size, TRUE);
     $sandbox['total'] = count($partnerships);
     $sandbox['current'] = 0;
   }
@@ -1321,7 +1323,7 @@ function par_data_update_9004(&$sandbox) {
       }
 
       // Remove the values from the old field to prevent circular references.
-      $partnership->set('field_legal_entity', null);
+      $partnership->set('field_legal_entity', NULL);
 
       // Save the partnership with its new partnership_legal_entity references.
       $partnership->save();
@@ -1397,7 +1399,7 @@ function par_data_update_9005() {
     ])
     ->setDisplayConfigurable('view', TRUE);
 
-  foreach($entity_types as $entity_type_id => $entity_type) {
+  foreach ($entity_types as $entity_type_id => $entity_type) {
     // Install each field.
     foreach ($storage_definitions as $field => $definition) {
       $entity_definition_manager->installFieldStorageDefinition($field, $entity_type_id, $entity_type_id, $definition);
@@ -1412,12 +1414,12 @@ function par_data_update_9006() {
   /** @var \Drupal\par_data\ParDataManagerInterface $par_data_manager */
   $par_data_manager = \Drupal::service('par_data.manager');
   $query = $par_data_manager->getEntityQuery('par_data_partnership')
-        ->condition('member_link.options', NULL, 'IS NULL');
+    ->condition('member_link.options', NULL, 'IS NULL');
   $partnerships = $query->execute();
 
   foreach ($partnerships as $id) {
     $partnership = \Drupal::service('entity_type.manager')
-    ->getStorage('par_data_partnership')->load($id);
+      ->getStorage('par_data_partnership')->load($id);
     $partnership->set('member_link', NULL);
     $partnership->save();
   }
@@ -1498,7 +1500,7 @@ function par_data_update_9009(&$sandbox) {
     $partnerships = array_unique($query->execute());
 
     // Set default values.
-    $sandbox['partnerships'] = array_chunk($partnerships, $batch_size, true);
+    $sandbox['partnerships'] = array_chunk($partnerships, $batch_size, TRUE);
     $sandbox['total'] = count($partnerships);
     $sandbox['current'] = 0;
   }
@@ -1511,14 +1513,15 @@ function par_data_update_9009(&$sandbox) {
 
     if ($partnership instanceof ParDataEntityInterface) {
       // If the partnership is active, all legal entities can be set to active.
-      foreach($partnership->getPartnershipLegalEntities(FALSE) as $partnership_legal_entity) {
+      foreach ($partnership->getPartnershipLegalEntities(FALSE) as $partnership_legal_entity) {
         if ($partnership->isRevoked()) {
           $partnership_legal_entity->set(ParDataEntity::REVOKE_FIELD, TRUE);
           $partnership_legal_entity->get(ParDataEntity::REVOKE_REASON_FIELD)->setValue([
             'value' => "Status set by installation hook 9009.",
             'format' => 'plain_text',
           ]);
-        } else {
+        }
+        else {
           $partnership_legal_entity->set('legal_entity_status', $partnership->getRawStatus());
         }
 
@@ -1570,7 +1573,7 @@ function par_data_update_9010() {
 }
 
 /**
- * 3025031: https://www.drupal.org/project/drupal/issues/3025031#comment-12921882
+ * 3025031: https://www.drupal.org/project/drupal/issues/3025031#comment-12921882.
  */
 function par_data_update_10001() {
   $old_new_action_id_map = [

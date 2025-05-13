@@ -3,7 +3,6 @@
 namespace Drupal\par_notification\Access;
 
 use Drupal\Core\Entity\EntityHandlerInterface;
-use Drupal\user\RoleInterface;
 use Drupal\user\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Entity\EntityAccessControlHandler;
@@ -14,7 +13,6 @@ use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\message\MessageInterface;
 use Drupal\par_data\ParDataManagerInterface;
-use Drupal\user\RoleStorageInterface;
 
 /**
  * Access controller for message entities.
@@ -33,7 +31,7 @@ class ParMessageAccessControlHandler extends EntityAccessControlHandler implemen
   /**
    * The role storage service.
    *
-   * @var RoleStorageInterface
+   * @var \Drupal\user\RoleStorageInterface
    */
   protected $roleStorage;
 
@@ -52,11 +50,11 @@ class ParMessageAccessControlHandler extends EntityAccessControlHandler implemen
   /**
    * ParMessageAccessControlHandler constructor.
    *
-   * @param EntityTypeInterface $entity_type
+   * @param \Drupal\Core\Entity\EntityTypeInterface $entity_type
    *   The entity type definition.
-   * @param ParDataManagerInterface $par_data_manager
+   * @param \Drupal\par_data\ParDataManagerInterface $par_data_manager
    *   The par data manager service.
-   * @param EntityTypeManagerInterface $entity_type_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager service.
    */
   public function __construct(EntityTypeInterface $entity_type, ParDataManagerInterface $par_data_manager, EntityTypeManagerInterface $entity_type_manager) {
@@ -69,7 +67,7 @@ class ParMessageAccessControlHandler extends EntityAccessControlHandler implemen
   /**
    * Get the ParDataHandler service.
    *
-   * @return ParDataManagerInterface
+   * @return \Drupal\par_data\ParDataManagerInterface
    *   The par data manager service.
    */
   private function getParDataService() {
@@ -79,7 +77,7 @@ class ParMessageAccessControlHandler extends EntityAccessControlHandler implemen
   /**
    * Get the ParDataHandler service.
    *
-   * @return RoleStorageInterface
+   * @return \Drupal\user\RoleStorageInterface
    *   The role storage service.
    */
   private function getRoleStorage() {
@@ -90,10 +88,10 @@ class ParMessageAccessControlHandler extends EntityAccessControlHandler implemen
    * Get the PAR Data associated with a message.
    *
    * @param \Drupal\message\MessageInterface $message
-   *  The message to find entities for.
+   *   The message to find entities for.
    *
    * @return \Drupal\par_data\Entity\ParDataEntityInterface[]
-   *  An array of entities that related to this message.
+   *   An array of entities that related to this message.
    */
   private function getParData(MessageInterface $message): array {
     $par_data_fields = $this->getParDataService()->getReferences($message->getEntityTypeId(), $message->bundle());
@@ -167,12 +165,12 @@ class ParMessageAccessControlHandler extends EntityAccessControlHandler implemen
    * This excludes any of the user's roles that are not set
    * to receive this message.
    *
-   * @param AccountInterface $account
+   * @param \Drupal\Core\Session\AccountInterface $account
    *   The user account to cross-check with.
-   * @param MessageInterface $message
+   * @param \Drupal\message\MessageInterface $message
    *   The message to get receiver roles for.
    *
-   * @return RoleInterface[]
+   * @return \Drupal\user\RoleInterface[]
    *   An array of user roles.
    */
   public function getUserNotificationRoles(AccountInterface $account, MessageInterface $message): array {
@@ -185,7 +183,7 @@ class ParMessageAccessControlHandler extends EntityAccessControlHandler implemen
       NULL;
 
     // Get all the roles that have permission to receive this notification type.
-    /** @var RoleInterface[] $notification_roles */
+    /** @var \Drupal\user\RoleInterface[] $notification_roles */
     $notification_roles = array_filter($all_roles, fn($role) => $role->hasPermission($permission));
 
     // Get the intersection between the user's roles and the notifications roles.

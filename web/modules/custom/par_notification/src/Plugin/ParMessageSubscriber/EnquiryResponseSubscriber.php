@@ -4,7 +4,6 @@ namespace Drupal\par_notification\Plugin\ParMessageSubscriber;
 
 use Drupal\message\MessageInterface;
 use Drupal\par_data\Entity\ParDataEnquiryInterface;
-use Drupal\par_data\Entity\ParDataMembershipInterface;
 use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_data\ParDataException;
 use Drupal\par_notification\ParMessageSubscriberBase;
@@ -37,7 +36,7 @@ class EnquiryResponseSubscriber extends ParMessageSubscriberBase {
     $recipients = parent::getRecipients($message);
 
     try {
-      /** @var ParDataEnquiryInterface[] $enquiry_entities */
+      /** @var \Drupal\par_data\Entity\ParDataEnquiryInterface[] $enquiry_entities */
       $enquiry_entities = [];
       /** @var \Drupal\comment\CommentInterface[] $comments */
       $comments = $this->getMessageHandler()->getPrimaryData($message);
@@ -101,7 +100,7 @@ class EnquiryResponseSubscriber extends ParMessageSubscriberBase {
     $subscriptions = parent::getSubscribedEntities($message);
 
     try {
-      /** @var ParDataEnquiryInterface[] $enquiry_entities */
+      /** @var \Drupal\par_data\Entity\ParDataEnquiryInterface[] $enquiry_entities */
       $enquiry_entities = [];
       /** @var \Drupal\comment\CommentInterface[] $comments */
       $comments = $this->getMessageHandler()->getPrimaryData($message);
@@ -139,4 +138,5 @@ class EnquiryResponseSubscriber extends ParMessageSubscriberBase {
 
     return $subscriptions;
   }
+
 }

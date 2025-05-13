@@ -2,11 +2,8 @@
 
 namespace Drupal\par_partnership_contact_update_flows\Form;
 
-use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\invite\InviteConstants;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_forms\Plugin\ParForm\ParChooseAccount;
 use Drupal\par_partnership_contact_update_flows\ParFlowAccessTrait;
@@ -26,7 +23,7 @@ class ParInviteForm extends ParBaseForm {
   protected $pageTitle = 'Invite the person to create an account';
 
   /**
-   * @return DateFormatterInterface
+   * @return \Drupal\Core\Datetime\DateFormatterInterface
    */
   protected function getEntityTypeManager() {
     return \Drupal::service('entity_type.manager');
@@ -37,7 +34,7 @@ class ParInviteForm extends ParBaseForm {
    */
   #[\Override]
   public function loadData() {
-    // Set the user account that is being updated as a parameter for plugins to access
+    // Set the user account that is being updated as a parameter for plugins to access.
     $choose_account_cid = $this->getFlowNegotiator()->getFormKey('choose_account');
     $account_selection = $this->getFlowDataHandler()->getDefaultValues('account', NULL, $choose_account_cid);
     $account = ParChooseAccount::getUserAccount($account_selection);
@@ -55,11 +52,13 @@ class ParInviteForm extends ParBaseForm {
         $role_options = $this->getParDataManager()->getEntitiesAsOptions([Role::load($role)], []);
 
         break;
+
       case 'par_organisation':
         $invitation_type = 'invite_organisation_member';
         $role_options = $this->getParDataManager()->getEntitiesAsOptions([Role::load($role)], []);
 
         break;
+
       default:
         $invitation_type = 'none';
         $role_options = [];
@@ -101,7 +100,7 @@ class ParInviteForm extends ParBaseForm {
       ->getStorage('invite')
       ->loadByProperties([
         'field_invite_email_address' => $this->getFlowDataHandler()->getTempDataValue('to'),
-        'status' => InviteConstants::INVITE_VALID
+        'status' => InviteConstants::INVITE_VALID,
       ]);
 
     if (count($invitations) >= 1) {

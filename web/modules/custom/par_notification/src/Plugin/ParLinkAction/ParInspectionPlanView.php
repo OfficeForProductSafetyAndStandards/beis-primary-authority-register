@@ -5,9 +5,7 @@ namespace Drupal\par_notification\Plugin\ParLinkAction;
 use Drupal\Core\Url;
 use Drupal\message\MessageInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_data\ParDataRelationship;
 use Drupal\par_notification\ParLinkActionBase;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Send user to the enforcement page.
@@ -40,7 +38,7 @@ class ParInspectionPlanView extends ParLinkActionBase {
       $par_data_inspection_plan = current($message->get($this->getPrimaryField())
         ->referencedEntities());
 
-      /** @var ParDataRelationship[] $partnership_relationships */
+      /** @var \Drupal\par_data\ParDataRelationship[] $partnership_relationships */
       $partnership_relationships = $par_data_inspection_plan ?
         $par_data_inspection_plan->getRelationships('par_data_partnership') :
         [];
@@ -67,4 +65,5 @@ class ParInspectionPlanView extends ParLinkActionBase {
 
     return NULL;
   }
+
 }

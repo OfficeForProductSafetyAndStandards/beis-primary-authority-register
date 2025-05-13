@@ -6,7 +6,6 @@ use Drupal\comment\Entity\Comment;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_inspection_feedback_view_flows\ParFlowAccessTrait;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_forms\ParFormBuilder;
 
 /**
  * Reviewing inspection feedback.
@@ -57,4 +56,5 @@ class ParFeedbackReplyForm extends ParBaseForm {
       $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
     }
   }
+
 }

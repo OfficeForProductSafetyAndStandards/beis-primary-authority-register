@@ -3,9 +3,6 @@
 namespace Drupal\par_notification\Plugin\views\filter;
 
 use Drupal\Core\Cache\UncacheableDependencyTrait;
-use Drupal\Core\Database\Database;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\range\D8Compatibility\ViewsSqlQueryGetConnectionTrait;
 use Drupal\user\Entity\User;
 use Drupal\views\Plugin\views\filter\FilterPluginBase;
 
@@ -20,6 +17,9 @@ class ViewMessages extends FilterPluginBase {
 
   use UncacheableDependencyTrait;
 
+  /**
+ *
+ */
   #[\Override]
   public function query() {
     $entity_type_manager = \Drupal::entityTypeManager();
@@ -74,7 +74,7 @@ class ViewMessages extends FilterPluginBase {
 
     // Filter out the message templates that don't require subscription.
     $subscription_templates = array_filter($message_templates,
-      function($message_template) use ($account, $par_subscription_manager, $entity_type_manager) {
+      function ($message_template) use ($account, $par_subscription_manager, $entity_type_manager) {
         // Load the full template entity.
         $template = $entity_type_manager
           ->getStorage('message_template')
@@ -136,4 +136,5 @@ class ViewMessages extends FilterPluginBase {
       $this->query->addWhere($this->options['group'], $membership_condition);
     }
   }
+
 }

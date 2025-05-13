@@ -4,7 +4,6 @@ namespace Drupal\par_transfer_partnerships_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -30,11 +29,11 @@ class ParManageFunctionsForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataAuthority $par_data_authority = NULL) {
     // This form isn't yet required, the initial functionality doesn't handle
     // situations where there is a mismatch of regulatory functions between
     // the authorities.
-    // @TODO introduce functionality to handle mismatched regulatory functions.
+    // @todo introduce functionality to handle mismatched regulatory functions.
     $url = $this->getFlowNegotiator()->getFlow()->progress();
     return new RedirectResponse($url->toString());
 

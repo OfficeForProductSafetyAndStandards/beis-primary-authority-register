@@ -6,7 +6,6 @@ use Drupal\Core\Url;
 use Drupal\message\MessageInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_notification\ParLinkActionBase;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Send user to the partnership organisation details page.
@@ -53,4 +52,5 @@ class ParPartnershipOrganisationView extends ParLinkActionBase {
 
     return NULL;
   }
+
 }

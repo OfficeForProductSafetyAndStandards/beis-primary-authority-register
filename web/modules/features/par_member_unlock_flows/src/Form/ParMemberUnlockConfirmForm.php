@@ -3,10 +3,8 @@
 namespace Drupal\par_member_unlock_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_flows\ParDisplayTrait;
 use Drupal\par_member_unlock_flows\ParFlowAccessTrait;
 
 /**
@@ -25,7 +23,7 @@ class ParMemberUnlockConfirmForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL) {
 
     // Enter the revokcation reason.
     $form['unlock'] = [

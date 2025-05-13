@@ -4,15 +4,12 @@ namespace Drupal\par_forms;
 
 use Drupal\par_forms\Annotation\ParForm;
 use Drupal\Component\Plugin\Factory\DefaultFactory;
-use Drupal\Component\Utility\Html;
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\par_flows\ParFlowDataHandler;
-use JetBrains\PhpStorm\NoReturn;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -72,11 +69,11 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
   /**
    * {@inheritdoc}
    *
-   * @return ParFormPluginInterface
+   * @return \Drupal\par_forms\Annotation\ParFormPluginInterface
    */
   #[\Override]
   public function createInstance($plugin_id, array $configuration = []): ParFormPluginInterface {
-    /** @var ParFormPluginInterface $plugin */
+    /** @var \Drupal\par_forms\Annotation\ParFormPluginInterface $plugin */
     $plugin = parent::createInstance($plugin_id, $configuration);
 
     $plugin->setConfiguration($configuration);
@@ -87,7 +84,7 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
   /**
    * Helper to load the data for this plugin.
    *
-   * @param ParFormPluginInterface $component
+   * @param \Drupal\par_forms\Annotation\ParFormPluginInterface $component
    *   The form plugin to load data for.
    */
   #[\Override]
@@ -102,7 +99,7 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
   /**
    * Build the component.
    *
-   * @param ParFormPluginInterface $component
+   * @param \Drupal\par_forms\Annotation\ParFormPluginInterface $component
    *   The form component plugin to build.
    * @param ?int $index
    *   A index value to influence which elements are displayed.
@@ -111,8 +108,8 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
    *   The form elements for the rendered component.
    */
   #[\Override]
-  public function build(ParFormPluginInterface $component, int $index = NULL): array|RedirectResponse {
-    // If the component supports a summary list
+  public function build(ParFormPluginInterface $component, ?int $index = NULL): array|RedirectResponse {
+    // If the component supports a summary list.
     if ($this->supportsSummaryList($component)) {
       // If a specific index is requested build it.
       return $this->displaySummaryList($component, $index) ?
@@ -140,15 +137,15 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
         $action = self::PAR_ERROR_DISPLAY;
       }
       // Plugins that support the summary list should always be validated.
-      else if ($this->supportsSummaryList($component)) {
+      elseif ($this->supportsSummaryList($component)) {
         $action = self::PAR_ERROR_DISPLAY;
       }
       // The first item should always be validated.
-      else if ($i === 1) {
+      elseif ($i === 1) {
         $action = self::PAR_ERROR_DISPLAY;
       }
       // Multi value plugins that aren't the last item should be validated.
-      else if ($i < $max) {
+      elseif ($i < $max) {
         $action = self::PAR_ERROR_DISPLAY;
       }
       // All other validation should be cleared.
@@ -168,7 +165,7 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
    *
    * Form components support the summary list display if:
    *  - They have the ParSummaryListInterface
-   *  - The plugin instance is configured for multiple cardinality
+   *  - The plugin instance is configured for multiple cardinality.
    */
   public function supportsSummaryList(ParFormPluginInterface $component): bool {
     return $component instanceof ParSummaryListInterface &&
@@ -181,9 +178,9 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
    * Only display a summary list if:
    *  - The plugin supports the summary list display @see self::supportsSummaryList()
    *  - The plugin has data already set
-   *  - The plugin is not set to display a specific index
+   *  - The plugin is not set to display a specific index.
    */
-  public function displaySummaryList(ParFormPluginInterface $component, int $index = NULL): bool {
+  public function displaySummaryList(ParFormPluginInterface $component, ?int $index = NULL): bool {
     return $this->supportsSummaryList($component) &&
       !empty($component->getData()) &&
       !$index;
@@ -200,7 +197,7 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
    *  - multiple cardinality
    *  - SummaryListInterface
    *
-   * @param ParFormPluginInterface $component
+   * @param \Drupal\par_forms\Annotation\ParFormPluginInterface $component
    *   The plugin to load the summary list for.
    *
    * @return ?array
@@ -212,14 +209,14 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
   protected function getSummaryList(ParFormPluginInterface $component): ?array {
     // Summary lists can only be displayed under specific conditions.
     if (!$this->supportsSummaryList($component)) {
-        return NULL;
+      return NULL;
     }
 
     // Generate the summary list for this component.
     if ($summary_list = $component->getSummaryList()) {
       // Create the base element.
       $elements = [
-        $component->getPrefix() => $component->getWrapper()
+        $component->getPrefix() => $component->getWrapper(),
       ];
 
       // Add the summary list.
@@ -237,7 +234,7 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
   /**
    * Helper to get all the elements from a plugin.
    *
-   * @param ParFormPluginInterface $component
+   * @param \Drupal\par_forms\Annotation\ParFormPluginInterface $component
    *   The plugin to load elements for.
    * @param ?int $index
    *   If chosen only the specified index will be displayed.
@@ -247,10 +244,10 @@ class ParFormBuilder extends DefaultPluginManager implements ParFormBuilderInter
    *   If the cardinality is given it can be a single element.
    *   Alternatively a RedirectResponse.
    */
-  protected function getElements(ParFormPluginInterface $component, int $index = NULL): mixed {
+  protected function getElements(ParFormPluginInterface $component, ?int $index = NULL): mixed {
     // Create the base element.
     $elements = [
-      $component->getPrefix() => $component->getWrapper()
+      $component->getPrefix() => $component->getWrapper(),
     ];
 
     // The max index is the highest index that should be displayed.

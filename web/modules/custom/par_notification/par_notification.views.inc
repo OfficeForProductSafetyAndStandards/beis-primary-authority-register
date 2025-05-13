@@ -5,11 +5,6 @@
  * The views data file.
  */
 
-use \Drupal\search_api\Entity\Index;
-use \Drupal\Core\Field\TypedData\FieldItemDataDefinition;
-use \Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\message\MessageInterface;
-
 /**
  * Implements hook_views_data_alter().
  */

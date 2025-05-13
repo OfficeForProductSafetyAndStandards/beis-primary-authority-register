@@ -6,12 +6,8 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\par_data\Entity\ParDataDeviationRequest;
 use Drupal\par_data\Entity\ParDataEnforcementAction;
-use Drupal\par_data\Entity\ParDataLegalEntity;
-use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParFormBuilder;
-use Drupal\par_forms\ParFormPluginBase;
 
 /**
  * Deviation request review form plugin.
@@ -28,11 +24,13 @@ class ParDeviationRequestReviewForm extends ParDeviationRequestDetail {
    */
   protected array $entityMapping = [
     ['notes', 'par_data_deviation_request', 'notes', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter the details of this enquiry.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter the details of this enquiry.',
+    ],
+    ],
     ['files', 'par_data_deviation_request', 'document', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must submit a proposed inspection plan for this enquiry.'
-    ]],
+      'You must fill in the missing information.' => 'You must submit a proposed inspection plan for this enquiry.',
+    ],
+    ],
   ];
 
   /**
@@ -79,7 +77,7 @@ class ParDeviationRequestReviewForm extends ParDeviationRequestDetail {
       '#states' => [
         'visible' => [
           ':input[name="' . $this->getTargetName($this->getElementKey('primary_authority_status', $index)) . '"]' => ['value' => ParDataDeviationRequest::BLOCKED],
-        ]
+        ],
       ],
     ];
 
@@ -127,4 +125,5 @@ class ParDeviationRequestReviewForm extends ParDeviationRequestDetail {
 
     parent::validate($form, $form_state, $index, $action);
   }
+
 }

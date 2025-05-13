@@ -7,6 +7,9 @@ use Drupal\par_data\ParDataManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ *
+ */
 class ParNotificationPermissions implements ContainerInjectionInterface {
 
   use StringTranslationTrait;
@@ -54,7 +57,7 @@ class ParNotificationPermissions implements ContainerInjectionInterface {
       $permissions += [
         "receive {$id} notification" => [
           'title' => $this->t('Receive %notification notifications', ['%notification' => $notification]),
-        ]
+        ],
       ];
     }
 

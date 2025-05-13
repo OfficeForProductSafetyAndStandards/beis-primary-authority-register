@@ -2,11 +2,8 @@
 
 namespace Drupal\par_notification;
 
-use Drupal\par_notification\ParRecipient;
-use Drupal\user\Entity\Role;
 use Drupal\message\MessageInterface;
 use Drupal\message\MessageTemplateInterface;
-use Drupal\par_data\Entity\ParDataMembershipInterface;
 
 /**
  * Defines an interface for the PAR Message Subscriber service.
@@ -27,13 +24,13 @@ interface ParSubscriptionManagerInterface {
    *    the user has a role which has the 'bypass par_data membership' permission
    *    and the role is allowed to receive this notification.
    *
-   * @param MessageInterface $message
+   * @param \Drupal\message\MessageInterface $message
    *   The message that is being sent.
    *
    * @throws ParNotificationException
    *   When no subscribers can be found for the message.
    *
-   * @return ParRecipient[]
+   * @return \Drupal\par_notification\ParRecipient[]
    *   An array of recipients to send the message to.
    */
   public function getRecipients(MessageInterface $message): array;
@@ -41,7 +38,7 @@ interface ParSubscriptionManagerInterface {
   /**
    * Gets the email addresses only for the recipients of a given message..
    *
-   * @param MessageInterface $message
+   * @param \Drupal\message\MessageInterface $message
    *   The message that is being sent.
    *
    * @throws ParNotificationException
@@ -55,10 +52,10 @@ interface ParSubscriptionManagerInterface {
   /**
    * Get the PAR entities subscribed to a given message.
    *
-   * @param MessageInterface $message
+   * @param \Drupal\message\MessageInterface $message
    *   The message being sent.
    *
-   * @return ParDataMembershipInterface[]
+   * @return \Drupal\par_data\Entity\ParDataMembershipInterface[]
    *   An array of par data entities that subscribe to this message.
    */
   public function getSubscribedEntities(MessageInterface $message): array;
@@ -71,10 +68,10 @@ interface ParSubscriptionManagerInterface {
    * @throws ParNotificationException
    *   When no roles can be found for the message.
    *
-   * @param MessageTemplateInterface $template
+   * @param \Drupal\message\MessageTemplateInterface $template
    *   The message type that is being sent.
    *
-   * @return Role[]
+   * @return \Drupal\user\Entity\Role[]
    *   An array of roles that subscribe to this message.
    */
   public function getSubscribedRoles(MessageTemplateInterface $template): array;

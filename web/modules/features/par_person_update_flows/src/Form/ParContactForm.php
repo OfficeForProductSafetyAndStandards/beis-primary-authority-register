@@ -3,8 +3,6 @@
 namespace Drupal\par_person_update_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_person_update_flows\ParFlowAccessTrait;
 use Drupal\par_roles\ParRoleManagerInterface;
@@ -68,6 +66,9 @@ class ParContactForm extends ParBaseForm {
     }
   }
 
+  /**
+   *
+   */
   public function createEntity() {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
 

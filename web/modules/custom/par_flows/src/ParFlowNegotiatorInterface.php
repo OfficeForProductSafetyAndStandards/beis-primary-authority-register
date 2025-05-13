@@ -2,13 +2,11 @@
 
 namespace Drupal\par_flows;
 
-use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\user\UserInterface;
 
 /**
-* Interface for the Par Flow Negotiator.
-*/
+ * Interface for the Par Flow Negotiator.
+ */
 interface ParFlowNegotiatorInterface {
 
   /**
@@ -16,7 +14,7 @@ interface ParFlowNegotiatorInterface {
    *
    * Required for testing access on routes other than the current route.
    *
-   * @param RouteMatchInterface $route
+   * @param \Drupal\Core\Routing\RouteMatchInterface $route
    *   The route match object that is being checked.
    *
    * @return ParFlowNegotiatorInterface

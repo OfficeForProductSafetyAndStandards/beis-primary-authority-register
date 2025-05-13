@@ -8,6 +8,9 @@ use Drupal\par_data\Entity\ParDataGeneralEnquiry;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_notification\ParEventSubscriberBase;
 
+/**
+ *
+ */
 class NewGeneralEnquirySubscriber extends ParEventSubscriberBase {
 
   /**
@@ -23,7 +26,7 @@ class NewGeneralEnquirySubscriber extends ParEventSubscriberBase {
    * @return mixed
    */
   #[\Override]
-  static function getSubscribedEvents(): array {
+  public static function getSubscribedEvents(): array {
     $events = [];
     if (class_exists(ParDataEvent::class)) {
       $events[EntityInsertEvent::class][] = ['onEvent', 800];
@@ -33,13 +36,13 @@ class NewGeneralEnquirySubscriber extends ParEventSubscriberBase {
   }
 
   /**
-   * @param EntityInsertEvent $event
+   * @param \Drupal\core_event_dispatcher\Event\Entity\EntityInsertEvent $event
    */
   public function onEvent(EntityInsertEvent $event) {
     if ($event->getEntity() instanceof ParDataGeneralEnquiry) {
       $this->setEvent($event);
 
-      /** @var ParDataGeneralEnquiry $entity */
+      /** @var \Drupal\par_data\Entity\ParDataGeneralEnquiry $entity */
       $entity = $event->getEntity();
       $par_data_partnership = $entity?->getPartnership(TRUE);
 

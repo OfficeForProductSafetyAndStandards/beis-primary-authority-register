@@ -6,7 +6,10 @@ use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Drupal\par_notification\ParEventSubscriberBase;
 
-class DeviationReviewedTaskSubscriber extends ParEventSubscriberBase  {
+/**
+ *
+ */
+class DeviationReviewedTaskSubscriber extends ParEventSubscriberBase {
 
   /**
    * The message template ID that needs to be completed.
@@ -21,7 +24,7 @@ class DeviationReviewedTaskSubscriber extends ParEventSubscriberBase  {
    * @return mixed
    */
   #[\Override]
-  static function getSubscribedEvents(): array {
+  public static function getSubscribedEvents(): array {
     $events = [];
     // Deviation request has been reviewed.
     if (class_exists(ParDataEvent::class)) {
@@ -33,9 +36,10 @@ class DeviationReviewedTaskSubscriber extends ParEventSubscriberBase  {
   }
 
   /**
-   * @param ParDataEventInterface $event
+   * @param \Drupal\par_data\Event\ParDataEventInterface $event
    */
   public function onDeviationRequestReviewed(ParDataEventInterface $event) {
-      $this->getMessageExpiryService()->expire($this->getMessages($event));
+    $this->getMessageExpiryService()->expire($this->getMessages($event));
   }
+
 }

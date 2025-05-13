@@ -2,16 +2,8 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\comment\CommentInterface;
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\Core\Link;
-use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_flows\ParFlowException;
-use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -98,7 +90,8 @@ class ParPartnershipContacts extends ParFormPluginBase {
       $params = ['type' => $contact_format];
       $contact_add_flow = ParFlow::load('partnership_contact_add');
       $add_contact_link = $contact_add_flow?->getStartLink(1, "add another {$contact_format} contact", $params);
-    } catch (ParFlowException) {
+    }
+    catch (ParFlowException) {
 
     }
 
@@ -114,7 +107,7 @@ class ParPartnershipContacts extends ParFormPluginBase {
       'person' => [
         '#type' => 'container',
         'items' => [
-          '#type' => 'container'
+          '#type' => 'container',
         ],
         'pager' => [
           '#type' => 'pager',
@@ -148,7 +141,8 @@ class ParPartnershipContacts extends ParFormPluginBase {
         $params = ['type' => $contact_format, 'par_data_person' => $entity->id()];
         $contact_remove_flow = ParFlow::load('partnership_contact_remove');
         $remove_contact_link = $contact_remove_flow?->getStartLink(1, 'remove ' . strtolower((string) $entity->label()) . ' from this partnership', $params);
-      } catch (ParFlowException) {
+      }
+      catch (ParFlowException) {
 
       }
 
@@ -187,7 +181,8 @@ class ParPartnershipContacts extends ParFormPluginBase {
    * Return no actions for this plugin.
    */
   #[\Override]
-  public function getComponentActions(array $actions = [], array $data = NULL): ?array {
+  public function getComponentActions(array $actions = [], ?array $data = NULL): ?array {
     return $actions;
   }
+
 }

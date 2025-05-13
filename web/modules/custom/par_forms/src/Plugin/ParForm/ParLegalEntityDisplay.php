@@ -2,15 +2,9 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\comment\CommentInterface;
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Link;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_flows\ParFlowException;
-use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -34,7 +28,7 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
     if ($par_data_partnership instanceof ParDataEntityInterface) {
       $legal_entities = $par_data_partnership->getLegalEntity();
     }
-    else if ($par_data_organisation instanceof ParDataEntityInterface) {
+    elseif ($par_data_organisation instanceof ParDataEntityInterface) {
       $legal_entities = $par_data_organisation->getLegalEntity();
     }
     if (isset($legal_entities) && !empty($legal_entities)) {
@@ -173,7 +167,8 @@ class ParLegalEntityDisplay extends ParFormPluginBase {
    * Return no actions for this plugin.
    */
   #[\Override]
-  public function getComponentActions(array $actions = [], array $data = NULL): ?array {
+  public function getComponentActions(array $actions = [], ?array $data = NULL): ?array {
     return $actions;
   }
+
 }

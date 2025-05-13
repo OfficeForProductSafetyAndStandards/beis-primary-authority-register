@@ -2,7 +2,6 @@
 
 namespace Drupal\par_member_cease_flows\Form;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
@@ -19,7 +18,7 @@ class ParMemberCeaseDateForm extends ParBaseForm {
    * Set the page title.
    */
   #[\Override]
-  public function titleCallback(ParDataPartnership $par_data_partnership = NULL, ParDataCoordinatedBusiness $par_data_coordinated_business = NULL) {
+  public function titleCallback(?ParDataPartnership $par_data_partnership = NULL, ?ParDataCoordinatedBusiness $par_data_coordinated_business = NULL) {
     $member = $par_data_coordinated_business->getOrganisation(TRUE);
     $this->pageTitle = "Cease membership for {$member->label()}";
 

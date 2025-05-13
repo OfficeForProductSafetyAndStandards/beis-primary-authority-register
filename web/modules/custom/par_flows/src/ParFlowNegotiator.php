@@ -4,29 +4,28 @@ namespace Drupal\par_flows;
 
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Http\RequestStack;
-use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\Entity\ParFlowInterface;
 use Drupal\user\Entity\User;
-use Drupal\user\Plugin\views\argument_default\CurrentUser;
-use Symfony\Component\Routing\Route;
 use Drupal\Core\Routing\RouteMatchInterface;
 
+/**
+ *
+ */
 class ParFlowNegotiator implements ParFlowNegotiatorInterface {
 
   /**
    * The flow storage.
    *
-   * @var ConfigEntityStorageInterface $flow_storage
+   * @var \Drupal\Core\Config\Entity\ConfigEntityStorageInterface
    */
   protected ConfigEntityStorageInterface $flow_storage;
 
   /**
    * The current flow entity.
    *
-   * @var ParFlowInterface $flow
+   * @var \Drupal\par_flows\Entity\ParFlowInterface
    */
   protected ParFlowInterface $flow;
 
@@ -40,7 +39,7 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
   /**
    * The flow state.
    *
-   * @var ?string $flow_state
+   * @var ?string
    */
   protected ?string $flow_state = NULL;
 
@@ -57,18 +56,19 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
    *   The entity bundle info service.
    */
   public function __construct(/**
-   * The PAR data manager for acting upon PAR Data.
-   */
-  protected EntityTypeManagerInterface $entityTypeManager, /**
-   * The PAR data manager for acting upon PAR Data.
-   */
-  protected ParDataManagerInterface $parDataManager, /**
-   * The current route matcher.
-   */
-  protected RouteMatchInterface $route, /**
-   * The current user account.
-   */
-  protected AccountInterface $account) {
+                               * The PAR data manager for acting upon PAR Data.
+                               */
+    protected EntityTypeManagerInterface $entityTypeManager, /**
+                                                              * The PAR data manager for acting upon PAR Data.
+                                                              */
+    protected ParDataManagerInterface $parDataManager, /**
+                                                        * The current route matcher.
+                                                        */
+    protected RouteMatchInterface $route, /**
+                                           * The current user account.
+                                           */
+    protected AccountInterface $account,
+  ) {
     $this->flow_storage = $this->entityTypeManager->getStorage('par_flow');
   }
 
@@ -148,6 +148,9 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
     return $flow;
   }
 
+  /**
+ *
+ */
   #[\Override]
   public function getFormKey($form_id, $state = NULL, $flow_name = NULL) {
     $flow_name = !empty($flow_name) ? $flow_name : $this->getFlowName();
@@ -246,6 +249,9 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
     return $this->flow_name;
   }
 
+  /**
+   *
+   */
   public function routeInFlow($route_name) {
     $flows = $this->flow_storage->loadByRoute($route_name);
 
@@ -317,4 +323,5 @@ class ParFlowNegotiator implements ParFlowNegotiatorInterface {
     }
     return substr($key, 0, 64 - strlen($hash)) . $hash;
   }
+
 }

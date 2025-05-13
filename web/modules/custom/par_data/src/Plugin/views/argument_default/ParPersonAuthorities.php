@@ -2,7 +2,6 @@
 
 namespace Drupal\par_data\Plugin\views\argument_default;
 
-use Drupal\Core\Cache\Cache;
 use Drupal\Core\Cache\CacheableDependencyInterface;
 use Drupal\user\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -29,7 +28,7 @@ class ParPersonAuthorities extends ArgumentDefaultPluginBase implements Cacheabl
 
   /**
    * {@inheritdoc}
-   */ 
+   */
   public function __construct(array $configuration, $plugin_id, $plugin_definition) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
   }

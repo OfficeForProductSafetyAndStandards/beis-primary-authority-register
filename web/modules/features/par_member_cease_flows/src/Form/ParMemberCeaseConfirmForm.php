@@ -7,8 +7,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_flows\ParDisplayTrait;
-use Drupal\par_member_cease_flows\ParFlowAccessTrait;
 
 /**
  * The confirming the user is authorised to revoke partnerships.
@@ -24,7 +22,7 @@ class ParMemberCeaseConfirmForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataCoordinatedBusiness $par_data_coordinated_business = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL, ?ParDataCoordinatedBusiness $par_data_coordinated_business = NULL) {
     $form['membership_info'] = [
       '#type' => 'markup',
       '#markup' => "{$par_data_coordinated_business->label()}'s membership of {$par_data_partnership->label()} has been ceased and the 'membership until' date has been updated on the members list.",
@@ -76,6 +74,5 @@ class ParMemberCeaseConfirmForm extends ParBaseForm {
 
     }
   }
-
 
 }

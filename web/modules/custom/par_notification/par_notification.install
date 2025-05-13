@@ -1,14 +1,11 @@
 <?php
+
 /**
  * @file
  * Installation hooks for par_data module.
  */
 
-use Drupal\message\MessageInterface;
-use Drupal\par_data\ParDataManagerInterface;
-use Drupal\par_notification\ParNotificationException;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
-
 
 /**
  * Install the new message entities base fields.

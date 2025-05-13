@@ -7,7 +7,7 @@ use Drupal\par_notification\ParSubscriptionManagerInterface;
 use Drush\Attributes as CLI;
 use Drush\Commands\DrushCommands;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use \Drupal\message_expire\MessageExpiryManagerInterface;
+use Drupal\message_expire\MessageExpiryManagerInterface;
 
 /**
  * A Drush commandfile.
@@ -27,7 +27,7 @@ final class ParNotificationCommands extends DrushCommands {
 
   /**
    * {@inheritdoc}
-   */ 
+   */
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('plugin.manager.par_subscription_manager'),
@@ -82,7 +82,7 @@ final class ParNotificationCommands extends DrushCommands {
 
       // Identify whether any of the primary data has already been accounted for.
       $events = &$count['events'];
-      $unique_data = array_filter($primary_data, function($data) use ($message, $events) {
+      $unique_data = array_filter($primary_data, function ($data) use ($message, $events) {
         $event_key = implode(':', [
           $message->getTemplate()->id(),
           $data?->id() ?? $message->id(),

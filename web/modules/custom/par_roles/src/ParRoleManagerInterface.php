@@ -2,12 +2,9 @@
 
 namespace Drupal\par_roles;
 
-use Drupal\audit_log\EventSubscriber\User;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\user\UserInterface;
 use Drupal\par_data\Entity\ParDataMembershipInterface;
 use Drupal\par_data\Entity\ParDataPersonInterface;
-use Generator;
 
 /**
  * Interface for the Par Role Manager Service.
@@ -17,7 +14,7 @@ interface ParRoleManagerInterface {
   /**
    * Get the roles assigned to an account.
    *
-   * @param UserInterface $account
+   * @param \Drupal\audit_log\EventSubscriber\UserInterface $account
    *   The account to get roles for.
    *
    * @return array
@@ -26,8 +23,8 @@ interface ParRoleManagerInterface {
   public function getRoles(UserInterface $account): array;
 
   /**
-   * @param UserInterface $account
-   *    The account to display roles for.
+   * @param \Drupal\audit_log\EventSubscriber\UserInterface $account
+   *   The account to display roles for.
    *
    * @return array
    *   An array of role labels.
@@ -39,10 +36,10 @@ interface ParRoleManagerInterface {
    *
    * Note: This can only get people that have already been saved.
    *
-   * @param UserInterface $account
+   * @param \Drupal\audit_log\EventSubscriber\UserInterface $account
    *   The account to get people for.
    *
-   * @return ParDataPersonInterface[]
+   * @return \Drupal\par_data\Entity\ParDataPersonInterface[]
    *   An array of people that are linked to this account.
    */
   public function getPeople(UserInterface $account): array;
@@ -50,7 +47,7 @@ interface ParRoleManagerInterface {
   /**
    * Get the user account associated with the person.
    *
-   * @param ParDataPersonInterface $person
+   * @param \Drupal\par_data\Entity\ParDataPersonInterface $person
    *   The person to return the account for.
    *
    * @return ?UserInterface
@@ -61,21 +58,21 @@ interface ParRoleManagerInterface {
   /**
    * Get all the institutions this user is a member of.
    *
-   * @param UserInterface $account
+   * @param \Drupal\audit_log\EventSubscriber\UserInterface $account
    *   The account to get institutions for.
    * @param $institution_type
-   *    The institution type to filter by, will check all institutions if nor provided.
+   *   The institution type to filter by, will check all institutions if nor provided.
    *
-   * @return Generator & iterable<ParDataMembershipInterface>
+   * @return \Generator & iterable<ParDataMembershipInterface>
    *   An iterable list of institutions.
    */
-  public function getInstitutions(UserInterface $account, $institution_type = NULL): Generator;
+  public function getInstitutions(UserInterface $account, $institution_type = NULL): \Generator;
 
   /**
    * Whether the user has any institutions of this type.
    *
-   * @param UserInterface $account
-   *    The account to get institutions for.
+   * @param \Drupal\audit_log\EventSubscriber\UserInterface $account
+   *   The account to get institutions for.
    * @param $institution_type
    *   The institution type to filter by, will check all institutions if nor provided.
    *
@@ -97,11 +94,11 @@ interface ParRoleManagerInterface {
    *   - 2: They will have all institution roles removed for institutions
    *     they do not belong to.
    *
-   * @param UserInterface $account
-   *    The account to add a role to.
+   * @param \Drupal\audit_log\EventSubscriber\UserInterface $account
+   *   The account to add a role to.
    *
-   * @return UserInterface
-   *    The account after processing.
+   * @return \Drupal\audit_log\EventSubscriber\UserInterface
+   *   The account after processing.
    */
   public function autoAssignRoles(UserInterface $account): UserInterface;
 
@@ -120,7 +117,7 @@ interface ParRoleManagerInterface {
   /**
    * Add a role.
    *
-   * @param UserInterface $account
+   * @param \Drupal\audit_log\EventSubscriber\UserInterface $account
    *   The account to add a role to.
    * @param string $role
    *   The role id to add.
@@ -128,7 +125,7 @@ interface ParRoleManagerInterface {
    * @throws ParRoleException
    *   If the role could not be added.
    *
-   * @return UserInterface
+   * @return \Drupal\audit_log\EventSubscriber\UserInterface
    *   The account after processing.
    */
   public function addRole(UserInterface $account, string $role): UserInterface;
@@ -136,7 +133,7 @@ interface ParRoleManagerInterface {
   /**
    * Remove a role.
    *
-   * @param UserInterface $account
+   * @param \Drupal\audit_log\EventSubscriber\UserInterface $account
    *   The account to remove a role from.
    * @param string $role
    *   The role id to remove.
@@ -144,7 +141,7 @@ interface ParRoleManagerInterface {
    * @throws ParRoleException
    *   If the role could not be removed.
    *
-   * @return UserInterface
+   * @return \Drupal\audit_log\EventSubscriber\UserInterface
    *   The account after processing.
    */
   public function removeRole(UserInterface $account, string $role): UserInterface;
@@ -153,10 +150,10 @@ interface ParRoleManagerInterface {
    * Check whether the current user has is allowed to remove the role.
    *
    * @param string $role
-   *    The role id to remove.
+   *   The role id to remove.
    *
    * @return bool
-   *    True if the user can remove the role.
+   *   True if the user can remove the role.
    *    False if they do not have permission.
    */
   public function canManageRole(string $role): bool;
@@ -168,14 +165,15 @@ interface ParRoleManagerInterface {
    * belonging to the member must also be saved to automatically re-assign roles.
    *
    * To automatically save the institution and update the user account,
+   *
    * @see self::removeUserMemberships();
    *
-   * @param ParDataMembershipInterface $institution
+   * @param \Drupal\par_data\Entity\ParDataMembershipInterface $institution
    *   An institution to add the member to.
-   * @param ParDataPersonInterface $member
+   * @param \Drupal\par_data\Entity\ParDataPersonInterface $member
    *   The person to remove from the institutions.
    *
-   * @return ParDataMembershipInterface
+   * @return \Drupal\par_data\Entity\ParDataMembershipInterface
    *   The institution with the member added.
    */
   public function addMember(ParDataMembershipInterface $institution, ParDataPersonInterface $member): ParDataMembershipInterface;
@@ -187,14 +185,15 @@ interface ParRoleManagerInterface {
    * belonging to the member must also be saved to automatically re-assign roles.
    *
    * To remove a user entirely from
+   *
    * @see self::removeUserMemberships();
    *
-   * @param ParDataMembershipInterface $institution
+   * @param \Drupal\par_data\Entity\ParDataMembershipInterface $institution
    *   An institution to remove the member from.
-   * @param ParDataPersonInterface $member
+   * @param \Drupal\par_data\Entity\ParDataPersonInterface $member
    *   The person to remove from the institutions.
    *
-   * @return ParDataMembershipInterface
+   * @return \Drupal\par_data\Entity\ParDataMembershipInterface
    *   The institution with the member removed.
    */
   public function removeMember(ParDataMembershipInterface $institution, ParDataPersonInterface $member): ParDataMembershipInterface;
@@ -205,21 +204,21 @@ interface ParRoleManagerInterface {
    * Note: The institution must be saved after removing members, and the user account
    * belonging to the member must also be saved to automatically re-assign roles.
    *
-   * @param ParDataMembershipInterface $institution
+   * @param \Drupal\par_data\Entity\ParDataMembershipInterface $institution
    *   An institution to add the member to or remove them from.
-   * @param UserInterface $account
+   * @param \Drupal\audit_log\EventSubscriber\UserInterface $account
    *   The person to remove from the institution.
    *
-   * @return ParDataMembershipInterface
+   * @return \Drupal\par_data\Entity\ParDataMembershipInterface
    *   An institution the user was removed from.
    *
-   * This is useful in situations where a user needs to be completely removed
-   * from an institution (an authority or organisation).
+   *   This is useful in situations where a user needs to be completely removed
+   *   from an institution (an authority or organisation).
+   *
    * @example <caption>Remove user from an institution</caption>
    * $institution = $this->removeUserMemberships($institution, $account);
    * $institution->save();
    * $account->save();
-   *
    */
   public function removeUserMembership(ParDataMembershipInterface $institution, UserInterface $account): ParDataMembershipInterface;
 

@@ -2,9 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 
@@ -56,7 +54,7 @@ class ParMessageForm extends ParFormPluginBase {
       '#default_value' => $this->getDefaultValuesByKey("files", $index),
       '#upload_validators' => [
         'file_validate_extensions' => [
-          0 => 'jpg jpeg gif png tif pdf txt rdf doc docx odt xls xlsx csv ods ppt pptx odp pot potx pps'
+          0 => 'jpg jpeg gif png tif pdf txt rdf doc docx odt xls xlsx csv ods ppt pptx odp pot potx pps',
         ],
       ],
     ];
@@ -79,4 +77,5 @@ class ParMessageForm extends ParFormPluginBase {
 
     parent::validate($form, $form_state, $index, $action);
   }
+
 }

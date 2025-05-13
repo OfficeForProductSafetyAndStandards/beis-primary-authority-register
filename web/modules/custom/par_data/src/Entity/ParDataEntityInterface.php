@@ -28,7 +28,7 @@ interface ParDataEntityInterface extends TranceInterface {
   /**
    * Determine if this entity supports PAR statuses.
    *
-   * @return boolean
+   * @return bool
    *   Whether the entity has a status field.
    */
   public function hasStatus(): bool;
@@ -36,7 +36,7 @@ interface ParDataEntityInterface extends TranceInterface {
   /**
    * Return the stored value of the status field.
    *
-   * @return NULL|mixed
+   * @return null|mixed
    *   The value of the status field.
    */
   public function getRawStatus();
@@ -44,7 +44,7 @@ interface ParDataEntityInterface extends TranceInterface {
   /**
    * Return the label of the status field.
    *
-   * @return NULL|mixed
+   * @return null|mixed
    *   The value of the status field.
    */
   public function getParStatus();
@@ -141,37 +141,36 @@ interface ParDataEntityInterface extends TranceInterface {
   /**
    * Revoke if this entity is revokable and is not new.
    *
-   * @param boolean $save
-   *  Whether to save the entity after revoking.
-   * @param String $reason
-   *  The reason this entity is being revoked.
+   * @param bool $save
+   *   Whether to save the entity after revoking.
+   * @param string $reason
+   *   The reason this entity is being revoked.
    *
-   * @return boolean
-   *  TRUE if the entity was revoked, FALSE for all other results.
+   * @return bool
+   *   TRUE if the entity was revoked, FALSE for all other results.
    */
   public function revoke($save = TRUE, $reason = '');
 
   /**
    * Unrevoke a revoked entity.
    *
-   * @param boolean $save
+   * @param bool $save
    *   Whether to save the entity after revoking.
    *
-   * @return boolean
+   * @return bool
    *   True if the entity was unrevoked, false for all other results.
-   *
    */
   public function unrevoke($save = TRUE);
 
   /**
    * Archive if the entity is archivable and is not new.
    *
-   * @param String $reason
+   * @param string $reason
    *   Reason for archiving this entity.
-   * @param boolean $save
+   * @param bool $save
    *   Whether to save the entity after revoking.
    *
-   * @return boolean
+   * @return bool
    *   True if the entity was restored, false for all other results.
    */
   public function archive($save = TRUE, $reason = '');
@@ -179,10 +178,10 @@ interface ParDataEntityInterface extends TranceInterface {
   /**
    * Restore an archived entity.
    *
-   * @param boolean $save
+   * @param bool $save
    *   Whether to save the entity after revoking.
    *
-   * @return boolean
+   * @return bool
    *   True if the entity was restored, false for all other results.
    */
   public function restore($save = TRUE);
@@ -190,7 +189,7 @@ interface ParDataEntityInterface extends TranceInterface {
   /**
    * Get the level of completion of this entity.
    *
-   * @return NULL|integer
+   * @return null|int
    *   The percentage completion value.
    */
   public function getCompletionPercentage();
@@ -201,8 +200,9 @@ interface ParDataEntityInterface extends TranceInterface {
    * @param string $field
    *   The name of the field on the entity to act on.
    *
-   * @return \Drupal\Component\Render\MarkupInterface/NULL
+   * @return \Drupal\Component\Render\MarkupInterfaceNULL
    *   The filtered text
    */
   public function getPlain($field);
+
 }

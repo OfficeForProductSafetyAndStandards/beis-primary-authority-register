@@ -24,20 +24,23 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
    */
   protected $entityMapping = [
     ['advice_title', 'par_data_advice', 'advice_title', NULL, NULL, 0, [
-      'This value should not be null.' => 'You must provide a title for this advice document.'
-    ]],
+      'This value should not be null.' => 'You must provide a title for this advice document.',
+    ],
+    ],
     ['notes', 'par_data_advice', 'notes', NULL, NULL, 0, [
       'This value should not be null.' => 'You must provide a summary for this advice document.',
-      'You must fill in the missing information.' => 'You must provide a summary for this advice document.'
-    ]],
+      'You must fill in the missing information.' => 'You must provide a summary for this advice document.',
+    ],
+    ],
     ['advice_type', 'par_data_advice', 'advice_type', NULL, NULL, 0, [
-      'This value should not be null.' => 'You must choose what type of advice this is.'
-    ]],
+      'This value should not be null.' => 'You must choose what type of advice this is.',
+    ],
+    ],
     ['regulatory_functions', 'par_data_advice', 'field_regulatory_function', NULL, NULL, 0, [
-      'This value should not be null.' => 'You must choose which regulatory functions this advice applies to.'
-    ]],
+      'This value should not be null.' => 'You must choose which regulatory functions this advice applies to.',
+    ],
+    ],
   ];
-
 
   /**
    * {@inheritdoc}
@@ -61,7 +64,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
    * @param \Drupal\par_data\Entity\ParDataAdvice $par_data_advice
    *   The advice document being retrieved.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
+  public function retrieveEditableValues(?ParDataPartnership $par_data_partnership = NULL, ?ParDataAdvice $par_data_advice = NULL) {
     if ($par_data_advice) {
       // Partnership Confirmation.
       $allowed_types = $par_data_advice->getTypeEntity()->getAllowedValues('advice_type');
@@ -95,7 +98,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL, ?ParDataAdvice $par_data_advice = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $par_data_advice);
     $advice_bundle = $this->getParDataManager()->getParBundleEntity('par_data_advice');
 
@@ -122,7 +125,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#attributes' => ['class' => ['file']],
-          '#value' => $file->getFileName()
+          '#value' => $file->getFileName(),
         ];
       }
     }
@@ -270,7 +273,7 @@ class ParPartnershipFlowsAdviceForm extends ParBaseForm {
       }
     }
     // Save existing advice entities.
-    else if (!empty($assigned_reg_functions) && $par_data_advice->save()) {
+    elseif (!empty($assigned_reg_functions) && $par_data_advice->save()) {
       $this->getFlowDataHandler()->deleteStore();
     }
     // Log an error.

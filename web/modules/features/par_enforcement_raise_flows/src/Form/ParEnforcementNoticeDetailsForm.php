@@ -4,7 +4,6 @@ namespace Drupal\par_enforcement_raise_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_enforcement_raise_flows\ParFlowAccessTrait;
@@ -22,8 +21,9 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
    */
   protected $entityMapping = [
     ['summary', 'par_data_enforcement_notice', 'summary', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter a summary description for this notice of enforcement action.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter a summary description for this notice of enforcement action.',
+    ],
+    ],
   ];
 
   /**
@@ -56,7 +56,7 @@ class ParEnforcementNoticeDetailsForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL) {
 
     $enforcement_notice_entity_type = $this->getParDataManager()->getParBundleEntity('par_data_enforcement_notice');
     $notice_type = $enforcement_notice_entity_type->getAllowedValues('notice_type');

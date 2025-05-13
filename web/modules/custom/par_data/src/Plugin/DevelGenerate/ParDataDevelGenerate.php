@@ -186,7 +186,7 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
    * {@inheritdoc}
    */
   #[\Override]
-  function settingsFormValidate(array $form, FormStateInterface $form_state) {
+  public function settingsFormValidate(array $form, FormStateInterface $form_state) {
     if (!array_filter($form_state->getValue('par_data_types'))) {
       $form_state->setErrorByName('par_data_types', $this->t('Please select at least one content type'));
     }
@@ -246,7 +246,7 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
     }
 
     // Add the operations to create the nodes.
-    for ($num = 0; $num < $values['num']; $num ++) {
+    for ($num = 0; $num < $values['num']; $num++) {
       $operations[] = ['devel_generate_operation', [$this, 'batchContentAddEntity', $values]];
     }
 
@@ -255,17 +255,26 @@ class ParDataDevelGenerate extends DevelGenerateBase implements ContainerFactory
     batch_set($batch);
   }
 
+  /**
+   *
+   */
   public function batchContentPreEntity($vars, &$context) {
     $context['results'] = $vars;
     $context['results']['num'] = 0;
     $this->develGenerateContentPreEntity($context['results']);
   }
 
+  /**
+   *
+   */
   public function batchContentAddEntity($vars, &$context) {
     $this->develGenerateContentAddEntity($context['results']);
     $context['results']['num']++;
   }
 
+  /**
+   *
+   */
   public function batchContentKill($vars, &$context) {
     $this->contentKill($context['results']);
   }

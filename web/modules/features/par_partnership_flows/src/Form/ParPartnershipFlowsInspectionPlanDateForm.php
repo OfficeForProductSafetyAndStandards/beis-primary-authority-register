@@ -37,7 +37,7 @@ class ParPartnershipFlowsInspectionPlanDateForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $expiry = $form_state->getValue('expire');
 
-    // Check date is in the future
+    // Check date is in the future.
     if ($expiry) {
       $request_date = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
       $expiry_date = DrupalDateTime::createFromFormat('Y-m-d', $expiry, NULL, ['validate_format' => FALSE]);
@@ -54,7 +54,6 @@ class ParPartnershipFlowsInspectionPlanDateForm extends ParBaseForm {
 
     parent::validateForm($form, $form_state);
   }
-
 
   /**
    * {@inheritdoc}
@@ -92,13 +91,13 @@ class ParPartnershipFlowsInspectionPlanDateForm extends ParBaseForm {
 
     $request_date = DrupalDateTime::createFromTimestamp(time(), NULL, ['validate_format' => FALSE]);
     if ($par_data_inspection_plan->isNew()) {
-      $inspection_plan_start_date =  $request_date->format("Y-m-d");
+      $inspection_plan_start_date = $request_date->format("Y-m-d");
     }
     else {
-      $inspection_plan_start_date =  $par_data_inspection_plan->get('valid_date')->value;
+      $inspection_plan_start_date = $par_data_inspection_plan->get('valid_date')->value;
     }
 
-    // set the expire time for inspection plan entities.
+    // Set the expire time for inspection plan entities.
     $inspection_plan_end_date = $this->getFlowDataHandler()->getTempDataValue('expire');
     // Set date range values for inspection plans.
     $par_data_inspection_plan->set('valid_date', ['value' => $inspection_plan_start_date, 'end_value' => $inspection_plan_end_date]);

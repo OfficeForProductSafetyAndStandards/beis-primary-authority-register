@@ -2,7 +2,6 @@
 
 namespace Drupal\par_flows\Event;
 
-use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 
 /**

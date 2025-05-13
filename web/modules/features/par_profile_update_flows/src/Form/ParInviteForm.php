@@ -3,8 +3,6 @@
 namespace Drupal\par_profile_update_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_profile_update_flows\ParFlowAccessTrait;
 use Drupal\user\Entity\Role;
@@ -27,12 +25,11 @@ class ParInviteForm extends ParBaseForm {
    */
   #[\Override]
   public function loadData() {
-//    $cid_person_select = $this->getFlowNegotiator()->getFormKey('par_choose_person');
-//    $person = $this->getFlowDataHandler()->getDefaultValues('user_person', '', $cid_person_select);
-//    if ($par_data_person = ParDataPerson::load($person)) {
-//      $this->getFlowDataHandler()->setParameter('par_data_person', $par_data_person);
-//    }
-
+    // $cid_person_select = $this->getFlowNegotiator()->getFormKey('par_choose_person');
+    //    $person = $this->getFlowDataHandler()->getDefaultValues('user_person', '', $cid_person_select);
+    //    if ($par_data_person = ParDataPerson::load($person)) {
+    //      $this->getFlowDataHandler()->setParameter('par_data_person', $par_data_person);
+    //    }
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('par_choose_role');
     $role = $this->getFlowDataHandler()->getDefaultValues('role', '', $cid_role_select);
 
@@ -42,16 +39,19 @@ class ParInviteForm extends ParBaseForm {
         $role_options = $this->getParDataManager()->getEntitiesAsOptions([Role::load($role)], []);
 
         break;
+
       case 'par_authority':
         $invitation_type = 'invite_authority_member';
         $role_options = $this->getParDataManager()->getEntitiesAsOptions([Role::load($role)], []);
 
         break;
+
       case 'par_organisation':
         $invitation_type = 'invite_organisation_member';
         $role_options = $this->getParDataManager()->getEntitiesAsOptions([Role::load($role)], []);
 
         break;
+
       default:
         $invitation_type = 'none';
         $role_options = [];

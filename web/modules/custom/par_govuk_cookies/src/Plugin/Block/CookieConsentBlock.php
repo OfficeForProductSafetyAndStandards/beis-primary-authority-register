@@ -24,8 +24,8 @@ class CookieConsentBlock extends BlockBase implements ContainerFactoryPluginInte
    */
   public function __construct(
     array $configuration,
-          $plugin_id,
-          $plugin_definition,
+    $plugin_id,
+    $plugin_definition,
     protected FormBuilderInterface $formBuilder,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
@@ -59,4 +59,5 @@ class CookieConsentBlock extends BlockBase implements ContainerFactoryPluginInte
   public function getCacheMaxAge() {
     return 0;
   }
+
 }

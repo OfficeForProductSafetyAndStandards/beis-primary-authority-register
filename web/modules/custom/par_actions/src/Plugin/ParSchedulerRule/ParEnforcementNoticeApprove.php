@@ -20,6 +20,9 @@ use Drupal\par_actions\ParSchedulerRuleBase;
  */
 class ParEnforcementNoticeApprove extends ParSchedulerRuleBase {
 
+  /**
+ *
+ */
   #[\Override]
   public function query() {
     $query = parent::query();
@@ -28,4 +31,5 @@ class ParEnforcementNoticeApprove extends ParSchedulerRuleBase {
 
     return $query;
   }
+
 }

@@ -4,6 +4,7 @@
  * @file
  * Functions to support theming in the PAR theme.
  */
+
 use Drupal\Core\Asset\AttachedAssetsInterface;
 use Drupal\Core\Language\LanguageInterface;
 use Drupal\Core\Form\FormStateInterface;
@@ -48,7 +49,8 @@ function par_theme_preprocess_html(array &$variables) {
       if ($route instanceof Route) {
         $variables['head_title']['title'] = \Drupal::service('title_resolver')->getTitle($request, $route);
       }
-    } else {
+    }
+    else {
       unset($variables['head_title']['title']);
     }
   }

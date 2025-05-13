@@ -108,4 +108,5 @@ class ParSelectEnforcedLegalEntityForm extends ParFormPluginBase {
 
     parent::validate($form, $form_state, $index, $action);
   }
+
 }

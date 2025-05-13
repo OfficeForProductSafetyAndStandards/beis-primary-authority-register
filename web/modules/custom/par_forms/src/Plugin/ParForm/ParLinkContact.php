@@ -2,18 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\comment\CommentInterface;
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_flows\ParFlowException;
-use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
-use Drupal\user\Entity\Role;
-use Drupal\user\Entity\User;
-use Drupal\user\UserInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -52,7 +41,6 @@ class ParLinkContact extends ParFormPluginBase {
     if (isset($new_account) && (!isset($existing_account) || ($existing_account->id() !== $new_account->id()))) {
       // If an account can be found that matches by e-mail address then we should use this.
       $account_options[$new_account->id()] = 'Use the new account: ' . $new_account->getEmail();
-
 
     }
     if (!isset($new_account) && isset($existing_account) && $contact_email !== $existing_account->getEmail()) {
@@ -116,7 +104,8 @@ class ParLinkContact extends ParFormPluginBase {
    * Return no actions for this plugin.
    */
   #[\Override]
-  public function getComponentActions(array $actions = [], array $data = NULL): ?array {
+  public function getComponentActions(array $actions = [], ?array $data = NULL): ?array {
     return $actions;
   }
+
 }

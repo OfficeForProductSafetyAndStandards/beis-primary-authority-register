@@ -3,13 +3,9 @@
 namespace Drupal\par_forms\Plugin\ParForm;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
-use Drupal\user\Entity\User;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Contact merging form plugin.
@@ -76,4 +72,5 @@ class ParMergePersonForm extends ParFormPluginBase {
 
     parent::validate($form, $form_state, $index, $action);
   }
+
 }

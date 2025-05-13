@@ -4,21 +4,11 @@ namespace Drupal\par_notification\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 
-use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\Core\Link;
-use Drupal\Core\PageCache\ResponsePolicy\KillSwitch;
-use Drupal\Core\Routing\CurrentRouteMatch;
-use Drupal\Core\State\StateInterface;
 use Drupal\Core\Url;
-use Drupal\message\Entity\Message;
 use Drupal\par_notification\Form\ParInvitationForm;
-use Drupal\par_notification\ParLinkManager;
 use Drupal\user\Form\UserLoginForm;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use function PHPUnit\Framework\isEmpty;
 
 /**
  * Controller for handling link redirection requests when the user is not signed in.
@@ -74,7 +64,7 @@ class ParAccessDeniedController extends ControllerBase {
     $build['account']['signin'] = [
       '#type'   => 'container',
       '#weight' => 1,
-      '#attributes' => ['class' => [$column_size]]
+      '#attributes' => ['class' => [$column_size]],
     ];
     $build['account']['signin']['title'] = [
       '#type' => 'html_tag',
@@ -89,7 +79,7 @@ class ParAccessDeniedController extends ControllerBase {
       $build['account']['invitation'] = [
         '#type'   => 'container',
         '#weight' => 2,
-        '#attributes' => ['class' => [$column_size]]
+        '#attributes' => ['class' => [$column_size]],
       ];
       $build['account']['invitation']['title'] = [
         '#type' => 'html_tag',
@@ -102,4 +92,5 @@ class ParAccessDeniedController extends ControllerBase {
 
     return $build;
   }
+
 }

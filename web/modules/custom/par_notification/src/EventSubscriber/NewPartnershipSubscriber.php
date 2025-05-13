@@ -8,6 +8,9 @@ use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_notification\ParEventSubscriberBase;
 
+/**
+ *
+ */
 class NewPartnershipSubscriber extends ParEventSubscriberBase {
 
   /**
@@ -23,7 +26,7 @@ class NewPartnershipSubscriber extends ParEventSubscriberBase {
    * @return mixed
    */
   #[\Override]
-  static function getSubscribedEvents(): array {
+  public static function getSubscribedEvents(): array {
     $events = [];
     // Confirmation event should fire after a partnership has been confirmed.
     if (class_exists(ParDataEvent::class)) {
@@ -34,13 +37,13 @@ class NewPartnershipSubscriber extends ParEventSubscriberBase {
   }
 
   /**
-   * @param EntityInsertEvent $event
+   * @param \Drupal\core_event_dispatcher\Event\Entity\EntityInsertEvent $event
    */
   public function onEvent(EntityInsertEvent $event) {
     if ($event->getEntity() instanceof ParDataPartnership) {
       $this->setEvent($event);
 
-      /** @var ParDataPartnership $entity */
+      /** @var \Drupal\par_data\Entity\ParDataPartnership $entity */
       $entity = $event->getEntity();
       $par_data_authority = $entity?->getAuthority(TRUE);
 
@@ -56,4 +59,5 @@ class NewPartnershipSubscriber extends ParEventSubscriberBase {
       }
     }
   }
+
 }

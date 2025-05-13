@@ -3,12 +3,7 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Messenger\MessengerInterface;
-use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
@@ -43,7 +38,7 @@ class ParPartnershipFlowsPartnershipConfirmationForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL) {
     if ($par_data_partnership) {
       $form['partnership_id'] = [
         '#type' => 'hidden',
@@ -61,7 +56,7 @@ class ParPartnershipFlowsPartnershipConfirmationForm extends ParBaseForm {
       $form['organisation_registered_address'] = $this->renderSection('Organisation address', $par_data_organisation, ['field_premises' => 'summary'], [], TRUE, TRUE);
 
       // Display contacts at the organisation.
-      $form['organisation_contacts'] = $this->renderSection('Contacts at the Organisation', $par_data_partnership, ['field_organisation_person' => 'detailed'], [],  TRUE, TRUE);
+      $form['organisation_contacts'] = $this->renderSection('Contacts at the Organisation', $par_data_partnership, ['field_organisation_person' => 'detailed'], [], TRUE, TRUE);
 
       // Display SIC code, number of employees.
       $form['sic_code'] = $this->renderSection('Primary SIC code', $par_data_organisation, ['field_sic_code' => 'detailed'], [], TRUE, TRUE);
@@ -155,7 +150,7 @@ class ParPartnershipFlowsPartnershipConfirmationForm extends ParBaseForm {
         ->error($message, $replacements);
 
       // If the partnership could not be saved the application can't be progressed.
-      // @TODO Find a better way to alert the user without redirecting them away from the form.
+      // @todo Find a better way to alert the user without redirecting them away from the form.
       $this->messenger()->addMessage('There was an error progressing your partnership, please contact the helpdesk for more information.');
       $form_state->setRedirectUrl($this->getFlowNegotiator()->getFlow()->progress('cancel'));
     }

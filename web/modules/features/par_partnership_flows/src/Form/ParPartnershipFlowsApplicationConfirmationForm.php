@@ -3,7 +3,6 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
@@ -151,7 +150,7 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
         ->error($message, $replacements);
 
       // If the partnership could not be saved the application can't be progressed.
-      // @TODO Find a better way to alert the user without redirecting them away from the form.
+      // @todo Find a better way to alert the user without redirecting them away from the form.
       $this->messenger()->addMessage('There was an error progressing your partnership, please contact the helpdesk for more information.');
       $form_state->setRedirectUrl($this->getFlowNegotiator()->getFlow()->progress('cancel'));
     }
@@ -176,7 +175,7 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
 
     // Load an existing address if provided.
     $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_organisation_suggestion');
-    $existing_organisation = $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id','new', $cid);
+    $existing_organisation = $this->getFlowDataHandler()->getDefaultValues('par_data_organisation_id', 'new', $cid);
     if (isset($existing_organisation) && $existing_organisation !== 'new') {
       $par_data_organisation = ParDataOrganisation::load($existing_organisation);
 
@@ -193,7 +192,7 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
       $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_application_organisation');
       $par_data_organisation = ParDataOrganisation::create([
         'type' => 'organisation',
-        'organisation_name' => $this->getFlowDataHandler()->getDefaultValues('organisation_name','', $cid),
+        'organisation_name' => $this->getFlowDataHandler()->getDefaultValues('organisation_name', '', $cid),
       ]);
     }
 
@@ -204,20 +203,20 @@ class ParPartnershipFlowsApplicationConfirmationForm extends ParBaseForm {
         'uid' => $this->getCurrentUser()->id(),
         'address' => [
           'country_code' => $this->getFlowDataHandler()->getDefaultValues('country_code', '', $cid),
-          'address_line1' => $this->getFlowDataHandler()->getDefaultValues('address_line1','', $cid),
-          'address_line2' => $this->getFlowDataHandler()->getDefaultValues('address_line2','', $cid),
-          'locality' => $this->getFlowDataHandler()->getDefaultValues('town_city','', $cid),
-          'administrative_area' => $this->getFlowDataHandler()->getDefaultValues('county','', $cid),
-          'postal_code' => $this->getFlowDataHandler()->getDefaultValues('postcode','', $cid),
+          'address_line1' => $this->getFlowDataHandler()->getDefaultValues('address_line1', '', $cid),
+          'address_line2' => $this->getFlowDataHandler()->getDefaultValues('address_line2', '', $cid),
+          'locality' => $this->getFlowDataHandler()->getDefaultValues('town_city', '', $cid),
+          'administrative_area' => $this->getFlowDataHandler()->getDefaultValues('county', '', $cid),
+          'postal_code' => $this->getFlowDataHandler()->getDefaultValues('postcode', '', $cid),
         ],
-        'nation' => $this->getFlowDataHandler()->getDefaultValues('country','', $cid),
+        'nation' => $this->getFlowDataHandler()->getDefaultValues('country', '', $cid),
       ]);
 
       // Add this premises to the organisation.
       if ($par_data_premises->save()) {
         $par_data_organisation->get('field_premises')->appendItem($par_data_premises->id());
         $cid = $this->getFlowNegotiator()->getFormKey('par_partnership_address');
-        $par_data_organisation->set('nation', $this->getFlowDataHandler()->getDefaultValues('country','', $cid));
+        $par_data_organisation->set('nation', $this->getFlowDataHandler()->getDefaultValues('country', '', $cid));
       }
     }
     if (!isset($organisation_person)) {

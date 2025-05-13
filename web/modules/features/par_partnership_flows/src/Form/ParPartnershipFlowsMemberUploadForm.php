@@ -3,7 +3,6 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\file\FileInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\file\Entity\File;
@@ -27,7 +26,7 @@ class ParPartnershipFlowsMemberUploadForm extends ParBaseForm {
    * @param \Drupal\par_data\Entity\ParDataAdvice $par_data_advice
    *   The advice being retrieved.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
+  public function retrieveEditableValues(?ParDataPartnership $par_data_partnership = NULL) {
 
   }
 
@@ -35,7 +34,7 @@ class ParPartnershipFlowsMemberUploadForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
     // Multiple file field.
@@ -50,8 +49,8 @@ class ParPartnershipFlowsMemberUploadForm extends ParBaseForm {
       '#upload_validators' => [
         'file_validate_extensions' => [
           0 => 'csv',
-        ]
-      ]
+        ],
+      ],
     ];
 
     return parent::buildForm($form, $form_state);

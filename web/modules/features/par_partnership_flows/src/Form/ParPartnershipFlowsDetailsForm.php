@@ -3,15 +3,10 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Link;
-use Drupal\Core\Routing\MatchingRouteNotFoundException;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_flows\ParFlowException;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 /**
  * The partnership form for the partnership details.
@@ -39,7 +34,7 @@ class ParPartnershipFlowsDetailsForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL) {
     // Helptext.
     $form['help_text'] = [
       '#type' => 'markup',

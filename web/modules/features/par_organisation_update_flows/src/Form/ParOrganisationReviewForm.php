@@ -3,9 +3,7 @@
 namespace Drupal\par_organisation_update_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataSicCode;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_organisation_update_flows\ParFlowAccessTrait;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_data\Entity\ParDataOrganisation;
 
@@ -24,10 +22,10 @@ class ParOrganisationReviewForm extends ParBaseForm {
    */
   #[\Override]
   public function loadData() {
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataOrganisation[] $par_data_organisation */
+    /** @var \Drupal\par_data\Entity\ParDataOrganisation[] $par_data_organisation */
 
     if (isset($par_data_organisation)) {
       $this->getFlowDataHandler()->setParameter('par_data_organisation', $par_data_organisation);
@@ -36,6 +34,9 @@ class ParOrganisationReviewForm extends ParBaseForm {
     parent::loadData();
   }
 
+  /**
+   *
+   */
   public function createEntities() {
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
 
@@ -86,7 +87,7 @@ class ParOrganisationReviewForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataOrganisation $par_data_organisation = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataOrganisation $par_data_organisation = NULL) {
     // Change the action to save.
     $this->getFlowNegotiator()->getFlow()->setActions(['save', 'cancel']);
 
@@ -100,10 +101,10 @@ class ParOrganisationReviewForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataOrganisation[] $par_data_organisation */
+    /** @var \Drupal\par_data\Entity\ParDataOrganisation[] $par_data_organisation */
 
     if ($par_data_organisation && $par_data_organisation->save()) {
 

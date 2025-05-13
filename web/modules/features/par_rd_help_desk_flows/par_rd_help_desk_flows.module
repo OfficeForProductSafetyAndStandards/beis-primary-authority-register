@@ -4,9 +4,12 @@
  * @file
  */
 
-use \Drupal\Core\Form\FormStateInterface;
-use \Drupal\Core\Render\Element;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 
+/**
+ *
+ */
 function par_rd_help_desk_flows_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $view = $form_state->get('view');
 

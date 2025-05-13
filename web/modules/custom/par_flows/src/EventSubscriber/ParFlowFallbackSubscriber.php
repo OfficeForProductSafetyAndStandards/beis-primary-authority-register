@@ -4,14 +4,12 @@ namespace Drupal\par_flows\EventSubscriber;
 
 use Drupal\par_flows\Event\ParFlowEvents;
 use Drupal\par_flows\ParFlowException;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Drupal\par_flows\Event\ParFlowEvent;
 use Drupal\par_flows\Event\ParFlowEventInterface;
-use Symfony\Component\Routing\Route;
-use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 
-
+/**
+ *
+ */
 class ParFlowFallbackSubscriber extends ParFlowSubscriberBase {
 
   /**
@@ -20,7 +18,7 @@ class ParFlowFallbackSubscriber extends ParFlowSubscriberBase {
    * @return mixed
    */
   #[\Override]
-  static function getSubscribedEvents(): array {
+  public static function getSubscribedEvents(): array {
     $events = [];
     foreach (ParFlowEvents::getAlLEvents() as $event) {
       $events[$event][] = ['onEvent', -800];
@@ -29,7 +27,7 @@ class ParFlowFallbackSubscriber extends ParFlowSubscriberBase {
   }
 
   /**
-   * @param ParFlowEventInterface $event
+   * @param \Drupal\par_flows\Event\ParFlowEventInterface $event
    */
   public function onEvent(ParFlowEventInterface $event) {
     // We need a backup route in case all else fails.
@@ -43,7 +41,8 @@ class ParFlowFallbackSubscriber extends ParFlowSubscriberBase {
         $route_params = $event->getFlow()->getRequiredParams($redirect_route);
         // Note the URL won't be set if it is not accessible in ParFlowEvent::setUrl()
         $event->setUrl(Url::fromRoute($redirect_route, $route_params));
-      } catch (ParFlowException) {
+      }
+      catch (ParFlowException) {
 
       }
     }

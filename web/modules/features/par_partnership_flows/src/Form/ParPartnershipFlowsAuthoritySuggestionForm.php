@@ -4,7 +4,6 @@ namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
@@ -28,7 +27,7 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
    * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
    *   The Partnership being retrieved.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
+  public function retrieveEditableValues(?ParDataPartnership $par_data_partnership = NULL) {
 
   }
 
@@ -36,7 +35,7 @@ class ParPartnershipFlowsAuthoritySuggestionForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL) {
 
     // Only set the state for the temp cache if we are passing a partnership object via the route.
     if ($par_data_partnership) {

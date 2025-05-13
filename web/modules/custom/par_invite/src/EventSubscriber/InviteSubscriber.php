@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\event_dispatcher_demo\EventSubscriber\ConfigSubscriber.
- */
-
 namespace Drupal\par_invite\EventSubscriber;
 
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -13,20 +8,32 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Routing\Route;
 use Drupal\Core\Url;
 
+/**
+ *
+ */
 class InviteSubscriber implements EventSubscriberInterface {
 
   use StringTranslationTrait;
 
+  /**
+ *
+ */
   #[\Override]
-  static function getSubscribedEvents(): array {
+  public static function getSubscribedEvents(): array {
     $events['invite_accept'][] = ['onAccept'];
     return $events;
   }
 
+  /**
+   *
+   */
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');
   }
 
+  /**
+   *
+   */
   public function onAccept($event) {
     $event_details = $event->getInviteAcceptEvent();
 
@@ -54,7 +61,7 @@ class InviteSubscriber implements EventSubscriberInterface {
       $route = new Route($path->toString());
       $event_details['redirect'] = $route;
       $event->setInviteAcceptEvent($event_details);
-    };
+    }
   }
 
 }

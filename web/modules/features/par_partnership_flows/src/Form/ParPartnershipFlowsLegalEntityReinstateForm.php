@@ -3,12 +3,9 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\par_data\Entity\ParDataLegalEntity;
-use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPartnershipLegalEntity;
 use Drupal\par_flows\Form\ParBaseForm;
@@ -43,7 +40,7 @@ class ParPartnershipFlowsLegalEntityReInstateForm extends ParBaseForm {
    *   The account being checked.
    */
   #[\Override]
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL, ParDataPartnershipLegalEntity $par_data_partnership_le = NULL): AccessResult {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ?ParDataPartnership $par_data_partnership = NULL, ?ParDataPartnershipLegalEntity $par_data_partnership_le = NULL): AccessResult {
 
     // Limit access to partnership pages.
     $user = $account->isAuthenticated() ? User::load($account->id()) : NULL;
@@ -68,7 +65,7 @@ class ParPartnershipFlowsLegalEntityReInstateForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPartnershipLegalEntity $par_data_partnership_le = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL, ?ParDataPartnershipLegalEntity $par_data_partnership_le = NULL) {
 
     $par_data_legal_entity = $par_data_partnership_le->getLegalEntity();
 
@@ -90,7 +87,8 @@ class ParPartnershipFlowsLegalEntityReInstateForm extends ParBaseForm {
     // Only show registered number for types that allow it.
     if (in_array($par_data_legal_entity->getType(FALSE),
       ['limited_company', 'public_limited_company', 'limited_liability_partnership',
-        'registered_charity', 'partnership', 'limited_partnership', 'other'])) {
+        'registered_charity', 'partnership', 'limited_partnership', 'other',
+      ])) {
       $form['registered_number'] = [
         '#type' => 'item',
         '#title' => $this->t('Registration number of the legal entity'),
@@ -133,7 +131,7 @@ class ParPartnershipFlowsLegalEntityReInstateForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    /* @var ParDataPartnershipLegalEntity $partnership_legal_entity */
+    /** @var \Drupal\par_data\Entity\ParDataPartnershipLegalEntity $partnership_legal_entity */
     $partnership_legal_entity = $this->getFlowDataHandler()->getParameter('par_data_partnership_le');
 
     // We can't reinstate a PLE if there is already an active PLE for the same LE.
@@ -150,11 +148,12 @@ class ParPartnershipFlowsLegalEntityReInstateForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    /* @var ParDataPartnershipLegalEntity $partnership_legal_entity */
+    /** @var \Drupal\par_data\Entity\ParDataPartnershipLegalEntity $partnership_legal_entity */
     $partnership_legal_entity = $this->getFlowDataHandler()->getParameter('par_data_partnership_le');
 
     if (!$partnership_legal_entity->isRevocable()) {
       $partnership_legal_entity->unrevoke(TRUE);
     }
   }
+
 }

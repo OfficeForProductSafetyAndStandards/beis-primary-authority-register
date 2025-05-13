@@ -10,10 +10,10 @@ use Drupal\views\ViewExecutable;
 use Drupal\user\Entity\User;
 
 /**
-* @ingroup views_filter_handlers
-*
-* @ViewsFilter("par_member")
-*/
+ * @ingroup views_filter_handlers
+ *
+ * @ViewsFilter("par_member")
+ */
 class ParMember extends FilterPluginBase {
 
   /**
@@ -26,10 +26,10 @@ class ParMember extends FilterPluginBase {
   /**
    * @param \Drupal\views\ViewExecutable $view
    * @param \Drupal\views\Plugin\views\display\DisplayPluginBase $display
-   * @param array|NULL $options
+   * @param array|null $options
    */
   #[\Override]
-  public function init(ViewExecutable $view, DisplayPluginBase $display, array &$options = NULL) {
+  public function init(ViewExecutable $view, DisplayPluginBase $display, ?array &$options = NULL) {
     parent::init($view, $display, $options);
   }
 

@@ -3,9 +3,6 @@
 namespace Drupal\par_notification\Plugin\ParMessageSubscriber;
 
 use Drupal\message\MessageInterface;
-use Drupal\par_data\Entity\ParDataEnforcementNotice;
-use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_notification\ParMessageSubscriberBase;
 use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParRecipient;
@@ -33,9 +30,9 @@ class NewEnforcementSubscriber extends ParMessageSubscriberBase {
     $recipients = parent::getRecipients($message);
 
     try {
-      /** @var ParDataEnforcementNotice[] $enforcement_notices */
+      /** @var \Drupal\par_data\Entity\ParDataEnforcementNotice[] $enforcement_notices */
       $enforcement_notices = $this->getMessageHandler()->getPrimaryData($message);
-      /** @var ParDataPartnership[] $partnerships */
+      /** @var \Drupal\par_data\Entity\ParDataPartnership[] $partnerships */
       $partnerships = [];
 
       foreach ($enforcement_notices as $enforcement_notice) {
@@ -51,7 +48,7 @@ class NewEnforcementSubscriber extends ParMessageSubscriberBase {
 
     foreach ($partnerships as $partnership) {
       // This message should be sent to the primary authority contacts at the authority.
-      /** @var ParDataPersonInterface $people */
+      /** @var \Drupal\par_data\Entity\ParDataPersonInterface $people */
       $people = $partnership->getAuthorityPeople();
       foreach ($people as $key => $person) {
         $recipients[] = new ParRecipient(
@@ -73,7 +70,7 @@ class NewEnforcementSubscriber extends ParMessageSubscriberBase {
     $subscriptions = parent::getSubscribedEntities($message);
 
     try {
-      /** @var ParDataEnforcementNotice[] $enforcement_notices */
+      /** @var \Drupal\par_data\Entity\ParDataEnforcementNotice[] $enforcement_notices */
       $enforcement_notices = $this->getMessageHandler()->getPrimaryData($message);
     }
     catch (ParNotificationException) {
@@ -92,4 +89,5 @@ class NewEnforcementSubscriber extends ParMessageSubscriberBase {
 
     return $subscriptions;
   }
+
 }

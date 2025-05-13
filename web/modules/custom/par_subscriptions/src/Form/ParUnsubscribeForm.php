@@ -5,7 +5,6 @@ namespace Drupal\par_subscriptions\Form;
 use Drupal\Core\Flood\FloodInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Render\Element\Email;
 use Drupal\Core\Url;
 use Drupal\par_subscriptions\Entity\ParSubscriptionInterface;
 use Drupal\par_subscriptions\ParSubscriptionManager;
@@ -15,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * A form controller for unsubscribing from subscription lists.
  */
-class ParUnsubscribeForm extends FormBase  {
+class ParUnsubscribeForm extends FormBase {
 
   /**
    * The flood service.
@@ -183,4 +182,5 @@ class ParUnsubscribeForm extends FormBase  {
       $form_state->setRedirect($route_name, $parameters);
     }
   }
+
 }

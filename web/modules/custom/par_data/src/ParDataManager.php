@@ -167,7 +167,7 @@ class ParDataManager implements ParDataManagerInterface {
   }
 
   /**
-  * @inheritdoc}
+  * {@inheritdoc}}
   */
   #[\Override]
   public function getParEntityTypes(): array {
@@ -713,7 +713,7 @@ class ParDataManager implements ParDataManagerInterface {
    * @return \Drupal\Core\Entity\EntityInterface[]
    *   An array of entities found with this value.
    */
-  public function getEntitiesByType($type, array $ids = NULL) {
+  public function getEntitiesByType($type, ?array $ids = NULL) {
     $entities = $this->entityTypeManager
       ->getStorage($type)
       ->loadMultiple($ids);

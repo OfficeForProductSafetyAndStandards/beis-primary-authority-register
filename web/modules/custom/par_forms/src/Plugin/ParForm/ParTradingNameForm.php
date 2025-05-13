@@ -2,10 +2,8 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\TypedData\Exception\MissingDataException;
-use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -25,8 +23,9 @@ class ParTradingNameForm extends ParFormPluginBase {
    */
   protected array $entityMapping = [
     ['trading_name', 'par_data_organisation', 'trading_name', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter the trading name for this organisation.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter the trading name for this organisation.',
+    ],
+    ],
   ];
 
   /**
@@ -87,7 +86,7 @@ class ParTradingNameForm extends ParFormPluginBase {
           '#type' => 'html_tag',
           '#tag' => 'p',
           '#value' => $message,
-        ]
+        ],
       ];
     }
 
@@ -99,4 +98,5 @@ class ParTradingNameForm extends ParFormPluginBase {
 
     return $form;
   }
+
 }

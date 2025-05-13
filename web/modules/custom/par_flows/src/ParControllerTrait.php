@@ -10,16 +10,12 @@ use Drupal\par_forms\ParFormPluginInterface;
 use Drupal\user\Entity\User;
 use Symfony\Component\HttpFoundation\Request;
 use Drupal\Core\Routing\UrlGeneratorInterface;
-use Drupal\par_flows\ParFlowNegotiatorInterface;
-use Drupal\par_flows\ParFlowDataHandlerInterface;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_forms\ParFormBuilderInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Drupal\Core\Path\PathValidatorInterface;
-use Drupal\Core\Routing\RouteProviderInterface;
-use Drupal\Core\StringTranslation\TranslatableMarkup;
-use Drupal\Component\Plugin\PluginInspectionInterface;
 
+/**
+ *
+ */
 trait ParControllerTrait {
 
   /**
@@ -39,42 +35,42 @@ trait ParControllerTrait {
   /**
    * The account for the current logged in user.
    *
-   * @var User
+   * @var \Drupal\user\Entity\User
    */
   protected $currentUser;
 
   /**
    * The form component plugins.
    *
-   * @var PluginInspectionInterface[]
+   * @var \Drupal\Component\Plugin\PluginInspectionInterface[]
    */
   protected array $components = [];
 
   /**
    * The flow negotiator.
    *
-   * @var ParFlowNegotiatorInterface
+   * @var \Drupal\par_flows\Entity\ParFlowNegotiatorInterface
    */
   protected ParFlowNegotiatorInterface $negotiator;
 
   /**
    * The flow data manager.
    *
-   * @var ParFlowDataHandlerInterface
+   * @var \Drupal\par_flows\Entity\ParFlowDataHandlerInterface
    */
   protected ParFlowDataHandlerInterface $flowDataHandler;
 
   /**
    * The PAR data manager.
    *
-   * @var ParDataManagerInterface
+   * @var \Drupal\par_data\ParDataManagerInterface
    */
   protected ParDataManagerInterface $parDataManager;
 
   /**
    * The PAR form builder.
    *
-   * @var ParFormBuilderInterface
+   * @var \Drupal\par_forms\ParFormBuilderInterface
    */
   protected $formBuilder;
 
@@ -82,7 +78,7 @@ trait ParControllerTrait {
   /**
    * The url generator used in par forms.
    *
-   * @var UrlGeneratorInterface
+   * @var \Drupal\Core\UrlGeneratorInterface
    */
   protected UrlGeneratorInterface $urlGenerator;
 
@@ -96,7 +92,7 @@ trait ParControllerTrait {
   /**
    * Set the current user account.
    */
-  public function setCurrentUser(AccountInterface $account = NULL) {
+  public function setCurrentUser(?AccountInterface $account = NULL) {
     if (\Drupal::currentUser()->isAuthenticated() && !$this->getCurrentUser()) {
       $id = $account ? $account->id() : \Drupal::currentUser()->id();
       $this->currentUser = User::load($id);
@@ -134,7 +130,7 @@ trait ParControllerTrait {
           $this->components[] = $plugin;
         }
       }
-      catch (PluginException|\TypeError $e) {
+      catch (PluginException | \TypeError $e) {
         $this->getLogger($this->getLoggerChannel())->error($e);
       }
     }
@@ -184,7 +180,7 @@ trait ParControllerTrait {
   }
 
   /**
-   * @return UrlGeneratorInterface
+   * @return \Drupal\Core\UrlGeneratorInterface
    */
   public function getUrlGenerator() {
     return $this->urlGenerator;
@@ -256,7 +252,7 @@ trait ParControllerTrait {
   /**
    * Get the entry route.
    *
-   * @return \Drupal\Core\Url|NULL
+   * @return \Drupal\Core\Url|null
    *   A Matched route.
    */
   public function getEntryUrl() {

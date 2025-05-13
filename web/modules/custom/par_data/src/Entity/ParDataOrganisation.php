@@ -157,7 +157,7 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
   /**
    * Get all the legal entites associated with the partnership.
    *
-   * @return array()
+   * @return array
    *   An array containing all the legal entities keyed by entity id's associated with the current partnership.
    */
   public function getPartnershipLegalEntities() {
@@ -165,7 +165,7 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
     $legal_obj_list = [];
 
     foreach ($partnership_legal_entities as $key => $current_legal_entity) {
-      $legal_obj_list[$current_legal_entity->get('id')->getString()] =  $current_legal_entity->get('registered_name')->getString();
+      $legal_obj_list[$current_legal_entity->get('id')->getString()] = $current_legal_entity->get('registered_name')->getString();
     }
     return $legal_obj_list;
   }
@@ -186,7 +186,7 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
     }
 
     // If this legal entity is already attached then don't attach it again.
-    /* @var ParDataLegalEntity $legal_entity */
+    /** @var ParDataLegalEntity $legal_entity */
     foreach ($this->getLegalEntity() as $delta => $existing_legal_entity) {
       if ($existing_legal_entity->id() === $legal_entity->id()) {
         return;
@@ -197,6 +197,9 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
     $this->get('field_legal_entity')->appendItem($legal_entity);
   }
 
+  /**
+   *
+   */
   public function updateLegalEntity(ParDataLegalEntity $legal_entity) {
     // Before updating any legal entity check there isn't a duplicate.
     $deduplicated = $legal_entity->deduplicate();
@@ -229,7 +232,7 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
       $this->get('field_legal_entity')->offsetUnset($original_delta);
     }
     // Replace the original legal entity with the deduplicated one.
-    else if (is_int($original_delta) && !is_int($deduplicated_delta)) {
+    elseif (is_int($original_delta) && !is_int($deduplicated_delta)) {
       $this->get('field_legal_entity')->set($original_delta, $deduplicated->id());
     }
   }
@@ -290,7 +293,8 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
         $address_country = $address_country_code ? $this->getCountryRepository()->get($address_country_code)->getName() : NULL;
 
         $country = $address_country ? $address_country->getName() : '';
-      } catch (UnknownCountryException $exception) {
+      }
+      catch (UnknownCountryException $exception) {
         $this->getLogger(self::PAR_LOGGER_CHANNEL)->warning($exception);
       }
     }
@@ -337,7 +341,7 @@ class ParDataOrganisation extends ParDataEntity implements ParDataMembershipInte
       return is_numeric($size) ? (int) $this->get('size')->getString() : NULL;
     }
 
-    return  NULL;
+    return NULL;
   }
 
   /**

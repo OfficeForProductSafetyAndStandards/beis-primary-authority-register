@@ -2,15 +2,14 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
-use Drupal\message\Entity\Message;
-use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
-use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParEventSubscriberBase;
 
+/**
+ *
+ */
 class PartnershipRevocationSubscriber extends ParEventSubscriberBase {
 
   /**
@@ -26,7 +25,7 @@ class PartnershipRevocationSubscriber extends ParEventSubscriberBase {
    * @return mixed
    */
   #[\Override]
-  static function getSubscribedEvents(): array {
+  public static function getSubscribedEvents(): array {
     $events = [];
     // Revocation event should fire after most default events to make sure
     // revocation has not been cancelled.
@@ -38,12 +37,12 @@ class PartnershipRevocationSubscriber extends ParEventSubscriberBase {
   }
 
   /**
-   * @param ParDataEventInterface $event
+   * @param \Drupal\par_data\Event\ParDataEventInterface $event
    */
   public function onEvent(ParDataEventInterface $event) {
     $this->setEvent($event);
 
-    /** @var ParDataPartnership $entity */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $entity */
     $entity = $event->getEntity();
 
     // Only send messages for revoked partnerships.
@@ -57,4 +56,5 @@ class PartnershipRevocationSubscriber extends ParEventSubscriberBase {
       $this->sendMessage($arguments);
     }
   }
+
 }

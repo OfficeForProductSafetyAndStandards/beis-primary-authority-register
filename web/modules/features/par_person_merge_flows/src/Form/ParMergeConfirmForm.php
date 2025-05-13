@@ -2,18 +2,12 @@
 
 namespace Drupal\par_person_merge_flows\Form;
 
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_data\ParDataException;
-use Drupal\par_flows\Controller\ParBaseController;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_flows\ParFlowException;
-use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_person_merge_flows\ParFlowAccessTrait;
 use Drupal\user\Entity\User;
 
@@ -25,7 +19,7 @@ class ParMergeConfirmForm extends ParBaseForm {
   use ParFlowAccessTrait;
 
   /**
-   * @return DateFormatterInterface
+   * @return \Drupal\Core\Datetime\DateFormatterInterface
    */
   #[\Override]
   protected function getDateFormatter() {
@@ -37,6 +31,9 @@ class ParMergeConfirmForm extends ParBaseForm {
    */
   protected $pageTitle = "Merge contact records";
 
+  /**
+ *
+ */
   #[\Override]
   public function loadData() {
     $cid = $this->getFlowNegotiator()->getFormKey('merge');
@@ -52,7 +49,7 @@ class ParMergeConfirmForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPerson $par_data_person = NULL, User $user = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPerson $par_data_person = NULL, ?User $user = NULL) {
     // Add a message to explain the action being taken.
     $form['info'] = [
       '#type' => 'html_tag',
@@ -117,7 +114,7 @@ class ParMergeConfirmForm extends ParBaseForm {
             $replacements = [
               '@merge' => $merge->id(),
               '@person' => $person->id(),
-              '@reason' => $e->getMessage()
+              '@reason' => $e->getMessage(),
             ];
             $this->getLogger($this->getLoggerChannel())->error('Failed merging @merge into @person. The reason given was: @reason', $replacements);
           }

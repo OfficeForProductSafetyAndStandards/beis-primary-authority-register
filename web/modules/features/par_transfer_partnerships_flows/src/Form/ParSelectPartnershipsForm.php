@@ -4,7 +4,6 @@ namespace Drupal\par_transfer_partnerships_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 
 /**
@@ -24,7 +23,7 @@ class ParSelectPartnershipsForm extends ParBaseForm {
     $conditions = [
       [
         'AND' => [
-          ['field_authority', $par_data_authority->id()]
+          ['field_authority', $par_data_authority->id()],
         ],
       ],
     ];
@@ -38,7 +37,7 @@ class ParSelectPartnershipsForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataAuthority $par_data_authority = NULL) {
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($par_data_authority);
 
@@ -53,7 +52,6 @@ class ParSelectPartnershipsForm extends ParBaseForm {
     parent::validateForm($form, $form_state);
 
     // Validate that this authority has the same regulatory functions.
-
     // Validate that there are some partnerships that can be transferred.
   }
 

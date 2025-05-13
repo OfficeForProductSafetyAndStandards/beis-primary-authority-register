@@ -3,7 +3,6 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
@@ -16,12 +15,13 @@ class ParPartnershipFlowsApplicationTypeForm extends ParBaseForm {
   use ParPartnershipFlowsTrait;
   use ParPartnershipFlowAccessTrait;
 
-//  protected $formItems = [
-//    'par_data_partnership:partnership' => [
-//      'about_partnership' => 'about_partnership',
-//    ],
-//  ];
-
+  // Protected $formItems = [
+  //    'par_data_partnership:partnership' => [
+  //      'about_partnership' => 'about_partnership',
+  //    ],.
+  /**
+   * ];.
+   */
   protected $pageTitle = 'What kind of partnership are you applying for?';
 
   /**

@@ -2,15 +2,9 @@
 
 namespace Drupal\par_person_merge_flows\Form;
 
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_flows\Controller\ParBaseController;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_flows\ParFlowException;
-use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_person_merge_flows\ParFlowAccessTrait;
 use Drupal\user\Entity\User;
 
@@ -26,6 +20,9 @@ class ParMergePeopleForm extends ParBaseForm {
    */
   protected $pageTitle = "Choose which people to combine";
 
+  /**
+ *
+ */
   #[\Override]
   public function loadData() {
     $person = $this->getFlowDataHandler()->getParameter('par_data_person');
@@ -42,7 +39,7 @@ class ParMergePeopleForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPerson $par_data_person = NULL, User $user = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPerson $par_data_person = NULL, ?User $user = NULL) {
     if ($par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person')) {
       $this->addCacheableDependency($par_data_person);
     }

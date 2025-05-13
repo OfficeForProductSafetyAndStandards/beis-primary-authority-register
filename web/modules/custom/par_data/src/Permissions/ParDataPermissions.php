@@ -7,6 +7,9 @@ use Drupal\par_data\ParDataManagerInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ *
+ */
 class ParDataPermissions implements ContainerInjectionInterface {
 
   use StringTranslationTrait;
@@ -53,56 +56,56 @@ class ParDataPermissions implements ContainerInjectionInterface {
       $permissions += [
         "access {$id} entities" => [
           'title' => $this->t('Allow access to %entity', ['%entity' => $plural]),
-        ]
+        ],
       ];
 
       // View archived.
       $permissions += [
         "view unpublished {$id} entities" => [
           'title' => $this->t('Allow access to archived %entity', ['%entity' => $plural]),
-        ]
+        ],
       ];
 
       // Add an administration permission for bundles.
       $permissions += [
         "administer {$id} entities" => [
           'title' => $this->t('Allow administration and configuration of %entity', ['%entity' => $plural]),
-        ]
+        ],
       ];
 
       // Add an administration permission for the entities types.
       $permissions += [
         "administer {$id} entity types" => [
           'title' => $this->t('Allow administration and configuration of %entity sub-types', ['%entity' => $plural]),
-        ]
+        ],
       ];
 
       // By pass all access checks for this entity.
       $permissions += [
         "bypass {$id} access" => [
           'title' => $this->t('Allow administration and configuration of %entity', ['%entity' => $plural]),
-        ]
+        ],
       ];
 
       // Create.
       $permissions += [
         "add {$id} entities" => [
           'title' => $this->t('Create new %entity', ['%entity' => $plural]),
-        ]
+        ],
       ];
 
       // Update.
       $permissions += [
         "edit {$id} entities" => [
           'title' => $this->t('Update %entity', ['%entity' => $plural]),
-        ]
+        ],
       ];
 
       // Delete.
       $permissions += [
         "delete {$id} entities" => [
           'title' => $this->t('Delete %entity', ['%entity' => $plural]),
-        ]
+        ],
       ];
     }
 

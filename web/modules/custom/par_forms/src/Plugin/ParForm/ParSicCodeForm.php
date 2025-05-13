@@ -2,7 +2,6 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -20,8 +19,9 @@ class ParSicCodeForm extends ParFormPluginBase {
    */
   protected array $entityMapping = [
     ['sic_code', 'par_data_organisation', 'field_sic_code', NULL, NULL, 0, [
-      'This value should be of the correct primitive type.' => 'You must choose the most relevant SIC code for the organisation.'
-    ]],
+      'This value should be of the correct primitive type.' => 'You must choose the most relevant SIC code for the organisation.',
+    ],
+    ],
   ];
 
   /**
@@ -31,16 +31,14 @@ class ParSicCodeForm extends ParFormPluginBase {
   public function loadData(int $index = 1): void {
     $par_data_organisation = $this->getFlowDataHandler()->getParameter('par_data_organisation');
     $sic_code_delta = $this->getFlowDataHandler()->getParameter('sic_code_delta');
-//    if ($par_data_organisation) {
-//      // Store the current value of the trading name if it's being edited.
-//      $sic_code = $par_data_organisation ? $par_data_organisation->get('field_sic_code')->get($sic_code_delta) : NULL;
-//
-//      if ($sic_code) {
-//        $this->getFlowDataHandler()->setFormPermValue("sic_code", $sic_code->getString());
-//      }
-//    }
-
-
+    // If ($par_data_organisation) {
+    //      // Store the current value of the trading name if it's being edited.
+    //      $sic_code = $par_data_organisation ? $par_data_organisation->get('field_sic_code')->get($sic_code_delta) : NULL;
+    //
+    //      if ($sic_code) {
+    //        $this->getFlowDataHandler()->setFormPermValue("sic_code", $sic_code->getString());
+    //      }
+    //    }
     parent::loadData($index);
   }
 
@@ -65,4 +63,5 @@ class ParSicCodeForm extends ParFormPluginBase {
 
     return $form;
   }
+
 }

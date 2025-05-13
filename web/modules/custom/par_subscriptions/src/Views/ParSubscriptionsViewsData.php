@@ -10,6 +10,9 @@ use Drupal\views\EntityViewsDataInterface;
  */
 class ParSubscriptionsViewsData extends EntityViewsData implements EntityViewsDataInterface {
 
+  /**
+   *
+   */
   public function getParSubscriptionsManager() {
     return \Drupal::service('par_subscriptions.manager');
   }

@@ -3,8 +3,6 @@
 namespace Drupal\par_member_add_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Link;
-use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataOrganisation;
@@ -31,26 +29,26 @@ class ParConfirmationReviewForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL) {
     $form['partnership_id'] = [
       '#type' => 'hidden',
       '#value' => $par_data_partnership->id(),
     ];
 
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPartnership $par_data_partnership */
-    /** @var ParDataCoordinatedBusiness $par_data_coordinated_business */
-    /** @var ParDataOrganisation $par_data_organisation */
-    /** @var ParDataPerson $par_data_person */
-    /** @var ParDataPremises $par_data_premises */
-    /** @var ParDataLegalEntity[] $par_data_legal_entities */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership */
+    /** @var \Drupal\par_data\Entity\ParDataCoordinatedBusiness $par_data_coordinated_business */
+    /** @var \Drupal\par_data\Entity\ParDataOrganisation $par_data_organisation */
+    /** @var \Drupal\par_data\Entity\ParDataPerson $par_data_person */
+    /** @var \Drupal\par_data\Entity\ParDataPremises $par_data_premises */
+    /** @var \Drupal\par_data\Entity\ParDataLegalEntity[] $par_data_legal_entities */
 
     // Display organisation name.
     $form['organisation_name'] = $this->renderSection('Member organisation name', $par_data_organisation, ['organisation_name' => 'title']);
 
-    // Display the member's address
+    // Display the member's address.
     $form['member_registered_address'] = $this->renderSection('Member organisation address', $par_data_premises, ['address' => 'summary']);
 
     // Display the date the membership began.
@@ -76,6 +74,9 @@ class ParConfirmationReviewForm extends ParBaseForm {
     return parent::buildForm($form, $form_state);
   }
 
+  /**
+   *
+   */
   public function createEntities() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
@@ -177,15 +178,15 @@ class ParConfirmationReviewForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPartnership $par_data_partnership */
-    /** @var ParDataCoordinatedBusiness $par_data_coordinated_business */
-    /** @var ParDataOrganisation $par_data_organisation */
-    /** @var ParDataPerson $par_data_person */
-    /** @var ParDataPremises $par_data_premises */
-    /** @var ParDataLegalEntity[] $par_data_legal_entities */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership */
+    /** @var \Drupal\par_data\Entity\ParDataCoordinatedBusiness $par_data_coordinated_business */
+    /** @var \Drupal\par_data\Entity\ParDataOrganisation $par_data_organisation */
+    /** @var \Drupal\par_data\Entity\ParDataPerson $par_data_person */
+    /** @var \Drupal\par_data\Entity\ParDataPremises $par_data_premises */
+    /** @var \Drupal\par_data\Entity\ParDataLegalEntity[] $par_data_legal_entities */
 
     // Set all the references.
     $member_added = FALSE;

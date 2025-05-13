@@ -2,12 +2,9 @@
 
 namespace Drupal\par_enforcement_raise_flows\Form;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataAuthority;
 use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_enforcement_raise_flows\ParFlowAccessTrait;
-use Drupal\user\Entity\User;
 
 /**
  * The member contact form.
@@ -37,7 +34,7 @@ class ParSelectLegalEntityForm extends ParBaseForm {
       // Set the organisation.
       $this->getFlowDataHandler()->setParameter('par_data_organisation', $par_data_organisation);
     }
-    else if ($par_data_partnership && $par_data_partnership->isCoordinated() && $organisation_id &&
+    elseif ($par_data_partnership && $par_data_partnership->isCoordinated() && $organisation_id &&
       $par_data_organisation = ParDataOrganisation::load($organisation_id)) {
       // Set the organisation.
       $this->getFlowDataHandler()->setParameter('par_data_organisation', $par_data_organisation);

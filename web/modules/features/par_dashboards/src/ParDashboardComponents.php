@@ -2,20 +2,13 @@
 
 namespace Drupal\par_dashboards;
 
-use Drupal\Core\Cache\Cache;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
-use Drupal\Core\Entity\Query\ConditionInterface;
-use Drupal\Core\Logger\LoggerChannelTrait;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\Core\Security\TrustedCallbackInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
-use Drupal\par_data\ParDataManager;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_flows\ParFlowException;
@@ -24,8 +17,8 @@ use Drupal\user\Entity\User;
 use Drupal\Core\Link;
 
 /**
-* Manages all functionality universal to Par Data.
-*/
+ * Manages all functionality universal to Par Data.
+ */
 class ParDashboardComponents implements TrustedCallbackInterface {
 
   use StringTranslationTrait;
@@ -124,6 +117,9 @@ class ParDashboardComponents implements TrustedCallbackInterface {
     $this->messenger = $messenger;
   }
 
+  /**
+   *
+   */
   public function getCurrentUser() {
     if ($this->currentUser->isAuthenticated()) {
       return User::load($this->currentUser->id());
@@ -132,10 +128,16 @@ class ParDashboardComponents implements TrustedCallbackInterface {
     return $this->currentUser;
   }
 
+  /**
+   *
+   */
   public function getParDataManager() {
     return $this->parDataManager;
   }
 
+  /**
+   *
+   */
   public function managePartnershipComponent($count = FALSE) {
     $build['partnerships'] = [
       '#type' => 'container',
@@ -158,7 +160,6 @@ class ParDashboardComponents implements TrustedCallbackInterface {
       $this->getCurrentUser()->hasPermission('update partnership authority details') ||
       $this->getCurrentUser()->hasPermission('update partnership organisation details');
     $can_create_partnerships = $this->getCurrentUser()->hasPermission('apply for partnership');
-
 
     // List of partnerships and pending applications links.
     if ($can_manage_partnerships) {
@@ -187,6 +188,9 @@ class ParDashboardComponents implements TrustedCallbackInterface {
     return $build;
   }
 
+  /**
+   *
+   */
   public function searchPartnershipComponent() {
     $build['partnerships_find'] = [
       '#type' => 'container',
@@ -221,6 +225,9 @@ class ParDashboardComponents implements TrustedCallbackInterface {
     return $build;
   }
 
+  /**
+   *
+   */
   public function manageInstitutionsComponent() {
     $heading_parts = [];
 
@@ -267,6 +274,9 @@ class ParDashboardComponents implements TrustedCallbackInterface {
     return $build;
   }
 
+  /**
+   *
+   */
   public function manageUsersComponent() {
     $build['people'] = [
       '#type' => 'container',
@@ -290,6 +300,9 @@ class ParDashboardComponents implements TrustedCallbackInterface {
     return $build;
   }
 
+  /**
+   *
+   */
   public function manageProfileComponent() {
     $build['user'] = [
       '#type' => 'container',
@@ -307,7 +320,8 @@ class ParDashboardComponents implements TrustedCallbackInterface {
       $params = ['user' => $this->getCurrentUser()->id()];
       $manage_profile_flow = ParFlow::load('profile_update');
       $manage_profile_link = $manage_profile_flow?->getStartLink(1, 'Manage your profile details', $params);
-    } catch (ParFlowException) {
+    }
+    catch (ParFlowException) {
 
     }
 
@@ -323,6 +337,9 @@ class ParDashboardComponents implements TrustedCallbackInterface {
     return $build;
   }
 
+  /**
+   *
+   */
   public function messagesComponent($count = FALSE) {
     $build = [];
 
@@ -401,4 +418,5 @@ class ParDashboardComponents implements TrustedCallbackInterface {
 
     return $build;
   }
+
 }

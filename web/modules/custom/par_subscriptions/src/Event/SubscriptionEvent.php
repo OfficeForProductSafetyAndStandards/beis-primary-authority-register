@@ -2,7 +2,6 @@
 
 namespace Drupal\par_subscriptions\Event;
 
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\core_event_dispatcher\Event\Entity\EntityUpdateEvent;
 use Drupal\par_subscriptions\Entity\ParSubscriptionInterface;
 

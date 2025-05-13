@@ -101,7 +101,7 @@ class ParProfileController extends ParBaseController {
         $this->getFlowDataHandler()->setPluginTempData($contact_locations_detail_component, $values);
       }
     }
-    else if ($par_data_person) {
+    elseif ($par_data_person) {
       $this->getFlowDataHandler()->setParameter('contacts', [$par_data_person]);
 
       // In order to display multiple cardinality the contact_locations_detail
@@ -111,7 +111,7 @@ class ParProfileController extends ParBaseController {
       $contact_locations_detail_component = $this->getComponent('contact_locations_detail');
       if ($contact_locations_detail_component instanceof ParFormPluginInterface) {
         // Set a single value.
-        $values = [ ['username' => $par_data_person->label()] ];
+        $values = [['username' => $par_data_person->label()]];
         $this->getFlowDataHandler()->setPluginTempData($contact_locations_detail_component, $values);
       }
     }
@@ -262,4 +262,5 @@ class ParProfileController extends ParBaseController {
 
     return parent::build($build);
   }
+
 }

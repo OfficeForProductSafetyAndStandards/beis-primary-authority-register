@@ -10,6 +10,9 @@ use Drupal\invite\InviteConstants;
  */
 class ParInviteUnsuccessfulController extends ControllerBase {
 
+  /**
+   *
+   */
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');
   }

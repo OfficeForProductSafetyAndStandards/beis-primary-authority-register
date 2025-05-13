@@ -27,10 +27,16 @@ class ParSubscriptionManageForm extends ParBaseForm {
     return 'Help Desk | Manage a subscription list';
   }
 
+  /**
+   *
+   */
   public function getEmailValidator() {
     return \Drupal::service('email.validator');
   }
 
+  /**
+   *
+   */
   public function getSubscriptionManager() {
     return \Drupal::service('par_subscriptions.manager');
   }

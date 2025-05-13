@@ -26,8 +26,7 @@ use Drupal\Tests\par_data\Kernel\ParDataTestBase;
  *
  * @group PAR Data
  */
-class ParNotificationTestBase extends ParDataTestBase
-{
+class ParNotificationTestBase extends ParDataTestBase {
 
   protected static $modules = [
     'user',
@@ -59,7 +58,7 @@ class ParNotificationTestBase extends ParDataTestBase
   ];
 
   /**
-   * Notification types
+   * Notification types.
    */
   protected $message_types = [
     'approved_enforcement',
@@ -90,8 +89,7 @@ class ParNotificationTestBase extends ParDataTestBase
    * {@inheritdoc}
    */
   #[\Override]
-  protected function setUp(): void
-  {
+  protected function setUp(): void {
     parent::setUp();
 
     // Install config for par_notification if required.
@@ -107,7 +105,7 @@ class ParNotificationTestBase extends ParDataTestBase
       $type->save();
     }
 
-    // Install the feature config for all messages
+    // Install the feature config for all messages.
     $this->installConfig('par_message_config');
 
     // Mock all the par_notification event subscriber services.
@@ -122,8 +120,10 @@ class ParNotificationTestBase extends ParDataTestBase
     \Drupal::setContainer($container);
   }
 
-  public function createAuthority($name = NULL)
-  {
+  /**
+   *
+   */
+  public function createAuthority($name = NULL) {
     if (!$name) {
       $name = $this->randomString(16);
     }
@@ -154,8 +154,10 @@ class ParNotificationTestBase extends ParDataTestBase
     return $authority;
   }
 
-  public function createOrganisation()
-  {
+  /**
+   *
+   */
+  public function createOrganisation() {
     // We need to create an organisation first.
     $organisation_values = $this->getOrganisationValues();
 
@@ -182,8 +184,10 @@ class ParNotificationTestBase extends ParDataTestBase
     return $organisation;
   }
 
-  public function createPartnership()
-  {
+  /**
+   *
+   */
+  public function createPartnership() {
     $authority = $this->createAuthority('primary');
     $organisation = $this->createOrganisation();
 
@@ -254,7 +258,7 @@ class ParNotificationTestBase extends ParDataTestBase
         $person_6->id(),
         $person_7->id(),
         $person_8->id(),
-      ]
+      ],
     ] + $this->getBaseValues();
 
     $partnership = ParDataPartnership::create($partnership_values);
@@ -263,6 +267,9 @@ class ParNotificationTestBase extends ParDataTestBase
     return $partnership;
   }
 
+  /**
+   *
+   */
   public function createReferredEnforcement() {
     $enforcement = $this->createEnforcement();
 
@@ -286,13 +293,16 @@ class ParNotificationTestBase extends ParDataTestBase
 
   }
 
+  /**
+   *
+   */
   public function createEnforcement() {
     // We need to create an Enforcing Authority first.
     $enforcing_authority = $this->createAuthority('enforcing');
     // We need to get the enforcing officer from the enforcing authority.
     $enforcing_person = $enforcing_authority->get('field_person')->referencedEntities()[4];
 
-    // We need to create a partnership
+    // We need to create a partnership.
     $partnership = $this->createPartnership();
     $primary_authority = current($partnership->getAuthority());
     $organisation = current($partnership->getOrganisation());
@@ -338,13 +348,16 @@ class ParNotificationTestBase extends ParDataTestBase
     return $enforcement_notice;
   }
 
+  /**
+   *
+   */
   public function createDeviationRequest() {
     // We need to create an Enforcing Authority first.
     $enforcing_authority = $this->createAuthority('enforcing');
     // We need to get the enforcing officer from the enforcing authority.
     $enforcing_person = $enforcing_authority->get('field_person')->referencedEntities()[4];
 
-    // We need to create a partnership
+    // We need to create a partnership.
     $partnership = $this->createPartnership();
 
     $inspection_plans = $partnership->get('field_inspection_plan')->referencedEntities();
@@ -382,40 +395,43 @@ class ParNotificationTestBase extends ParDataTestBase
     return $deviation_request;
   }
 
+  /**
+   *
+   */
   public function createInspectionFeedback() {
     // We need to create an Enforcing Authority first.
     $enforcing_authority = $this->createAuthority('enforcing');
     // We need to get the enforcing officer from the enforcing authority.
     $enforcing_person = $enforcing_authority->get('field_person')->referencedEntities()[4];
 
-    // We need to create a partnership
+    // We need to create a partnership.
     $partnership = $this->createPartnership();
 
     $inspection_plans = $partnership->get('field_inspection_plan')->referencedEntities();
     $inspection_plan = current($inspection_plans);
 
     $inspection_feedback_values = [
-        'type' => 'inspection_feedback',
-        'request_date' => '2017-10-01',
-        'notes' => $this->randomString(1000),
-        'primary_authority_status' => 'awaiting',
-        'primary_authority_notes' => $this->randomString(1000),
-        'document' => [
-          ''
-        ],
-        'field_enforcing_authority' => [
-          $enforcing_authority->id(),
-        ],
-        'field_partnership' => [
-          $partnership->id(),
-        ],
-        'field_inspection_plan' => [
-          $inspection_plan->id(),
-        ],
-        'field_person' => [
-          $enforcing_person->id(),
-        ],
-      ] + $this->getBaseValues();
+      'type' => 'inspection_feedback',
+      'request_date' => '2017-10-01',
+      'notes' => $this->randomString(1000),
+      'primary_authority_status' => 'awaiting',
+      'primary_authority_notes' => $this->randomString(1000),
+      'document' => [
+        '',
+      ],
+      'field_enforcing_authority' => [
+        $enforcing_authority->id(),
+      ],
+      'field_partnership' => [
+        $partnership->id(),
+      ],
+      'field_inspection_plan' => [
+        $inspection_plan->id(),
+      ],
+      'field_person' => [
+        $enforcing_person->id(),
+      ],
+    ] + $this->getBaseValues();
 
     $inspection_feedback = ParDataInspectionFeedback::create($inspection_feedback_values);
 
@@ -423,6 +439,9 @@ class ParNotificationTestBase extends ParDataTestBase
     return $inspection_feedback;
   }
 
+  /**
+   *
+   */
   public function createGeneralEnquiry() {
     // We need to create an Enforcing Authority first.
     $enforcing_authority = $this->createAuthority('enforcing');
@@ -434,27 +453,27 @@ class ParNotificationTestBase extends ParDataTestBase
     $primary_authority = current($partnership->getAuthority());
 
     $general_enquiry_values = [
-        'type' => 'general_enquiry',
-        'request_date' => '2017-10-01',
-        'notes' => $this->randomString(1000),
-        'primary_authority_status' => 'awaiting',
-        'primary_authority_notes' => $this->randomString(1000),
-        'document' => [
-          ''
-        ],
-        'field_enforcing_authority' => [
-          $enforcing_authority->id(),
-        ],
-        'field_partnership' => [
-          $partnership->id(),
-        ],
-        'field_primary_authority' => [
-          $primary_authority->id(),
-        ],
-        'field_person' => [
-          $enforcing_person->id(),
-        ],
-      ] + $this->getBaseValues();
+      'type' => 'general_enquiry',
+      'request_date' => '2017-10-01',
+      'notes' => $this->randomString(1000),
+      'primary_authority_status' => 'awaiting',
+      'primary_authority_notes' => $this->randomString(1000),
+      'document' => [
+        '',
+      ],
+      'field_enforcing_authority' => [
+        $enforcing_authority->id(),
+      ],
+      'field_partnership' => [
+        $partnership->id(),
+      ],
+      'field_primary_authority' => [
+        $primary_authority->id(),
+      ],
+      'field_person' => [
+        $enforcing_person->id(),
+      ],
+    ] + $this->getBaseValues();
 
     $general_enquiry = ParDataGeneralEnquiry::create($general_enquiry_values);
 
@@ -462,6 +481,9 @@ class ParNotificationTestBase extends ParDataTestBase
     return $general_enquiry;
   }
 
+  /**
+   *
+   */
   public function createGeneralEnquiryComment() {
     $enquiry = $this->createGeneralEnquiry();
     $enforcing_officer_mail = !$enquiry->get('field_person')->isEmpty() ? current($enquiry->get('field_person')->referencedEntities())->getEmail() : '';
@@ -486,4 +508,5 @@ class ParNotificationTestBase extends ParDataTestBase
 
     return $comment;
   }
+
 }

@@ -1,6 +1,10 @@
 <?php
 
 /**
+ * @file
+ */
+
+/**
  * Implements hook_theme().
  */
 function par_govuk_cookies_theme() {
@@ -37,12 +41,12 @@ function par_govuk_cookies_theme() {
         'title' => "Cookies for $site_name",
         'cookie_policy' => $cookie_policy,
         'cookie_name' => $cookie_name,
-        'cookie' => false,
+        'cookie' => FALSE,
         'acceptance_message' => 'par-govuk-cookies-accepted',
         'rejection_message' => 'par-govuk-cookies-rejected',
       ],
       'template' => 'par-govuk-cookies-banner',
-    ]
+    ],
   ];
 }
 

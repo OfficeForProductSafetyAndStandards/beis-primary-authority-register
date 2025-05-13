@@ -2,12 +2,8 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\par_data\Entity\ParDataEnforcementAction;
-use Drupal\par_data\Entity\ParDataLegalEntity;
-use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParFormPluginBase;
 
@@ -107,7 +103,7 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
         'regulatory_functions' => $this->getDefaultValuesByKey('action_regulatory_functions', $index, []),
         'details' => $this->getDefaultValuesByKey('action_details', $index, []),
         'attachments' => $this->getDefaultValuesByKey('action_attachments', $index, []) + [
-          '#attributes' => ['class' => ['govuk-form-group']]
+          '#attributes' => ['class' => ['govuk-form-group']],
         ],
       ];
 
@@ -187,7 +183,7 @@ class ParEnforcementActionDetail extends ParFormPluginBase {
    * Return no actions for this plugin.
    */
   #[\Override]
-  public function getComponentActions(array $actions = [], array $data = NULL): ?array {
+  public function getComponentActions(array $actions = [], ?array $data = NULL): ?array {
     return $actions;
   }
 

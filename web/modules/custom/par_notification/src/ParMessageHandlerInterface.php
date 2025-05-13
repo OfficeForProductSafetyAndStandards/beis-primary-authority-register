@@ -3,7 +3,6 @@
 namespace Drupal\par_notification;
 
 use Drupal\message\MessageInterface;
-use Drupal\Core\Entity\EntityInterface;
 
 /**
  * Defines an interface for the par message handler.
@@ -15,7 +14,7 @@ interface ParMessageHandlerInterface {
   /**
    * Create a new message.
    *
-   * @return MessageInterface
+   * @return \Drupal\message\MessageInterface
    *   The newly created message.
    */
   public function createMessage(string $template_id);
@@ -24,10 +23,11 @@ interface ParMessageHandlerInterface {
    * Send a message.
    *
    * This is fired by whenever a new message is saved,
+   *
    * @see par_notification_entity_presave()
    * @see par_notification_entity_insert()
    *
-   * @param MessageInterface $message
+   * @param \Drupal\message\MessageInterface $message
    *   The message to send.
    */
   public function sendMessage(MessageInterface $message);
@@ -45,10 +45,10 @@ interface ParMessageHandlerInterface {
    * @throws ParNotificationException
    *   Throws an exception if data is expected and is missing.
    *
-   * @param MessageInterface $message
+   * @param \Drupal\message\MessageInterface $message
    *   The message to get data for.
    *
-   * @return EntityInterface[]
+   * @return \Drupal\Core\Entity\EntityInterface[]
    *   An ar
    */
   public function getPrimaryData(MessageInterface $message): array;
@@ -56,7 +56,7 @@ interface ParMessageHandlerInterface {
   /**
    * Get the thread for a given message, if the message supports it.
    *
-   * @param MessageInterface $message
+   * @param \Drupal\message\MessageInterface $message
    *   The message to get the thread for.
    *
    * @return string

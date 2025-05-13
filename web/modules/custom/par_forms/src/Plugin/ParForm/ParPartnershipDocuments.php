@@ -2,15 +2,8 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\comment\CommentInterface;
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Link;
-use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_flows\ParFlowException;
-use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -78,13 +71,14 @@ class ParPartnershipDocuments extends ParFormPluginBase {
           '#attributes' => ['class' => ['govuk-heading-m']],
           '#value' => $this->t('Inspection plans'),
         ],
-        '#attributes' => ['class' => ['govuk-grid-column-one-half']]
+        '#attributes' => ['class' => ['govuk-grid-column-one-half']],
       ];
 
       // Add the inspection plan link safely with access checks.
       try {
         $add_inspection_list_link = $this->getFlowNegotiator()->getFlow()->getFlowLink('inspection_plans', 'See all Inspection Plans');
-      } catch (ParFlowException) {
+      }
+      catch (ParFlowException) {
 
       }
       if (isset($add_inspection_list_link) && $add_inspection_list_link instanceof Link) {
@@ -97,7 +91,7 @@ class ParPartnershipDocuments extends ParFormPluginBase {
               'There is <strong>@count</strong> inspection plan covered by this partnership.',
               'There are <strong>@count</strong> inspection plans covered by this partnership.',
               ['@count' => $isp_count]
-            ),
+          ),
         ];
 
         $form['details']['inspection_plans']['link'] = [
@@ -117,12 +111,13 @@ class ParPartnershipDocuments extends ParFormPluginBase {
           '#attributes' => ['class' => ['govuk-heading-m']],
           '#value' => $this->t('Advice and Documents'),
         ],
-        '#attributes' => ['class' => ['govuk-grid-column-one-half']]
+        '#attributes' => ['class' => ['govuk-grid-column-one-half']],
       ];
 
       try {
         $add_advice_list_link = $this->getFlowNegotiator()->getFlow()->getFlowLink('advice', 'See all Advice');
-      } catch (ParFlowException) {
+      }
+      catch (ParFlowException) {
 
       }
       if (isset($add_advice_list_link) && $add_advice_list_link instanceof Link) {
@@ -135,7 +130,7 @@ class ParPartnershipDocuments extends ParFormPluginBase {
               'There is <strong>@count</strong> advice document covered by this partnership.',
               'There are <strong>@count</strong> advice documents covered by this partnership.',
               ['@count' => $count]
-            ),
+          ),
         ];
 
         $form['details']['advice']['link'] = [
@@ -160,7 +155,8 @@ class ParPartnershipDocuments extends ParFormPluginBase {
    * Return no actions for this plugin.
    */
   #[\Override]
-  public function getComponentActions(array $actions = [], array $data = NULL): ?array {
+  public function getComponentActions(array $actions = [], ?array $data = NULL): ?array {
     return $actions;
   }
+
 }

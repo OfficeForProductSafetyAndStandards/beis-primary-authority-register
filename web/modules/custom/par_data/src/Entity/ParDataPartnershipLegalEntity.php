@@ -2,13 +2,9 @@
 
 namespace Drupal\par_data\Entity;
 
-use Drupal\Component\Datetime\DateTimePlus;
-use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
-use Drupal\Core\TypedData\Type\DateTimeInterface;
-use Drupal\par_data\ParDataException;
 
 /**
  * Defines the par_data_partnership_legal_entity entity.
@@ -16,7 +12,7 @@ use Drupal\par_data\ParDataException;
  * @ingroup par_data
  *
  * @ContentEntityType(
-   *   id = "par_data_partnership_le",
+ *   id = "par_data_partnership_le",
  *   label = @Translation("PAR Partnership Legal Entity"),
  *   label_collection = @Translation("PAR Partnership Legal Entities"),
  *   label_singular = @Translation("PAR Partnership Legal Entity"),
@@ -99,7 +95,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
   #[\Override]
   public function hasDependencies() {
     parent::hasDependencies();
-    return false;
+    return FALSE;
   }
 
   /**
@@ -228,7 +224,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    *  - the partnership they are attached to is awaiting approval
    *  - the legal entity is pending
    *  - they were added within the last 24 hours
-   *  - it is not the last legal entity on the partnership
+   *  - it is not the last legal entity on the partnership.
    *
    * @return bool
    *   TRUE if the legal entity can be removed.
@@ -240,7 +236,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
     $request_time = \Drupal::time()->getRequestTime();
     $now = DrupalDateTime::createFromTimestamp($request_time);
 
-    // Rule 1: Is not attached to a revoked partnership
+    // Rule 1: Is not attached to a revoked partnership.
     $no_revoked_partnership = !$partnership ||
       !$partnership->isRevoked();
 
@@ -342,7 +338,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
     $awaiting_statuses = [
       $this->getTypeEntity()->getDefaultStatus(),
       'confirmed_authority',
-      'confirmed_business'
+      'confirmed_business',
     ];
 
     return in_array($this->getRawStatus(), $awaiting_statuses);
@@ -420,8 +416,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    * Set the legal entity for this partnership legal entity.
    *
    * @param ParDataLegalEntity $legal_entity
-   *   A PAR Legal Entity to set.
-
+   *   A PAR Legal Entity to set.   *.
    */
   public function setLegalEntity(ParDataLegalEntity $legal_entity) {
     // This field should only allow single values.
@@ -459,7 +454,7 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    * @param ?DrupalDateTime $date
    *   The date this legal entity was approved.
    */
-  public function setStartDate(DrupalDateTime $date = NULL) {
+  public function setStartDate(?DrupalDateTime $date = NULL) {
     $this->set('date_legal_entity_approved', $date?->format('Y-m-d'));
   }
 
@@ -498,22 +493,22 @@ class ParDataPartnershipLegalEntity extends ParDataEntity {
    * @param ?DrupalDateTime $date
    *   The date this legal entity was revoked.
    */
-  public function setEndDate(DrupalDateTime $date = NULL) {
+  public function setEndDate(?DrupalDateTime $date = NULL) {
     $this->set('date_legal_entity_revoked', $date?->format('Y-m-d'));
   }
 
   /**
    * Test whether the partnership_legal_entity is active during a given period.
    *
-   * @param DrupalDateTime | NULL $period_from
+   * @param \Drupal\Core\Datetime\DrupalDateTime | NULL $period_from
    *   The start date of the period to be compared.
-   * @param DrupalDateTime | NULL $period_to
+   * @param \Drupal\Core\Datetime\DrupalDateTime | NULL $period_to
    *   The end date of the period to be compared.
    *
    * @return bool
    *   TRUE if the given period overlaps with the active period of the PLE.
    */
-  public function isActiveDuringPeriod(DrupalDateTime $period_from = NULL, DrupalDateTime $period_to = NULL) {
+  public function isActiveDuringPeriod(?DrupalDateTime $period_from = NULL, ?DrupalDateTime $period_to = NULL) {
     /**
      * Annoyingly DrupalDateTime objects have no comparison method, so we use DateTime objects representing the periods
      * because these are easy to compare.

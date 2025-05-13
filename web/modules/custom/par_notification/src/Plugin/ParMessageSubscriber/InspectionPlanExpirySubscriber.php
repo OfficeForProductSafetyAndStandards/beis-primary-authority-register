@@ -3,9 +3,6 @@
 namespace Drupal\par_notification\Plugin\ParMessageSubscriber;
 
 use Drupal\message\MessageInterface;
-use Drupal\par_data\Entity\ParDataInspectionPlan;
-use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_notification\ParMessageSubscriberBase;
 use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParRecipient;
@@ -34,9 +31,9 @@ class InspectionPlanExpirySubscriber extends ParMessageSubscriberBase {
     $recipients = parent::getRecipients($message);
 
     try {
-      /** @var ParDataInspectionPlan[] $inspection_plans */
+      /** @var \Drupal\par_data\Entity\ParDataInspectionPlan[] $inspection_plans */
       $inspection_plans = $this->getMessageHandler()->getPrimaryData($message);
-      /** @var ParDataPartnership[] $partnerships */
+      /** @var \Drupal\par_data\Entity\ParDataPartnership[] $partnerships */
       $partnerships = [];
 
       foreach ($inspection_plans as $inspection_plan) {
@@ -52,7 +49,7 @@ class InspectionPlanExpirySubscriber extends ParMessageSubscriberBase {
 
     foreach ($partnerships as $partnership) {
       // This message should be sent to the primary authority contacts at the authority.
-      /** @var ParDataPersonInterface $people */
+      /** @var \Drupal\par_data\Entity\ParDataPersonInterface $people */
       $people = $partnership->getAuthorityPeople();
       foreach ($people as $key => $person) {
         $recipients[] = new ParRecipient(
@@ -74,9 +71,9 @@ class InspectionPlanExpirySubscriber extends ParMessageSubscriberBase {
     $subscriptions = parent::getSubscribedEntities($message);
 
     try {
-      /** @var ParDataInspectionPlan[] $inspection_plans */
+      /** @var \Drupal\par_data\Entity\ParDataInspectionPlan[] $inspection_plans */
       $inspection_plans = $this->getMessageHandler()->getPrimaryData($message);
-      /** @var ParDataPartnership[] $partnerships */
+      /** @var \Drupal\par_data\Entity\ParDataPartnership[] $partnerships */
       $partnerships = [];
 
       foreach ($inspection_plans as $inspection_plan) {
@@ -100,4 +97,5 @@ class InspectionPlanExpirySubscriber extends ParMessageSubscriberBase {
 
     return $subscriptions;
   }
+
 }

@@ -2,12 +2,9 @@
 
 namespace Drupal\par_data\Entity;
 
-use Drupal\Component\Datetime\DateTimePlus;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
-use Drupal\Core\TypedData\Type\DateTimeInterface;
-use Drupal\par_data\ParDataException;
 
 /**
  * Defines the par_data_coodinated_business entity.
@@ -106,7 +103,7 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
    * @param string $date
    *   The date this member was ceased.
    */
-  public function cease(DrupalDateTime $date = NULL, $save = TRUE) {
+  public function cease(?DrupalDateTime $date = NULL, $save = TRUE) {
     // Members can be ceased without a date.
     if (empty($date)) {
       return parent::revoke($save);
@@ -133,7 +130,7 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
   /**
    * {@inheritdoc}
    */
-  public function reinstate(DrupalDateTime $date = NULL, $save = TRUE) {
+  public function reinstate(?DrupalDateTime $date = NULL, $save = TRUE) {
     $this->set('date_membership_ceased', !empty($date) ? $date->format('Y-m-d') : $date);
 
     // Reinstating a member has the same implications as unrevoking partnerships
@@ -157,7 +154,7 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
     $enforcement_notices = $this->getRelationships('par_data_enforcement_notice');
     foreach ($enforcement_notices as $uuid => $relationship) {
       if ($relationship->getEntity()->isActive()) {
-        return Null;
+        return NULL;
       }
     }
 
@@ -203,8 +200,7 @@ class ParDataCoordinatedBusiness extends ParDataEntity {
    * Add a legal entity for this Coordinated Business.
    *
    * @param ParDataLegalEntity $legal_entity
-   *   A PAR Legal Entity to add.
-
+   *   A PAR Legal Entity to add.   *.
    */
   public function addLegalEntity(ParDataLegalEntity $legal_entity) {
     $legal_entities = $this->getLegalEntity();

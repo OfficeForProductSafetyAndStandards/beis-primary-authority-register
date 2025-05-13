@@ -5,7 +5,6 @@ namespace Drupal\par_transfer_partnerships_flows\Form;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Form\ParBaseForm;
 
 /**
@@ -30,7 +29,7 @@ class ParTransferDateForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataAuthority $par_data_authority = NULL) {
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($par_data_authority);
 

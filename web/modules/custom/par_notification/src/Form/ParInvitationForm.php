@@ -6,10 +6,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\invite\Entity\Invite;
 use Drupal\message\MessageInterface;
 use Drupal\par_data\Entity\ParDataPersonInterface;
-use Drupal\user\Entity\User;
 use Drupal\Core\Form\FormBase;
-use Drupal\login_destination\Entity\LoginDestination;
-use Drupal\Core\Url;
 
 /**
  * The invitation form for new users.
@@ -25,7 +22,7 @@ class ParInvitationForm extends FormBase {
     'field_deviation_request',
     'field_general_enquiry',
     'field_inspection_feedback',
-    'field_inspection_plan'
+    'field_inspection_plan',
   ];
 
   /**
@@ -36,6 +33,9 @@ class ParInvitationForm extends FormBase {
     return 'par_notification_invite';
   }
 
+  /**
+   *
+   */
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');
   }
@@ -44,7 +44,7 @@ class ParInvitationForm extends FormBase {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, MessageInterface $message = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?MessageInterface $message = NULL) {
     // Need to check to see if the user has an account already.
     $message = \Drupal::routeMatch()->getParameter('message');
 
@@ -92,7 +92,7 @@ class ParInvitationForm extends FormBase {
       '#limit_validation_errors' => [],
       '#attributes' => [
         'class' => ['flow-link', 'govuk-button', 'govuk-button--secondary'],
-        'onclick' =>  "location.reload();",
+        'onclick' => "location.reload();",
       ],
     ];
 
@@ -125,7 +125,7 @@ class ParInvitationForm extends FormBase {
 
     // Send invitation.
     if ($submit_action === 'invite') {
-      /** @var MessageInterface $message */
+      /** @var \Drupal\message\MessageInterface $message */
       $message = \Drupal::routeMatch()->getParameter('message');
 
       try {
@@ -160,15 +160,14 @@ class ParInvitationForm extends FormBase {
    * must be used to identify the user's role.
    *
    * @return string
-   *  The invitiation type to be created.
+   *   The invitiation type to be created.
    */
-  public function getInvitationType(MessageInterface $message)
-  {
-      // @TODO PAR-1736: Add invitations for more message types.
-      return match ($message->getTemplate()->id()) {
-          'approved_enforcement' => 'invite_organisation_member',
+  public function getInvitationType(MessageInterface $message) {
+    // @todo PAR-1736: Add invitations for more message types.
+    return match ($message->getTemplate()->id()) {
+      'approved_enforcement' => 'invite_organisation_member',
           default => NULL,
-      };
+    };
   }
 
   /**
@@ -184,7 +183,7 @@ class ParInvitationForm extends FormBase {
       $people = array_filter($related_entities, fn($entity) => $entity instanceof ParDataPersonInterface
         && $entity->getEmail() === $email);
 
-      // @TODO this doesn't necessarily return the most related person,
+      // @todo this doesn't necessarily return the most related person,
       // if there are multiple entities it will just return the first one found.
       return current($people);
     }

@@ -5,7 +5,6 @@ namespace Drupal\par_forms;
 use Drupal\Component\Plugin\ConfigurableInterface;
 use Drupal\Component\Plugin\PluginInspectionInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Defines a form component for use within a form controller.
@@ -60,13 +59,13 @@ interface ParFormPluginInterface extends PluginInspectionInterface, Configurable
    * for this component instance or whether another item can be added.
    *
    * @param mixed $data
-   *    If required the data to be counted can be switched to the form_state values.
+   *   If required the data to be counted can be switched to the form_state values.
    *
    * @return bool
    *   TRUE if no more items can be added.
    *   FALSE if more items can be added.
    */
-  public function isFull(array $data = NULL): bool;
+  public function isFull(?array $data = NULL): bool;
 
   /**
    * Count the cardinality of already submitted values.
@@ -74,9 +73,9 @@ interface ParFormPluginInterface extends PluginInspectionInterface, Configurable
    * @param mixed $data
    *   If required the data to be counted can be switched to the form_state values.
    *
-   * @return integer
+   * @return int
    */
-  public function countItems(array $data = NULL): int;
+  public function countItems(?array $data = NULL): int;
 
   /**
    * Whether the plugin has any data.
@@ -107,21 +106,27 @@ interface ParFormPluginInterface extends PluginInspectionInterface, Configurable
    *
    * @param array $form
    *   An optional form array to add the component elements to.
-   * @param integer $index
+   * @param int $index
    *   The cardinality for this plugin.
    *
    * @return array|RedirectResponse
    */
   public function getElements(array $form = [], int $index = 0);
 
+  /**
+   *
+   */
   public function getFormDefaults(): array;
 
+  /**
+   *
+   */
   public function getFormDefaultByKey($key);
 
   /**
    * Loads the data associated with these elements.
    *
-   * @param integer $index
+   * @param int $index
    *   The cardinality for this plugin.
    */
   public function loadData(int $index): void;
@@ -131,9 +136,9 @@ interface ParFormPluginInterface extends PluginInspectionInterface, Configurable
    *
    * @param array $form
    *   The build form.
-   * @param FormStateInterface $form_state
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state object to validate.
-   * @param integer $index
+   * @param int $index
    *   The cardinality for this plugin.
    * @param mixed $action
    *   An identifier relating to the action to be performed.
@@ -143,7 +148,7 @@ interface ParFormPluginInterface extends PluginInspectionInterface, Configurable
   /**
    * Saves the form elements.
    *
-   * @param integer $index
+   * @param int $index
    *   The index for this plugin item to save.
    */
   public function save(int $index = 0);

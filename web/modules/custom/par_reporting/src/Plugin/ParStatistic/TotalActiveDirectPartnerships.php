@@ -16,6 +16,9 @@ use Drupal\par_reporting\ParStatisticBase;
  */
 class TotalActiveDirectPartnerships extends ParStatisticBase {
 
+  /**
+ *
+ */
   #[\Override]
   public function getStat(): int {
     $query = $this->getParDataManager()->getEntityQuery('par_data_partnership')
@@ -34,7 +37,6 @@ class TotalActiveDirectPartnerships extends ParStatisticBase {
 
     $query->condition($revoked);
     $query->condition($deleted);
-
 
     return $query->count()->execute();
   }

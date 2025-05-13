@@ -4,11 +4,7 @@ namespace Drupal\par_log\EventSubscriber;
 
 use Drupal\audit_log\AuditLogEventInterface;
 use Drupal\audit_log\EventSubscriber\EventSubscriberInterface;
-use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
-use Drupal\Core\Render\Markup;
-use Drupal\par_data\Entity\ParDataEntity;
 use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\Tests\Core\Entity\RevisionableEntity;
 
 /**
  * Responds to audit log events where a partnership name change has occured.
@@ -20,7 +16,7 @@ class ParDataTransferPartnership implements EventSubscriberInterface {
   /**
    * The supported action for this logger.
    */
-  CONST ACTION = 'update';
+  const ACTION = 'update';
 
   /**
    * {@inheritdoc}

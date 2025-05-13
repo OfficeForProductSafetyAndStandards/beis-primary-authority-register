@@ -6,7 +6,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_forms\ParFormPluginBase;
-use Drupal\user\Entity\User;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -94,20 +93,20 @@ class ParSelectPartnershipForm extends ParFormPluginBase {
         $input_name = $this->getTargetName($this->getElementKey('select_all', $index));
         $form['par_data_partnership_id']['#states'] = [
           'visible' => [
-            ':input[name="'.$input_name.'"]' => ['checked' => FALSE],
+            ':input[name="' . $input_name . '"]' => ['checked' => FALSE],
           ],
         ];
       }
 
-      // @TODO Add pager so that any selected checkboxes aren't unselected when a new page is loaded.
-//      $form['pager'] = [
-//        '#type' => 'pager',
-//        '#theme' => 'pagerer',
-//        '#element' => $index,
-//        '#config' => [
-//          'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
-//        ],
-//      ];
+      // @todo Add pager so that any selected checkboxes aren't unselected when a new page is loaded.
+      //   $form['pager'] = [
+      //        '#type' => 'pager',
+      //        '#theme' => 'pagerer',
+      //        '#element' => $index,
+      //        '#config' => [
+      //          'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
+      //        ],
+      //      ];
     }
 
     return $form;
@@ -143,4 +142,5 @@ class ParSelectPartnershipForm extends ParFormPluginBase {
 
     parent::validate($form, $form_state, $index, $action);
   }
+
 }

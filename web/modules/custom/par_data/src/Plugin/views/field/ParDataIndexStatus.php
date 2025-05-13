@@ -1,21 +1,9 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\d8views\Plugin\views\field\NodeTypeFlagger
- */
-
 namespace Drupal\par_data\Plugin\views\field;
 
-use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\TypedData\FieldItemDataDefinition;
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\TypedData\DataDefinitionInterface;
-use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\search_api\Plugin\views\field\SearchApiStandard;
-use Drupal\search_api\SearchApiException;
-use Drupal\views\Plugin\views\field\FieldPluginBase;
-use Drupal\views\ResultRow;
 
 /**
  * Field handler to get the PAR Data status on a search index.
@@ -26,6 +14,9 @@ use Drupal\views\ResultRow;
  */
 class ParDataIndexStatus extends SearchApiStandard {
 
+  /**
+   *
+   */
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');
   }
@@ -56,4 +47,5 @@ class ParDataIndexStatus extends SearchApiStandard {
     $type = $this->definition['filter_type'] ?? 'plain';
     return $this->sanitizeValue($item['value'], $type);
   }
+
 }

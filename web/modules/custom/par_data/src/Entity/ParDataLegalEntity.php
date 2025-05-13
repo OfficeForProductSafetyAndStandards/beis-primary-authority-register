@@ -6,8 +6,6 @@ use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
-use Drupal\par_data\ParDataManagerInterface;
-use Drupal\par_data\ParDataRelationship;
 use Drupal\registered_organisations\Organisation;
 use Drupal\registered_organisations\DataException;
 use Drupal\registered_organisations\TemporaryException;
@@ -98,7 +96,7 @@ class ParDataLegalEntity extends ParDataEntity {
   /**
    * Get the registered organisation manager.
    *
-   * @return OrganisationManagerInterface
+   * @return \Drupal\registered_organisations\OrganisationManagerInterface
    */
   public function getOrganisationManager(): OrganisationManagerInterface {
     return \Drupal::service('registered_organisations.organisation_manager');
@@ -107,7 +105,7 @@ class ParDataLegalEntity extends ParDataEntity {
   /**
    * Get the par data manager.
    *
-   * @return EntityTypeManagerInterface
+   * @return \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   public function getEntityTypeManager(): EntityTypeManagerInterface {
     return \Drupal::service('entity_type.manager');
@@ -116,7 +114,7 @@ class ParDataLegalEntity extends ParDataEntity {
   /**
    * Get the serialization service.
    *
-   * @return SerializerInterface
+   * @return \Symfony\Component\Serializer\SerializerInterface
    */
   public function getSerializer(): SerializerInterface {
     return \Drupal::service('serializer');
@@ -135,7 +133,7 @@ class ParDataLegalEntity extends ParDataEntity {
     try {
       $entity->updateLegacyEntities();
     }
-    catch (RegisterException|TemporaryException|DataException) {
+    catch (RegisterException | TemporaryException | DataException) {
       // Catch all errors silently.
     }
 
@@ -154,7 +152,7 @@ class ParDataLegalEntity extends ParDataEntity {
     try {
       $this->updateLegacyEntities();
     }
-    catch (RegisterException|TemporaryException|DataException) {
+    catch (RegisterException | TemporaryException | DataException) {
       // Catch all errors silently.
     }
 
@@ -200,6 +198,7 @@ class ParDataLegalEntity extends ParDataEntity {
         }
 
         break;
+
       case self::DEFAULT_REGISTER:
         $registered_name = $this->get('registered_name')->getString();
         if (!empty($registered_name)) {
@@ -243,7 +242,7 @@ class ParDataLegalEntity extends ParDataEntity {
    * Whether this legal entity is editable.
    *
    *  - If it isn't yet saved
-   *  - If it is a legacy entity
+   *  - If it is a legacy entity.
    *
    * @return bool
    */
@@ -303,7 +302,7 @@ class ParDataLegalEntity extends ParDataEntity {
         return new Organisation($register, $data);
       }
     }
-    catch (MissingDataException|DataException) {
+    catch (MissingDataException | DataException) {
       return NULL;
     }
 
@@ -323,7 +322,6 @@ class ParDataLegalEntity extends ParDataEntity {
         return $profile;
       }
 
-      //
       try {
         $profile = $this->getOrganisationManager()
           ->lookupOrganisation($this->getRegisterId(), (string) $this->getId());
@@ -344,6 +342,7 @@ class ParDataLegalEntity extends ParDataEntity {
 
   /**
    * Store the serialized Organisation Profile.
+   *
    * @param \Drupal\registered_organisations\OrganisationInterface $profile
    */
   protected function setOrganisation(OrganisationInterface $profile) {
@@ -460,12 +459,11 @@ class ParDataLegalEntity extends ParDataEntity {
    * {@inheritdoc}
    */
   #[\Override]
-  public function filterRelationshipsByAction($relationship, $action)
-  {
-      return match ($action) {
-          'manage' => FALSE,
+  public function filterRelationshipsByAction($relationship, $action) {
+    return match ($action) {
+      'manage' => FALSE,
           default => parent::filterRelationshipsByAction($relationship, $action),
-      };
+    };
   }
 
   /**
@@ -478,9 +476,9 @@ class ParDataLegalEntity extends ParDataEntity {
    * number of potential values for the 'legal_entity_type' field which correspond
    * to whether the legal entity is a registered organisation.
    *
-   * @TODO Revisit once the majority of legacy legal entities are updated
+   * @todo Revisit once the majority of legacy legal entities are updated
    *
-   * @throws DataException|TemporaryException|RegisterException
+   * @throws \Drupal\registered_organisations\DataException|TemporaryException|RegisterException
    *   In the event of an error looking up the organisation.
    *
    * @return bool
@@ -528,7 +526,7 @@ class ParDataLegalEntity extends ParDataEntity {
   /**
    * Determines whether this is a legacy legal entity that needs updating.
    *
-   * @TODO Revisit once the majority of legacy legal entities are updated.
+   * @todo Revisit once the majority of legacy legal entities are updated.
    *
    * @return bool
    */
@@ -539,14 +537,14 @@ class ParDataLegalEntity extends ParDataEntity {
   /**
    * Determines whether this is a legacy legal entity that needs updating.
    *
-   * @TODO Revisit once the majority of legacy legal entities are updated.
+   * @todo Revisit once the majority of legacy legal entities are updated.
    *
    * @return ?string
    *   Returns the new register based on the legacy type, or null if
    *   an invalid value is found for the legacy type.
    *   Null values indicate the legal entity will need manual correction.
    */
-  protected function convertLegacyTypeToRegister(): ?string  {
+  protected function convertLegacyTypeToRegister(): ?string {
     // Legacy registered organisation mapping.
     $legacy_types = [
       'companies_house' => [
@@ -562,7 +560,7 @@ class ParDataLegalEntity extends ParDataEntity {
       self::DEFAULT_REGISTER => [
         'other' => 'Other',
         'sole_trader' => 'Sole Trader',
-      ]
+      ],
     ];
 
     // If no type is set assume the default.

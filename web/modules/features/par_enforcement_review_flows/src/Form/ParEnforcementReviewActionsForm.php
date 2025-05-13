@@ -2,12 +2,8 @@
 
 namespace Drupal\par_enforcement_review_flows\Form;
 
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataEnforcementAction;
-use Drupal\par_data\Entity\ParDataEnforcementNotice;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\ParDataException;
 use Drupal\par_enforcement_review_flows\ParFlowAccessTrait;
 use Drupal\par_flows\Form\ParBaseForm;
@@ -26,13 +22,16 @@ class ParEnforcementReviewActionsForm extends ParBaseForm {
    */
   protected $pageTitle = "Respond to notice of enforcement actions | Review";
 
+  /**
+ *
+ */
   #[\Override]
   public function loadData() {
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataEnforcementNotice $par_data_enforcement_notice */
-    /** @var ParDataEnforcementAction[] $par_data_enforcement_actions */
+    /** @var \Drupal\par_data\Entity\ParDataEnforcementNotice $par_data_enforcement_notice */
+    /** @var \Drupal\par_data\Entity\ParDataEnforcementAction[] $par_data_enforcement_actions */
 
     if ($par_data_enforcement_actions) {
       $this->getFlowDataHandler()->setParameter('par_data_enforcement_actions', $par_data_enforcement_actions);
@@ -55,6 +54,9 @@ class ParEnforcementReviewActionsForm extends ParBaseForm {
     parent::loadData();
   }
 
+  /**
+   *
+   */
   public function createEntities() {
     $par_data_enforcement_notice = $this->getFlowDataHandler()->getParameter('par_data_enforcement_notice');
     $par_data_enforcement_actions = $par_data_enforcement_notice->getEnforcementActions();
@@ -97,7 +99,7 @@ class ParEnforcementReviewActionsForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    // @TODO Validate that any referred actions have a primary authority to refer to.
+    // @todo Validate that any referred actions have a primary authority to refer to.
   }
 
   /**
@@ -110,8 +112,8 @@ class ParEnforcementReviewActionsForm extends ParBaseForm {
     // Set the correct values for the entities to be saved.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataEnforcementNotice $par_data_enforcement_notice */
-    /** @var ParDataEnforcementAction[] $par_data_enforcement_actions */
+    /** @var \Drupal\par_data\Entity\ParDataEnforcementNotice $par_data_enforcement_notice */
+    /** @var \Drupal\par_data\Entity\ParDataEnforcementAction[] $par_data_enforcement_actions */
 
     $action_referral_cid = $this->getFlowNegotiator()->getFormKey('par_enforcement_referred_authority');
 
@@ -166,4 +168,5 @@ class ParEnforcementReviewActionsForm extends ParBaseForm {
       $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
     }
   }
+
 }

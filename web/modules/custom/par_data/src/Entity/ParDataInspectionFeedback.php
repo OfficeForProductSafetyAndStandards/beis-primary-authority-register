@@ -3,9 +3,6 @@
 namespace Drupal\par_data\Entity;
 
 use Drupal\comment\CommentManagerInterface;
-use Drupal\comment\CommentStorageInterface;
-use Drupal\comment\Entity\Comment;
-use Drupal\Console\Bootstrap\Drupal;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\par_data\ParDataException;
@@ -146,7 +143,7 @@ class ParDataInspectionFeedback extends ParDataEntity implements ParDataEnquiryI
    */
   #[\Override]
   public function getReplies(): array {
-    /** @var CommentStorageInterface $comment_storage */
+    /** @var \Drupal\comment\CommentStorageInterface $comment_storage */
     $comment_storage = \Drupal::entityTypeManager()->getStorage('comment');
     $thread = $comment_storage->loadThread($this, 'messages', CommentManagerInterface::COMMENT_MODE_FLAT);
     return array_values($thread);
@@ -156,12 +153,11 @@ class ParDataInspectionFeedback extends ParDataEntity implements ParDataEnquiryI
    * {@inheritdoc}
    */
   #[\Override]
-  public function filterRelationshipsByAction($relationship, $action)
-  {
-      return match ($action) {
-          'manage' => FALSE,
+  public function filterRelationshipsByAction($relationship, $action) {
+    return match ($action) {
+      'manage' => FALSE,
           default => parent::filterRelationshipsByAction($relationship, $action),
-      };
+    };
   }
 
   /**
@@ -295,7 +291,7 @@ class ParDataInspectionFeedback extends ParDataEntity implements ParDataEnquiryI
           'form_location' => 1,
           'preview' => 1,
           'comment_type' => 'par_inspection_feedback_comments',
-          'locked' => false,
+          'locked' => FALSE,
 
         ])
       ->setDefaultValue(
@@ -303,7 +299,7 @@ class ParDataInspectionFeedback extends ParDataEntity implements ParDataEnquiryI
           'status' => 2,
           'cid' => 0,
           'last_comment_timestamp' => 0,
-          'last_comment_name' => null,
+          'last_comment_name' => NULL,
           'last_comment_uid' => 0,
           'comment_count' => 0,
         ]
@@ -317,7 +313,7 @@ class ParDataInspectionFeedback extends ParDataEntity implements ParDataEnquiryI
           'anonymous' => 0,
           'preview' => 1,
           'comment_type' => 'par_inspection_feedback_comments',
-          'locked' => false,
+          'locked' => FALSE,
 
         ],
         'weight' => 1,

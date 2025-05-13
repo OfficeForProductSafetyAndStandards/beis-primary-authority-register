@@ -8,6 +8,9 @@ use Drupal\par_data\Entity\ParDataInspectionPlan;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_notification\ParEventSubscriberBase;
 
+/**
+ *
+ */
 class NewInspectionPlanSubscriber extends ParEventSubscriberBase {
 
   /**
@@ -23,7 +26,7 @@ class NewInspectionPlanSubscriber extends ParEventSubscriberBase {
    * @return mixed
    */
   #[\Override]
-  static function getSubscribedEvents(): array {
+  public static function getSubscribedEvents(): array {
     $events = [];
     // React to custom reference event bring dispatched.
     if (class_exists(ParDataEvent::class)) {
@@ -34,12 +37,12 @@ class NewInspectionPlanSubscriber extends ParEventSubscriberBase {
   }
 
   /**
-   * @param ParDataEventInterface $event
+   * @param \Drupal\par_data\Event\ParDataEventInterface $event
    */
   public function onEvent(ParDataEventInterface $event) {
     $this->setEvent($event);
 
-    /** @var ParDataInspectionPlan $entity */
+    /** @var \Drupal\par_data\Entity\ParDataInspectionPlan $entity */
     $entity = $event->getEntity();
     $partnership_relationships = $entity->getRelationships('par_data_partnership', NULL, TRUE);
     $par_data_partnership = !empty($partnership_relationships) ? current($partnership_relationships)->getEntity() : NULL;
@@ -52,10 +55,11 @@ class NewInspectionPlanSubscriber extends ParEventSubscriberBase {
       // Send the message.
       $arguments = [
         '@partnership_label' => strtolower($par_data_partnership->label()),
-        '@inspection_plan_title' =>  strtolower($entity->getTitle()),
+        '@inspection_plan_title' => strtolower($entity->getTitle()),
       ];
 
       $this->sendMessage($arguments);
     }
   }
+
 }

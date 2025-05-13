@@ -4,7 +4,6 @@ namespace Drupal\par_partnership_contact_add_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_partnership_contact_add_flows\ParFlowAccessTrait;
 
@@ -41,7 +40,7 @@ class ParContactForm extends ParBaseForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
     $contacts = match ($this->getFlowDataHandler()->getParameter('type')) {
-        'authority' => $par_data_partnership->getAuthorityPeople(),
+      'authority' => $par_data_partnership->getAuthorityPeople(),
         'organisation' => $par_data_partnership->getOrganisationPeople(),
         default => [],
     };

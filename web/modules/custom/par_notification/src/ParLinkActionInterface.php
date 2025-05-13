@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Drupal\Core\Link;
 
 /**
- * Defines an interface for the Par Link Action plugins
+ * Defines an interface for the Par Link Action plugins.
  *
  * @see plugin_api
  */

@@ -3,12 +3,14 @@
 namespace Drupal\par_notification\EventSubscriber;
 
 use Drupal\par_data\Event\ParDataEvent;
-use Drupal\comment\CommentInterface;
 use Drupal\core_event_dispatcher\Event\Entity\EntityInsertEvent;
 use Drupal\par_data\Entity\ParDataInspectionFeedback;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_notification\ParEventSubscriberBase;
 
+/**
+ *
+ */
 class NewInspectionFeedbackReplySubscriber extends ParEventSubscriberBase {
 
   /**
@@ -24,7 +26,7 @@ class NewInspectionFeedbackReplySubscriber extends ParEventSubscriberBase {
    * @return mixed
    */
   #[\Override]
-  static function getSubscribedEvents(): array {
+  public static function getSubscribedEvents(): array {
     $events = [];
     if (class_exists(ParDataEvent::class)) {
       $events[EntityInsertEvent::class][] = ['onEvent', 800];
@@ -34,15 +36,15 @@ class NewInspectionFeedbackReplySubscriber extends ParEventSubscriberBase {
   }
 
   /**
-   * @param EntityInsertEvent $event
+   * @param \Drupal\core_event_dispatcher\Event\Entity\EntityInsertEvent $event
    */
   public function onEvent(EntityInsertEvent $event) {
     if ($event->getEntity() instanceof ParDataInspectionFeedback) {
       $this->setEvent($event);
 
-      /** @var CommentInterface $entity */
+      /** @var \Drupal\comment\CommentInterface $entity */
       $entity = $event->getEntity();
-      /** @var ParDataInspectionFeedback $commented_entity */
+      /** @var \Drupal\par_data\Entity\ParDataInspectionFeedback $commented_entity */
       $commented_entity = $entity->getCommentedEntity();
       $par_data_partnership = $commented_entity?->getPartnership(TRUE);
 

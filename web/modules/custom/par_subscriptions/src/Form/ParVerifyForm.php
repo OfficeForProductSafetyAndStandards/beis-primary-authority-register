@@ -7,14 +7,13 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\par_subscriptions\Entity\ParSubscriptionInterface;
-use Drupal\par_subscriptions\ParSubscriptionManager;
 use Drupal\par_subscriptions\ParSubscriptionManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * A form controller for subscription lists.
  */
-class ParVerifyForm extends FormBase  {
+class ParVerifyForm extends FormBase {
 
   /**
    * The flood service.
@@ -145,4 +144,5 @@ class ParVerifyForm extends FormBase  {
     $fid = implode(':', [$this->getRequest()->getClientIP(), $this->currentUser()->id()]);
     $this->flood->register("par_subscriptions.{$this->getFormId()}", 3600, $fid);
   }
+
 }

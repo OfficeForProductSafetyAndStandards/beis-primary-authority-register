@@ -2,19 +2,12 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\comment\CommentInterface;
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Link;
 use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_flows\ParFlowException;
-use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -47,12 +40,15 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
     ];
   }
 
+  /**
+   *
+   */
   public function getPerson($index = 1) {
     $contacts = $this->getFlowDataHandler()->getParameter('contacts');
     $contacts = !empty($contacts) ? array_values($contacts) : [];
 
     // Cardinality is not a zero-based index like the stored fields deltas.
-    return $contacts[$index-1] ?? NULL;
+    return $contacts[$index - 1] ?? NULL;
   }
 
   /**
@@ -60,7 +56,7 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
    */
   #[\Override]
   public function loadData(int $index = 1): void {
-    /** @var ParDataPersonInterface $contact */
+    /** @var \Drupal\par_data\Entity\ParDataPersonInterface $contact */
     $contact = $this->getPerson($index);
     if ($contact instanceof ParDataEntityInterface) {
       $this->setDefaultValuesByKey("name", $index, $contact->getFullName());
@@ -108,7 +104,8 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
         $actions = t('@link', [
           '@link' => $link ? $link->toString() : '',
         ]);
-      } catch (ParFlowException) {
+      }
+      catch (ParFlowException) {
 
       }
 
@@ -143,9 +140,9 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
         'locations' => [
           '#lazy_builder' => [
             static::class . '::getContactLocations',
-            [$this->getDefaultValuesByKey('person_id', $index, NULL), $index]
+            [$this->getDefaultValuesByKey('person_id', $index, NULL), $index],
           ],
-          '#create_placeholder' => TRUE
+          '#create_placeholder' => TRUE,
         ],
       ];
     }
@@ -211,7 +208,7 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
    * Return no actions for this plugin.
    */
   #[\Override]
-  public function getComponentActions(array $actions = [], array $data = NULL): ?array {
+  public function getComponentActions(array $actions = [], ?array $data = NULL): ?array {
     $contacts = $this->getFlowDataHandler()->getParameter('contacts');
 
     try {
@@ -235,4 +232,5 @@ class ParContactLocationsDetailed extends ParFormPluginBase implements TrustedCa
 
     return $actions;
   }
+
 }

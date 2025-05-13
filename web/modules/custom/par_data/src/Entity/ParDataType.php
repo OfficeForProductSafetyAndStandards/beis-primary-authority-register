@@ -2,12 +2,10 @@
 
 namespace Drupal\par_data\Entity;
 
-use Drupal\par_data\ParDataManagerInterface;
 use Drupal\trance\TranceType;
 
 /**
  * The base PAR entity type class.
- *
  */
 abstract class ParDataType extends TranceType implements ParDataTypeInterface {
 
@@ -38,7 +36,7 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
   /**
    * Simple getter to inject the PAR Data Manager service.
    *
-   * @return ParDataManagerInterface
+   * @return \Drupal\par_data\ParDataManagerInterface
    */
   public function getParDataManager() {
     return \Drupal::service('par_data.manager');
@@ -195,6 +193,9 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
     return isset($status_field) && !empty($allowed_statuses) ? key($allowed_statuses) : NULL;
   }
 
+  /**
+   *
+   */
   public function getFieldLabel($field_name, $value): ?string {
     // If the field is configured with allowed values.
     if (!empty($this->getAllowedValues($field_name))) {
@@ -286,7 +287,7 @@ abstract class ParDataType extends TranceType implements ParDataTypeInterface {
       'user_id',
       'created',
       'changed',
-      'name'
+      'name',
     ];
   }
 

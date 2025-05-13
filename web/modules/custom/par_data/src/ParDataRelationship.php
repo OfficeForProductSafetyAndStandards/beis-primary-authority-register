@@ -47,7 +47,7 @@ class ParDataRelationship {
   /**
    * Get the base entity.
    *
-   * @return EntityInterface
+   * @return \Drupal\Core\Entity\EntityInterface
    */
   public function getBaseEntity() {
     return $this->base;
@@ -56,12 +56,15 @@ class ParDataRelationship {
   /**
    * Get the related entity.
    *
-   * @return EntityInterface
+   * @return \Drupal\Core\Entity\EntityInterface
    */
   public function getEntity() {
     return $this->entity;
   }
 
+  /**
+   *
+   */
   public function getId() {
     return $this->getEntity()->getEntityTypeId() . ':' . $this->getField()->getName();
   }
@@ -69,17 +72,24 @@ class ParDataRelationship {
   /**
    * Get the field that defines the relationship.
    *
-   * @return FieldDefinitionInterface
+   * @return \Drupal\Core\Field\FieldDefinitionInterface
    */
   public function getField() {
     return $this->field;
   }
 
+  /**
+   *
+   */
   public function getRelationshipDirection() {
     return $this->getField()->getTargetEntityTypeId() === $this->getEntity()->getEntityTypeId() ? self::DIRECTION_REVERSE : self::DIRECTION_DEFAULT;
   }
 
+  /**
+   *
+   */
   public function sortByType($a, $b) {
     return $a->getEntityTypeId();
   }
+
 }

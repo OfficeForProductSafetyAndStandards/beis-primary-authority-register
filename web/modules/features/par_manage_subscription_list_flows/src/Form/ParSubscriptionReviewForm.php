@@ -24,6 +24,9 @@ class ParSubscriptionReviewForm extends ParBaseForm {
     return 'Help Desk | Review changes';
   }
 
+  /**
+   *
+   */
   public function getSubscriptionManager() {
     return \Drupal::service('par_subscriptions.manager');
   }

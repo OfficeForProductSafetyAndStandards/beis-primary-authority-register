@@ -2,10 +2,8 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
-use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -23,8 +21,9 @@ class ParInspectionPlanForm extends ParFormPluginBase {
    */
   protected array $entityMapping = [
     ['notes', 'par_data_inspection_feedback', 'notes', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter the details of this enquiry.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter the details of this enquiry.',
+    ],
+    ],
   ];
 
   /**
@@ -86,11 +85,12 @@ class ParInspectionPlanForm extends ParFormPluginBase {
       '#default_value' => $this->getDefaultValuesByKey("files", $index),
       '#upload_validators' => [
         'file_validate_extensions' => [
-          0 => $file_extensions
-        ]
-      ]
+          0 => $file_extensions,
+        ],
+      ],
     ];
 
     return $form;
   }
+
 }

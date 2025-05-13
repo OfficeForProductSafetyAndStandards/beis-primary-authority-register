@@ -5,14 +5,12 @@ namespace Drupal\par_partnership_contact_add_flows\EventSubscriber;
 use Drupal\par_flows\Event\ParFlowEvents;
 use Drupal\par_flows\EventSubscriber\ParFlowSubscriberBase;
 use Drupal\par_flows\ParFlowException;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Drupal\par_flows\Event\ParFlowEvent;
 use Drupal\par_flows\Event\ParFlowEventInterface;
-use Symfony\Component\Routing\Route;
-use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 
-
+/**
+ *
+ */
 class ParFlowCustomSubscriber extends ParFlowSubscriberBase {
 
   /**
@@ -21,7 +19,7 @@ class ParFlowCustomSubscriber extends ParFlowSubscriberBase {
    * @return mixed
    */
   #[\Override]
-  static function getSubscribedEvents(): array {
+  public static function getSubscribedEvents(): array {
     foreach (ParFlowEvents::getAlLEvents() as $event) {
       $events[$event][] = ['onEvent', 0];
     }
@@ -29,7 +27,7 @@ class ParFlowCustomSubscriber extends ParFlowSubscriberBase {
   }
 
   /**
-   * @param ParFlowEventInterface $event
+   * @param \Drupal\par_flows\Event\ParFlowEventInterface $event
    */
   public function onEvent(ParFlowEventInterface $event) {
     // Ignore if a redirect url has already been found.
@@ -57,7 +55,8 @@ class ParFlowCustomSubscriber extends ParFlowSubscriberBase {
     try {
       $route_params = $event->getFlow()->getRequiredParams($redirect_route);
       $event->setUrl(Url::fromRoute($redirect_route, $route_params));
-    } catch (ParFlowException) {
+    }
+    catch (ParFlowException) {
 
     }
   }

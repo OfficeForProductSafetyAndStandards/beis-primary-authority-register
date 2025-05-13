@@ -73,24 +73,22 @@ class ParDataRegulatoryFunction extends ParDataEntity {
    * Allows all relationships to be skipped.
    */
   #[\Override]
-  public function lookupReferencesByAction($action = NULL)
-  {
-      return match ($action) {
-          'manage' => FALSE,
+  public function lookupReferencesByAction($action = NULL) {
+    return match ($action) {
+      'manage' => FALSE,
           default => parent::lookupReferencesByAction($action),
-      };
+    };
   }
 
   /**
    * {@inheritdoc}
    */
   #[\Override]
-  public function filterRelationshipsByAction($relationship, $action)
-  {
-      return match ($action) {
-          'manage' => FALSE,
+  public function filterRelationshipsByAction($relationship, $action) {
+    return match ($action) {
+      'manage' => FALSE,
           default => parent::filterRelationshipsByAction($relationship, $action),
-      };
+    };
   }
 
   /**

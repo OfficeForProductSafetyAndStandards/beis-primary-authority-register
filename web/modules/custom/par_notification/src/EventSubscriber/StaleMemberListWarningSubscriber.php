@@ -2,16 +2,14 @@
 
 namespace Drupal\par_notification\EventSubscriber;
 
-use Drupal\message\Entity\Message;
-use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
-use Drupal\par_data\ParDataRelationship;
-use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParEventSubscriberBase;
 
+/**
+ *
+ */
 class StaleMemberListWarningSubscriber extends ParEventSubscriberBase {
 
   /**
@@ -27,7 +25,7 @@ class StaleMemberListWarningSubscriber extends ParEventSubscriberBase {
    * @return mixed
    */
   #[\Override]
-  static function getSubscribedEvents(): array {
+  public static function getSubscribedEvents(): array {
     $events = [];
     // Get the custom event, dispatched when a member list needs updating.
     if (class_exists(ParDataEvent::class)) {
@@ -38,12 +36,12 @@ class StaleMemberListWarningSubscriber extends ParEventSubscriberBase {
   }
 
   /**
-   * @param ParDataEventInterface $event
+   * @param \Drupal\par_data\Event\ParDataEventInterface $event
    */
   public function onEvent(ParDataEventInterface $event) {
     $this->setEvent($event);
 
-    /** @var ParDataPartnership $entity */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $entity */
     $entity = $event->getEntity();
 
     // Only send messages for active coordinated partnerships.
@@ -58,4 +56,5 @@ class StaleMemberListWarningSubscriber extends ParEventSubscriberBase {
       $this->sendMessage($arguments);
     }
   }
+
 }

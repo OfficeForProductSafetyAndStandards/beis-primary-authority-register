@@ -6,6 +6,9 @@ use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\DependencyInjection\ServiceProviderBase;
 use Drupal\par_cache\Compiler\ParCacheCompilerPass;
 
+/**
+ *
+ */
 class ParCacheServiceProvider extends ServiceProviderBase {
 
   /**

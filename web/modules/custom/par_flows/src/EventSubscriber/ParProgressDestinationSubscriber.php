@@ -4,14 +4,12 @@ namespace Drupal\par_flows\EventSubscriber;
 
 use Drupal\par_flows\Event\ParFlowEvents;
 use Drupal\Core\Routing\RouteObjectInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Drupal\par_flows\Event\ParFlowEvent;
 use Drupal\par_flows\Event\ParFlowEventInterface;
-use Symfony\Component\Routing\Route;
-use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 
-
+/**
+ *
+ */
 class ParProgressDestinationSubscriber extends ParFlowSubscriberBase {
 
   /**
@@ -20,7 +18,7 @@ class ParProgressDestinationSubscriber extends ParFlowSubscriberBase {
    * @return mixed
    */
   #[\Override]
-  static function getSubscribedEvents(): array {
+  public static function getSubscribedEvents(): array {
     $events[ParFlowEvents::FLOW_SUBMIT][] = ['onEvent', 300];
     return $events;
   }
@@ -44,7 +42,7 @@ class ParProgressDestinationSubscriber extends ParFlowSubscriberBase {
   }
 
   /**
-   * @param ParFlowEventInterface $event
+   * @param \Drupal\par_flows\Event\ParFlowEventInterface $event
    */
   public function onEvent(ParFlowEventInterface $event) {
     // Ignore if a redirect url has already been found.

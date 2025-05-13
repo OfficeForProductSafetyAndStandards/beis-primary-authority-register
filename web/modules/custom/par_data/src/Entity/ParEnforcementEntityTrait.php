@@ -2,15 +2,17 @@
 
 namespace Drupal\par_data\Entity;
 
+/**
+ *
+ */
 trait ParEnforcementEntityTrait {
 
   /**
    * Get the Partnership for this Deviation Request.
    *
-   * @param boolean $single
+   * @param bool $single
    *
    * @return ParDataPartnership|ParDataPartnership[]
-   *
    */
   public function getPartnership($single = FALSE) {
     $partnerships = $this->hasField('field_partnership') && !$this->get('field_partnership')->isEmpty() ?
@@ -23,10 +25,9 @@ trait ParEnforcementEntityTrait {
   /**
    * Get the primary authority for this enquiry.
    *
-   * @param boolean $single
+   * @param bool $single
    *
    * @return ParDataAuthority|ParDataAuthority[]
-   *
    */
   public function getPrimaryAuthority($single = FALSE) {
     // Get the authority from the authority field if it exists.
@@ -37,7 +38,7 @@ trait ParEnforcementEntityTrait {
 
       return $single ? $authority : $authorities;
     }
-    elseif ($partnership = $this->getPartnership(TRUE)){
+    elseif ($partnership = $this->getPartnership(TRUE)) {
       return $partnership->getAuthority($single);
     }
 
@@ -50,7 +51,6 @@ trait ParEnforcementEntityTrait {
    * @param ParDataAuthority $authority
    *
    * @return ParDataAuthority|ParDataAuthority[]
-   *
    */
   public function setPrimaryAuthority(ParDataAuthority $par_data_authority) {
     if ($this->hasField('field_primary_authority')) {
@@ -61,7 +61,7 @@ trait ParEnforcementEntityTrait {
   /**
    * Get the enforcing authority for this Deviation Request.
    *
-   * @param boolean $single
+   * @param bool $single
    *
    * @return ParDataAuthority|ParDataAuthority[]
    */
@@ -76,7 +76,7 @@ trait ParEnforcementEntityTrait {
   /**
    * Get the enforced organisation for this Enforcement Notice.
    *
-   * @param boolean $single
+   * @param bool $single
    *
    * @return ParDataOrganisation|ParDataOrganisation[]
    */
@@ -89,7 +89,7 @@ trait ParEnforcementEntityTrait {
 
       return $single ? current($organisations) : $organisations;
     }
-    elseif ($partnership = $this->getPartnership(TRUE)){
+    elseif ($partnership = $this->getPartnership(TRUE)) {
       return $partnership->isDirect() ? $partnership->getOrganisation($single) : NULL;
     }
 
@@ -106,7 +106,6 @@ trait ParEnforcementEntityTrait {
    *   Whether to only return the primary contact, or all contacts.
    *
    * @return ParDataPerson|ParDataPerson[]
-   *
    */
   public function getPrimaryAuthorityContacts($single = FALSE) {
     if ($partnership = $this->getPartnership(TRUE)) {
@@ -123,7 +122,6 @@ trait ParEnforcementEntityTrait {
    * Get the combined primary authority contacts for the partnership and authority.
    *
    * @return ParDataPerson[]
-   *
    */
   public function getAllPrimaryAuthorityContacts() {
     if ($partnership = $this->getPartnership(TRUE)) {
@@ -171,7 +169,6 @@ trait ParEnforcementEntityTrait {
    *   Whether to only return the primary contact, or all contacts.
    *
    * @return ParDataPerson|ParDataPerson[]
-   *
    */
   public function getOrganisationContacts($single = FALSE) {
     if ($partnership = $this->getPartnership(TRUE)) {
@@ -195,7 +192,7 @@ trait ParEnforcementEntityTrait {
   public function getEnforcingPerson($single = FALSE) {
     $people = $this->hasField('field_person') && !$this->get('field_person')->isEmpty() ?
       $this->get('field_person')->referencedEntities() : NULL;
-    $person = $people ? current($people): NULL;
+    $person = $people ? current($people) : NULL;
 
     return $single ? $person : $people;
   }
@@ -203,8 +200,8 @@ trait ParEnforcementEntityTrait {
   /**
    * Combine array values that may or may not have string keys.
    *
-   * @param $first array
-   * @param $second array
+   * @param array $first
+   * @param array $second
    *
    * @return array
    */

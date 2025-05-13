@@ -91,24 +91,22 @@ class ParDataSicCode extends ParDataEntity {
    * Allows all relationships to be skipped.
    */
   #[\Override]
-  public function lookupReferencesByAction($action = NULL)
-  {
-      return match ($action) {
-          'manage' => FALSE,
+  public function lookupReferencesByAction($action = NULL) {
+    return match ($action) {
+      'manage' => FALSE,
           default => parent::lookupReferencesByAction($action),
-      };
+    };
   }
 
   /**
    * {@inheritdoc}
    */
   #[\Override]
-  public function filterRelationshipsByAction($relationship, $action)
-  {
-      return match ($action) {
-          'manage' => FALSE,
+  public function filterRelationshipsByAction($relationship, $action) {
+    return match ($action) {
+      'manage' => FALSE,
           default => parent::filterRelationshipsByAction($relationship, $action),
-      };
+    };
   }
 
   /**
@@ -121,8 +119,8 @@ class ParDataSicCode extends ParDataEntity {
     // SIC Code.
     $fields['sic_code'] = BaseFieldDefinition::create('string')
       ->setLabel(t('SIC Code'))
-//      @TODO Make this field unique when migration to real SICs is complete.
-//      ->addConstraint('UniqueField')
+    // @todo Make this field unique when migration to real SICs is complete.
+    //   ->addConstraint('UniqueField')
       ->setDescription(t('The SIC code identification number.'))
       ->setRequired(TRUE)
       ->setRevisionable(TRUE)

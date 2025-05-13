@@ -1,20 +1,11 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\d8views\Plugin\views\field\NodeTypeFlagger
- */
-
 namespace Drupal\par_notification\Plugin\views\field;
 
-use Drupal\Component\Utility\Html;
-use Drupal\Core\Link;
 use Drupal\message\MessageInterface;
-use Drupal\par_notification\ParLinkManagerInterface;
 use Drupal\views\Plugin\views\field\FieldPluginBase;
 use Drupal\views\ResultRow;
 use Drupal\Core\Entity\EntityViewBuilderInterface;
-use Drupal\Core\Render\RendererInterface;
 
 /**
  * Field handler to show the action link for the given notification.
@@ -28,7 +19,7 @@ class ParNotificationSummary extends FieldPluginBase {
   /**
    * Get the message entity view builder.
    *
-   * @return EntityViewBuilderInterface
+   * @return \Drupal\Core\Entity\EntityViewBuilderInterface
    */
   public function getViewBuilder(): EntityViewBuilderInterface {
     return \Drupal::entityTypeManager()->getViewBuilder('message');
@@ -45,7 +36,7 @@ class ParNotificationSummary extends FieldPluginBase {
   /**
    * @{inheritdoc}
    *
-   * @param ResultRow $values
+   * @param \Drupal\views\ResultRow $values
    *
    * @return string
    */
@@ -63,4 +54,5 @@ class ParNotificationSummary extends FieldPluginBase {
     return !empty($display) ?
       $this->getRenderer()->render($display) : NULL;
   }
+
 }

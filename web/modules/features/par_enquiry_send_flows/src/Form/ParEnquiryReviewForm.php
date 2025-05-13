@@ -5,12 +5,10 @@ namespace Drupal\par_enquiry_send_flows\Form;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\Entity\File;
-use Drupal\file\FileInterface;
 use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataGeneralEnquiry;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_flows\ParDisplayTrait;
 use Drupal\par_enquiry_send_flows\ParFlowAccessTrait;
 
 /**
@@ -25,14 +23,17 @@ class ParEnquiryReviewForm extends ParBaseForm {
    */
   protected $pageTitle = "Review submission";
 
+  /**
+ *
+ */
   #[\Override]
   public function loadData() {
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPartnership $par_data_partnership */
-    /** @var ParDataGeneralEnquiry $par_data_general_enquiry */
-    /** @var FileInterface[] $document */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership */
+    /** @var \Drupal\par_data\Entity\ParDataGeneralEnquiry $par_data_general_enquiry */
+    /** @var \Drupal\file\Entity\FileInterface[] $document */
 
     if ($par_data_general_enquiry->hasField('request_date')) {
       $this->getFlowDataHandler()->setFormPermValue("request_date", $par_data_general_enquiry->request_date->view('full'));
@@ -48,6 +49,9 @@ class ParEnquiryReviewForm extends ParBaseForm {
     parent::loadData();
   }
 
+  /**
+   *
+   */
   public function createEntities() {
     $par_data_partnership = $this->getFlowDataHandler()->getParameter('par_data_partnership');
 
@@ -62,7 +66,7 @@ class ParEnquiryReviewForm extends ParBaseForm {
     $par_data_general_enquiry = ParDataGeneralEnquiry::create([
       'notes' => $this->getFlowDataHandler()->getTempDataValue('notes', $enquiry_cid),
       'field_enforcing_authority' => $this->getFlowDataHandler()->getDefaultValues('par_data_authority_id', NULL, $enforcing_authority_cid),
-      'field_person' =>  $this->getFlowDataHandler()->getDefaultValues('enforcement_officer_id', NULL, $enforcement_officer_cid),
+      'field_person' => $this->getFlowDataHandler()->getDefaultValues('enforcement_officer_id', NULL, $enforcement_officer_cid),
       'field_partnership' => $par_data_partnership->id(),
       'request_date' => $request_date->format('Y-m-d'),
     ]);
@@ -78,7 +82,7 @@ class ParEnquiryReviewForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataCoordinatedBusiness $par_data_coordinated_business = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL, ?ParDataCoordinatedBusiness $par_data_coordinated_business = NULL) {
 
     return parent::buildForm($form, $form_state);
   }
@@ -90,12 +94,12 @@ class ParEnquiryReviewForm extends ParBaseForm {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPartnership $par_data_partnership */
-    /** @var ParDataGeneralEnquiry $par_data_general_enquiry */
-    /** @var FileInterface[] $document */
+    /** @var \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership */
+    /** @var \Drupal\par_data\Entity\ParDataGeneralEnquiry $par_data_general_enquiry */
+    /** @var \Drupal\file\Entity\FileInterface[] $document */
 
     $par_data_general_enquiry->set('document', $document);
 
@@ -111,4 +115,5 @@ class ParEnquiryReviewForm extends ParBaseForm {
         ->error($message, $replacements);
     }
   }
+
 }

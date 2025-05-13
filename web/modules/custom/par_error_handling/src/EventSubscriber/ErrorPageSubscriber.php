@@ -4,15 +4,16 @@ namespace Drupal\par_error_handling\EventSubscriber;
 
 use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Site\Settings;
 use Drupal\Core\Utility\Error;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+/**
+ *
+ */
 class ErrorPageSubscriber implements EventSubscriberInterface {
 
   /**
@@ -57,7 +58,7 @@ class ErrorPageSubscriber implements EventSubscriberInterface {
    * @return mixed
    */
   #[\Override]
-  static function getSubscribedEvents(): array {
+  public static function getSubscribedEvents(): array {
     // Run as one of the last subscribers.
     $events[KernelEvents::EXCEPTION][] = ['onException', -200];
     return $events;
@@ -66,7 +67,7 @@ class ErrorPageSubscriber implements EventSubscriberInterface {
   /**
    * Handles the exception and displays a friendly error page.
    *
-   * @param ExceptionEvent $event
+   * @param \Symfony\Component\HttpKernel\Event\ExceptionEvent $event
    */
   public function onException(ExceptionEvent $event) {
     $exception = $event->getThrowable();

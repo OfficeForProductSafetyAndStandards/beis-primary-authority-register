@@ -16,12 +16,14 @@ use Drupal\par_reporting\ParStatisticBase;
  */
 class ActivePartnershipsWithInspectionPlans extends ParStatisticBase {
 
+  /**
+ *
+ */
   #[\Override]
   public function getStat(): int {
     $query = $this->getParDataManager()->getEntityQuery('par_data_partnership')
       ->condition('partnership_status', 'confirmed_rd');
-//      ->condition('field_inspection_plan', NULL, 'IS NOT NULL');
-
+    // ->condition('field_inspection_plan', NULL, 'IS NOT NULL');
     $inspection_plan_revocation_status = $query
       ->orConditionGroup()
       ->condition('field_inspection_plan.entity:par_data_inspection_plan.revoked', 0)
@@ -44,7 +46,6 @@ class ActivePartnershipsWithInspectionPlans extends ParStatisticBase {
     $query->condition($inspection_plan_deletion_status);
     $query->condition($revoked);
     $query->condition($deleted);
-
 
     return $query->count()->execute();
   }

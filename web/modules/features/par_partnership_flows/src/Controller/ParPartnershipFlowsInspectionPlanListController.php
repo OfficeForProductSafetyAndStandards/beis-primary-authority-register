@@ -21,7 +21,7 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
   /**
    * {@inheritdoc}
    */
-  public function content(ParDataPartnership $par_data_partnership = NULL) {
+  public function content(?ParDataPartnership $par_data_partnership = NULL) {
     $par_data_partnership_id = !empty($par_data_partnership) ? $par_data_partnership->id() : NULL;
 
     $build['partnership'] = [
@@ -36,12 +36,13 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
     ];
 
     switch ($this->getFlowNegotiator()->getFlowName()) {
-      //View that contains actions i.e. edit, revoke.
+      // View that contains actions i.e. edit, revoke.
       case 'partnership_authority':
         $inspection_plan_list_block = 'inspection_list_authority_block';
 
         break;
-      //none action view.
+
+      // None action view.
       case 'partnership_direct':
       case 'partnership_coordinated':
         $inspection_plan_list_block = 'inspection_plan_list_org_block';
@@ -50,7 +51,7 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
     }
 
     if ($inspection_plan_list_block) {
-      $inspection_plan_list= views_embed_view('inspection_plan_lists', $inspection_plan_list_block, $par_data_partnership_id);
+      $inspection_plan_list = views_embed_view('inspection_plan_lists', $inspection_plan_list_block, $par_data_partnership_id);
       $build['inspection_plan_list'] = $inspection_plan_list;
     }
     else {
@@ -65,27 +66,29 @@ class ParPartnershipFlowsInspectionPlanListController extends ParBaseController 
     // Hide upload button when user is on the search path.
     if ($par_data_partnership->isActive() && $this->getFlowNegotiator()->getFlowName() === 'partnership_authority') {
       if ($this->getCurrentUser()->hasPermission('upload partnership inspection plan')) {
-      $build['actions'] = [
-        '#type' => 'fieldset',
-        '#attributes' => ['class' => ['govuk-form-group']],
-      ];
-
-      try {
-        $build['actions']['upload'] = [
-          '#type' => 'markup',
-          '#markup' => '<br>' . t('@link', [
-              '@link' => $this->getFlowNegotiator()
-                  ->getFlow()
-                  ->getNextLink('upload', $this->getRouteParams())
-                  ->setText('Upload inspection plan')
-                  ->toString(),
-            ]),
+        $build['actions'] = [
+          '#type' => 'fieldset',
+          '#attributes' => ['class' => ['govuk-form-group']],
         ];
-      } catch (ParFlowException) {
 
+        try {
+          $build['actions']['upload'] = [
+            '#type' => 'markup',
+            '#markup' => '<br>' . t('@link', [
+              '@link' => $this->getFlowNegotiator()
+                ->getFlow()
+                ->getNextLink('upload', $this->getRouteParams())
+                ->setText('Upload inspection plan')
+                ->toString(),
+            ]),
+          ];
+        }
+        catch (ParFlowException) {
+
+        }
       }
-    } else {
-        // for none help desk users contact the help-desk text.
+      else {
+        // For none help desk users contact the help-desk text.
         $build['actions'] = [
           '#type' => 'html_tag',
           '#tag' => 'p',

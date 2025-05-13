@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\par_data\Plugin\views\field\ParPartnershipsDocumentsCompletion
- */
-
 namespace Drupal\par_data\Plugin\views\field;
 
 use Drupal\par_data\Entity\ParDataPartnership;
@@ -22,7 +17,8 @@ use Drupal\Core\Form\FormStateInterface;
  */
 class ParPartnershipsDocumentsCompletion extends FieldPluginBase {
 
-  /*
+  /**
+   *
    * @{inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition) {
@@ -62,7 +58,7 @@ class ParPartnershipsDocumentsCompletion extends FieldPluginBase {
   /**
    * @{inheritdoc}
    *
-   * @param ResultRow $values
+   * @param \Drupal\views\ResultRow $values
    *
    * @return string $documentation_completion
    */
@@ -85,4 +81,5 @@ class ParPartnershipsDocumentsCompletion extends FieldPluginBase {
 
     }
   }
+
 }

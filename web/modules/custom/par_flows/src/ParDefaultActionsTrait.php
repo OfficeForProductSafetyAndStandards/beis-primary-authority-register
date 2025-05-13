@@ -2,9 +2,9 @@
 
 namespace Drupal\par_flows;
 
-use Drupal\Core\Link;
-use Drupal\Core\Routing\RouteProvider;
-
+/**
+ *
+ */
 trait ParDefaultActionsTrait {
 
   /**
@@ -19,14 +19,14 @@ trait ParDefaultActionsTrait {
   protected $defaultActions;
 
   /**
-   * Primary action title
+   * Primary action title.
    *
    * Allows the primary action title to be overridden.
    */
   protected $primaryActionTitle;
 
   /**
-   * Secondary action title
+   * Secondary action title.
    *
    * Allows the secondary action title to be overridden.
    */
@@ -84,7 +84,7 @@ trait ParDefaultActionsTrait {
   }
 
   /**
-   * Getter for default form actions
+   * Getter for default form actions.
    */
   public function hasAction($action) {
     return (!empty($this->getActions()) && in_array($action, $this->getActions()));

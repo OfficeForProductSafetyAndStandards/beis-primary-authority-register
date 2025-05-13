@@ -41,6 +41,9 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Validation;
 
+/**
+ *
+ */
 class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
 
   use LoggerChannelTrait;
@@ -78,6 +81,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
    */
   protected string $directory = 's3private://member-csv/';
 
+  /**
+   *
+   */
   public function getMappings(): array {
     $mappings = [
       'partnership_id' => 'Partnership id',
@@ -146,6 +152,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     $this->getFileSystem()->prepareDirectory($this->directory);
   }
 
+  /**
+   *
+   */
   protected function getDateFormatter(): DateFormatterInterface {
     return \Drupal::service('date.formatter');
   }
@@ -234,17 +243,26 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     return \Drupal::service('address.country_repository');
   }
 
+  /**
+   *
+   */
   public function getMapping($key) {
     $mappings = $this->getMappings();
     return $mappings[$key] ?? NULL;
   }
 
+  /**
+   *
+   */
   public function getMappingByHeading($heading): int|string|null {
     $mappings = $this->getMappings();
     $key = array_search($heading, $mappings, TRUE);
     return $key !== FALSE ? $key : NULL;
   }
 
+  /**
+   *
+   */
   public function getValue($row, $key, $default = NULL) {
     $column = $this->getMapping($key);
     return $row[$column] ?? $default;
@@ -276,6 +294,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     return NULL;
   }
 
+  /**
+   *
+   */
   protected function getConstraints($row): array {
     /** @var \Drupal\par_data\Entity\ParDataPremisesType $par_data_premises_type */
     $par_data_premises_type = $this->getParDataManager()->getParBundleEntity('par_data_premises');
@@ -395,6 +416,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     ];
   }
 
+  /**
+   *
+   */
   public function transform($row): array {
     $data = [];
 
@@ -908,6 +932,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     return array_filter($errors, fn($error) => $error instanceof ParCsvViolation && $error->isFatal());
   }
 
+  /**
+   *
+   */
   public function backup(ParDataPartnership $par_data_partnership) {
     return $par_data_partnership->getCoordinatedMember();
   }
@@ -1071,6 +1098,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     return TRUE;
   }
 
+  /**
+   *
+   */
   public function clean($old, $new, $par_data_partnership): void {
     $diff = array_udiff($old, $new, fn($a, $b) => $a->id() - $b->id()
     );
@@ -1171,6 +1201,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     batch_set($batch);
   }
 
+  /**
+   *
+   */
   public function upload($data, $par_data_partnership): bool {
     try {
       // 1. Lock the member list.
@@ -1268,6 +1301,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     return TRUE;
   }
 
+  /**
+   *
+   */
   public static function batch__process($data, ParDataPartnership $par_data_partnership, &$context): void {
     $csv_handler = \Drupal::service('par_member_upload_flows.csv_handler');
     $context['message'] = 'Processing new members.';
@@ -1279,6 +1315,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     }
   }
 
+  /**
+   *
+   */
   public static function batch__update(ParDataPartnership $par_data_partnership, &$context): void {
     $csv_handler = \Drupal::service('par_member_upload_flows.csv_handler');
     $context['message'] = 'Updating the member list.';
@@ -1291,6 +1330,9 @@ class ParMemberCsvHandler implements ParMemberCsvHandlerInterface {
     }
   }
 
+  /**
+   *
+   */
   public static function batch__clean($old_members, $par_data_partnership, &$context): void {
     $csv_handler = \Drupal::service('par_member_upload_flows.csv_handler');
     $context['message'] = 'Cleaning up old members.';

@@ -3,16 +3,8 @@
 namespace Drupal\par_member_update_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Link;
-use Drupal\Core\Url;
-use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
-use Drupal\par_data\Entity\ParDataLegalEntity;
-use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_member_update_flows\ParFlowAccessTrait;
 
 /**
@@ -43,7 +35,7 @@ class ParMemberDetailsForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL) {
     $form['partnership_id'] = [
       '#type' => 'hidden',
       '#value' => $par_data_partnership->id(),
@@ -56,9 +48,8 @@ class ParMemberDetailsForm extends ParBaseForm {
     // Display organisation name.
     $form['organisation_name'] = $this->renderSection('Member organisation name', $par_data_organisation, ['organisation_name' => 'title'], ['edit-field']);
 
-    // Display the member's address
+    // Display the member's address.
     $form['member_registered_address'] = $this->renderSection('Member organisation address', $par_data_organisation, ['field_premises' => 'summary'], ['edit-entity'], TRUE, TRUE);
-
 
     // Display the date the membership began.
     $form['membership_date'] = $this->renderSection('Date of membership', $par_data_coordinated_business, ['date_membership_began' => 'default'], ['edit-field']);
@@ -66,7 +57,7 @@ class ParMemberDetailsForm extends ParBaseForm {
       $form['membership_cease_date'] = $this->renderSection('Date membership ceased', $par_data_coordinated_business, ['date_membership_ceased' => 'default'], ['edit-field']);
     }
 
-    // Display the member'sprimary contact details
+    // Display the member'sprimary contact details.
     $form['member_primary_contact'] = $this->renderSection('Primary contact', $par_data_organisation, ['field_person' => 'summary'], ['edit-entity']);
 
     // Display contacts at the organisation.

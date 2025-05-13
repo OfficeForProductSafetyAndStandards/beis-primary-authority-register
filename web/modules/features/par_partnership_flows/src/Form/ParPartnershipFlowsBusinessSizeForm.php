@@ -24,7 +24,7 @@ class ParPartnershipFlowsBusinessSizeForm extends ParBaseForm {
    * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
    *   The Partnership being retrieved.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
+  public function retrieveEditableValues(?ParDataPartnership $par_data_partnership = NULL) {
     if ($par_data_partnership) {
       // If we want to use values already saved we have to tell
       // the form about them.
@@ -38,7 +38,7 @@ class ParPartnershipFlowsBusinessSizeForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
     $organisation_bundle = $this->getParDataManager()->getParBundleEntity('par_data_organisation');
 

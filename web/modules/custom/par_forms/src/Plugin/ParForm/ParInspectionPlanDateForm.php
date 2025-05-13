@@ -2,7 +2,6 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -20,8 +19,9 @@ class ParInspectionPlanDateForm extends ParFormPluginBase {
    */
   protected array $entityMapping = [
     ['expire', 'par_data_inspection_plan', 'valid_date', 'end_value', NULL, 0, [
-      'This value should not be null.' => 'You must enter the date the inspection plan expires e.g. 2017-9-22.'
-    ]],
+      'This value should not be null.' => 'You must enter the date the inspection plan expires e.g. 2017-9-22.',
+    ],
+    ],
   ];
 
   /**
@@ -31,7 +31,7 @@ class ParInspectionPlanDateForm extends ParFormPluginBase {
   public function getFormDefaults(): array {
     return [
       'start' => ['year' => date('Y'), 'month' => date('m'), 'day' => date('d')],
-//      'expire' => ['year' => date('Y'), 'month' => date('m'), 'day' => date('d')],
+    // 'expire' => ['year' => date('Y'), 'month' => date('m'), 'day' => date('d')],
     ];
   }
 
@@ -54,10 +54,10 @@ class ParInspectionPlanDateForm extends ParFormPluginBase {
       }
     }
 
-    $start_date_required = isset($this->getConfiguration()['start_date']) ? (bool) $this->getConfiguration()['start_date'] : true;
+    $start_date_required = isset($this->getConfiguration()['start_date']) ? (bool) $this->getConfiguration()['start_date'] : TRUE;
     $this->getFlowDataHandler()->setFormPermValue("start_date_required", $start_date_required);
 
-    $end_date_required = isset($this->getConfiguration()['end_date']) ? (bool) $this->getConfiguration()['end_date'] : true;
+    $end_date_required = isset($this->getConfiguration()['end_date']) ? (bool) $this->getConfiguration()['end_date'] : TRUE;
     $this->getFlowDataHandler()->setFormPermValue("end_date_required", $end_date_required);
 
     parent::loadData($index);
@@ -93,4 +93,5 @@ class ParInspectionPlanDateForm extends ParFormPluginBase {
 
     return $form;
   }
+
 }

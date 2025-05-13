@@ -6,7 +6,10 @@ use Drupal\par_data\Event\ParDataEvent;
 use Drupal\par_data\Event\ParDataEventInterface;
 use Drupal\par_notification\ParEventSubscriberBase;
 
-class EnforcementReviewedTaskSubscriber extends ParEventSubscriberBase  {
+/**
+ *
+ */
+class EnforcementReviewedTaskSubscriber extends ParEventSubscriberBase {
 
   /**
    * The message template ID that needs to be completed.
@@ -21,7 +24,7 @@ class EnforcementReviewedTaskSubscriber extends ParEventSubscriberBase  {
    * @return mixed
    */
   #[\Override]
-  static function getSubscribedEvents(): array {
+  public static function getSubscribedEvents(): array {
     $events = [];
     // Reviewed enforcement notice.
     if (class_exists(ParDataEvent::class)) {
@@ -32,9 +35,10 @@ class EnforcementReviewedTaskSubscriber extends ParEventSubscriberBase  {
   }
 
   /**
-   * @param ParDataEventInterface $event
+   * @param \Drupal\par_data\Event\ParDataEventInterface $event
    */
   public function onEnforcementNoticeReviewed(ParDataEventInterface $event) {
     $this->getMessageExpiryService()->expire($this->getMessages($event));
   }
+
 }

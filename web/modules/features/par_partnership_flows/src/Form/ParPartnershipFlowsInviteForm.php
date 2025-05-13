@@ -22,7 +22,8 @@ class ParPartnershipFlowsInviteForm extends ParBaseForm {
   use ParPartnershipFlowsTrait;
   use ParPartnershipFlowAccessTrait;
 
-  /** @var invite type */
+  /**
+   * @var invite type */
   protected $invite_type;
 
   protected $pageTitle = 'Notify user of partnership invitation';
@@ -34,7 +35,7 @@ class ParPartnershipFlowsInviteForm extends ParBaseForm {
    * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
    *   The Partnership being retrieved.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, $par_data_person = NULL) {
+  public function retrieveEditableValues(?ParDataPartnership $par_data_partnership = NULL, $par_data_person = NULL) {
     // Flows containing the Authority Contact step.
     if (in_array($this->getFlowNegotiator()->getFlowName(), ['invite_authority_members', 'partnership_authority'])) {
       $this->invite_type = "invite_authority_member";
@@ -61,7 +62,7 @@ class ParPartnershipFlowsInviteForm extends ParBaseForm {
       $authority = current($par_data_partnership->get('field_authority')->referencedEntities());
       $authority_person = $authority ? $this->getParDataManager()->getUserPerson($account, $authority) : NULL;
 
-      if($account->hasPermission('invite authority members')) {
+      if ($account->hasPermission('invite authority members')) {
         $sender_name = 'BEIS RD Department';
       }
       else {
@@ -150,7 +151,7 @@ HEREDOC;
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL, ?ParDataPerson $par_data_person = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $par_data_person);
 
     $invite_type = $this->config("invite.invite_type.{$this->invite_type}");
@@ -290,7 +291,7 @@ HEREDOC;
     if ($par_data_person->getUserAccount()) {
       $required_token = '[site:login-url]';
     }
-    else{
+    else {
       $required_token = '[invite:invite-accept-link]';
     }
     if (!strpos((string) $form_state->getValue('email_body'), $required_token)) {

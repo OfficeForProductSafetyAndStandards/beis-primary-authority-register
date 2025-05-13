@@ -23,7 +23,7 @@ class ParMemberUploadSuccessForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL) {
 
     // Upload csv file success message.
     $form['csv_upload_success_message_fieldset'] = [
@@ -33,7 +33,7 @@ class ParMemberUploadSuccessForm extends ParBaseForm {
       'intro' => [
         '#type' => 'markup',
         '#markup' => '<p>' . $this->t('Your member list has been uploaded.<br><br>Please check that all the new members are correct. Please try to re-upload the member list if you find any errors or contact the help desk for further assistance.') . '</p>',
-      ]
+      ],
     ];
 
     // In order to redirect to a page outside this flow.

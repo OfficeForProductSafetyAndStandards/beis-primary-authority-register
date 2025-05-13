@@ -3,10 +3,7 @@
 namespace Drupal\par_notification\Plugin\ParMessageSubscriber;
 
 use Drupal\message\MessageInterface;
-use Drupal\par_data\Entity\ParDataDeviationRequest;
 use Drupal\par_data\Entity\ParDataEnquiryInterface;
-use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPersonInterface;
 use Drupal\par_data\ParDataException;
 use Drupal\par_notification\ParMessageSubscriberBase;
 use Drupal\par_notification\ParNotificationException;
@@ -35,10 +32,10 @@ class ReviewedDeviationRequestSubscriber extends ParMessageSubscriberBase {
     $recipients = parent::getRecipients($message);
 
     try {
-      /** @var ParDataEnquiryInterface[] $deviation_requests */
+      /** @var \Drupal\par_data\Entity\ParDataEnquiryInterface[] $deviation_requests */
       $deviation_requests = $this->getMessageHandler()->getPrimaryData($message);
     }
-    catch (ParNotificationException|ParDataException) {
+    catch (ParNotificationException | ParDataException) {
       return $recipients;
     }
 
@@ -52,7 +49,8 @@ class ReviewedDeviationRequestSubscriber extends ParMessageSubscriberBase {
             $creator->getFirstName(),
             $creator
           );
-        } catch (ParDataException) {
+        }
+        catch (ParDataException) {
 
         }
       }
@@ -69,7 +67,7 @@ class ReviewedDeviationRequestSubscriber extends ParMessageSubscriberBase {
     $subscriptions = parent::getSubscribedEntities($message);
 
     try {
-      /** @var ParDataEnquiryInterface $deviation_requests [] */
+      /** @var \Drupal\par_data\Entity\ParDataEnquiryInterface $deviation_requests [] */
       $deviation_requests = $this->getMessageHandler()->getPrimaryData($message);
     }
     catch (ParNotificationException) {
@@ -94,4 +92,5 @@ class ReviewedDeviationRequestSubscriber extends ParMessageSubscriberBase {
 
     return $subscriptions ?? [];
   }
+
 }

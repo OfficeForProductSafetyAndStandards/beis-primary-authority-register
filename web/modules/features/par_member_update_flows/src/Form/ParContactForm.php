@@ -3,8 +3,6 @@
 namespace Drupal\par_member_update_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_member_update_flows\ParFlowAccessTrait;
 
@@ -35,6 +33,9 @@ class ParContactForm extends ParBaseForm {
     parent::loadData();
   }
 
+  /**
+ *
+ */
   #[\Override]
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
@@ -52,7 +53,8 @@ class ParContactForm extends ParBaseForm {
 
       if ($par_data_person->save()) {
         $this->getFlowDataHandler()->deleteStore();
-      } else {
+      }
+      else {
         $message = $this->t('This %person could not be saved for %form_id');
         $replacements = [
           '%person' => $this->getFlowDataHandler()->getTempDataValue('last_name'),

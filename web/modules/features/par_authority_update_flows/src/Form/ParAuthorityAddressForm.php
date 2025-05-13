@@ -36,7 +36,7 @@ class ParAuthorityAddressForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataAuthority $par_data_authority = NULL) {
     // Change the secondary action to back.
     $this->getFlowNegotiator()->getFlow()->setActions(['save', 'back']);
 

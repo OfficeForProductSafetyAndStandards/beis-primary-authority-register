@@ -5,11 +5,8 @@ namespace Drupal\par_data\Plugin\Field\FieldFormatter;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\registered_organisations\OrganisationManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\par_data\Entity\ParDataTypeInterface;
-use Drupal\par_data\Entity\ParDataLegalEntity;
 
 /**
  * Plugin implementation of the 'par_list_formatter' formatter.
@@ -42,7 +39,7 @@ class ParRegisteredOrganisationsFormatter extends FormatterBase {
    *   The view mode.
    * @param array $third_party_settings
    *   Any third party settings.
-   * @param OrganisationManagerInterface $organisationManager
+   * @param \Drupal\registered_organisations\OrganisationManagerInterface $organisationManager
    *   The registered organisation manager.
    */
   public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, protected OrganisationManagerInterface $organisationManager) {
@@ -71,7 +68,7 @@ class ParRegisteredOrganisationsFormatter extends FormatterBase {
    */
   #[\Override]
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    /** @var ParDataLegalEntity $entity */
+    /** @var \Drupal\par_data\Entity\ParDataLegalEntity $entity */
     $entity = $items->getEntity();
     $bundle_entity = $entity?->type?->entity;
     $element = [];

@@ -8,7 +8,6 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Symfony\Component\Routing\Route;
 
 /**
@@ -37,7 +36,8 @@ class ParRdHelpDeskDeleteForm extends ParBaseForm {
     try {
       // Get a new flow negotiator that points the the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException) {
+    }
+    catch (ParFlowException) {
 
     }
 
@@ -65,4 +65,5 @@ class ParRdHelpDeskDeleteForm extends ParBaseForm {
 
     return parent::buildForm($form, $form_state);
   }
+
 }

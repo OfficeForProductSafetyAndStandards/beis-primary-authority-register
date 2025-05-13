@@ -6,7 +6,6 @@ use Drupal\comment\Entity\Comment;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_deviation_view_flows\ParFlowAccessTrait;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_forms\ParFormBuilder;
 
 /**
  * Reviewing a deviation request.
@@ -57,4 +56,5 @@ class ParDeviationReplyForm extends ParBaseForm {
       $this->getLogger($this->getLoggerChannel())->error($message, $replacements);
     }
   }
+
 }

@@ -8,7 +8,6 @@ use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\ParDataManagerInterface;
-use Drupal\par_flows\ParFlowDataHandlerInterface;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_flows\ParFlowNegotiatorInterface;
 use Drupal\user\Entity\User;
@@ -23,21 +22,20 @@ class ParFlowAccessCheck implements AccessInterface {
    * CustomAccessCheck constructor.
    *
    * @param \Drupal\par_data\ParDataManagerInterface $parDataManager
-   *   Data Manager Service
+   *   Data Manager Service.
    * @param \Drupal\par_flows\ParFlowNegotiatorInterface $flowNegotiator
-   *   Flow Negotiator Service
+   *   Flow Negotiator Service.
    */
   public function __construct(
-      /**
-       * The PAR Data Manager.
-       */
-      private readonly ParDataManagerInterface $parDataManager,
-      /**
-       * The PAR Flow Negotiator.
-       */
-      private readonly ParFlowNegotiatorInterface $flowNegotiator
-  )
-  {
+    /**
+     * The PAR Data Manager.
+     */
+    private readonly ParDataManagerInterface $parDataManager,
+    /**
+     * The PAR Flow Negotiator.
+     */
+    private readonly ParFlowNegotiatorInterface $flowNegotiator,
+  ) {
   }
 
   /**
@@ -66,11 +64,12 @@ class ParFlowAccessCheck implements AccessInterface {
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
    */
-  public function access(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL) {
+  public function access(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ?ParDataPartnership $par_data_partnership = NULL) {
     try {
       // Get a new flow negotiator that points to the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException) {
+    }
+    catch (ParFlowException) {
 
     }
 
@@ -94,7 +93,6 @@ class ParFlowAccessCheck implements AccessInterface {
     if (!empty($partnership_legal_entities)) {
       return AccessResult::forbidden('Only partnerships with pending legal entity amendments can be confirmed.');
     }
-
 
     return AccessResult::allowed();
   }

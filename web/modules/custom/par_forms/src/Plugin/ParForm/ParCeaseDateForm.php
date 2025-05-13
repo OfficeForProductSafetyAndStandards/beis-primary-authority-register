@@ -22,8 +22,9 @@ class ParCeaseDateForm extends ParFormPluginBase {
    */
   protected array $entityMapping = [
     ['date_membership_ceased', 'par_data_coordinated_business', 'date_membership_ceased', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter the date the membership ended e.g. 2017-9-21.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter the date the membership ended e.g. 2017-9-21.',
+    ],
+    ],
   ];
 
   /**
@@ -76,11 +77,13 @@ class ParCeaseDateForm extends ParFormPluginBase {
 
     try {
       DrupalDateTime::createFromFormat($date_format, $date, NULL, ['validate_format' => TRUE]);
-    } catch (\Exception) {
+    }
+    catch (\Exception) {
       $message = 'The date format is not correct.';
       $this->setError($form, $form_state, $date_element, $message);
     }
 
     parent::validate($form, $form_state, $index, $action);
   }
+
 }

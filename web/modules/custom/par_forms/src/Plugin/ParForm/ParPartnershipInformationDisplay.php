@@ -2,14 +2,8 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\comment\CommentInterface;
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_flows\ParFlowException;
-use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -115,7 +109,7 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
         '#tag' => 'p',
         '#value' => $about_edit_link ? $about_edit_link->toString() : '',
         '#attributes' => ['class' => 'edit-about-partnership'],
-        '#weight' => 100
+        '#weight' => 100,
       ];
     }
 
@@ -138,7 +132,7 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
             '#list_header_tag' => 'h2',
             '#list_type' => 'ul',
             '#items' => $this->getDefaultValuesByKey('regulatory_functions', $index, []),
-          ]
+          ],
         ],
         'partnership_type' => [
           '#type' => 'container',
@@ -201,7 +195,8 @@ class ParPartnershipInformationDisplay extends ParFormPluginBase {
    * Return no actions for this plugin.
    */
   #[\Override]
-  public function getComponentActions(array $actions = [], array $data = NULL): ?array {
+  public function getComponentActions(array $actions = [], ?array $data = NULL): ?array {
     return $actions;
   }
+
 }

@@ -43,6 +43,9 @@ class ParEmailObfuscationFormatter extends FormatterBase {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
   }
 
+  /**
+   *
+   */
   public function getEmailValidator() {
     return \Drupal::service('email.validator');
   }
@@ -56,9 +59,9 @@ class ParEmailObfuscationFormatter extends FormatterBase {
 
     foreach ($items as $delta => $item) {
       if ($item->value && $this->getEmailValidator()->isValid($item->value)) {
-        $replaceable = substr($item->value, 1, strpos($item->value, '@')-2);
+        $replaceable = substr($item->value, 1, strpos($item->value, '@') - 2);
 
-        $regex = '/'.preg_quote($replaceable, '/').'/';
+        $regex = '/' . preg_quote($replaceable, '/') . '/';
 
         $value = preg_replace($regex, 'xxxxxx', $item->value, 1);
       }
@@ -82,8 +85,8 @@ class ParEmailObfuscationFormatter extends FormatterBase {
   #[\Override]
   public static function defaultSettings() {
     return [
-        'display_original_value' => FALSE,
-      ] + parent::defaultSettings();
+      'display_original_value' => FALSE,
+    ] + parent::defaultSettings();
   }
 
   /**

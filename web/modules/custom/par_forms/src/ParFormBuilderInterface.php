@@ -36,7 +36,7 @@ interface ParFormBuilderInterface {
   /**
    * @param ParFormPluginInterface $component
    * @param array $form
-   * @param FormStateInterface $form_state
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    * @param $cardinality
    */
   public function validate(ParFormPluginInterface $component, array $form, FormStateInterface &$form_state, $index = NULL): void;

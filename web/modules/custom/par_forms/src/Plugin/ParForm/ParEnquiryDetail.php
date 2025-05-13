@@ -2,11 +2,7 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Component\Utility\UrlHelper;
-use Drupal\par_data\Entity\ParDataLegalEntity;
-use Drupal\par_data\Entity\ParDataOrganisation;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\ParFlowException;
 use Drupal\par_forms\ParFormPluginBase;
 
@@ -82,7 +78,7 @@ class ParEnquiryDetail extends ParFormPluginBase {
 
     }
 
-
     return $form;
   }
+
 }

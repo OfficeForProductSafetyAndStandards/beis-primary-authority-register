@@ -1,13 +1,7 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\Tests\par_flows\Unit\ParFlowEntityTest
- */
-
 namespace Drupal\Tests\par_flows\Unit;
 
-use Drupal\par_flows\ParFlowException;
 use Drupal\Tests\UnitTestCase;
 use Drupal\par_flows\Entity\ParFlow;
 
@@ -32,7 +26,7 @@ class ParFormFlowEntityTest extends UnitTestCase {
 
   /**
    * The simulated previous step route for any given test.
-  */
+   */
   protected string $previousRoute = 'par_test_forms.first';
 
   /**
@@ -42,35 +36,40 @@ class ParFormFlowEntityTest extends UnitTestCase {
   protected function setUp(): void {
     parent::setUp();
 
-    $values = ['id' => 'test', 'title' => 'Test Form Flow', 'description' => 'This is the test form flow, it is very similar to the example.', 'steps' => [
-      1 => [
-        'route' => 'par_test_forms.first',
-        'form_id' => 'par_test_first',
-      ],
-      2 => [
-        'route' => 'par_test_forms.second',
-        'form_id' => 'par_test_second',
-        'redirect' => [
-          'save' => 4,
-          'cancel' => 5,
-          'custom_step' => 1,
+    $values = [
+      'id' => 'test',
+      'title' => 'Test Form Flow',
+      'description' => 'This is the test form flow, it is very similar to the example.',
+      'steps' => [
+        1 => [
+          'route' => 'par_test_forms.first',
+          'form_id' => 'par_test_first',
+        ],
+        2 => [
+          'route' => 'par_test_forms.second',
+          'form_id' => 'par_test_second',
+          'redirect' => [
+            'save' => 4,
+            'cancel' => 5,
+            'custom_step' => 1,
+          ],
+        ],
+        3 => [
+          'route' => 'par_test_forms.third',
+          'form_id' => 'par_test_third',
+          'redirect' => [
+            'cancel' => 5,
+          ],
+        ],
+        4 => [
+          'route' => 'par_test_forms.fourth',
+          'form_id' => 'par_test_fourth',
+        ],
+        5 => [
+          'route' => 'par_test_forms.confirmation',
         ],
       ],
-      3 => [
-        'route' => 'par_test_forms.third',
-        'form_id' => 'par_test_third',
-        'redirect' => [
-          'cancel' => 5,
-        ],
-      ],
-      4 => [
-        'route' => 'par_test_forms.fourth',
-        'form_id' => 'par_test_fourth',
-      ],
-      5 => [
-        'route' => 'par_test_forms.confirmation',
-      ],
-    ]];
+    ];
     $this->testFlow = $this->getMockBuilder(ParFlow::class)
       ->onlyMethods(['getCurrentRoute'])
       ->setConstructorArgs([$values, 'par_flow'])
@@ -85,6 +84,9 @@ class ParFormFlowEntityTest extends UnitTestCase {
     $this->assertEquals('test', $this->testFlow->id());
   }
 
+  /**
+   *
+   */
   public function getCurrentRoute(): string {
     return $this->currentRoute;
   }
@@ -159,6 +161,7 @@ class ParFormFlowEntityTest extends UnitTestCase {
     // Check the next step is correct.
     $this->assertEquals('par_test_forms.fourth', $next_url->getRouteName(), "The next route has been correctly identified given an operation.");
   }
+
   /**
    * @covers ::getStepByFormId
    */
@@ -221,7 +224,7 @@ class ParFormFlowEntityTest extends UnitTestCase {
   public function testGetFlowForms() {
     $form_ids = $this->testFlow->getFlowForms();
 
-    // Check the route and form_id
+    // Check the route and form_id.
     $this->assertEquals(4, count($form_ids), "All forms have been found.");
 
     $expected = [
@@ -232,4 +235,5 @@ class ParFormFlowEntityTest extends UnitTestCase {
     ];
     $this->assertEquals($expected, $form_ids, "The loaded forms are correct.");
   }
+
 }

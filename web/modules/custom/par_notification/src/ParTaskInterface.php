@@ -5,7 +5,7 @@ namespace Drupal\par_notification;
 use Drupal\message\MessageInterface;
 
 /**
- * Defines an interface for the Par Link Action plugins
+ * Defines an interface for the Par Link Action plugins.
  *
  * @see plugin_api
  */
@@ -14,7 +14,7 @@ interface ParTaskInterface {
   /**
    * Returns whether a task has been completed.
    *
-   * @param MessageInterface $message
+   * @param \Drupal\message\MessageInterface $message
    *   The message interface that needs redirection.
    *
    * @Throws ParNotificationException

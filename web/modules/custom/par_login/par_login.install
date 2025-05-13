@@ -1,12 +1,11 @@
 <?php
+
 /**
  * @file
  * Installation hooks for par_login module.
  */
+
 use Drupal\locale\SourceString;
-use Drupal\par_data\Entity\ParDataEnforcementNotice;
-use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataEntity;
 
 /**
  * Implements hook_install().
@@ -19,7 +18,7 @@ function par_login_install() {
     'en' => [
       'Log in' => 'Sign in',
       'Log out' => 'Sign out',
-    ]
+    ],
   ];
 
   foreach ($translations as $langcode => $translation) {
@@ -50,7 +49,7 @@ function par_login_update_8001() {
     'en' => [
       'Log in' => 'Sign in',
       'Log out' => 'Sign out',
-    ]
+    ],
   ];
 
   foreach ($translations as $langcode => $translation) {

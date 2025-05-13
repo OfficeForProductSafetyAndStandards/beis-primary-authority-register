@@ -26,7 +26,7 @@ class ParSelectAuthoritiesForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataAuthority $par_data_authority = NULL) {
     // Make sure to add the person cacheability data to this form.
     $this->addCacheableDependency($par_data_authority);
 
@@ -37,7 +37,7 @@ class ParSelectAuthoritiesForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function validateForm(array &$form, FormStateInterface $form_state, ParDataAuthority $par_data_authority = NULL) {
+  public function validateForm(array &$form, FormStateInterface $form_state, ?ParDataAuthority $par_data_authority = NULL) {
     parent::validateForm($form, $form_state);
 
     // Validate that the new authority has the same regulatory functions as the
@@ -51,7 +51,7 @@ class ParSelectAuthoritiesForm extends ParBaseForm {
       $old_functions = array_values($from->get('field_regulatory_function')->getValue());
       $new_functions = array_values($to->get('field_regulatory_function')->getValue());
 
-      // Sort the array elements
+      // Sort the array elements.
       sort($old_functions);
       sort($new_functions);
 

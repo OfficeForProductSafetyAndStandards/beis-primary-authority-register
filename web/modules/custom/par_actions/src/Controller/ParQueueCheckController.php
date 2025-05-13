@@ -1,8 +1,4 @@
 <?php
-/**
- * @file
- * Contains \Drupal\test_api\Controller\TestAPIController.
- */
 
 namespace Drupal\par_actions\Controller;
 
@@ -80,7 +76,7 @@ class ParQueueCheckController extends ControllerBase {
    * Identify which queues still have items in them.
    */
   public function checkQueues(Request $request) {
-    // Disable page cache
+    // Disable page cache.
     $this->killSwitch->trigger();
 
     $timestamp = $this->state->get('system.cron_last');
@@ -109,4 +105,5 @@ class ParQueueCheckController extends ControllerBase {
 
     return new JsonResponse($response);
   }
+
 }

@@ -2,13 +2,12 @@
 
 namespace Drupal\par_validation\Plugin\Validation\Constraint;
 
-use Drupal\Core\Datetime\DrupalDateTime;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Constraints\LessThanOrEqualValidator;
 
 /**
-* Validates the past date constraint.
-*/
+ * Validates the past date constraint.
+ */
 class PastDateValidator extends LessThanOrEqualValidator {
 
   /**

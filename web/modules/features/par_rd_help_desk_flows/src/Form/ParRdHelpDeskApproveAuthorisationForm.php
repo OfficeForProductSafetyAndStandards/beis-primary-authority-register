@@ -5,7 +5,6 @@ namespace Drupal\par_rd_help_desk_flows\Form;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\Core\Access\AccessResult;
@@ -34,11 +33,12 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL): AccessResult {
+  public function accessCallback(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ?ParDataPartnership $par_data_partnership = NULL): AccessResult {
     try {
       // Get a new flow negotiator that points the the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException) {
+    }
+    catch (ParFlowException) {
 
     }
 
@@ -65,7 +65,7 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
+  public function retrieveEditableValues(?ParDataPartnership $par_data_partnership = NULL) {
 
   }
 
@@ -73,7 +73,7 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL) {
 
     $par_data_organisation = current($par_data_partnership->getOrganisation());
     $par_data_authority = current($par_data_partnership->getAuthority());
@@ -129,4 +129,5 @@ class ParRdHelpDeskApproveAuthorisationForm extends ParBaseForm {
 
     parent::validateForm($form, $form_state);
   }
+
 }

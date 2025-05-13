@@ -1,17 +1,11 @@
 <?php
 
-/**
- * @file
- * Definition of Drupal\par_data\Plugin\views\field\ParPartnershipsCombinedStatusField
- */
-
 namespace Drupal\par_data\Plugin\views\field;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\views\Plugin\views\field\FieldPluginBase;
 use Drupal\views\ResultRow;
 
@@ -26,7 +20,8 @@ use Drupal\Core\Form\FormStateInterface;
  */
 class ParPartnershipFlowLink extends FieldPluginBase {
 
-  /*
+  /**
+   *
    * @{inheritdoc}
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition) {
@@ -65,14 +60,14 @@ class ParPartnershipFlowLink extends FieldPluginBase {
       '#title' => 'Title',
       '#description' => 'Enter the required title for this link.',
       '#type' => 'textfield',
-      '#default_value' => $this->options['title']  ?: '',
+      '#default_value' => $this->options['title'] ?: '',
     ];
 
     $form['hidden'] = [
       '#title' => 'Hidden',
       '#description' => 'Whether to hide if the link is not accessible or does not exist.',
       '#type' => 'checkbox',
-      '#default_value' => $this->options['hidden']  ?: '',
+      '#default_value' => $this->options['hidden'] ?: '',
     ];
   }
 
@@ -87,10 +82,10 @@ class ParPartnershipFlowLink extends FieldPluginBase {
     if ($entity instanceof ParDataEntityInterface && $entity->getEntityTypeId() === 'par_data_partnership') {
 
       if ($entity->inProgress()) {
-        $partnership_journey_path =  "/partnership/{{id}}/organisation-details";
+        $partnership_journey_path = "/partnership/{{id}}/organisation-details";
       }
       else {
-        $partnership_journey_path =  "/partnership/confirm/{{id}}/checklist";
+        $partnership_journey_path = "/partnership/confirm/{{id}}/checklist";
       }
 
       $tokens = $this->getRenderTokens([]);
@@ -102,12 +97,13 @@ class ParPartnershipFlowLink extends FieldPluginBase {
       $url = !empty($path) ? Url::fromUserInput($path) : NULL;
       $link = $url ? Link::fromTextAndUrl($text, $url)->toRenderable() : NULL;
 
-      // Hide the link
+      // Hide the link.
       $text = empty($this->options['hidden']) ? $text : '';
 
-      return !empty($link) && $url->access() && $url->isRouted()  ? \Drupal::service('renderer')->render($link) : $text;
+      return !empty($link) && $url->access() && $url->isRouted() ? \Drupal::service('renderer')->render($link) : $text;
     }
 
     return '';
   }
+
 }

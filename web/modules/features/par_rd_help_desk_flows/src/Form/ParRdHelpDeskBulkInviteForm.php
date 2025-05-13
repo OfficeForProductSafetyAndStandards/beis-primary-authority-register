@@ -8,7 +8,6 @@ use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\user\Entity\User;
-use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 
 /**
  * Class InviteByEmailBlockForm.
@@ -29,7 +28,7 @@ class ParRdHelpDeskBulkInviteForm extends ParBaseForm {
    * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
    *   The Partnership being retrieved.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, $par_data_person = NULL) {
+  public function retrieveEditableValues(?ParDataPartnership $par_data_partnership = NULL, $par_data_person = NULL) {
     if ($par_data_person) {
       // Set the default subject for the invite email, this can be changed by the user.
       $this->getFlowDataHandler()->setFormPermValue("email_subject", 'New Partnership on the Primary Authority Register');
@@ -79,7 +78,7 @@ HEREDOC;
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL, ?ParDataPerson $par_data_person = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $par_data_person);
 
     $invite_type = $this->config('invite.invite_type.invite_organisation_member');
@@ -155,7 +154,7 @@ HEREDOC;
     if ($business_user = $par_data_person->getUserAccount()) {
       $required_token = '[site:login-url]';
     }
-    else{
+    else {
       $required_token = '[invite:invite-accept-link]';
     }
     if (!strpos((string) $form_state->getValue('email_body'), $required_token)) {

@@ -41,7 +41,7 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
    * @param int $sic_code_delta
    *   The field delta to update.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, $field_sic_code_delta = NULL) {
+  public function retrieveEditableValues(?ParDataPartnership $par_data_partnership = NULL, $field_sic_code_delta = NULL) {
     if (!is_null($field_sic_code_delta)) {
       // Store the current value of the sic_code if it's being edited.
       $par_data_organisation = current($par_data_partnership->getOrganisation());
@@ -57,7 +57,7 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, $field_sic_code_delta = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL, $field_sic_code_delta = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $field_sic_code_delta);
     $par_data_organisation = current($par_data_partnership->getOrganisation());
 
@@ -68,7 +68,7 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
 
     $options = [];
     // Get the list of valid sic codes.
-    // @TODO This kinda logic shouldn't be in this form. Let's create a method to do this mapping.
+    // @todo This kinda logic shouldn't be in this form. Let's create a method to do this mapping.
     $sic_codes = $this->parDataManager->getEntitiesByType('par_data_sic_code');
     foreach ($sic_codes as $sic_code) {
       $options[$sic_code->id()] = $sic_code->label();
@@ -110,7 +110,8 @@ class ParPartnershipFlowsSicCodeForm extends ParBaseForm {
 
     if ($par_data_organisation->save()) {
       $this->getFlowDataHandler()->deleteStore();
-    } else {
+    }
+    else {
       $message = $this->t('This %field could not be saved for %form_id');
       $replacements = [
         '%field' => $this->getFlowDataHandler()->getTempDataValue('trading_name'),

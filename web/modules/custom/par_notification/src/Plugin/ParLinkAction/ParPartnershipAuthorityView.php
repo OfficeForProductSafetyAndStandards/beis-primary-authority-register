@@ -6,7 +6,6 @@ use Drupal\Core\Url;
 use Drupal\message\MessageInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_notification\ParLinkActionBase;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Send user to the authority details stage of the partnership pages.
@@ -53,4 +52,5 @@ class ParPartnershipAuthorityView extends ParLinkActionBase {
 
     return NULL;
   }
+
 }

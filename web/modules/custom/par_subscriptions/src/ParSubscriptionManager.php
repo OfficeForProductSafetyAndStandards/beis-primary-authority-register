@@ -11,7 +11,7 @@ use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\par_subscriptions\Entity\ParSubscriptionList;
 
 /**
- * Manages all subscriptions
+ * Manages all subscriptions.
  */
 class ParSubscriptionManager implements ParSubscriptionManagerInterface {
 
@@ -42,7 +42,7 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
   /**
    * The email validator service.
    *
-   * @var EmailValidatorInterface
+   * @var \Drupal\Component\Utility\EmailValidatorInterface
    */
   protected $emailValidator;
 
@@ -63,7 +63,7 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
    * @param \Drupal\Component\Utility\EmailValidatorInterface $email_validator
    *   The email validator service.
    * @param \Drupal\Core\Messenger\MessengerInterface $messenger
-   *   The messenger service
+   *   The messenger service.
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, EmailValidatorInterface $email_validator, MessengerInterface $messenger) {
     $this->entityTypeManager = $entity_type_manager;
@@ -81,6 +81,9 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
     return array_keys($list_entities);
   }
 
+  /**
+   *
+   */
   public function getListName($list) {
     if ($this->isValidList($list)) {
       $list_type = $subscriptions = $this->entityTypeManager
@@ -91,6 +94,9 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
     }
   }
 
+  /**
+   *
+   */
   public function createSubscription($list, $email) {
     if ($this->isValidList($list) && $this->isValidEmail($email)) {
       // Check that this email address isn't already on this list.
@@ -137,7 +143,7 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
     $subscriptions = $this->getListSubscriptions($list);
 
     $emails = [];
-    foreach($subscriptions as $i => $subscription) {
+    foreach ($subscriptions as $i => $subscription) {
       $emails[$i] = $subscription->getEmail();
     }
 
@@ -157,7 +163,7 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
       $subscriptions = $this->entityTypeManager
         ->getStorage(self::SUBSCRIPTION_ENTITY)
         ->loadByProperties([
-          'code' => $code
+          'code' => $code,
         ]);
 
       return !empty($subscriptions) ? current($subscriptions) : NULL;
@@ -169,7 +175,7 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
   /**
    * Get a subscription by the subscription email address.
    *
-   * @return \Drupal\par_subscriptions\Entity\ParSubscription|NULL
+   * @return \Drupal\par_subscriptions\Entity\ParSubscription|null
    *   A subscription entity if found.
    */
   public function getSubscriptionByEmail($list, $email) {
@@ -178,7 +184,7 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
         ->getStorage(self::SUBSCRIPTION_ENTITY)
         ->loadByProperties([
           'list' => $list,
-          'email' => $email
+          'email' => $email,
         ]);
 
       return !empty($subscriptions) ? current($subscriptions) : NULL;
@@ -204,7 +210,7 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
 
     // Only query for old subscriptions.
     $request_time = \Drupal::time()->getRequestTime();
-    $expiry = $request_time-self::VERIFICATION_EXPIRY;
+    $expiry = $request_time - self::VERIFICATION_EXPIRY;
     $query->condition('created', $expiry, '<');
 
     $expired_subscriptions = $query->execute();
@@ -235,7 +241,7 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
    */
   private function isValidCode($code) {
     $universal_codes = [self::UNIVERSAL_UNSUBSCRIBE_CODE];
-    return isset($code) && !empty($code) && array_search($code, $universal_codes) === false;
+    return isset($code) && !empty($code) && array_search($code, $universal_codes) === FALSE;
   }
 
   /**
@@ -257,6 +263,7 @@ class ParSubscriptionManager implements ParSubscriptionManagerInterface {
    * @return bool
    */
   private function isValidList($list) {
-    return !empty($list) && array_search($list, $this->getLists()) !== false;
+    return !empty($list) && array_search($list, $this->getLists()) !== FALSE;
   }
+
 }

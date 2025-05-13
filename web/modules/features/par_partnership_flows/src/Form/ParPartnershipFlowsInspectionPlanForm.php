@@ -2,7 +2,6 @@
 
 namespace Drupal\par_partnership_flows\Form;
 
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\par_data\Entity\ParDataInspectionPlan;
 use Drupal\par_data\Entity\ParDataPartnership;
@@ -24,13 +23,14 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
    */
   protected $entityMapping = [
     ['title', 'par_data_inspection_plan', 'title', NULL, NULL, 0, [
-      'This value should not be null.' => 'You must provide a title for this inspection plan document.'
-    ]],
+      'This value should not be null.' => 'You must provide a title for this inspection plan document.',
+    ],
+    ],
     ['summary', 'par_data_inspection_plan', 'summary', NULL, NULL, 0, [
-      'This value should not be null.' => 'You must provide a summary for this inspection plan document.'
-    ]],
+      'This value should not be null.' => 'You must provide a summary for this inspection plan document.',
+    ],
+    ],
   ];
-
 
   /**
    * {@inheritdoc}
@@ -54,7 +54,7 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
    * @param \Drupal\par_data\Entity\ParDataInspectionPlan $par_data_inspection_plan
    *   The inspection plan document being retrieved.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL) {
+  public function retrieveEditableValues(?ParDataPartnership $par_data_partnership = NULL, ?ParDataInspectionPlan $par_data_inspection_plan = NULL) {
     if ($par_data_inspection_plan) {
       // Inspection plan title.
       $title = $par_data_inspection_plan->get('title')->getString();
@@ -74,7 +74,7 @@ class ParPartnershipFlowsInspectionPlanForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL, ?ParDataInspectionPlan $par_data_inspection_plan = NULL) {
     $this->retrieveEditableValues($par_data_partnership, $par_data_inspection_plan);
     $Inspection_plan_bundle = $this->getParDataManager()->getParBundleEntity('par_data_inspection_plan');
 

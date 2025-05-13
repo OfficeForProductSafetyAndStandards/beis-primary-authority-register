@@ -67,4 +67,5 @@ class ParSubscriptionList extends ConfigEntityBase {
   public function getEventDispatcher() {
     return \Drupal::service('event_dispatcher');
   }
+
 }

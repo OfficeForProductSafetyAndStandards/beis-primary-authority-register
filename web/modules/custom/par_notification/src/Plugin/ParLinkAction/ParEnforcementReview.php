@@ -2,15 +2,12 @@
 
 namespace Drupal\par_notification\Plugin\ParLinkAction;
 
-use Drupal\Core\Entity\Query\QueryInterface;
 use Drupal\Core\Url;
 use Drupal\message\MessageInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_notification\ParLinkActionBase;
 use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParTaskInterface;
-use Drupal\par_data\Entity\ParDataEnforcementNotice;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Send user to the enforcement review page.
@@ -44,7 +41,7 @@ class ParEnforcementReview extends ParLinkActionBase implements ParTaskInterface
       throw new ParNotificationException('This message is invalid.');
     }
 
-    /** @var ParDataEnforcementNotice[] $enforcement_notices */
+    /** @var \Drupal\par_data\Entity\ParDataEnforcementNotice[] $enforcement_notices */
     $enforcement_notices = $message->get($this->getPrimaryField())->referencedEntities();
     // If any of the enforcement notices are awaiting approval this is not complete.
     foreach ($enforcement_notices as $enforcement_notice) {
@@ -76,4 +73,5 @@ class ParEnforcementReview extends ParLinkActionBase implements ParTaskInterface
 
     return NULL;
   }
+
 }

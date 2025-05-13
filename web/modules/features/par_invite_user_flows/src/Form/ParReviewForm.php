@@ -2,25 +2,13 @@
 
 namespace Drupal\par_invite_user_flows\Form;
 
-use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Link;
-use Drupal\Core\Url;
 use Drupal\invite\Entity\Invite;
 use Drupal\invite\InviteInterface;
-use Drupal\par_data\Entity\ParDataAuthority;
-use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
-use Drupal\par_data\Entity\ParDataLegalEntity;
 use Drupal\par_data\Entity\ParDataMembershipInterface;
-use Drupal\par_data\Entity\ParDataOrganisation;
 use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_forms\ParFormBuilder;
-use Drupal\par_invite_user_flows\ParFlowAccessTrait;
-use Drupal\par_roles\ParRoleException;
 use Drupal\par_roles\ParRoleManager;
 use Drupal\par_roles\ParRoleManagerInterface;
 use Drupal\user\Entity\Role;
@@ -55,15 +43,15 @@ class ParReviewForm extends ParBaseForm {
    */
   #[\Override]
   public function loadData() {
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPerson $par_data_person */
-    /** @var User $account */
-    /** @var Invite $invite */
+    /** @var \Drupal\par_data\Entity\ParDataPerson $par_data_person */
+    /** @var \Drupal\user\Entity\User $account */
+    /** @var \Drupal\invite\Entity\Invite $invite */
     /** @var array $roles */
-    /** @var ParDataAuthority[] $par_data_authority */
-    /** @var ParDataOrganisation[] $par_data_organisation */
+    /** @var \Drupal\par_data\Entity\ParDataAuthority[] $par_data_authority */
+    /** @var \Drupal\par_data\Entity\ParDataOrganisation[] $par_data_organisation */
 
     // Get the cache IDs for the various forms that needs to be extracted from.
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('select_role');
@@ -124,7 +112,7 @@ class ParReviewForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL) {
     $form['personal'] = [
       '#type' => 'fieldset',
       'name' => [
@@ -133,7 +121,7 @@ class ParReviewForm extends ParBaseForm {
         '#title' => 'Name',
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('full_name', ''),
-        ]
+        ],
       ],
     ];
 
@@ -145,7 +133,7 @@ class ParReviewForm extends ParBaseForm {
         '#attributes' => ['class' => 'govuk-form-group'],
         [
           '#markup' => $this->getFlowDataHandler()->getDefaultValues('email', ''),
-        ]
+        ],
       ],
     ];
 
@@ -209,7 +197,7 @@ class ParReviewForm extends ParBaseForm {
         '#attributes' => ['class' => 'govuk-form-group'],
         [
           '#markup' => $authorities,
-        ]
+        ],
       ];
     }
     if ($organisations = $this->getFlowDataHandler()->getDefaultValues('organisations', NULL)) {
@@ -219,7 +207,7 @@ class ParReviewForm extends ParBaseForm {
         '#attributes' => ['class' => 'govuk-form-group'],
         [
           '#markup' => $organisations,
-        ]
+        ],
       ];
     }
 
@@ -235,13 +223,16 @@ class ParReviewForm extends ParBaseForm {
         ],
         [
           '#markup' => '<p>' . nl2br((string) $message) . '</p>',
-        ]
+        ],
       ];
     }
 
     return parent::buildForm($form, $form_state);
   }
 
+  /**
+   *
+   */
   public function createEntities() {
     $par_data_person = $this->getFlowDataHandler()->getParameter('par_data_person');
 
@@ -329,15 +320,15 @@ class ParReviewForm extends ParBaseForm {
     $select_memberships_cid = $this->getFlowNegotiator()->getFormKey('select_memberships');
     $cid_role_select = $this->getFlowNegotiator()->getFormKey('select_role');
 
-    // Set the data values on the entities
+    // Set the data values on the entities.
     $entities = $this->createEntities();
     extract($entities);
-    /** @var ParDataPerson $par_data_person */
-    /** @var User $account */
-    /** @var Invite $invite */
+    /** @var \Drupal\par_data\Entity\ParDataPerson $par_data_person */
+    /** @var \Drupal\user\Entity\User $account */
+    /** @var \Drupal\invite\Entity\Invite $invite */
     /** @var array $roles */
-    /** @var ParDataAuthority[] $par_data_authority */
-    /** @var ParDataOrganisation[] $par_data_organisation */
+    /** @var \Drupal\par_data\Entity\ParDataAuthority[] $par_data_authority */
+    /** @var \Drupal\par_data\Entity\ParDataOrganisation[] $par_data_organisation */
 
     // Save the person.
     $par_data_person->save();

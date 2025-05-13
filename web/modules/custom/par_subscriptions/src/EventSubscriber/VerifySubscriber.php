@@ -3,14 +3,14 @@
 namespace Drupal\par_subscriptions\EventSubscriber;
 
 use Drupal\Core\Url;
-use Drupal\message\Entity\Message;
-use Drupal\par_notification\ParNotificationException;
 use Drupal\par_notification\ParEventSubscriberBase;
 use Drupal\par_subscriptions\Event\SubscriptionEventInterface;
 use Drupal\par_subscriptions\Event\SubscriptionEvents;
-use Drupal\par_subscriptions\ParSubscriptionManager;
 use Drupal\user\Entity\User;
 
+/**
+ *
+ */
 class VerifySubscriber extends ParEventSubscriberBase {
 
   /**
@@ -28,7 +28,7 @@ class VerifySubscriber extends ParEventSubscriberBase {
    * @return mixed
    */
   #[\Override]
-  static function getSubscribedEvents(): array {
+  public static function getSubscribedEvents(): array {
     // Confirmation event should fire after a subscription has been saved.
     $events[SubscriptionEvents::subscribe(self::LIST)][] = ['onEvent', -101];
 
@@ -55,7 +55,7 @@ class VerifySubscriber extends ParEventSubscriberBase {
 
     // Generate the verification link.
     $parameters = ['subscription_code' => $event->getSubscription()->getCode()];
-    $options = ['absolute' => true];
+    $options = ['absolute' => TRUE];
     $verification_link = Url::fromRoute("par_subscriptions.{$event->getSubscription()->getListId()}.verify", $parameters, $options);
 
     // Send the message.
@@ -66,4 +66,5 @@ class VerifySubscriber extends ParEventSubscriberBase {
     ];
     $this->sendMessage($arguments);
   }
+
 }

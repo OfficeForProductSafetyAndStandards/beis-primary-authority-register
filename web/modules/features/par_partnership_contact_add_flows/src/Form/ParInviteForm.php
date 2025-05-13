@@ -3,9 +3,7 @@
 namespace Drupal\par_partnership_contact_add_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataPerson;
 use Drupal\par_data\Entity\ParDataPersonInterface;
-use Drupal\par_data\Entity\ParDataPremises;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_forms\Plugin\ParForm\ParChooseAccount;
 use Drupal\par_partnership_contact_add_flows\ParFlowAccessTrait;
@@ -92,8 +90,7 @@ class ParInviteForm extends ParBaseForm {
 
     parent::loadData();
 
-
-    // Set the user account that is being updated as a parameter for plugins to access
+    // Set the user account that is being updated as a parameter for plugins to access.
     $choose_account_cid = $this->getFlowNegotiator()->getFormKey('choose_account');
     $account_selection = $this->getFlowDataHandler()->getDefaultValues('account', NULL, $choose_account_cid);
     $account = ParChooseAccount::getUserAccount($account_selection);
@@ -111,16 +108,19 @@ class ParInviteForm extends ParBaseForm {
         $role_options = $this->getParDataManager()->getEntitiesAsOptions([Role::load($role)], []);
 
         break;
+
       case 'par_authority':
         $invitation_type = 'invite_authority_member';
         $role_options = $this->getParDataManager()->getEntitiesAsOptions([Role::load($role)], []);
 
         break;
+
       case 'par_organisation':
         $invitation_type = 'invite_organisation_member';
         $role_options = $this->getParDataManager()->getEntitiesAsOptions([Role::load($role)], []);
 
         break;
+
       default:
         $invitation_type = 'none';
         $role_options = [];

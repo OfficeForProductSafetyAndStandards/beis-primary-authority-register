@@ -2,20 +2,14 @@
 
 namespace Drupal\par_member_upload_flows\Form;
 
-use Drupal\Core\Ajax\AjaxResponse;
-use Drupal\Core\Ajax\RedirectCommand;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Url;
-use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\file\Entity\File;
 use Drupal\par_member_upload_flows\ParFlowAccessTrait;
-use Drupal\par_member_upload_flows\ParMemberCsvHandlerInterface;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
 /**
  * The upload CSV form for importing partnerships.
@@ -30,7 +24,7 @@ class ParMemberUploadForm extends ParBaseForm {
   protected $pageTitle = 'Upload a list of members';
 
   /**
-   * @return ParMemberCsvHandlerInterface
+   * @return \Drupal\par_member_upload_flows\ParMemberCsvHandlerInterface
    */
   public function getCsvHandler() {
     return \Drupal::service('par_member_upload_flows.csv_handler');
@@ -40,7 +34,7 @@ class ParMemberUploadForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL) {
     $csv_handler_class = (new \ReflectionClass($this->getCsvHandler()))->getName();
 
     $url = Url::fromUri('internal:/member-upload-guidance', ['attributes' => ['target' => '_blank']]);
@@ -52,7 +46,7 @@ class ParMemberUploadForm extends ParBaseForm {
       '#description' => $this->t('To upload a list of members you must provide the information in comma sepparated value (CSV) format. You can read more about preparing a CSV file on the %guidance. If you need assistance please contact pa@businessandtrade.gov.uk', ['%guidance' => $guidance_link->toString()]),
       '#attributes' => [
         'class' => ['govuk-form-group'],
-      ]
+      ],
     ];
 
     // Download link and help text.
@@ -65,7 +59,7 @@ class ParMemberUploadForm extends ParBaseForm {
     $url_options = [
       'attributes' => [
         'id' => 'download-members-link',
-        'class' => ['download-action']
+        'class' => ['download-action'],
       ],
     ];
     if ($par_data_partnership->countMembers(0, TRUE) >= 1) {
@@ -122,8 +116,8 @@ class ParMemberUploadForm extends ParBaseForm {
       '#upload_validators' => [
         'file_validate_extensions' => [
           0 => 'csv',
-        ]
-      ]
+        ],
+      ],
     ];
 
     return parent::buildForm($form, $form_state);
@@ -141,7 +135,7 @@ class ParMemberUploadForm extends ParBaseForm {
     // File delete button pressed.
     if ($elem['#name'] == 'csv_remove_button') {
       $csv = $form_state->getValue('csv');
-      $file = File::load( $csv[0] );
+      $file = File::load($csv[0]);
       $file->delete();
       $form_state->setRebuild();
       return;
@@ -152,7 +146,7 @@ class ParMemberUploadForm extends ParBaseForm {
 
     // Process uploaded csv file.
     if ($csv = $this->getFlowDataHandler()->getTempDataValue('csv')) {
-      /** @var $files File[] * */
+      /** @var \Drupal\file\Entity\File[] $files * */
       $files = File::loadMultiple($csv);
 
       // Loop through each csv row from uploaded file and save in $row array.

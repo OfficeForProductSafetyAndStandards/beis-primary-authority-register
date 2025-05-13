@@ -4,8 +4,6 @@ namespace Drupal\par_cache\Cache;
 
 use Drupal\Core\Cache\CacheFactoryInterface;
 use Drupal\Core\Site\Settings;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 /**
  * Wraps a cache factory to register all calls to the cache system.

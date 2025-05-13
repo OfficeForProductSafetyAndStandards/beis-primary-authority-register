@@ -7,7 +7,6 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\Core\Access\AccessResult;
 use Drupal\par_flows\ParDisplayTrait;
 use Drupal\par_flows\ParFlowException;
@@ -44,7 +43,8 @@ class ParRdDeleteDataConfirmForm extends ParBaseForm {
     try {
       // Get a new flow negotiator that points the the route being checked for access.
       $access_route_negotiator = $this->getFlowNegotiator()->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException) {
+    }
+    catch (ParFlowException) {
 
     }
 
@@ -52,7 +52,7 @@ class ParRdDeleteDataConfirmForm extends ParBaseForm {
 
     // If partnership has been deleted, we should not be able to re-delete it.
     if (!$entity instanceof ParDataEntityInterface && !$entity->isDeleted()) {
-       $this->accessResult = AccessResult::forbidden('The partnership must be deleted to access this page.');
+      $this->accessResult = AccessResult::forbidden('The partnership must be deleted to access this page.');
     }
 
     return parent::accessCallback($route, $route_match, $account);

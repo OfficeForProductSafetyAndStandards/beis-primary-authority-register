@@ -99,10 +99,10 @@ class CookieBannerBlock extends BlockBase implements ContainerFactoryPluginInter
                 'expires' => \Drupal::time()->getRequestTime() + 31536000,
                 'path' => '/',
                 'domain' => ".{$this->requestStack->getCurrentRequest()->getHost()}",
-                'secure' => false,
+                'secure' => FALSE,
                 'samesite' => 'strict',
-                'raw' => true,
-              ]
+                'raw' => TRUE,
+              ],
             ],
           ],
         ],
@@ -167,4 +167,5 @@ class CookieBannerBlock extends BlockBase implements ContainerFactoryPluginInter
 
     return $build;
   }
+
 }

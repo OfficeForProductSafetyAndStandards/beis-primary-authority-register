@@ -5,7 +5,6 @@ namespace Drupal\par_member_list_update_flows\Access;
 use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
-use Drupal\par_data\Entity\ParDataCoordinatedBusiness;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\ParDataManagerInterface;
 use Drupal\par_flows\ParFlowDataHandlerInterface;
@@ -31,20 +30,19 @@ class ParFlowAccessCheck implements AccessInterface {
    *   Flow Data Handler Service
    */
   public function __construct(
-      /**
-       * The PAR Data Manager.
-       */
-      private readonly ParDataManagerInterface $parDataManager,
-      /**
-       * The PAR Flow Negotiator.
-       */
-      private readonly ParFlowNegotiatorInterface $flowNegotiator,
-      /**
-       * The PAR Flow Negotiator.
-       */
-      private readonly ParFlowDataHandlerInterface $flowDataHandler
-  )
-  {
+    /**
+     * The PAR Data Manager.
+     */
+    private readonly ParDataManagerInterface $parDataManager,
+    /**
+     * The PAR Flow Negotiator.
+     */
+    private readonly ParFlowNegotiatorInterface $flowNegotiator,
+    /**
+     * The PAR Flow Negotiator.
+     */
+    private readonly ParFlowDataHandlerInterface $flowDataHandler,
+  ) {
   }
 
   /**
@@ -55,11 +53,12 @@ class ParFlowAccessCheck implements AccessInterface {
    * @param \Drupal\Core\Session\AccountInterface $account
    *   The account being checked.
    */
-  public function access(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ParDataPartnership $par_data_partnership = NULL) {
+  public function access(Route $route, RouteMatchInterface $route_match, AccountInterface $account, ?ParDataPartnership $par_data_partnership = NULL) {
     try {
       // Get a new flow negotiator that points to the route being checked for access.
       $access_route_negotiator = $this->flowNegotiator->cloneFlowNegotiator($route_match);
-    } catch (ParFlowException) {
+    }
+    catch (ParFlowException) {
 
     }
 

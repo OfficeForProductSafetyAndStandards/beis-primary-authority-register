@@ -2,19 +2,11 @@
 
 namespace Drupal\par_user_role_flows\Form;
 
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\par_data\Entity\ParDataPartnership;
-use Drupal\par_data\Entity\ParDataPerson;
-use Drupal\par_flows\Controller\ParBaseController;
 use Drupal\par_flows\Form\ParBaseForm;
-use Drupal\par_flows\ParFlowException;
-use Drupal\par_forms\ParFormBuilder;
 use Drupal\par_roles\ParRoleException;
 use Drupal\par_roles\ParRoleManager;
 use Drupal\par_roles\ParRoleManagerInterface;
-use Drupal\user\Entity\User;
 
 /**
  * A controller for blocking user accounts.
@@ -22,7 +14,7 @@ use Drupal\user\Entity\User;
 class ParChangeRoleForm extends ParBaseForm {
 
   /**
-   * @return DateFormatterInterface
+   * @return \Drupal\Core\Datetime\DateFormatterInterface
    */
   #[\Override]
   protected function getDateFormatter() {
@@ -41,6 +33,9 @@ class ParChangeRoleForm extends ParBaseForm {
    */
   protected $pageTitle = "Change roles";
 
+  /**
+ *
+ */
   #[\Override]
   public function loadData() {
     $user = $this->getFlowDataHandler()->getParameter('user');

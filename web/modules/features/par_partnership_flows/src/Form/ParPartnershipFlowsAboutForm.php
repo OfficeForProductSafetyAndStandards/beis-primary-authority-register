@@ -21,8 +21,9 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
    */
   protected $entityMapping = [
     ['about_partnership', 'par_data_partnership', 'about_partnership', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'You must enter some information about this partnership.'
-    ]],
+      'You must fill in the missing information.' => 'You must enter some information about this partnership.',
+    ],
+    ],
   ];
 
   protected $pageTitle = 'Information about the partnership';
@@ -45,7 +46,7 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
    * @param \Drupal\par_data\Entity\ParDataPartnership $par_data_partnership
    *   The Authority being retrieved.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL) {
+  public function retrieveEditableValues(?ParDataPartnership $par_data_partnership = NULL) {
     if ($par_data_partnership) {
       $this->getFlowDataHandler()->setFormPermValue('about_partnership', $par_data_partnership->getPlain('about_partnership'));
     }
@@ -55,7 +56,7 @@ class ParPartnershipFlowsAboutForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
     // Business details.

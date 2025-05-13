@@ -63,7 +63,7 @@ class ParSelectAuthorityForm extends ParFormPluginBase {
     if ($authorities) {
       // Initialize pager and get current page.
       $number_of_items = 10;
-      $pager = $this->getUniquePager()->getPager('par_plugin_authority_select_'.$index);
+      $pager = $this->getUniquePager()->getPager('par_plugin_authority_select_' . $index);
       $current_pager = $this->getUniquePager()->getPagerManager()->createPager(count($authorities), $number_of_items, $pager);
 
       // Split the items up into chunks:
@@ -81,16 +81,15 @@ class ParSelectAuthorityForm extends ParFormPluginBase {
         '#attributes' => ['class' => ['govuk-form-group']],
       ];
 
-      // @TODO Add pager so that any selected checkboxes aren't unselected when a new page is loaded.
-//      $form['pager'] = [
-//        '#type' => 'pager',
-//        '#theme' => 'pagerer',
-//        '#element' => $index,
-//        '#config' => [
-//          'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
-//        ],
-//      ];
-
+      // @todo Add pager so that any selected checkboxes aren't unselected when a new page is loaded.
+      //   $form['pager'] = [
+      //        '#type' => 'pager',
+      //        '#theme' => 'pagerer',
+      //        '#element' => $index,
+      //        '#config' => [
+      //          'preset' => $this->config('pagerer.settings')->get('core_override_preset'),
+      //        ],
+      //      ];
     }
     else {
       $form['intro'] = [
@@ -124,4 +123,5 @@ class ParSelectAuthorityForm extends ParFormPluginBase {
 
     parent::validate($form, $form_state, $index, $action);
   }
+
 }

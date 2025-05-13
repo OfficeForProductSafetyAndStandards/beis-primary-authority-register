@@ -21,7 +21,7 @@ class ParPartnershipFlowsInviteSentController extends ParBaseController {
   /**
    * {@inheritdoc}
    */
-  public function content(ParDataPartnership $par_data_partnership = NULL, ParDataPerson $par_data_person = NULL) {
+  public function content(?ParDataPartnership $par_data_partnership = NULL, ?ParDataPerson $par_data_person = NULL) {
 
     $build['sent_to'] = [
       '#type' => 'markup',

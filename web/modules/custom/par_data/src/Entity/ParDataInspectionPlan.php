@@ -111,12 +111,11 @@ class ParDataInspectionPlan extends ParDataEntity {
    * {@inheritdoc}
    */
   #[\Override]
-  public function filterRelationshipsByAction($relationship, $action)
-  {
-      return match ($action) {
-          'manage' => FALSE,
+  public function filterRelationshipsByAction($relationship, $action) {
+    return match ($action) {
+      'manage' => FALSE,
           default => parent::filterRelationshipsByAction($relationship, $action),
-      };
+    };
   }
 
   /**
@@ -139,13 +138,13 @@ class ParDataInspectionPlan extends ParDataEntity {
   /**
    * Revoke if this entity is revokable and is not new.
    *
-   *  @param boolean $save
+   *  @param bool $save
    *   Whether to save the entity after revoking.
    *
-   *  @param String $reason
+   *  @param string $reason
    *   The reason this entity is being revoked.
    *
-   * @return boolean
+   * @return bool
    *   True if the entity was revoked, false for all other results.
    */
   #[\Override]
@@ -207,7 +206,6 @@ class ParDataInspectionPlan extends ParDataEntity {
     $revoke_time_stamp_value = $revoke_time_stamp->format("Y-m-d");
     $this->set('valid_date', ['value' => $this->get('valid_date')->value, 'end_value' => $revoke_time_stamp_value]);
   }
-
 
   /**
    * {@inheritdoc}

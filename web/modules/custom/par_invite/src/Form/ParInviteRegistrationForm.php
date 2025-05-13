@@ -26,7 +26,7 @@ class ParInviteRegistrationForm extends FormBase {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state,  $invite = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, $invite = NULL) {
     // The invite needs to be set and valid. If not then we need to go to an error page.
     if (!isset($invite)) {
       $form['intro'] = [
@@ -127,7 +127,7 @@ class ParInviteRegistrationForm extends FormBase {
       $login_destination_manager = \Drupal::service('login_destination.manager');
       $path = $login_destination_manager->findDestination(LoginDestination::TRIGGER_REGISTRATION, $user);
       $url = Url::fromUri($path->destination_path);
-      $form_state->setRedirectUrl( $url );
+      $form_state->setRedirectUrl($url);
     }
     // What do we do if the user cannot be created?
   }

@@ -2,18 +2,11 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\comment\CommentInterface;
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Link;
-use Drupal\Core\Url;
 use Drupal\par_data\Entity\ParDataEntityInterface;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_flows\ParFlowException;
-use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
 
 /**
@@ -29,8 +22,10 @@ class ParPartnershipMembers extends ParFormPluginBase {
   /**
    * Available display formats.
    */
-  const MEMBER_FORMAT_INLINE = 'member_list'; # for internal displays
-  const MEMBER_FORMAT_VIEW = 'member_link_view'; # for internal displays
+  // For internal displays.
+  const MEMBER_FORMAT_INLINE = 'member_list';
+  // For internal displays.
+  const MEMBER_FORMAT_VIEW = 'member_link_view';
 
   /**
    * {@inheritdoc}
@@ -122,7 +117,8 @@ class ParPartnershipMembers extends ParFormPluginBase {
     if ($this->getFlowDataHandler()->getFormPermValue("member_display_format") === self::MEMBER_FORMAT_VIEW) {
       try {
         $member_link = $this->getLinkByRoute('view.members_list.member_list_coordinator', [], [], TRUE);
-      } catch (ParFlowException) {
+      }
+      catch (ParFlowException) {
 
       }
       if (isset($member_link) && $member_link instanceof Link) {
@@ -189,7 +185,8 @@ class ParPartnershipMembers extends ParFormPluginBase {
         $link_label = $members && !empty($members) && count($members) >= 1 ? "add another member" : "add a member";
         $add_member_link = $member_add_flow ?
           $member_add_flow->getStartLink(1, $link_label) : NULL;
-      } catch (ParFlowException $e) {
+      }
+      catch (ParFlowException $e) {
 
       }
       if (isset($add_member_link) && $add_member_link instanceof Link) {
@@ -206,7 +203,8 @@ class ParPartnershipMembers extends ParFormPluginBase {
         $member_upload_flow = ParFlow::load('member_upload');
         $upload_member_link = $member_upload_flow ?
           $member_upload_flow->getStartLink(1, 'upload a member list (csv)') : NULL;
-      } catch (ParFlowException) {
+      }
+      catch (ParFlowException) {
 
       }
       if (isset($upload_member_link) && $upload_member_link instanceof Link) {
@@ -266,7 +264,8 @@ class ParPartnershipMembers extends ParFormPluginBase {
       $list_update_flow = ParFlow::load('member_list_update');
       $list_update_link = $list_update_flow ?
         $list_update_flow->getStartLink(1, $link_title) : NULL;
-    } catch (ParFlowException) {
+    }
+    catch (ParFlowException) {
 
     }
     if (isset($list_update_link) && $list_update_link instanceof Link) {
@@ -293,7 +292,8 @@ class ParPartnershipMembers extends ParFormPluginBase {
    * Return no actions for this plugin.
    */
   #[\Override]
-  public function getComponentActions(array $actions = [], array $data = NULL): ?array {
+  public function getComponentActions(array $actions = [], ?array $data = NULL): ?array {
     return $actions;
   }
+
 }

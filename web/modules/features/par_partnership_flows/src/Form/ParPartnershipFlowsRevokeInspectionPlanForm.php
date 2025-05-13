@@ -3,16 +3,11 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataInspectionPlan;
 use Drupal\par_data\Entity\ParDataEntity;
-use Drupal\Core\Access\AccessResult;
 use Drupal\par_flows\ParDisplayTrait;
-use Drupal\par_flows\ParFlowException;
-use Symfony\Component\Routing\Route;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 
@@ -30,11 +25,10 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
    */
   protected $entityMapping = [
     [ParDataEntity::REVOKE_REASON_FIELD, 'par_data_inspection_plan', ParDataEntity::REVOKE_REASON_FIELD, NULL, NULL, 0, [
-      'This value should not be null.' => 'Please supply the reason for revoking this document.'
-    ]],
+      'This value should not be null.' => 'Please supply the reason for revoking this document.',
+    ],
+    ],
   ];
-
-
 
   /**
    * {@inheritdoc}
@@ -48,7 +42,7 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL) {
+  public function retrieveEditableValues(?ParDataPartnership $par_data_partnership = NULL, ?ParDataInspectionPlan $par_data_inspection_plan = NULL) {
 
   }
 
@@ -56,7 +50,7 @@ class ParPartnershipFlowsRevokeInspectionPlanForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataInspectionPlan $par_data_inspection_plan = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL, ?ParDataInspectionPlan $par_data_inspection_plan = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
 
     if ($par_data_partnership && $par_data_partnership->inProgress()) {

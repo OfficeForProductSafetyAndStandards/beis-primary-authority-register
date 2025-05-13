@@ -73,12 +73,11 @@ class ParDataAdvice extends ParDataEntity {
    * {@inheritdoc}
    */
   #[\Override]
-  public function filterRelationshipsByAction($relationship, $action)
-  {
-      return match ($action) {
-          'manage' => FALSE,
+  public function filterRelationshipsByAction($relationship, $action) {
+    return match ($action) {
+      'manage' => FALSE,
           default => TRUE,
-      };
+    };
   }
 
   /**
@@ -91,7 +90,7 @@ class ParDataAdvice extends ParDataEntity {
       parent::revoke($save, $reason);
     }
     else {
-      $this->archive('this advice of type cannot be revoked only archived.' ,$save);
+      $this->archive('this advice of type cannot be revoked only archived.', $save);
     }
   }
 

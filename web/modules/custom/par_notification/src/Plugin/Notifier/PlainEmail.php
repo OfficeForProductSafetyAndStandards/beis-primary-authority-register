@@ -56,7 +56,7 @@ class PlainEmail extends MessageNotifierBase {
    * @param \Drupal\Core\Mail\MailManagerInterface $mail_manager
    *   The mail manager service.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, LoggerChannelInterface $logger, EntityTypeManagerInterface $entity_type_manager, RendererInterface $render, MailManagerInterface $mail_manager, MessageInterface $message = NULL) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, LoggerChannelInterface $logger, EntityTypeManagerInterface $entity_type_manager, RendererInterface $render, MailManagerInterface $mail_manager, ?MessageInterface $message = NULL) {
     // Set configuration defaults.
     $configuration += [
       'mail' => FALSE,
@@ -73,7 +73,7 @@ class PlainEmail extends MessageNotifierBase {
    * {@inheritdoc}
    */
   #[\Override]
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, MessageInterface $message = NULL) {
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition, ?MessageInterface $message = NULL) {
     return new static(
       $configuration,
       $plugin_id,

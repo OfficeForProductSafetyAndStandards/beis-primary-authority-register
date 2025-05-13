@@ -3,15 +3,10 @@
 namespace Drupal\par_partnership_flows\Form;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\par_flows\Form\ParBaseForm;
 use Drupal\par_data\Entity\ParDataPartnership;
 use Drupal\par_data\Entity\ParDataAdvice;
-use Drupal\Core\Access\AccessResult;
 use Drupal\par_flows\ParDisplayTrait;
-use Drupal\par_flows\ParFlowException;
-use Symfony\Component\Routing\Route;
 use Drupal\par_partnership_flows\ParPartnershipFlowsTrait;
 use Drupal\par_partnership_flows\ParPartnershipFlowAccessTrait;
 
@@ -29,8 +24,9 @@ class ParPartnershipFlowsArchiveConfirmForm extends ParBaseForm {
    */
   protected $entityMapping = [
     ['archive_reason', 'par_data_advice', 'archive_reason', NULL, NULL, 0, [
-      'You must fill in the missing information.' => 'Please supply the reason for archiving this document.'
-    ]],
+      'You must fill in the missing information.' => 'Please supply the reason for archiving this document.',
+    ],
+    ],
   ];
 
   /**
@@ -45,7 +41,7 @@ class ParPartnershipFlowsArchiveConfirmForm extends ParBaseForm {
    * Helper to get all the editable values when editing or
    * revisiting a previously edited page.
    */
-  public function retrieveEditableValues(ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
+  public function retrieveEditableValues(?ParDataPartnership $par_data_partnership = NULL, ?ParDataAdvice $par_data_advice = NULL) {
 
   }
 
@@ -53,7 +49,7 @@ class ParPartnershipFlowsArchiveConfirmForm extends ParBaseForm {
    * {@inheritdoc}
    */
   #[\Override]
-  public function buildForm(array $form, FormStateInterface $form_state, ParDataPartnership $par_data_partnership = NULL, ParDataAdvice $par_data_advice = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, ?ParDataPartnership $par_data_partnership = NULL, ?ParDataAdvice $par_data_advice = NULL) {
     $this->retrieveEditableValues($par_data_partnership);
     $par_data_advice_title = $par_data_advice->getAdviceTitle();
 

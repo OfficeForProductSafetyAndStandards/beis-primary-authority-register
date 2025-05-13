@@ -4,9 +4,8 @@
  * @file
  * Contains par_header.module.
  */
+
 use Drupal\user\Entity\User;
-use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Url;
 
 /**
@@ -17,7 +16,7 @@ function par_header_link_alter(&$variables) {
   /**
    * The URL of the link.
    *
-   * @var Url
+   * @var \Drupal\Core\Url
    */
   $url = $variables['url'];
 
