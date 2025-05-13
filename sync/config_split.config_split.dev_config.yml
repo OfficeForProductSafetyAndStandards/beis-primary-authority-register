@@ -21,10 +21,12 @@ module:
   upgrade_status: 0
 theme: {  }
 complete_list:
-  - clamav.settings
-  - par_data.settings
-  - update.settings
-  - upgrade_status.settings
-partial_list:
+  - devel.settings
+  - devel_toolbar.settings
   - maillog.settings
+  - system.menu.devel
+  - ultimate_cron.job.update_cron
   - views.view.maillog_overview
+partial_list:
+  - clamav.settings
+  - user.role.authenticated
