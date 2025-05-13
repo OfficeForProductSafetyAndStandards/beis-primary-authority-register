@@ -14,6 +14,10 @@ module:
   maillog: 0
   par_data_test: 0
 theme: {  }
-complete_list: {  }
+complete_list:
+  - maillog.settings
+  - views.view.maillog_overview
 partial_list:
+  - clamav.settings
   - system.mail
+  - user.role.authenticated

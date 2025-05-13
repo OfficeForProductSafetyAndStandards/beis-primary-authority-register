@@ -15,16 +15,18 @@ module:
   maillog: 0
   tracer: 0
   config_inspector: 0
-  dblog: 0
   masquerade: 0
   par_data_test: 0
   update: 0
   upgrade_status: 0
 theme: {  }
 complete_list:
-  - par_data.settings
-  - update.settings
-  - upgrade_status.settings
-partial_list:
+  - devel.settings
+  - devel_toolbar.settings
   - maillog.settings
+  - system.menu.devel
+  - ultimate_cron.job.update_cron
   - views.view.maillog_overview
+partial_list:
+  - clamav.settings
+  - user.role.authenticated

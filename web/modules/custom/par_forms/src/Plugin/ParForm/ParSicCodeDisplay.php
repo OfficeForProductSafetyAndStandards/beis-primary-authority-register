@@ -125,14 +125,6 @@ class ParSicCodeDisplay extends ParFormPluginBase {
             '#attributes' => ['class' => ['edit-sic-code', 'govuk-grid-column-one-third']],
           ];
         }
-        if (isset($operations['remove']) && $operations['remove'] instanceof Link) {
-          $form['sic_codes']['sic_code'][$delta]['operations']['remove'] = [
-            '#type' => 'html_tag',
-            '#tag' => 'p',
-            '#value' => $operations['remove']->setText("remove sic code")->toString(),
-            '#attributes' => ['class' => ['remove-sic-code', 'govuk-grid-column-one-third']],
-          ];
-        }
       }
     }
 

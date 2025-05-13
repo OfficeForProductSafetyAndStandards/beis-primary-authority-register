@@ -45,6 +45,7 @@
         "drupal/block_classes": "^1.0",
         "drupal/cacheexclude": "^2.0",
         "drupal/chosen": "~3.0.0",
+        "drupal/clamav": "2.1.0",
         "drupal/config_filter": "^2.7",
         "drupal/config_readonly": "^1.0",
         "drupal/config_split": "~2.0.0",
@@ -186,8 +187,14 @@
             "drupal/core": "-p2"
         },
         "patches": {
+            "drupal/clamav": {
+                "ClamAV settings for PAR": "./patches/drupal/clamav/clamav_add_rest_client.patch"
+            },
             "drupal/core": {
                 "Identifiers longer than 63 characters are truncated, causing Views to break on Postgres - https://www.drupal.org/project/drupal/issues/571548": "https://www.drupal.org/files/issues/2025-01-16/drupal-postgres_identifiers_10_4-571548-207.patch"
+            },
+            "drupal/flood_control": {
+                "Add Redis support - https://www.drupal.org/project/flood_control/issues/3437875": "https://git.drupalcode.org/project/flood_control/-/merge_requests/53.diff"
             },
             "drupal/flysystem": {
                 "Add drush commands for getting and putting files - https://www.drupal.org/project/flysystem/issues/3192777": "https://www.drupal.org/files/issues/2023-08-31/3192777-4-added_drush_commands.patch"
@@ -199,10 +206,9 @@
                 "Pagerer upgrade issue": "https://git.drupalcode.org/project/pagerer/-/merge_requests/18.diff"
             },
             "drupal/redis": {
-                "Currently Drush Cr or Cache Clear UI does not flush Redis cache - https://www.drupal.org/project/redis/issues/2765895": "https://www.drupal.org/files/issues/redis-n2765895-16.patch",
-                "Support TLS for Predis - https://www.drupal.org/project/redis/issues/3004561": "https://www.drupal.org/files/issues/2021-11-19/redis-support_tls_on_predis-3004561-37.patch",
+                "Support TLS for Predis - https://www.drupal.org/project/redis/issues/3004561": "https://git.drupalcode.org/project/redis/-/merge_requests/1.diff",
                 "Implement initial RedisCluster client integration - https://www.drupal.org/project/redis/issues/2900947": "https://www.drupal.org/files/issues/2024-10-15/2900947-82.patch",
-                "Cache bin handling in multiple Redis DBs - https://www.drupal.org/project/redis/issues/2395255": "https://www.drupal.org/files/issues/2025-03-13/redis-Cache_bin_handling_in_multiple_Redis_DBs-2395255-10.patch"
+                "Cache bin handling in multiple Redis DBs - https://www.drupal.org/project/redis/issues/2395255": "https://www.drupal.org/files/issues/2025-04-27/redis-Cache_bin_handling_in_multiple_Redis_DBs-2395255-11.patch"
             },
             "drupal/registered_organisations": {
                 "Fix number format for regsistered charities": "./patches/registered_organisations/charities_commission_number_format.patch"

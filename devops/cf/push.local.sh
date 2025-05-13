@@ -387,8 +387,6 @@ fi
 cf set-env $TARGET_ENV PAR_HASH_SALT ${PAR_HASH_SALT}
 cf set-env $TARGET_ENV TAG ${CIRCLE_TAG}
 cf set-env $TARGET_ENV CHARITY_COMMISSION_API_KEY ${CHARITY_COMMISSION_API_KEY}
-cf set-env $TARGET_ENV CLAMAV_HTTP_PASS ${CLAMAV_HTTP_PASS}
-cf set-env $TARGET_ENV CLAMAV_HTTP_USER ${CLAMAV_HTTP_USER}
 cf set-env $TARGET_ENV S3_REGION ${S3_REGION}
 cf set-env $TARGET_ENV JSON_API_KEY ${JSON_API_KEY}
 
@@ -403,6 +401,8 @@ if [[ $ENV = "staging" ]]; then
   cf set-env $TARGET_ENV S3_BUCKET_PUBLIC ${STAGING_S3_BUCKET_PUBLIC}
   cf set-env $TARGET_ENV S3_SECRET_KEY ${STAGING_S3_SECRET_KEY}
   cf set-env $TARGET_ENV S3_BUCKET_ARTIFACTS ${STAGING_S3_BUCKET_ARTIFACTS}
+  cf set-env $TARGET_ENV CLAMAV_HTTP_PASS ${NP_CLAMAV_PASS}
+  cf set-env $TARGET_ENV CLAMAV_HTTP_USER ${NP_CLAMAV_USER}
 fi
 
 if [[ $ENV = "production" ]]; then
@@ -415,6 +415,8 @@ if [[ $ENV = "production" ]]; then
   cf set-env $TARGET_ENV S3_BUCKET_PUBLIC ${PROD_S3_BUCKET_PUBLIC}
   cf set-env $TARGET_ENV S3_SECRET_KEY ${PROD_S3_SECRET_KEY}
   cf set-env $TARGET_ENV S3_BUCKET_ARTIFACTS ${PROD_S3_BUCKET_ARTIFACTS}
+  cf set-env $TARGET_ENV CLAMAV_HTTP_PASS ${PROD_CLAMAV_PASS}
+  cf set-env $TARGET_ENV CLAMAV_HTTP_USER ${PROD_CLAMAV_USER}
 fi
 
 if [[ $ENV != "production" ]] && [[ $ENV != "staging" ]]; then
@@ -427,6 +429,8 @@ if [[ $ENV != "production" ]] && [[ $ENV != "staging" ]]; then
   cf set-env $TARGET_ENV S3_BUCKET_PUBLIC ${NP_S3_BUCKET_PUBLIC}
   cf set-env $TARGET_ENV S3_SECRET_KEY ${NP_S3_SECRET_KEY}
   cf set-env $TARGET_ENV S3_BUCKET_ARTIFACTS ${S3_BUCKET_ARTIFACTS}
+  cf set-env $TARGET_ENV CLAMAV_HTTP_PASS ${NP_CLAMAV_PASS}
+  cf set-env $TARGET_ENV CLAMAV_HTTP_USER ${NP_CLAMAV_USER}
 fi
 
 
@@ -629,6 +633,8 @@ if [[ $ENV = "staging" ]]; then
   cf set-env $TARGET_ENV S3_BUCKET_PUBLIC ${STAGING_S3_BUCKET_PUBLIC}
   cf set-env $TARGET_ENV S3_SECRET_KEY ${STAGING_S3_SECRET_KEY}
   cf set-env $TARGET_ENV S3_BUCKET_ARTIFACTS ${STAGING_S3_BUCKET_ARTIFACTS}
+  cf set-env $TARGET_ENV CLAMAV_HTTP_PASS ${NP_CLAMAV_PASS}
+  cf set-env $TARGET_ENV CLAMAV_HTTP_USER ${NP_CLAMAV_USER}
 fi
 
 if [[ $ENV = "production" ]]; then
@@ -641,6 +647,8 @@ if [[ $ENV = "production" ]]; then
   cf set-env $TARGET_ENV S3_BUCKET_PUBLIC ${PROD_S3_BUCKET_PUBLIC}
   cf set-env $TARGET_ENV S3_SECRET_KEY ${PROD_S3_SECRET_KEY}
   cf set-env $TARGET_ENV S3_BUCKET_ARTIFACTS ${PROD_S3_BUCKET_ARTIFACTS}
+  cf set-env $TARGET_ENV CLAMAV_HTTP_PASS ${PROD_CLAMAV_PASS}
+  cf set-env $TARGET_ENV CLAMAV_HTTP_USER ${PROD_CLAMAV_USER}
 fi
 
 if [[ $ENV != "production" ]] && [[ $ENV != "staging" ]]; then
@@ -653,6 +661,8 @@ if [[ $ENV != "production" ]] && [[ $ENV != "staging" ]]; then
   cf set-env $TARGET_ENV S3_BUCKET_PUBLIC ${NP_S3_BUCKET_PUBLIC}
   cf set-env $TARGET_ENV S3_SECRET_KEY ${NP_S3_SECRET_KEY}
   cf set-env $TARGET_ENV S3_BUCKET_ARTIFACTS ${S3_BUCKET_ARTIFACTS}
+  cf set-env $TARGET_ENV CLAMAV_HTTP_PASS ${NP_CLAMAV_PASS}
+  cf set-env $TARGET_ENV CLAMAV_HTTP_USER ${NP_CLAMAV_USER}
 fi
 
 ####################################################################################
