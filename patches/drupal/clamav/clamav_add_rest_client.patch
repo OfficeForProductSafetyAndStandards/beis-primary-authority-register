@@ -60,7 +60,7 @@ index cdb191c..c69a66d 100644
    const OUTAGE_BLOCK_UNCHECKED = 0;
    const OUTAGE_ALLOW_UNCHECKED = 1;
 diff --git a/src/Form/ClamAVConfigForm.php b/src/Form/ClamAVConfigForm.php
-index 8437ebb..eaca40d 100644
+index 8437ebb..ca2bc3b 100644
 --- a/src/Form/ClamAVConfigForm.php
 +++ b/src/Form/ClamAVConfigForm.php
 @@ -70,6 +70,7 @@ class ClamAVConfigForm extends ConfigFormBase {
@@ -101,7 +101,7 @@ index 8437ebb..eaca40d 100644
        ->set('mode_daemon_tcpip.hostname', $form_state->getValue('hostname'))
        ->set('mode_daemon_tcpip.port', $form_state->getValue('port'))
        ->set('mode_daemon_unixsocket.unixsocket', $form_state->getValue('unixsocket'))
-+      ->set('mode_daemon_rest_client.endpoint', $form_state->getValue('rest_endpoint'))
++      ->set('mode_daemon_rest_client.endpoint', $form_state->getValue('endpoint'))
        ->save();
  
      parent::submitForm($form, $form_state);
