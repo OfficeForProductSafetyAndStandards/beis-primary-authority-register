@@ -423,7 +423,12 @@ class ParRoleManager implements ParRoleManagerInterface {
 
 
     // Add the basic query conditions.
-    $query->condition('email', $account->getEmail());
+    if ($email = $account->getEmail()) {
+      $query->condition('email', $email);
+    }
+    else {
+      \Drupal::logger('par_roles')->error('No email found for user %uid', ['%uid' => $account->id()]);
+    }
 
     // If they have a registered account use the ID also.
     if (!$account->isNew()) {

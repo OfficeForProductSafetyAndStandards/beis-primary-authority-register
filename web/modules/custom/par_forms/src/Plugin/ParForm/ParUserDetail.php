@@ -2,20 +2,11 @@
 
 namespace Drupal\par_forms\Plugin\ParForm;
 
-use Drupal\Core\Form\FormStateInterface;
-use Drupal\comment\CommentInterface;
-use Drupal\Component\Utility\UrlHelper;
-use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Link;
 use Drupal\par_data\Entity\ParDataEntityInterface;
-use Drupal\par_data\ParDataException;
 use Drupal\par_flows\Entity\ParFlow;
 use Drupal\par_flows\ParFlowException;
-use Drupal\par_forms\ParEntityMapping;
 use Drupal\par_forms\ParFormPluginBase;
-use Drupal\user\Entity\Role;
 use Drupal\user\UserInterface;
 
 /**
@@ -81,7 +72,7 @@ class ParUserDetail extends ParFormPluginBase {
       '#type' => 'container',
       '#weight' => -1,
       '#attributes' => ['class' => ['govuk-grid-row', 'govuk-form-group']],
-      '#cache' => ['tags' => $cache_tags]
+      '#cache' => ['tags' => $cache_tags],
     ];
     if ($index === 1) {
       $form['user_account'] += [
@@ -224,18 +215,6 @@ class ParUserDetail extends ParFormPluginBase {
 
     }
     elseif ($person_id = $this->getFlowDataHandler()->getFormPermValue('person_id')) {
-      $form['contact'] = [
-        '#type' => 'container',
-        '#attributes' => ['class' => ['govuk-form-group']],
-        'title' => [
-          '#type' => 'html_tag',
-          '#tag' => 'p',
-          '#value' => $this->t($invitation_expiry ?
-            "An invitation has already been sent, it is due to expire on $invitation_expiry" :
-            "No user account could be found"),
-        ],
-      ];
-
       // Try to add an invitation link.
       try {
         $params = ['par_data_person' => $person_id];
@@ -244,6 +223,19 @@ class ParUserDetail extends ParFormPluginBase {
         $link_text = $invitation_expiry ? 'Re-send the invitation' : 'Invite the user to create an account';
         $invite_link = $invite_flow?->getStartLink(1, $link_text, $params, $link_options);
         if ($invite_link instanceof Link) {
+          $form['contact'] = [
+            '#type' => 'container',
+            '#attributes' => ['class' => ['govuk-form-group']],
+            'title' => [
+              '#type' => 'html_tag',
+              '#tag' => 'p',
+              '#value' => $this->t($invitation_expiry ?
+                "An invitation has already been sent, it is due to expire on $invitation_expiry" :
+                "No user account could be found"
+              ),
+            ],
+          ];
+
           $form['user_account']['invite'] = [
             '#type' => 'markup',
             '#markup' => t('@link', [
@@ -272,7 +264,8 @@ class ParUserDetail extends ParFormPluginBase {
    * Return no actions for this plugin.
    */
   #[\Override]
-  public function getComponentActions(array $actions = [], array $data = NULL): ?array {
+  public function getComponentActions(array $actions = [], ?array $data = NULL): ?array {
     return $actions;
   }
+
 }
