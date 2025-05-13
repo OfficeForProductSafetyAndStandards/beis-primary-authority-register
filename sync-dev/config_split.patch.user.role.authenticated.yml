@@ -1,7 +1,7 @@
-added:
+adding:
   dependencies:
     module:
       - maillog
   permissions:
     - 'view maillog'
-removed: {  }
+removing: {  }
