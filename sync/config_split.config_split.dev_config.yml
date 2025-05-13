@@ -23,6 +23,7 @@ theme: {  }
 complete_list:
   - devel.settings
   - maillog.settings
+  - masquerade.settings
   - system.menu.devel
   - ultimate_cron.job.update_cron
   - views.view.maillog_overview
