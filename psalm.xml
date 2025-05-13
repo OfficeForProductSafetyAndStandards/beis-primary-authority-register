@@ -1,14 +1,67 @@
 <?xml version="1.0"?>
-<psalm>
- <projectFiles>
-  <directory name="web/modules/custom" />
-   <directory name="web/modules/features" />
-   <directory name="web/modules/migrations" />
-   <directory name="web/themes/custom/par_theme" />
-   <directory name="web/sites/default" />
-  <ignoreFiles>
-  <directory name="web/sites/default/files" />
-  </ignoreFiles>
- </projectFiles>
+<psalm
+  checkForThrowsInGlobalScope="true"
+  ensureArrayStringOffsetsExist="true"
+  findUnusedPsalmSuppress="true"
+  findUnusedBaselineEntry="true"
+  findUnusedCode="false"
+  sealAllMethods="true"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="https://getpsalm.org/schema/config"
+  xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+  errorLevel="2"
+>
+  <taintAnalysis>
+    <ignoreFiles>
+      <directory name="tests"/>
+    </ignoreFiles>
+  </taintAnalysis>
+  <fileExtensions>
+    <extension name=".php" />
+    <extension name=".module" />
+    <extension name=".theme" />
+    <extension name=".inc" />
+    <extension name=".install" />
+    <extension name=".profile" />
+  </fileExtensions>
+  <projectFiles>
+    <directory name="web/modules/custom" />
+    <directory name="web/modules/features" />
+    <directory name="web/modules/migrations" />
+    <directory name="web/themes/custom/par_theme" />
+    <ignoreFiles>
+      <directory name="web/core" />
+    </ignoreFiles>
+  </projectFiles>
+  <issueHandlers>
+    <LessSpecificReturnType errorLevel="info" />
+    <DeprecatedMethod errorLevel="info" />
+    <DeprecatedProperty errorLevel="info" />
+    <DeprecatedClass errorLevel="info" />
+    <DeprecatedInterface errorLevel="info" />
+    <MissingClosureReturnType errorLevel="info" />
+    <MissingReturnType errorLevel="info" />
+    <MissingPropertyType errorLevel="info" />
+    <InvalidDocblock errorLevel="info" />
+    <PropertyNotSetInConstructor errorLevel="info" />
+    <MissingConstructor errorLevel="info" />
+    <MissingClosureParamType errorLevel="info" />
+    <MissingParamType errorLevel="info" />
+    <RedundantCondition errorLevel="info" />
+    <DocblockTypeContradiction errorLevel="info" />
+    <RedundantConditionGivenDocblockType errorLevel="info" />
+    <UnresolvableInclude errorLevel="info" />
+    <RawObjectIteration errorLevel="info" />
+    <MissingOverrideAttribute errorLevel="suppress"/>
+    <UnusedClass errorLevel="suppress"/>
+    <PossiblyNullArgument>
+      <errorLevel type="suppress">
+        <referencedFunction name="/__construct/"/>
+      </errorLevel>
+    </PossiblyNullArgument>
+    <!-- @see https://github.com/vimeo/psalm/issues/8765 -->
+    <PossiblyUndefinedVariable errorLevel="suppress"/>
+    <PropertyNotSetInConstructor errorLevel="suppress"/>
+  </issueHandlers>
 </psalm>
 
