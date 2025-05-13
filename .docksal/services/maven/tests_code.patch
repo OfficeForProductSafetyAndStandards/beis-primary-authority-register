@@ -700,3 +700,16 @@ index a9ef1e628..db9ad5900 100644
 +		waitForPageLoad();
  	}
  }
+diff --git a/tests/e2e/par-test-automation/src/test/java/uk/gov/beis/test/PARTestRunner.java b/tests/e2e/par-test-automation/src/test/java/uk/gov/beis/test/PARTestRunner.java
+index 105f2f230..b38d05af6 100644
+--- a/tests/e2e/par-test-automation/src/test/java/uk/gov/beis/test/PARTestRunner.java
++++ b/tests/e2e/par-test-automation/src/test/java/uk/gov/beis/test/PARTestRunner.java
+@@ -7,7 +7,7 @@ import io.cucumber.junit.Cucumber;
+ import io.cucumber.junit.CucumberOptions;
+ 
+ @RunWith(Cucumber.class)
+-@CucumberOptions(dryRun = false, features = { "classpath:features" }, glue = { "uk.gov.beis.stepdefs" }, tags = "@sadpath", plugin = { "json:target/cucumber-report/report.json", "html:target/cucumber-report/cucumber.html" })
++@CucumberOptions(dryRun = false, features = { "classpath:features" }, glue = { "uk.gov.beis.stepdefs" }, tags = "@regression", plugin = { "json:target/cucumber-report/report.json", "html:target/cucumber-report/cucumber.html" })
+ public class PARTestRunner {
+ 	@BeforeClass
+ 	public static void setUp() {
