@@ -63,7 +63,7 @@ index d4d3d16f9..c4f2ca843 100644
 +          <systemPropertyVariables>
 +            <env>docksal</env>
 +            <!-- @todo fix this hardcoded path -->
-+            <basedir>/app</basedir>
++            <app.dir>/app</app.dir>
 +          </systemPropertyVariables>
  				</configuration>
  			</plugin>

@@ -131,8 +131,6 @@ services:
     volumes:
       - ${PROJECT_ROOT}/.docksal/services/maven/pom.xml:/pom.xml
       - ${PROJECT_ROOT}/.docksal/services/maven/resources:/resources
-      - ${PROJECT_ROOT}/tests/e2e/par-test-automation/memberslist.csv:/memberslist.csv
-      - ${PROJECT_ROOT}/tests/e2e/par-test-automation/link.txt:/link.txt
       - ${PROJECT_ROOT}/tests/e2e/par-test-automation:/app
     command:
       - "mvn"
