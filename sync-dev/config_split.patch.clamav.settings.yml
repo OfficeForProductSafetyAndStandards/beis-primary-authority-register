@@ -1,0 +1,19 @@
+_core:
+  default_config_hash: g2Hvti1W114hw0zwTzitzMHlfIXf97QY57aEVOtEWEE
+enabled: true
+outage_action: 1
+overridden_schemes:
+  - s3public
+  - s3private
+scan_mode: 3
+verbosity: 0
+mode_executable:
+  executable_path: /usr/bin/clamscan
+  executable_parameters: ''
+mode_daemon_tcpip:
+  hostname: localhost
+  port: 3310
+mode_daemon_unixsocket:
+  unixsocket: /var/clamav/clamd
+mode_daemon_rest_client:
+  endpoint: 'https://staging.clamav.uktrade.digital/v2/scan'
