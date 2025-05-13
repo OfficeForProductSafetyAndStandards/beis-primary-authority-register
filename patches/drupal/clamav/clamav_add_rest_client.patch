@@ -4,7 +4,7 @@ index f78cae5..83456cc 100644
 +++ b/clamav.install
 @@ -6,6 +6,7 @@
   */
-
+ 
  use Drupal\clamav\Config;
 +use Drupal\clamav\Scanner\DaemonRestClient;
  use Drupal\clamav\Scanner\DaemonTCPIP;
@@ -19,14 +19,14 @@ index f78cae5..83456cc 100644
 +        $scanner = new DaemonRestClient($config);
 +        break;
      }
-
+ 
      if (!is_null($scanner)) {
 diff --git a/config/install/clamav.settings.yml b/config/install/clamav.settings.yml
 index c960d45..36deb64 100644
 --- a/config/install/clamav.settings.yml
 +++ b/config/install/clamav.settings.yml
 @@ -18,3 +18,6 @@ mode_daemon_tcpip:
-
+ 
  mode_daemon_unixsocket:
    unixsocket: '/var/clamav/clamd'
 +
@@ -56,11 +56,11 @@ index cdb191c..c69a66d 100644
    const MODE_EXECUTABLE = 1;
    const MODE_UNIX_SOCKET = 2;
 +  const MODE_DAEMON_REST_CLIENT = 3;
-
+ 
    const OUTAGE_BLOCK_UNCHECKED = 0;
    const OUTAGE_ALLOW_UNCHECKED = 1;
 diff --git a/src/Form/ClamAVConfigForm.php b/src/Form/ClamAVConfigForm.php
-index 8437ebb..eaca40d 100644
+index 8437ebb..ca2bc3b 100644
 --- a/src/Form/ClamAVConfigForm.php
 +++ b/src/Form/ClamAVConfigForm.php
 @@ -70,6 +70,7 @@ class ClamAVConfigForm extends ConfigFormBase {
@@ -74,7 +74,7 @@ index 8437ebb..eaca40d 100644
 @@ -147,6 +148,25 @@ class ClamAVConfigForm extends ConfigFormBase {
        // '#description' => t('The unix socket path for the ClamAV daemon. Defaults to %default_socket.', array('%default_socket' => CLAMAV_DEFAULT_UNIX_SOCKET)),
      ];
-
+ 
 +    // Configuration if ClamAV is set to use a REST API mode.
 +    $form['scan_mechanism_wrapper']['mode_daemon_rest_client'] = [
 +      '#type' => 'details',
@@ -103,16 +103,16 @@ index 8437ebb..eaca40d 100644
        ->set('mode_daemon_unixsocket.unixsocket', $form_state->getValue('unixsocket'))
 +      ->set('mode_daemon_rest_client.endpoint', $form_state->getValue('endpoint'))
        ->save();
-
+ 
      parent::submitForm($form, $form_state);
 diff --git a/src/Scanner.php b/src/Scanner.php
 index 1364638..6f91926 100644
 --- a/src/Scanner.php
 +++ b/src/Scanner.php
 @@ -2,6 +2,7 @@
-
+ 
  namespace Drupal\clamav;
-
+ 
 +use Drupal\clamav\Scanner\DaemonRestClient;
  use Drupal\clamav\Scanner\DaemonUnixSocket;
  use Drupal\clamav\Scanner\DaemonTCPIP;
@@ -127,7 +127,7 @@ index 1364638..6f91926 100644
 +        break;
      }
    }
-
+ 
 diff --git a/src/Scanner/DaemonRestClient.php b/src/Scanner/DaemonRestClient.php
 index e69de29..2ed03a4 100644
 --- a/src/Scanner/DaemonRestClient.php
