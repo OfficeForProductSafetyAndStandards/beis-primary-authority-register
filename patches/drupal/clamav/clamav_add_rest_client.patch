@@ -129,10 +129,10 @@ index 1364638..6f91926 100644
    }
  
 diff --git a/src/Scanner/DaemonRestClient.php b/src/Scanner/DaemonRestClient.php
-index e69de29..9847150 100644
+index e69de29..2ed03a4 100644
 --- a/src/Scanner/DaemonRestClient.php
 +++ b/src/Scanner/DaemonRestClient.php
-@@ -0,0 +1,115 @@
+@@ -0,0 +1,144 @@
 +<?php
 +
 +namespace Drupal\clamav\Scanner;
@@ -143,21 +143,47 @@ index e69de29..9847150 100644
 +use Drupal\clamav\ScannerInterface;
 +use Drupal\file\FileInterface;
 +
++/**
++ * Daemon REST class for the ClamAV scanner instance.
++ */
 +class DaemonRestClient implements ScannerInterface {
 +
 +  use LoggerChannelTrait;
 +
-+  protected $file;
-+
++  /**
++   * The ClamAV REST endpoint.
++   *
++   * @var string
++   */
 +  protected $endpoint;
 +
++  /**
++   * The HTTP user for the ClamAV REST endpoint.
++   *
++   * @var string
++   */
 +  protected $httpUser;
 +
++  /**
++   * The HTTP password for the ClamAV REST endpoint.
++   *
++   * @var string
++   */
 +  protected $httpPass;
 +
-+  protected $virusName = '';
-+
++  /**
++   * The HTTP client.
++   *
++   * @var \GuzzleHttp\ClientInterface
++   */
 +  protected $httpClient;
++
++  /**
++   * The found virus name.
++   *
++   * @var string
++   */
++  protected $virusName = '';
 +
 +  /**
 +   * {@inheritdoc}
@@ -177,19 +203,22 @@ index e69de29..9847150 100644
 +    $result = Scanner::FILE_IS_UNCHECKED;
 +
 +    try {
-+      $file_post = $this->httpClient->post($this->endpoint, [
-+        'auth' => [$this->httpUser, $this->httpPass, 'Basic'],
-+        'multipart' => [
-+          [
-+            'name' => 'file',
-+            'contents' => fopen($file->getFileUri(), 'r'),
++      $file_post = $this->httpClient->post(
++        $this->endpoint . '/v2/scan',
++        [
++          'auth' => [$this->httpUser, $this->httpPass, 'Basic'],
++          'multipart' => [
++            [
++              'name' => 'file',
++              'contents' => fopen($file->getFileUri(), 'rb'),
++            ],
++            [
++              'name' => 'name',
++              'contents' => $file->getFilename(),
++            ],
 +          ],
-+          [
-+            'name' => 'name',
-+            'contents' => $file->getFilename(),
-+          ],
-+        ],
-+      ]);
++        ]
++      );
 +
 +      $response = json_decode($file_post->getBody()->getContents());
 +    }
@@ -203,15 +232,13 @@ index e69de29..9847150 100644
 +    }
 +
 +    // Check for any viruses detected.
-+    if (isset($response) && isset($response->file->status)) {
-+      $result = $response->file->status == 'OK' ? Scanner::FILE_IS_CLEAN : Scanner::FILE_IS_INFECTED;
-+
-+      if (isset($response->file->foundViruses->stream)) {
-+        $this->virusName = current($response->file->foundViruses->stream);
-+      }
++    if ($response->malware) {
++      $result = Scanner::FILE_IS_INFECTED;
++      $this->virusName = $response->reason;
 +    }
 +    else {
-+      $result = Scanner::FILE_IS_UNCHECKED;
++      $result = Scanner::FILE_IS_CLEAN;
++      $this->virusName = 'none detected';
 +    }
 +
 +    return $result;
@@ -229,12 +256,13 @@ index e69de29..9847150 100644
 +   */
 +  public function version() {
 +    try {
-+      $request = $this->httpClient->get($this->endpoint,
++      $request = $this->httpClient->get($this->endpoint . '/check_version',
 +        ['auth' => [$this->httpUser, $this->httpPass, 'Basic']]
 +      );
 +
 +      if ($json = json_decode($request->getBody())) {
-+        return isset($json->version) ? $json->version : 'unknown';
++        $version = "clamd-actual";
++        return $json->$version ?? 'unknown';
 +      }
 +    }
 +    catch (\Exception $e) {
@@ -245,6 +273,7 @@ index e69de29..9847150 100644
 +        ]);
 +      return 'No connection';
 +    }
++    return 'Can not JSON decode body';
 +  }
 +
 +}
